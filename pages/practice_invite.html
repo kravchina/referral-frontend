@@ -1,0 +1,19 @@
+<html ng-app="dentalLinks">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+    <script src="controllers.js"></script>
+</head>
+<body >
+
+<div ng-controller="PracticeInvitationController">
+    <form novalidate class="simple-form">
+
+        E-Mail: <input type="email" ng-model="user.email" /><br />
+        Password: <input type="password" ng-model="user.password" /><br />
+
+        <button ng-click="login(user)">Login</button>
+        <pre>Response: {{ token | json}}</pre>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<html ng-app="dentalLinks">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.js"></script>
+    <script src="controllers.js"></script>
+</head>
+<body>
+
+<div ng-controller="LoginController">
+    <form novalidate class="simple-form" ng-if="!token">
+
+        <div>
+            <label>
+                E-Mail:
+                <input type="email" ng-model="user.email"/>
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Password:
+                <input type="password" ng-model="user.password"/>
+            </label>
+        </div>
+
+        <button ng-click="login(user)">Login</button>
+        <pre ng-if="token">Response: {{ token | json}}</pre>
+    </form>
+    <div ng-if="token">
+        <div>
+            <h2>Invite practice</h2>
+
+            <form novalidate class="simple-form" ng-controller="PracticeInvitationsController">
+                <div>
+                    <label>
+                        Practice Name:
+                        <input type="text" ng-model="practice.practice_name"/>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Contact First Name:
+                        <input type="text" ng-model="practice.contact_first_name"/>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Contact Last Name:
+                        <input type="text" ng-model="practice.contact_last_name"/>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Contact Email
+                        <input type="email" ng-model="practice.contact_email"/>
+                    </label>
+                </div>
+                <button ng-click="invite_practice(practice)">Invite Practice</button>
+                <pre ng-if="invite_practice_result">Response: {{invite_practice_result | json}}</pre>
+            </form>
+        </div>
+        <div>
+            <h2>Create Referral</h2>
+
+            <form novalidate class="simple-form" ng-controller="ReferralsController">
+                <div>
+                    <label>
+                        Original Practice:
+                        <select ng-model="referral.orig_practice_id" ng-options="p.id as p.name for p in practices">
+                            <option value="">-- Select practice --</option>
+                        </select>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Destination Practice:
+                        <select ng-model="referral.dest_practice_id" ng-options="p.id as p.name for p in practices">
+                            <option value="">-- Select practice --</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Patient:
+                        <select ng-model="referral.patient_id"
+                                ng-options="p.id as p.first_name +' ' +  p.last_name for p in patients">
+                            <option value="">-- Select patient --</option>
+                        </select>
+
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Memo:
+                        <textarea ng-model="referral.memo"></textarea>
+                    </label>
+                </div>
+
+
+                <button ng-click="create_referral(referral)">Create referral</button>
+                <pre ng-if="create_referral_result">Response: {{create_referral_result | json}}</pre>
+            </form>
+        </div>
+        <div>
+            <h2>Create User</h2>
+
+            <form novalidate class="simple-form" ng-controller="UsersController">
+                <div>
+                    <label>
+                        First Name:
+                        <input type="text" ng-model="user.first_name"/>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Middle Initial:
+                        <input ng-maxlength="1" maxlength="1" type="text" ng-model="user.middle_initial"/>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Last Name:
+                        <input type="text" ng-model="user.last_name"/>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Username:
+                        <input type="text" ng-model="user.username"/>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Password:
+                        <input type="password" ng-model="user.password"/>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Password Confirmation:
+                        <input type="password" ng-model="user.password_confirmation"/>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Email:
+                        <input type="email" ng-model="user.email"/>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Practice:
+                        <select ng-model="user.practice_id" ng-options="p.id as p.name for p in practices">
+                            <option value="">-- Select practice --</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        User's Role:
+                        <select ng-model="user.roles_mask" ng-options="r.mask as r.name for r in roles">
+                            <option value="">-- Select Role --</option>
+                        </select>
+                    </label>
+                </div>
+
+
+                <button ng-click="create_user(user)">Create user</button>
+                <pre ng-if="create_user_result">Response: {{create_user_result | json}}</pre>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
