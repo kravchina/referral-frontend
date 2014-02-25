@@ -1,0 +1,20 @@
+<div>
+    <form novalidate class="simple-form" ng-if="!authenticated">
+
+        <div>
+            <label>
+                E-Mail:
+                <input type="email" ng-model="user.email"/>
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Password:
+                <input type="password" ng-model="user.password"/>
+            </label>
+        </div>
+
+        <button ng-click="login(user)">Login</button>
+    </form>
+ </div>

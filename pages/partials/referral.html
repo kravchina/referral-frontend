@@ -1,0 +1,33 @@
+<div>
+    <h2>Invite practice</h2>
+
+    <form novalidate class="simple-form" ng-controller="PracticeInvitationsController">
+        <div>
+            <label>
+                Practice Name:
+                <input type="text" ng-model="practice.practice_name"/>
+            </label>
+        </div>
+        <div>
+            <label>
+                Contact First Name:
+                <input type="text" ng-model="practice.contact_first_name"/>
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Contact Last Name:
+                <input type="text" ng-model="practice.contact_last_name"/>
+            </label>
+        </div>
+        <div>
+            <label>
+                Contact Email
+                <input type="email" ng-model="practice.contact_email"/>
+            </label>
+        </div>
+        <button ng-click="invite_practice(practice)">Invite Practice</button>
+        <pre ng-if="invite_practice_result">Response: {{invite_practice_result | json}}</pre>
+    </form>
+</div>
