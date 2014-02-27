@@ -1,4 +1,4 @@
-var dentalLinks = angular.module('dentalLinks', ['ngRoute', 'dentalLinksControllers']);
+var dentalLinks = angular.module('dentalLinks', ['ngRoute', 'dentalLinksControllers', 'dentalLinksServices']);
 
 dentalLinks.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.

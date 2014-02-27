@@ -1,33 +1,115 @@
-<div>
-    <h2>Invite practice</h2>
+<form class="css-form" name="form" ng-controller="ReferralsController" novalidate="novalidate">
+    <div>
+        <h2>Create Referral</h2>
+        <label>
+            Patient:
+            <select ng-disabled="patientFormVisible" ng-model="model.referral.patient_id"
+                    ng-options="p.id as p.first_name +' ' +  p.last_name for p in patients" ng-required="!patientFormVisible">
+                <option value="">-- Select patient --</option>
+            </select>
 
-    <form novalidate class="simple-form" ng-controller="PracticeInvitationsController">
-        <div>
-            <label>
-                Practice Name:
-                <input type="text" ng-model="practice.practice_name"/>
-            </label>
+        </label>
+        <button ng-click="patientFormVisible=!patientFormVisible">Create new patient</button>
+
+
+        <div ng-show="patientFormVisible" >
+            <h3>Create Patient</h3>
+            <div style="border-color: #d3d3d3">
+                <div>
+                    <label>
+                        First Name:
+                        <input ng-disabled="!patientFormVisible" type="text" ng-model="model.patient.first_name"  ng-required="patientFormVisible"/>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Last Name:
+                        <input ng-disabled="!patientFormVisible" type="text" ng-model="model.patient.last_name" ng-required="patientFormVisible"/>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Date of Birth:
+                        <input ng-disabled="!patientFormVisible" type="date" ng-model="model.patient.birthday" ng-required="patientFormVisible"/>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Email
+                        <input ng-disabled="!patientFormVisible" type="email" ng-model="model.patient.email" ng-required="patientFormVisible"/>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Phone:
+                        <input ng-disabled="!patientFormVisible" type="number" ng-model="model.patient.phone" ng-required="patientFormVisible" integer/>
+                    </label>
+                </div>
+
+            </div>
         </div>
-        <div>
-            <label>
-                Contact First Name:
-                <input type="text" ng-model="practice.contact_first_name"/>
-            </label>
+
+    </div>
+
+    <div>
+        <label>
+            Select Destination Practice:
+            <select ng-disabled="invitePracticeVisible" ng-model="model.referral.dest_practice_id"
+                    ng-options="p.id as p.name for p in practices" ng-required="!invitePracticeVisible">
+                <option value="">-- Select practice --</option>
+            </select>
+        </label>
+        Or
+        <button ng-click="invitePracticeVisible=!invitePracticeVisible">Invite new practice</button>
+    </div>
+
+    <div ng-show="invitePracticeVisible">
+        <h3>Invite practice</h3>
+
+        <div style="border-color: #d3d3d3">
+            <div>
+                <label>
+                    Practice Name:
+                    <input ng-disabled="!invitePracticeVisible" type="text" ng-model="model.practice.practice_name" ng-required="invitePracticeVisible"/>
+                </label>
+            </div>
+            <div>
+                <label>
+                    Contact First Name:
+                    <input ng-disabled="!invitePracticeVisible" type="text" ng-model="model.practice.contact_first_name" ng-required="invitePracticeVisible"/>
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    Contact Last Name:
+                    <input ng-disabled="!invitePracticeVisible" type="text" ng-model="model.practice.contact_last_name" ng-required="invitePracticeVisible"/>
+                </label>
+            </div>
+            <div>
+                <label>
+                    Contact Email
+                    <input ng-disabled="!invitePracticeVisible" type="email" ng-model="model.practice.contact_email" ng-required="invitePracticeVisible" />
+                </label>
+            </div>
         </div>
+    </div>
+    <div>
+
 
         <div>
             <label>
-                Contact Last Name:
-                <input type="text" ng-model="practice.contact_last_name"/>
+                Memo:
+                <textarea ng-model="model.referral.memo" ng-required="true"></textarea>
             </label>
         </div>
-        <div>
-            <label>
-                Contact Email
-                <input type="email" ng-model="practice.contact_email"/>
-            </label>
-        </div>
-        <button ng-click="invite_practice(practice)">Invite Practice</button>
-        <pre ng-if="invite_practice_result">Response: {{invite_practice_result | json}}</pre>
-    </form>
-</div>
+
+        <button ng-click="createReferral(model)" ng-disabled="form.$invalid">Sign and Send</button>
+        <div class="success" ng-show="!initial && success">Referral was created successfully</div>
+        <div class="error" ng-show="!initial && !success">There was an error during referral creation</div>
+    </div>
+
+</form>

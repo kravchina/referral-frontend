@@ -11,10 +11,6 @@ get_request = function (http, action, options, success_callback, error_callback)
 };
 
 
-
-
-
-
 dentalLinksControllers.controller('LoginController', ['$scope', '$http', '$window', '$location',
     function ($scope, $http, $window, $location) {
         $scope.authenticated = $window.sessionStorage.token ? true : false;
@@ -39,7 +35,7 @@ dentalLinksControllers.controller('LoginController', ['$scope', '$http', '$windo
             $scope.message = null;
             $scope.isAuthenticated = false;
             delete $window.sessionStorage.token;
-            delete $window.sessionStorage.email
+            delete $window.sessionStorage.email;
             $location.path('/login').replace();
         };
     }]);
@@ -55,33 +51,35 @@ dentalLinksControllers.controller('PracticeInvitationsController', ['$scope', '$
     }
 }]);
 
-dentalLinksControllers.controller('ReferralsController', ['$scope', '$http', function ($scope, $http) {
+dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 'Patient','Referral', function ($scope, Practice, Patient, Referral) {
 
-    get_request($http, '/patients', {'params': {'email': $scope.email, 'authentication_token': $scope.token}}, function (data) {
-        $scope.patients = data;
-    });
+    $scope.patients = Patient.query();
 
-    get_request($http, '/practices', {'params': {'email': $scope.email, 'authentication_token': $scope.token}}, function (data) {
-        $scope.practices = data;
-    });
+    $scope.practices = Practice.query();
 
-    $scope.create_referral = function (referral) {
-        post_request($http, '/referrals', {'referral': referral, email: $scope.email, authentication_token: $scope.token}, function (data) {
-            $scope.create_referral_result = data;
+    $scope.initial = true;
+
+    $scope.createReferral = function (model) {
+
+        $scope.create_referral_result = Referral.save(model, function(data){
+            $scope.success = true;
+            $scope.initial = false;
+        }, function(data){
+            $scope.success = false;
+            $scope.initial = false;
         });
 
     }
 }]);
 
-dentalLinksControllers.controller('UsersController', ['$scope', '$http', function ($scope, $http) {
+dentalLinksControllers.controller('UsersController', ['$scope', 'Practice', function ($scope, Practice) {
     $scope.roles = [
         {'mask': 0, 'name': 'admin'},
         {'mask': 2, 'name': 'doctor'},
         {'mask': 4, 'name': 'aux'}
     ];
-    get_request($http, '/practices', {'params': {'email': $scope.email, 'authentication_token': $scope.token}}, function (data) {
-        $scope.practices = data;
-    });
+        $scope.practices = Practice.query();
+
     $scope.create_user = function (user) {
         post_request($http, '/sign_up', {'user': user, email: $scope.email, authentication_token: $scope.token}, function (data) {
             $scope.create_user_result = data;
