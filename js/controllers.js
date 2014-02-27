@@ -64,6 +64,8 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
         $scope.create_referral_result = Referral.save(model, function(data){
             $scope.success = true;
             $scope.initial = false;
+            $scope.patients = Patient.query();
+            $scope.practices = Practice.query();
         }, function(data){
             $scope.success = false;
             $scope.initial = false;
