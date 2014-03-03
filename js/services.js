@@ -3,7 +3,7 @@
  */
 var dentalLinksServices = angular.module('dentalLinksServices', ['ngResource']);
 
-var host = 'http://referral-server.herokuapp.com';
+var host = 'http://localhost:3000';
 
 dentalLinksServices.factory('Practice', ['$resource',
     function ($resource) {
@@ -22,4 +22,14 @@ dentalLinksServices.factory('Patient', ['$resource', function ($resource) {
 
 dentalLinksServices.factory('Referral', ['$resource', function ($resource) {
     return $resource(host + '/referrals', {});
+}]);
+
+dentalLinksServices.factory('Login', ['$resource', function ($resource) {
+    return $resource(host + '/sign_in', {})
+}]);
+
+dentalLinksServices.factory('Password', ['$resource', function ($resource) {
+    return $resource(host + '/password', {}, {
+        reset: {method: 'POST', params: {}}
+    })
 }]);

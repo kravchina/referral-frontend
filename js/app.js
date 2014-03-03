@@ -11,14 +11,25 @@ dentalLinks.config(['$routeProvider', function ($routeProvider) {
             controller: 'ReferralsController'
         })
         .when('/logout', {
-            templateUrl: 'partial/login.html',
+            templateUrl: 'partials/login.html',
             controller: 'LoginController'
+        })
+        .when('/reset_password',{
+            templateUrl: 'partials/reset_password.html',
+            controller: 'PasswordsController'
+        })
+        .when('/edit_password',{
+            templateUrl: 'partials/edit_password.html',
+            controller: 'PasswordsController'
         })
         .otherwise({
             redirectTo: '/sign_in'
         });
 }]);
 
+dentalLinks.config(['$locationProvider', function($locationProvider){
+    /*$locationProvider.html5Mode(true);*/ //doesn't work without server-side url rewriting, to return on every request only the entrypoint page (like index.html)
+}]);
 
 dentalLinks.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.defaults.useXDomain = true;

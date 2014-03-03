@@ -1,6 +1,6 @@
 var dentalLinksControllers = angular.module('dentalLinksControllers', []);
 
-var serverUrl = 'http://referral-server.herokuapp.com';
+var serverUrl = 'http://localhost:3000';
 
 post_request = function (http, action, data, options, success_callback, error_callback) {
     http.post(serverUrl + action, data, options).success(success_callback).error(error_callback)
@@ -21,7 +21,7 @@ dentalLinksControllers.controller('LoginController', ['$scope', '$http', '$windo
                 $scope.email = user.email;
                 $scope.message = 'Successful login. Welcome!';
                 $scope.authenticated = true;
-                $location.path('/referral').replace();
+                $location.path('/referral');
 
             }, function (data) {
                 delete $window.sessionStorage.token;
@@ -87,4 +87,14 @@ dentalLinksControllers.controller('UsersController', ['$scope', 'Practice', func
             $scope.create_user_result = data;
         });
     }
+}]);
+
+dentalLinksControllers.controller('PasswordsController', ['$scope','Password', function($scope, Password){
+ $scope.requestPasswordReset = function(user){
+    Password.reset({'user': user}, function(result){
+         alert("Ok")
+    }, function(result){
+         alert("Failure")
+    })
+ }
 }]);
