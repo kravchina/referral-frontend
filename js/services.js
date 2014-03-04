@@ -30,6 +30,7 @@ dentalLinksServices.factory('Login', ['$resource', function ($resource) {
 
 dentalLinksServices.factory('Password', ['$resource', function ($resource) {
     return $resource(host + '/password', {}, {
-        reset: {method: 'POST', params: {}}
+        reset: {method: 'POST', params: {}},
+        change: {method: 'PUT', params: {}}
     })
 }]);

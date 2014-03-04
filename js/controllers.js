@@ -51,7 +51,7 @@ dentalLinksControllers.controller('PracticeInvitationsController', ['$scope', '$
     }
 }]);
 
-dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 'Patient','Referral', function ($scope, Practice, Patient, Referral) {
+dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 'Patient', 'Referral', function ($scope, Practice, Patient, Referral) {
 
     $scope.patients = Patient.query();
 
@@ -61,12 +61,12 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
 
     $scope.createReferral = function (model) {
 
-        $scope.create_referral_result = Referral.save(model, function(data){
+        $scope.create_referral_result = Referral.save(model, function (data) {
             $scope.success = true;
             $scope.initial = false;
             $scope.patients = Patient.query();
             $scope.practices = Practice.query();
-        }, function(data){
+        }, function (data) {
             $scope.success = false;
             $scope.initial = false;
         });
@@ -80,7 +80,7 @@ dentalLinksControllers.controller('UsersController', ['$scope', 'Practice', func
         {'mask': 2, 'name': 'doctor'},
         {'mask': 4, 'name': 'aux'}
     ];
-        $scope.practices = Practice.query();
+    $scope.practices = Practice.query();
 
     $scope.create_user = function (user) {
         post_request($http, '/sign_up', {'user': user, email: $scope.email, authentication_token: $scope.token}, function (data) {
@@ -89,12 +89,30 @@ dentalLinksControllers.controller('UsersController', ['$scope', 'Practice', func
     }
 }]);
 
-dentalLinksControllers.controller('PasswordsController', ['$scope','Password', function($scope, Password){
- $scope.requestPasswordReset = function(user){
-    Password.reset({'user': user}, function(result){
-         alert("Ok")
-    }, function(result){
-         alert("Failure")
-    })
- }
+dentalLinksControllers.controller('PasswordsController', ['$scope', '$routeParams', 'Password', function ($scope, $routeParams, Password) {
+    $scope.requestPasswordReset = function (user) {
+        Password.reset({'user': user}, function (result) {
+            $scope.success = true;
+            $scope.initial = false;
+        }, function (result) {
+            $scope.success = false;
+            $scope.initial = false;
+        })
+    };
+    $scope.initial = true;
+    $scope.success = false;
+    $scope.changePassword = function (model) {
+
+
+        model.reset_password_token = $routeParams.reset_password_token;
+        Password.change({'user': model, 'format': 'json'},
+            function (success_result) {
+                $scope.success = true;
+                $scope.initial = false;
+            },
+            function (error_result) {
+                $scope.success = false;
+                $scope.initial = false;
+            });
+    };
 }]);

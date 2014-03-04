@@ -5,24 +5,24 @@ dentalLinks.config(['$routeProvider', function ($routeProvider) {
         when('/sign_in', {
             templateUrl: 'partials/login.html',
             controller: 'LoginController'
-        })
-        .when('/referral', {
+        }).
+        when('/referral', {
             templateUrl: 'partials/referral.html',
             controller: 'ReferralsController'
-        })
-        .when('/logout', {
+        }).
+        when('/logout', {
             templateUrl: 'partials/login.html',
             controller: 'LoginController'
-        })
-        .when('/reset_password',{
+        }).
+        when('/reset_password',{
             templateUrl: 'partials/reset_password.html',
             controller: 'PasswordsController'
-        })
-        .when('/edit_password',{
+        }).
+        when('/edit_password/:reset_password_token',{
             templateUrl: 'partials/edit_password.html',
             controller: 'PasswordsController'
-        })
-        .otherwise({
+        }).
+        otherwise({
             redirectTo: '/sign_in'
         });
 }]);
