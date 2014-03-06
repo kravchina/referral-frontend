@@ -1,6 +1,6 @@
 var dentalLinksControllers = angular.module('dentalLinksControllers', []);
 
-var serverUrl = 'http://localhost:3000';
+var serverUrl = 'http://referral-server.herokuapp.com';
 
 post_request = function (http, action, data, options, success_callback, error_callback) {
     http.post(serverUrl + action, data, options).success(success_callback).error(error_callback)
