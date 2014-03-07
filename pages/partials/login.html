@@ -15,7 +15,15 @@
             </label>
         </div>
 
+        <div class="success" ng-show="success">You have successfully logged in!</div>
+        <div class="error" ng-show="failure">Unable to login with provided credentials</div>
         <button ng-click="login(user)">Login</button>
+
     </form>
+
+    <div ng-if="authenticated">
+        You are logged in as {{email}}.
+        <button ng-click="logout()">Logout</button>
+    </div>
     <a href="#/reset_password">Forgot password?</a>
  </div>

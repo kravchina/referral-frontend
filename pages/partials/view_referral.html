@@ -1,0 +1,25 @@
+    <div>
+        <h2>View Referral</h2>
+        <div>
+        Patient: {{referral.patient.first_name}} {{referral.patient.last_name}}
+        </div>
+        <div>
+        Original Practice: {{referral.orig_practice.name}}
+        </div>
+        <div>
+        Practice Description: {{referral.orig_practice.description}}
+        </div>
+        <div>
+        Memo: {{referral.memo}}
+        </div>
+
+        <button ng-click="acceptReferral(referral)" ng-disabled="completeSuccess">Accept Referral</button>
+        <button ng-click="rejectReferral(referral)" ng-disabled="completeSuccess">Reject Referral</button>
+        <button ng-click="completeReferral(referral)" ng-disabled="acceptSuccess">Complete Referral</button>
+
+        <div class="acceptSuccess" ng-show="accepted">Referral was accepted successfully</div>
+        <div class="rejectSuccess" ng-show="rejected">Referral was rejected successfully</div>
+        <div class="completeSuccess" ng-show="completed">Referral was completed successfully</div>
+        <div class="error" ng-show="completed">There was an error during your operation</div>
+    </div>
+

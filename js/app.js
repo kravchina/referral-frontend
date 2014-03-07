@@ -7,7 +7,7 @@ dentalLinks.config(['$routeProvider', function ($routeProvider) {
             controller: 'LoginController'
         }).
         when('/referral', {
-            templateUrl: 'partials/referral.html',
+            templateUrl: 'partials/create_referral.html',
             controller: 'ReferralsController'
         }).
         when('/logout', {
@@ -21,6 +21,10 @@ dentalLinks.config(['$routeProvider', function ($routeProvider) {
         when('/edit_password/:reset_password_token',{
             templateUrl: 'partials/edit_password.html',
             controller: 'PasswordsController'
+        }).
+        when('/view_referral/:referral_id',{
+            templateUrl: 'partials/view_referral.html',
+            controller: 'ReferralsViewController'
         }).
         otherwise({
             redirectTo: '/sign_in'

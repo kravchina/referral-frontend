@@ -108,8 +108,8 @@
         </div>
 
         <button ng-click="createReferral(model)" ng-disabled="form.$invalid">Sign and Send</button>
-        <div class="success" ng-show="!initial && success">Referral was created successfully</div>
-        <div class="error" ng-show="!initial && !success">There was an error during referral creation</div>
+        <div class="success" ng-show="success">Referral was created successfully</div>
+        <div class="error" ng-show="failure">There was an error during referral creation</div>
     </div>
 
 </form>
