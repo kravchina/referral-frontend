@@ -22,9 +22,8 @@ dentalLinksServices.factory('Patient', ['$resource', function ($resource) {
 
 dentalLinksServices.factory('Referral', ['$resource', function ($resource) {
     return $resource(host + '/referrals/:id', {id: '@id'}, {
-        acceptReferral: {method: 'PUT',  data:{status:'accepted'}},
-        rejectReferral: {method: 'PUT', data: {status: 'rejected'}},
-        completeReferral: {method: 'PUT', data:  {status: 'completed'}}
+        updateStatus: {method: 'PUT', url: host + '/referrals/:id/status'}
+
     });
 }]);
 

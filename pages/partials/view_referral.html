@@ -12,14 +12,15 @@
         <div>
         Memo: {{referral.memo}}
         </div>
+        <div>Status: {{referral.status}}</div>
 
-        <button ng-click="acceptReferral(referral)" ng-disabled="completeSuccess">Accept Referral</button>
-        <button ng-click="rejectReferral(referral)" ng-disabled="completeSuccess">Reject Referral</button>
-        <button ng-click="completeReferral(referral)" ng-disabled="acceptSuccess">Complete Referral</button>
+        <button ng-click="acceptReferral(referral)" ng-disabled="referral.status != 'sent'">Accept Referral</button>
+        <button ng-click="rejectReferral(referral)" ng-disabled="referral.status != 'sent'">Reject Referral</button>
+        <button ng-click="completeReferral(referral)" ng-disabled="referral.status != 'accepted'">Complete Referral</button>
 
-        <div class="acceptSuccess" ng-show="accepted">Referral was accepted successfully</div>
-        <div class="rejectSuccess" ng-show="rejected">Referral was rejected successfully</div>
-        <div class="completeSuccess" ng-show="completed">Referral was completed successfully</div>
-        <div class="error" ng-show="completed">There was an error during your operation</div>
+        <div class="success" ng-show="acceptSuccess">Referral was accepted successfully</div>
+        <div class="success" ng-show="rejectSuccess">Referral was rejected successfully</div>
+        <div class="success" ng-show="completeSuccess">Referral was completed successfully</div>
+        <div class="error" ng-show="failure">There was an error during your operation</div>
     </div>
 

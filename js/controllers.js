@@ -48,17 +48,19 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
 
     $scope.createReferral = function (model) {
 
-        $scope.create_referral_result = Referral.save(model, function (data) {
-            $scope.patients = Patient.query();
-            $scope.practices = Practice.query();
+        $scope.create_referral_result = Referral.save(model,
+            function (data) {
+                $scope.patients = Patient.query();
+                $scope.practices = Practice.query();
 
-            $scope.success = true;
-            $scope.failure = false;
-        }, function (data) {
-            $scope.failure = true;
-            $scope.success = false;
+                $scope.success = true;
+                $scope.failure = false;
+            },
+            function (data) {
+                $scope.failure = true;
+                $scope.success = false;
 
-        });
+            });
 
     }
 }]);
@@ -75,14 +77,16 @@ dentalLinksControllers.controller('UsersController', ['$scope', 'Practice', func
 
 dentalLinksControllers.controller('PasswordsController', ['$scope', '$routeParams', 'Password', function ($scope, $routeParams, Password) {
     $scope.requestPasswordReset = function (user) {
-        Password.reset({'user': user}, function (result) {
-            $scope.success = true;
-            $scope.failure = false;
-        }, function (result) {
-            $scope.failure = true;
-            $scope.success = false;
+        Password.reset({'user': user},
+            function (result) {
+                $scope.success = true;
+                $scope.failure = false;
+            },
+            function (result) {
+                $scope.failure = true;
+                $scope.success = false;
 
-        })
+            })
     };
     $scope.initial = true;
     $scope.success = false;
@@ -106,8 +110,9 @@ dentalLinksControllers.controller('PasswordsController', ['$scope', '$routeParam
 dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeParams', 'Referral', function ($scope, $routeParams, Referral) {
     $scope.referral = Referral.get({id: $routeParams.referral_id});
     $scope.acceptReferral = function (referral) {
-        Referral.acceptReferral({id: referral.id},
+        Referral.updateStatus({id: referral.id }, {status:'accepted'},
             function (success) {
+                referral.status = 'accepted';
                 $scope.acceptSuccess = true;
                 $scope.failure = false;
             },
@@ -119,8 +124,9 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeP
     };
 
     $scope.rejectReferral = function (referral) {
-        Referral.rejectReferral({id: referral.id},
+        Referral.updateStatus({id: referral.id}, {status: 'rejected'},
             function (success) {
+                referral.status = 'rejected';
                 $scope.acceptSuccess = true;
                 $scope.failure = false;
 
@@ -133,8 +139,9 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeP
     };
 
     $scope.completeReferral = function (referral) {
-        Referral.completeReferral({id: referral.id},
+        Referral.updateStatus({id: referral.id }, {status: 'completed'},
             function (success) {
+                referral.status = 'completed';
                 $scope.completeSuccess = true;
                 $scope.failure = false;
             },
