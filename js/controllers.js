@@ -12,7 +12,7 @@ dentalLinksControllers.controller('LoginController', ['$scope', '$window', '$loc
                     $scope.email = user.email;
                     $scope.message = 'Successful login. Welcome!';
                     $scope.authenticated = true;
-                    $location.path('/referral');
+                    $location.path('/create_referral');
                     $scope.success = true;
                     $scope.failure = false;
                 },
