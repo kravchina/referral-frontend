@@ -1,4 +1,4 @@
-var dentalLinksControllers = angular.module('dentalLinksControllers', ['ui.bootstrap']);
+var dentalLinksControllers = angular.module('dentalLinksControllers', ['ui.bootstrap', 'angularFileUpload']);
 
 dentalLinksControllers.controller('LoginController', ['$scope', '$window', '$location', 'Login',
     function ($scope, $window, $location, Login) {
@@ -40,7 +40,7 @@ dentalLinksControllers.controller('LoginController', ['$scope', '$window', '$loc
         };
     }]);
 
-dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 'Patient', 'Referral', '$modal', function ($scope, Practice, Patient, Referral, $modal) {
+dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 'Patient', 'Referral', '$modal', '$fileUploader', function ($scope, Practice, Patient, Referral, $modal, $fileUploader) {
 
     $scope.patients = Patient.query();
 
@@ -72,11 +72,11 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
         var modalInstance = $modal.open({
             templateUrl: 'partials/patient_form.html',
             controller: 'PatientModalController'/*,
-            resolve: {
-                items: function () {
-                    return $scope.items;
-                }
-            }*/
+             resolve: {
+             items: function () {
+             return $scope.items;
+             }
+             }*/
         });
 
         modalInstance.result.then(function (patient) {
@@ -85,7 +85,7 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
         });
     };
 
-    $scope.practiceDialog = function(){
+    $scope.practiceDialog = function () {
         var modalInstance = $modal.open({
             templateUrl: 'partials/practice_form.html',
             controller: 'PracticeModalController'
@@ -95,7 +95,71 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
             $scope.practices.push(practice_invite);
             $scope.model.practice.practice_id = practice_invite.id;
         });
-    }
+    };
+
+    var uploader = $scope.uploader = $fileUploader.create({
+        scope: $scope,
+        url: 'upload.php'
+    });
+
+
+    // ADDING FILTERS
+
+    // Images only
+    uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
+        var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
+        type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
+        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+    });
+
+
+    // REGISTER HANDLERS
+
+    uploader.bind('afteraddingfile', function (event, item) {
+        console.info('After adding a file', item);
+    });
+
+    uploader.bind('whenaddingfilefailed', function (event, item) {
+        console.info('When adding a file failed', item);
+    });
+
+    uploader.bind('afteraddingall', function (event, items) {
+        console.info('After adding all files', items);
+    });
+
+    uploader.bind('beforeupload', function (event, item) {
+        console.info('Before upload', item);
+    });
+
+    uploader.bind('progress', function (event, item, progress) {
+        console.info('Progress: ' + progress, item);
+    });
+
+    uploader.bind('success', function (event, xhr, item, response) {
+        console.info('Success', xhr, item, response);
+    });
+
+    uploader.bind('cancel', function (event, xhr, item) {
+        console.info('Cancel', xhr, item);
+    });
+
+    uploader.bind('error', function (event, xhr, item, response) {
+        console.error('Error', xhr, item, response);
+    });
+
+    uploader.bind('complete', function (event, xhr, item, response) {
+        console.info('Complete', xhr, item, response);
+    });
+
+    uploader.bind('progressall', function (event, progress) {
+        console.info('Total progress: ' + progress);
+        alert('Progress all')
+    });
+
+    uploader.bind('completeall', function (event, items) {
+        console.info('Complete all', items);
+        alert('Sending all');
+    });
 }]);
 
 dentalLinksControllers.controller('PatientModalController', [ '$scope', '$modalInstance', 'Patient', function ($scope, $modalInstance, Patient) {
@@ -119,7 +183,7 @@ dentalLinksControllers.controller('PatientModalController', [ '$scope', '$modalI
 }]);
 
 
-dentalLinksControllers.controller('PracticeModalController', ['$scope', '$modalInstance', 'PracticeInvitation', function ($scope, $modalInstance, PracticeInvitation){
+dentalLinksControllers.controller('PracticeModalController', ['$scope', '$modalInstance', 'PracticeInvitation', function ($scope, $modalInstance, PracticeInvitation) {
     $scope.ok = function (practice_invite) {
         PracticeInvitation.save({practice: practice_invite},
             function (success) {
@@ -223,3 +287,68 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeP
 
     };
 }]);
+
+dentalLinksControllers.controller('ImageUploadController', function ($scope, $fileUploader) {
+    // Creates a uploader
+    var uploader = $scope.uploader = $fileUploader.create({
+        scope: $scope,
+        url: 'upload.php'
+    });
+
+
+    // ADDING FILTERS
+
+    // Images only
+    uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
+        var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
+        type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
+        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+    });
+
+
+    // REGISTER HANDLERS
+
+    uploader.bind('afteraddingfile', function (event, item) {
+        console.info('After adding a file', item);
+    });
+
+    uploader.bind('whenaddingfilefailed', function (event, item) {
+        console.info('When adding a file failed', item);
+    });
+
+    uploader.bind('afteraddingall', function (event, items) {
+        console.info('After adding all files', items);
+    });
+
+    uploader.bind('beforeupload', function (event, item) {
+        console.info('Before upload', item);
+    });
+
+    uploader.bind('progress', function (event, item, progress) {
+        console.info('Progress: ' + progress, item);
+    });
+
+    uploader.bind('success', function (event, xhr, item, response) {
+        console.info('Success', xhr, item, response);
+    });
+
+    uploader.bind('cancel', function (event, xhr, item) {
+        console.info('Cancel', xhr, item);
+    });
+
+    uploader.bind('error', function (event, xhr, item, response) {
+        console.info('Error', xhr, item, response);
+    });
+
+    uploader.bind('complete', function (event, xhr, item, response) {
+        console.info('Complete', xhr, item, response);
+    });
+
+    uploader.bind('progressall', function (event, progress) {
+        console.info('Total progress: ' + progress);
+    });
+
+    uploader.bind('completeall', function (event, items) {
+        console.info('Complete all', items);
+    });
+});

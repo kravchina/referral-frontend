@@ -1,4 +1,4 @@
-var dentalLinks = angular.module('dentalLinks', ['ngRoute', 'dentalLinksControllers', 'dentalLinksServices']);
+var dentalLinks = angular.module('dentalLinks', ['ngRoute', 'dentalLinksControllers', 'dentalLinksServices', 'dentalLinksDirectives']);
 
 dentalLinks.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
@@ -6,7 +6,7 @@ dentalLinks.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'partials/login.html',
             controller: 'LoginController'
         }).
-        when('/referral', {
+        when('/create_referral', {
             templateUrl: 'partials/create_referral.html',
             controller: 'ReferralsController'
         }).
