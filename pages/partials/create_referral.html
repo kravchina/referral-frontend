@@ -1,4 +1,4 @@
-<form class="css-form" name="form" ng-controller="ReferralsController" novalidate="novalidate">
+<form class="css-form" name="form" novalidate="novalidate">
     <div>
         <h2>Create Referral</h2>
         <label>
@@ -9,10 +9,12 @@
             </select>
 
         </label>
-        <button ng-click="patientFormVisible=!patientFormVisible">Create new patient</button>
+        Or
+        <button class="btn" ng-click="patientDialog()">Create Patient</button>
+        <!--<button ng-click="patientFormVisible=!patientFormVisible">Create new patient</button>-->
 
 
-        <div ng-show="patientFormVisible" >
+        <!--<div ng-show="patientFormVisible" >
             <h3>Create Patient</h3>
             <div class="field-group">
                 <div>
@@ -50,7 +52,7 @@
                 </div>
 
             </div>
-        </div>
+        </div>-->
 
     </div>
 
@@ -63,10 +65,11 @@
             </select>
         </label>
         Or
-        <button ng-click="invitePracticeVisible=!invitePracticeVisible">Invite new practice</button>
+        <button class="btn" ng-click="practiceDialog()">Invite new practice</button>
+        <!--<button ng-click="invitePracticeVisible=!invitePracticeVisible">Invite new practice</button>-->
     </div>
 
-    <div ng-show="invitePracticeVisible">
+    <!--<div ng-show="invitePracticeVisible">
         <h3>Invite practice</h3>
 
         <div class="field-group">
@@ -98,7 +101,7 @@
         </div>
     </div>
     <div>
-
+-->
 
         <div>
             <label>

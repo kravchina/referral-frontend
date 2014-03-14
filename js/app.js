@@ -49,8 +49,7 @@ dentalLinks.factory('authInterceptor', ['$rootScope', '$q', '$window', function 
             config.headers = config.headers || {};
             if ($window.sessionStorage.token) {
                 config.headers.Authorization = $window.sessionStorage.token;
-                config.params = config.params || {};
-                config.params.email = $window.sessionStorage.email;
+                config.headers.From = $window.sessionStorage.email;
             }
             return config;
         },

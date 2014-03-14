@@ -1,30 +1,30 @@
-var dentalLinksControllers = angular.module('dentalLinksControllers', []);
+var dentalLinksControllers = angular.module('dentalLinksControllers', ['ui.bootstrap']);
 
 dentalLinksControllers.controller('LoginController', ['$scope', '$window', '$location', 'Login',
     function ($scope, $window, $location, Login) {
         $scope.authenticated = $window.sessionStorage.token ? true : false;
         $scope.email = $window.sessionStorage.email;
         $scope.login = function (user) {   /*{'user': {'email': user.email, 'password': user.password }}*/
-            Login.login({'user': {'email': user.email, 'password': user.password }}, function (success) {
-                $window.sessionStorage.token = success.token;
-                $window.sessionStorage.email = user.email;
-                $scope.email = user.email;
-                $scope.message = 'Successful login. Welcome!';
-                $scope.authenticated = true;
-                $location.path('/referral');
-                $scope.success = true;
-                $scope.failure = false;
+            Login.login({'user': {'email': user.email, 'password': user.password }},
+                function (success) {
+                    $window.sessionStorage.token = success.token;
+                    $window.sessionStorage.email = user.email;
+                    $scope.email = user.email;
+                    $scope.message = 'Successful login. Welcome!';
+                    $scope.authenticated = true;
+                    $location.path('/referral');
+                    $scope.success = true;
+                    $scope.failure = false;
+                },
+                function (failure) {
+                    delete $window.sessionStorage.token;
+                    delete $window.sessionStorage.email;
+                    $scope.message = 'Error: invalid username or password';
+                    $scope.authenticated = false;
 
-
-            }, function (failure) {
-                delete $window.sessionStorage.token;
-                delete $window.sessionStorage.email;
-                $scope.message = 'Error: invalid username or password';
-                $scope.authenticated = false;
-
-                $scope.success = false;
-                $scope.failure = true;
-            });
+                    $scope.success = false;
+                    $scope.failure = true;
+                });
         };
         $scope.logout = function () {
             Login.logout(function () {
@@ -40,11 +40,13 @@ dentalLinksControllers.controller('LoginController', ['$scope', '$window', '$loc
         };
     }]);
 
-dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 'Patient', 'Referral', function ($scope, Practice, Patient, Referral) {
+dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 'Patient', 'Referral', '$modal', function ($scope, Practice, Patient, Referral, $modal) {
 
     $scope.patients = Patient.query();
 
     $scope.practices = Practice.query();
+
+    $scope.model = {referral: {}, practice: {}};
 
     $scope.createReferral = function (model) {
 
@@ -62,7 +64,76 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
 
             });
 
+    };
+
+
+    $scope.patientDialog = function () {
+
+        var modalInstance = $modal.open({
+            templateUrl: 'partials/patient_form.html',
+            controller: 'PatientModalController'/*,
+            resolve: {
+                items: function () {
+                    return $scope.items;
+                }
+            }*/
+        });
+
+        modalInstance.result.then(function (patient) {
+            $scope.patients.push(patient);
+            $scope.model.referral.patient_id = patient.id;
+        });
+    };
+
+    $scope.practiceDialog = function(){
+        var modalInstance = $modal.open({
+            templateUrl: 'partials/practice_form.html',
+            controller: 'PracticeModalController'
+        });
+
+        modalInstance.result.then(function (practice_invite) {
+            $scope.practices.push(practice_invite);
+            $scope.model.practice.practice_id = practice_invite.id;
+        });
     }
+}]);
+
+dentalLinksControllers.controller('PatientModalController', [ '$scope', '$modalInstance', 'Patient', function ($scope, $modalInstance, Patient) {
+
+    /*$scope.patient = patient;*/
+
+    $scope.ok = function (patient) {
+        Patient.save({patient: patient},
+            function (success) {
+                $modalInstance.close(success);
+            },
+            function (failure) {
+                $scope.success = false;
+                $scope.failure = true;
+            });
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+
+
+dentalLinksControllers.controller('PracticeModalController', ['$scope', '$modalInstance', 'PracticeInvitation', function ($scope, $modalInstance, PracticeInvitation){
+    $scope.ok = function (practice_invite) {
+        PracticeInvitation.save({practice: practice_invite},
+            function (success) {
+                $modalInstance.close(success);
+            },
+            function (failure) {
+                $scope.success = false;
+                $scope.failure = true;
+            });
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
 }]);
 
 //not used now
@@ -110,7 +181,7 @@ dentalLinksControllers.controller('PasswordsController', ['$scope', '$routeParam
 dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeParams', 'Referral', function ($scope, $routeParams, Referral) {
     $scope.referral = Referral.get({id: $routeParams.referral_id});
     $scope.acceptReferral = function (referral) {
-        Referral.updateStatus({id: referral.id }, {status:'accepted'},
+        Referral.updateStatus({id: referral.id }, {status: 'accepted'},
             function (success) {
                 referral.status = 'accepted';
                 $scope.acceptSuccess = true;

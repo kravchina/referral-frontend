@@ -17,13 +17,12 @@ dentalLinksServices.factory('PracticeInvitation', ['$resource',
     }]);
 
 dentalLinksServices.factory('Patient', ['$resource', function ($resource) {
-    return $resource(host + '/patients');
+    return $resource(host + '/patients/:id');
 }]);
 
 dentalLinksServices.factory('Referral', ['$resource', function ($resource) {
     return $resource(host + '/referrals/:id', {id: '@id'}, {
         updateStatus: {method: 'PUT', url: host + '/referrals/:id/status'}
-
     });
 }]);
 

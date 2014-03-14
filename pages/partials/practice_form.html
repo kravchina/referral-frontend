@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <h3>Create Patient</h3>
+</div>
+<div class="modal-body">
+    <form>
+        <div class="field-group">
+            <div>
+                <label>
+                    Practice Name:
+                    <input type="text" ng-model="practice.practice_name" ng-required="invitePracticeVisible"/>
+                </label>
+            </div>
+            <div>
+                <label>
+                    Contact First Name:
+                    <input type="text" ng-model="practice.contact_first_name" ng-required="invitePracticeVisible"/>
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    Contact Last Name:
+                    <input type="text" ng-model="practice.contact_last_name" ng-required="invitePracticeVisible"/>
+                </label>
+            </div>
+            <div>
+                <label>
+                    Contact Email
+                    <input type="email" ng-model="practice.contact_email" ng-required="invitePracticeVisible" />
+                </label>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok(practice)">Save</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>
