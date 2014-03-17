@@ -1,218 +1,225 @@
 <form class="css-form" name="form" novalidate="novalidate">
-    <div>
-        <h2>Create Referral</h2>
-        <label>
-            Patient:
-            <select ng-disabled="patientFormVisible" ng-model="model.referral.patient_id"
-                    ng-options="p.id as p.first_name +' ' +  p.last_name for p in patients" ng-required="!patientFormVisible">
-                <option value="">-- Select patient --</option>
-            </select>
+<div>
+    <h2>Create Referral</h2>
+    <label>
+        Patient:
+        <select ng-disabled="patientFormVisible" ng-model="model.referral.patient_id"
+                ng-options="p.id as p.first_name +' ' +  p.last_name for p in patients"
+                ng-required="!patientFormVisible">
+            <option value="">-- Select patient --</option>
+        </select>
 
-        </label>
-        Or
-        <button class="btn" ng-click="patientDialog()">Create Patient</button>
-        <!--<button ng-click="patientFormVisible=!patientFormVisible">Create new patient</button>-->
+    </label>
+    Or
+    <button class="btn" ng-click="patientDialog()">Create Patient</button>
+    <!--<button ng-click="patientFormVisible=!patientFormVisible">Create new patient</button>-->
 
 
-        <!--<div ng-show="patientFormVisible" >
-            <h3>Create Patient</h3>
-            <div class="field-group">
-                <div>
-                    <label>
-                        First Name:
-                        <input ng-disabled="!patientFormVisible" type="text" ng-model="model.patient.first_name"  ng-required="patientFormVisible"/>
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Last Name:
-                        <input ng-disabled="!patientFormVisible" type="text" ng-model="model.patient.last_name" ng-required="patientFormVisible"/>
-                    </label>
-                </div>
-
-                <div>
-                    <label>
-                        Date of Birth:
-                        <input ng-disabled="!patientFormVisible" type="date" ng-model="model.patient.birthday" ng-required="patientFormVisible"/>
-                    </label>
-                </div>
-
-                <div>
-                    <label>
-                        Email
-                        <input ng-disabled="!patientFormVisible" type="email" ng-model="model.patient.email" ng-required="patientFormVisible"/>
-                    </label>
-                </div>
-
-                <div>
-                    <label>
-                        Phone:
-                        <input ng-disabled="!patientFormVisible" type="number" ng-model="model.patient.phone" ng-required="patientFormVisible" integer/>
-                    </label>
-                </div>
-
-            </div>
-        </div>-->
-
-    </div>
-
-    <div>
-        <label>
-            Select Destination Practice:
-            <select ng-disabled="invitePracticeVisible" ng-model="model.referral.dest_practice_id"
-                    ng-options="p.id as p.name for p in practices" ng-required="!invitePracticeVisible">
-                <option value="">-- Select practice --</option>
-            </select>
-        </label>
-        Or
-        <button class="btn" ng-click="practiceDialog()">Invite new practice</button>
-        <!--<button ng-click="invitePracticeVisible=!invitePracticeVisible">Invite new practice</button>-->
-    </div>
-
-    <!--<div ng-show="invitePracticeVisible">
-        <h3>Invite practice</h3>
-
+    <!--<div ng-show="patientFormVisible" >
+        <h3>Create Patient</h3>
         <div class="field-group">
             <div>
                 <label>
-                    Practice Name:
-                    <input ng-disabled="!invitePracticeVisible" type="text" ng-model="model.practice.practice_name" ng-required="invitePracticeVisible"/>
+                    First Name:
+                    <input ng-disabled="!patientFormVisible" type="text" ng-model="model.patient.first_name"  ng-required="patientFormVisible"/>
                 </label>
             </div>
             <div>
                 <label>
-                    Contact First Name:
-                    <input ng-disabled="!invitePracticeVisible" type="text" ng-model="model.practice.contact_first_name" ng-required="invitePracticeVisible"/>
+                    Last Name:
+                    <input ng-disabled="!patientFormVisible" type="text" ng-model="model.patient.last_name" ng-required="patientFormVisible"/>
                 </label>
             </div>
 
             <div>
                 <label>
-                    Contact Last Name:
-                    <input ng-disabled="!invitePracticeVisible" type="text" ng-model="model.practice.contact_last_name" ng-required="invitePracticeVisible"/>
+                    Date of Birth:
+                    <input ng-disabled="!patientFormVisible" type="date" ng-model="model.patient.birthday" ng-required="patientFormVisible"/>
                 </label>
             </div>
+
             <div>
                 <label>
-                    Contact Email
-                    <input ng-disabled="!invitePracticeVisible" type="email" ng-model="model.practice.contact_email" ng-required="invitePracticeVisible" />
+                    Email
+                    <input ng-disabled="!patientFormVisible" type="email" ng-model="model.patient.email" ng-required="patientFormVisible"/>
                 </label>
             </div>
+
+            <div>
+                <label>
+                    Phone:
+                    <input ng-disabled="!patientFormVisible" type="number" ng-model="model.patient.phone" ng-required="patientFormVisible" integer/>
+                </label>
+            </div>
+
         </div>
-    </div>
-    <div>
--->
+    </div>-->
 
+</div>
+
+<div>
+    <label>
+        Select Destination Practice:
+        <select ng-disabled="invitePracticeVisible" ng-model="model.referral.dest_practice_id"
+                ng-options="p.id as p.name for p in practices" ng-required="!invitePracticeVisible">
+            <option value="">-- Select practice --</option>
+        </select>
+    </label>
+    Or
+    <button class="btn" ng-click="practiceDialog()">Invite new practice</button>
+    <!--<button ng-click="invitePracticeVisible=!invitePracticeVisible">Invite new practice</button>-->
+</div>
+
+<!--<div ng-show="invitePracticeVisible">
+    <h3>Invite practice</h3>
+
+    <div class="field-group">
         <div>
             <label>
-                Referral Note:
-                <textarea ng-model="model.referral.memo" ng-required="true"></textarea>
+                Practice Name:
+                <input ng-disabled="!invitePracticeVisible" type="text" ng-model="model.practice.practice_name" ng-required="invitePracticeVisible"/>
+            </label>
+        </div>
+        <div>
+            <label>
+                Contact First Name:
+                <input ng-disabled="!invitePracticeVisible" type="text" ng-model="model.practice.contact_first_name" ng-required="invitePracticeVisible"/>
             </label>
         </div>
 
-    <div class="row">
-
-        <div class="col-md-3">
-
-            <h3>Select files</h3>
-
-            <div ng-show="uploader.isHTML5">
-                <!-- 3. ng-file-over | ng-file-over="className" -->
-                <!--<div class="well my-drop-zone" ng-file-over>
-                    Base drop zone
-                </div>-->
-
-                <!-- Example: ng-file-drop | ng-file-drop="options" -->
-                <div class="well my-drop-zone" ng-file-drop="{ url: '/foo' }" ng-file-over="another-file-over-class">
-                    Another drop zone with its own settings
-                </div>
-            </div>
-
-            <!-- 2. ng-file-select | ng-file-select="options" -->
-            <input ng-file-select type="file" multiple  />
-
+        <div>
+            <label>
+                Contact Last Name:
+                <input ng-disabled="!invitePracticeVisible" type="text" ng-model="model.practice.contact_last_name" ng-required="invitePracticeVisible"/>
+            </label>
         </div>
-
-        <div class="col-md-9" style="margin-bottom: 40px">
-            <h2>Uploads only images (with canvas preview)</h2>
-            <h3>The queue</h3>
-            <p>Queue length: {{ uploader.queue.length }}</p>
-
-            <table class="table">
-                <thead>
-                <tr>
-                    <th width="50%">Name</th>
-                    <th ng-show="uploader.isHTML5">Size</th>
-                    <th ng-show="uploader.isHTML5">Progress</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="item in uploader.queue">
-                    <td>
-                        <div><label for="img-comment-{{item.file.name}}"><strong>{{ item.file.name }}</strong></label></div>
-                        <!-- Image preview -->
-                        <!--auto height-->
-                        <!--<div ng-thumb="{ file: item.file, width: 100 }"></div>-->
-                        <!--auto width-->
-                        <div class="img-wrapper" ng-show="uploader.isHTML5" ng-thumb="{ file: item.file, height: 200 }"></div>
-                        <!--fixed width and height -->
-                        <!--<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>-->
-
-                        <textarea  id="img-comment-{{item.file.name}}" class="img-comment" ng-model="comment"></textarea>
-                    </td>
-                    <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                    <td ng-show="uploader.isHTML5">
-                        <div class="progress" style="margin-bottom: 0;">
-                            <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                        </div>
-                    </td>
-                    <td class="text-center">
-                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                    </td>
-                    <td nowrap>
-                        <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-                            <span class="glyphicon glyphicon-upload"></span> Upload
-                        </button>
-                        <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
-                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                            <span class="glyphicon glyphicon-trash"></span> Remove
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-            <div>
-                <p>
-                    Queue progress:
-                <div class="progress" style="">
-                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
-                </div>
-                </p>
-                <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
-                    <span class="glyphicon glyphicon-upload"></span> Upload all
-                </button>
-                <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
-                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-                </button>
-                <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
-                    <span class="glyphicon glyphicon-trash"></span> Remove all
-                </button>
-            </div>
-
+        <div>
+            <label>
+                Contact Email
+                <input ng-disabled="!invitePracticeVisible" type="email" ng-model="model.practice.contact_email" ng-required="invitePracticeVisible" />
+            </label>
         </div>
+    </div>
+</div>
+<div>
+-->
 
+<div>
+    <label>
+        Referral Note:
+        <textarea ng-model="model.referral.memo" ng-required="true"></textarea>
+    </label>
+</div>
+
+
+<div>
+
+    <h3>Select files</h3>
+
+    <div ng-show="uploader.isHTML5">
+        <!-- 3. ng-file-over | ng-file-over="className" -->
+        <!--<div class="well my-drop-zone" ng-file-over>
+            Base drop zone
+        </div>-->
+
+        <!-- Example: ng-file-drop | ng-file-drop="options" -->
+        <div class="well my-drop-zone" ng-file-drop ng-file-over="another-file-over-class">
+            Drop images here to attach them to your referral.
+        </div>
     </div>
 
-        <button ng-click="createReferral(model)" ng-disabled="form.$invalid">Sign and Send</button>
-        <div class="success" ng-show="success">Referral was created successfully</div>
-        <div class="error" ng-show="failure">There was an error during referral creation</div>
+    <!-- 2. ng-file-select | ng-file-select="options" -->
+    <input ng-file-select type="file" class="btn" multiple/>
+
+</div>
+
+<div>
+    <h2>Image Attachments</h2>
+
+    <h3>The queue</h3>
+
+    <p>Queue length: {{ uploader.queue.length }}</p>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th width="50%">Name</th>
+            <th ng-show="uploader.isHTML5">Size</th>
+            <th ng-show="uploader.isHTML5">Progress</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in uploader.queue">
+            <td>
+                <div><label for="img-comment-{{item.file.name}}"><strong>{{ item.file.name }}</strong></label></div>
+                <!-- Image preview -->
+                <!--auto height-->
+                <!--<div ng-thumb="{ file: item.file, width: 100 }"></div>-->
+                <!--auto width-->
+                <div class="img-wrapper" ng-show="uploader.isHTML5"
+                     ng-thumb="{ file: item.file, height: 200 }"></div>
+                <!--fixed width and height -->
+                <!--<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>-->
+
+                <textarea id="img-comment-{{item.file.name}}" class="img-comment" ng-model="comment"></textarea>
+            </td>
+            <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+            <td ng-show="uploader.isHTML5">
+                <div class="progress" style="margin-bottom: 0;">
+                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                </div>
+            </td>
+            <td class="text-center">
+                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+            </td>
+            <td nowrap>
+                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()"
+                        ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                    <span class="glyphicon glyphicon-upload"></span> Upload
+                </button>
+                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()"
+                        ng-disabled="!item.isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                    <span class="glyphicon glyphicon-trash"></span> Remove
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <div>
+            Queue progress:
+
+            <div class="progress" style="">
+                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()"
+                ng-disabled="!uploader.getNotUploadedItems().length">
+            <span class="glyphicon glyphicon-upload"></span> Upload all
+        </button>
+        <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()"
+                ng-disabled="!uploader.isUploading">
+            <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+        </button>
+        <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()"
+                ng-disabled="!uploader.queue.length">
+            <span class="glyphicon glyphicon-trash"></span> Remove all
+        </button>
     </div>
+
+</div>
+
+
+<button class="btn send" ng-click="createReferral(model)" ng-disabled="form.$invalid">Sign and Send</button>
+<div class="success" ng-show="success">Referral was created successfully</div>
+<div class="error" ng-show="failure">There was an error during referral creation</div>
 
 </form>

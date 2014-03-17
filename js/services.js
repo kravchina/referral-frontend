@@ -39,3 +39,9 @@ dentalLinksServices.factory('Password', ['$resource', function ($resource) {
         change: {method: 'PUT'}
     })
 }]);
+
+dentalLinksServices.factory('S3Bucket', ['$resource', function ($resource){
+    return $resource(host + '/s3', {}, {
+        getCredentials: {method: 'GET'}
+    });
+}]);
