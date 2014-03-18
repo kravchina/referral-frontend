@@ -99,81 +99,81 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
 
     $scope.model.attachments = [];
 
-    S3Bucket.getCredentials(function (success){
+    S3Bucket.getCredentials(function (success) {
         var bucket_path = 'uploads/';
         var uploader = $scope.uploader = $fileUploader.create({
-             scope: $scope,
-             url: 'https://mezerny.s3.amazonaws.com',
-             formData: [
-                 { key: bucket_path + '${filename}' },
-                 {AWSAccessKeyId:'AKIAILBX2GF4ZKEI3IWA'},
-                 {acl: 'public-read'},
-                 {success_action_status:'201'},
-                 {policy: success.s3_policy},
-                 {signature: success.s3_signature}
-             ]
-         });
+            scope: $scope,
+            url: 'https://mezerny.s3.amazonaws.com',
+            formData: [
+                { key: bucket_path + '${filename}' },
+                {AWSAccessKeyId: success.s3_access_key_id},
+                {acl: 'public-read'},
+                {success_action_status: '201'},
+                {policy: success.s3_policy},
+                {signature: success.s3_signature}
+            ]
+        });
 
-         // ADDING FILTERS
+        // ADDING FILTERS
 
-         // Images only
-         uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
-             var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
-             type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
-             return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-         });
+        // Images only
+        uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
+            var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
+            type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
+            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+        });
 
-         // REGISTER HANDLERS
+        // REGISTER HANDLERS
 
-         uploader.bind('afteraddingfile', function (event, item) {
-             console.info('After adding a file', item);
-         });
+        uploader.bind('afteraddingfile', function (event, item) {
+            console.info('After adding a file', item);
+        });
 
-         uploader.bind('whenaddingfilefailed', function (event, item) {
-             console.info('When adding a file failed', item);
-         });
+        uploader.bind('whenaddingfilefailed', function (event, item) {
+            console.info('When adding a file failed', item);
+        });
 
-         uploader.bind('afteraddingall', function (event, items) {
-             console.info('After adding all files', items);
-         });
+        uploader.bind('afteraddingall', function (event, items) {
+            console.info('After adding all files', items);
+        });
 
-         uploader.bind('beforeupload', function (event, item) {
-             console.debug('FORM DATA:', uploader.formData);
-             console.debug('SCOPE DATA:', $scope.s3Credentials);
-             console.info('Before upload', item);
-         });
+        uploader.bind('beforeupload', function (event, item) {
+            console.debug('FORM DATA:', uploader.formData);
+            console.debug('SCOPE DATA:', $scope.s3Credentials);
+            console.info('Before upload', item);
+        });
 
-         uploader.bind('progress', function (event, item, progress) {
-             console.info('Progress: ' + progress, item);
-         });
+        uploader.bind('progress', function (event, item, progress) {
+            console.info('Progress: ' + progress, item);
+        });
 
-         uploader.bind('success', function (event, xhr, item, response) {
-             console.info('Success', xhr, item, response);
-             $scope.model.attachments.push(item.url + '/' + bucket_path + item.file.name);
+        uploader.bind('success', function (event, xhr, item, response) {
+            console.info('Success', xhr, item, response);
+            $scope.model.attachments.push({url: item.url + '/' + bucket_path + item.file.name, notes: item.notes});
 
-         });
+        });
 
-         uploader.bind('cancel', function (event, xhr, item) {
-             console.info('Cancel', xhr, item);
-         });
+        uploader.bind('cancel', function (event, xhr, item) {
+            console.info('Cancel', xhr, item);
+        });
 
-         uploader.bind('error', function (event, xhr, item, response) {
-             console.error('Error', xhr, item, response);
-         });
+        uploader.bind('error', function (event, xhr, item, response) {
+            console.error('Error', xhr, item, response);
+        });
 
-         uploader.bind('complete', function (event, xhr, item, response) {
-             console.info('Complete', xhr, item, response);
-         });
+        uploader.bind('complete', function (event, xhr, item, response) {
+            console.info('Complete', xhr, item, response);
+        });
 
-         uploader.bind('progressall', function (event, progress) {
-             console.info('Total progress: ' + progress);
-         });
+        uploader.bind('progressall', function (event, progress) {
+            console.info('Total progress: ' + progress);
+        });
 
-         uploader.bind('completeall', function (event, items) {
-             console.info('Complete all', items);
-         });
+        uploader.bind('completeall', function (event, items) {
+            console.info('Complete all', items);
+        });
 
-     });
+    });
 
 
 }]);

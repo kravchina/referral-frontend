@@ -12,48 +12,6 @@
     </label>
     Or
     <button class="btn" ng-click="patientDialog()">Create Patient</button>
-    <!--<button ng-click="patientFormVisible=!patientFormVisible">Create new patient</button>-->
-
-
-    <!--<div ng-show="patientFormVisible" >
-        <h3>Create Patient</h3>
-        <div class="field-group">
-            <div>
-                <label>
-                    First Name:
-                    <input ng-disabled="!patientFormVisible" type="text" ng-model="model.patient.first_name"  ng-required="patientFormVisible"/>
-                </label>
-            </div>
-            <div>
-                <label>
-                    Last Name:
-                    <input ng-disabled="!patientFormVisible" type="text" ng-model="model.patient.last_name" ng-required="patientFormVisible"/>
-                </label>
-            </div>
-
-            <div>
-                <label>
-                    Date of Birth:
-                    <input ng-disabled="!patientFormVisible" type="date" ng-model="model.patient.birthday" ng-required="patientFormVisible"/>
-                </label>
-            </div>
-
-            <div>
-                <label>
-                    Email
-                    <input ng-disabled="!patientFormVisible" type="email" ng-model="model.patient.email" ng-required="patientFormVisible"/>
-                </label>
-            </div>
-
-            <div>
-                <label>
-                    Phone:
-                    <input ng-disabled="!patientFormVisible" type="number" ng-model="model.patient.phone" ng-required="patientFormVisible" integer/>
-                </label>
-            </div>
-
-        </div>
-    </div>-->
 
 </div>
 
@@ -67,42 +25,8 @@
     </label>
     Or
     <button class="btn" ng-click="practiceDialog()">Invite new practice</button>
-    <!--<button ng-click="invitePracticeVisible=!invitePracticeVisible">Invite new practice</button>-->
 </div>
 
-<!--<div ng-show="invitePracticeVisible">
-    <h3>Invite practice</h3>
-
-    <div class="field-group">
-        <div>
-            <label>
-                Practice Name:
-                <input ng-disabled="!invitePracticeVisible" type="text" ng-model="model.practice.practice_name" ng-required="invitePracticeVisible"/>
-            </label>
-        </div>
-        <div>
-            <label>
-                Contact First Name:
-                <input ng-disabled="!invitePracticeVisible" type="text" ng-model="model.practice.contact_first_name" ng-required="invitePracticeVisible"/>
-            </label>
-        </div>
-
-        <div>
-            <label>
-                Contact Last Name:
-                <input ng-disabled="!invitePracticeVisible" type="text" ng-model="model.practice.contact_last_name" ng-required="invitePracticeVisible"/>
-            </label>
-        </div>
-        <div>
-            <label>
-                Contact Email
-                <input ng-disabled="!invitePracticeVisible" type="email" ng-model="model.practice.contact_email" ng-required="invitePracticeVisible" />
-            </label>
-        </div>
-    </div>
-</div>
-<div>
--->
 
 <div>
     <label>
@@ -163,7 +87,7 @@
                 <!--fixed width and height -->
                 <!--<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>-->
 
-                <textarea id="img-comment-{{item.file.name}}" class="img-comment" ng-model="comment"></textarea>
+                <textarea id="img-comment-{{item.file.name}}" class="img-comment" ng-model="item.notes"></textarea>
             </td>
             <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
             <td ng-show="uploader.isHTML5">
