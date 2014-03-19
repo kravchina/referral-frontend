@@ -13,6 +13,25 @@
         Memo: {{referral.memo}}
         </div>
         <div>Status: {{referral.status}}</div>
+        <div>
+            Attachments:
+            <div ng-repeat="attachment in referral.attachments">
+                <a ng-href="{{attachment.filename}}" target="_blank"><img ng-src="{{attachment.filename}}" width="250px"/></a>
+                {{attachment.notes}}
+            </div>
+        </div>
+        <div>
+            Notes:
+            <ul>
+                <li ng-repeat="note in referral.notes">
+                    {{note.message}}
+                    <!--[<a href ng-click="notes.splice($index, 1)">X</a>]-->
+                </li>
+            </ul>
+            <textarea ng-model="newNote"></textarea>
+            <button class="btn" ng-click="submitNote(newNote)">Add note</button>
+
+        </div>
 
         <button ng-click="acceptReferral(referral)" ng-disabled="referral.status != 'sent'">Accept Referral</button>
         <button ng-click="rejectReferral(referral)" ng-disabled="referral.status != 'sent'">Reject Referral</button>

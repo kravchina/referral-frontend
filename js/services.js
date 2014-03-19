@@ -45,3 +45,7 @@ dentalLinksServices.factory('S3Bucket', ['$resource', function ($resource){
         getCredentials: {method: 'GET'}
     });
 }]);
+
+dentalLinksServices.factory('Note', ['$resource', function($resource){
+     return $resource(host + '/notes');
+}]) ;

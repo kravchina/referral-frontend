@@ -33,7 +33,7 @@ dentalLinksControllers.controller('LoginController', ['$scope', '$window', '$loc
                     $scope.isAuthenticated = false;
                     delete $window.sessionStorage.token;
                     delete $window.sessionStorage.email;
-                    $location.path('/login');
+                    $location.path('/sign_in');
                 }
             );
 
@@ -216,50 +216,16 @@ dentalLinksControllers.controller('PracticeModalController', ['$scope', '$modalI
     };
 }]);
 
-//not used now
-dentalLinksControllers.controller('UsersController', ['$scope', 'Practice', function ($scope, Practice) {
-    $scope.roles = [
-        {'mask': 0, 'name': 'admin'},
-        {'mask': 2, 'name': 'doctor'},
-        {'mask': 4, 'name': 'aux'}
-    ];
-    $scope.practices = Practice.query();
-}]);
-
-dentalLinksControllers.controller('PasswordsController', ['$scope', '$routeParams', 'Password', function ($scope, $routeParams, Password) {
-    $scope.requestPasswordReset = function (user) {
-        Password.reset({'user': user},
-            function (result) {
-                $scope.success = true;
-                $scope.failure = false;
-            },
-            function (result) {
-                $scope.failure = true;
-                $scope.success = false;
-
-            })
-    };
-    $scope.initial = true;
-    $scope.success = false;
-    $scope.changePassword = function (model) {
-
-
-        model.reset_password_token = $routeParams.reset_password_token;
-        Password.change({'user': model, 'format': 'json'},
-            function (success_result) {
-                $scope.success = true;
-                $scope.failure = false;
-            },
-            function (error_result) {
-                $scope.success = false;
-                $scope.failure = true;
-            });
-    };
-}]);
-
-
-dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeParams', 'Referral', function ($scope, $routeParams, Referral) {
+dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeParams', 'Referral', 'Note', function ($scope, $routeParams, Referral, Note) {
     $scope.referral = Referral.get({id: $routeParams.referral_id});
+
+    $scope.submitNote = function (note) {
+        Note.save({note: {message: note, referral_id: $scope.referral.id}}, function(success){
+            $scope.newNote = '';
+            $scope.referral.notes.push({message: note});
+        });
+    };
+
     $scope.acceptReferral = function (referral) {
         Referral.updateStatus({id: referral.id }, {status: 'accepted'},
             function (success) {
@@ -301,6 +267,47 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeP
                 $scope.failure = true;
             });
 
+    };
+}]);
+
+//not used now
+dentalLinksControllers.controller('UsersController', ['$scope', 'Practice', function ($scope, Practice) {
+    $scope.roles = [
+        {'mask': 0, 'name': 'admin'},
+        {'mask': 2, 'name': 'doctor'},
+        {'mask': 4, 'name': 'aux'}
+    ];
+    $scope.practices = Practice.query();
+}]);
+
+
+dentalLinksControllers.controller('PasswordsController', ['$scope', '$routeParams', 'Password', function ($scope, $routeParams, Password) {
+    $scope.requestPasswordReset = function (user) {
+        Password.reset({'user': user},
+            function (result) {
+                $scope.success = true;
+                $scope.failure = false;
+            },
+            function (result) {
+                $scope.failure = true;
+                $scope.success = false;
+            })
+    };
+    $scope.initial = true;
+    $scope.success = false;
+    $scope.changePassword = function (model) {
+
+
+        model.reset_password_token = $routeParams.reset_password_token;
+        Password.change({'user': model, 'format': 'json'},
+            function (success_result) {
+                $scope.success = true;
+                $scope.failure = false;
+            },
+            function (error_result) {
+                $scope.success = false;
+                $scope.failure = true;
+            });
     };
 }]);
 
