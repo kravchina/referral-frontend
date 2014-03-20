@@ -216,11 +216,61 @@ dentalLinksControllers.controller('PracticeModalController', ['$scope', '$modalI
     };
 }]);
 
-dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeParams', 'Referral', 'Note', function ($scope, $routeParams, Referral, Note) {
+dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeParams', '$fileUploader', 'Referral', 'Note', 'S3Bucket', 'Attachment', '$sce', function ($scope, $routeParams, $fileUploader, Referral, Note, S3Bucket, Attachment, $sce) {
     $scope.referral = Referral.get({id: $routeParams.referral_id});
 
+    var pdf = new jsPDF('p','in','letter')
+        , sizes = [12, 16, 20]
+        , fonts = [['Times','Roman'],['Helvetica',''], ['Times','Italic']]
+        , font, size, lines
+        , margin = 0.5 // inches on a 8.5 x 11 inch sheet.
+        , verticalOffset = margin
+        , loremipsum = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id eros turpis. Vivamus tempor urna vitae sapien mollis molestie. Vestibulum in lectus non enim bibendum laoreet at at libero. Etiam malesuada erat sed sem blandit in varius orci porttitor. Sed at sapien urna. Fusce augue ipsum, molestie et adipiscing at, varius quis enim. Morbi sed magna est, vel vestibulum urna. Sed tempor ipsum vel mi pretium at elementum urna tempor. Nulla faucibus consectetur felis, elementum venenatis mi mollis gravida. Aliquam mi ante, accumsan eu tempus vitae, viverra quis justo.\n\nProin feugiat augue in augue rhoncus eu cursus tellus laoreet. Pellentesque eu sapien at diam porttitor venenatis nec vitae velit. Donec ultrices volutpat lectus eget vehicula. Nam eu erat mi, in pulvinar eros. Mauris viverra porta orci, et vehicula lectus sagittis id. Nullam at magna vitae nunc fringilla posuere. Duis volutpat malesuada ornare. Nulla in eros metus. Vivamus a posuere libero.';
+
+    // Margins:
+    pdf.setDrawColor(0, 255, 0)
+        .setLineWidth(1/72)
+        .line(margin, margin, margin, 11 - margin)
+        .line(8.5 - margin, margin, 8.5-margin, 11-margin)
+
+    // the 3 blocks of text
+    for (var i in fonts){
+        if (fonts.hasOwnProperty(i)) {
+            font = fonts[i];
+            size = sizes[i] ;
+
+            lines = pdf.setFont(font[0], font[1])
+                .setFontSize(size)
+                .splitTextToSize(loremipsum, 7.5) ;
+            // Don't want to preset font, size to calculate the lines?
+            // .splitTextToSize(text, maxsize, options)
+            // allows you to pass an object with any of the following:
+            // {
+            // 	'fontSize': 12
+            // 	, 'fontStyle': 'Italic'
+            // 	, 'fontName': 'Times'
+            // }
+            // Without these, .splitTextToSize will use current / default
+            // font Family, Style, Size.
+            console.log(lines);
+            pdf.text(0.5, verticalOffset + size / 72, lines);
+
+            verticalOffset += (lines.length + 0.5) * size / 72
+        }
+    }
+
+    var string = pdf.output('datauristring');
+
+    $scope.pdfSrc =  $sce.trustAsResourceUrl(string);
+
+
+
+
+
+
+
     $scope.submitNote = function (note) {
-        Note.save({note: {message: note, referral_id: $scope.referral.id}}, function(success){
+        Note.save({note: {message: note, referral_id: $scope.referral.id}}, function (success) {
             $scope.newNote = '';
             $scope.referral.notes.push({message: note});
         });
@@ -268,6 +318,87 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeP
             });
 
     };
+
+    S3Bucket.getCredentials(function (success) {
+        var bucket_path = 'uploads/';
+        var uploader = $scope.uploader = $fileUploader.create({
+            scope: $scope,
+            url: 'https://mezerny.s3.amazonaws.com',
+            formData: [
+                { key: bucket_path + '${filename}' },
+                {AWSAccessKeyId: success.s3_access_key_id},
+                {acl: 'authenticated-read'},
+                {success_action_status: '200'},
+                {policy: success.s3_policy},
+                {signature: success.s3_signature}
+            ]
+        });
+
+        // ADDING FILTERS
+
+        // Images only
+        uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
+            var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
+            type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
+            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+        });
+
+        // REGISTER HANDLERS
+
+        uploader.bind('afteraddingfile', function (event, item) {
+            console.info('After adding a file', item);
+        });
+
+        uploader.bind('whenaddingfilefailed', function (event, item) {
+            console.info('When adding a file failed', item);
+        });
+
+        uploader.bind('afteraddingall', function (event, items) {
+            console.info('After adding all files', items);
+        });
+
+        uploader.bind('beforeupload', function (event, item) {
+            console.debug('FORM DATA:', uploader.formData);
+            console.debug('SCOPE DATA:', $scope.s3Credentials);
+            console.info('Before upload', item);
+        });
+
+        uploader.bind('progress', function (event, item, progress) {
+            console.info('Progress: ' + progress, item);
+        });
+
+        uploader.bind('success', function (event, xhr, item, response) {
+            console.info('Success', xhr, item, response);
+            var attachment = {filename: item.url + '/' + bucket_path + item.file.name, notes: item.notes, referral_id: $scope.referral.id};
+            Attachment.save({attachment: attachment}, function (success) {
+                $scope.referral.attachments.push(attachment);
+            });
+
+        });
+
+        uploader.bind('cancel', function (event, xhr, item) {
+            console.info('Cancel', xhr, item);
+        });
+
+        uploader.bind('error', function (event, xhr, item, response) {
+            console.error('Error', xhr, item, response);
+        });
+
+        uploader.bind('complete', function (event, xhr, item, response) {
+            console.info('Complete', xhr, item, response);
+        });
+
+        uploader.bind('progressall', function (event, progress) {
+            console.info('Total progress: ' + progress);
+        });
+
+        uploader.bind('completeall', function (event, items) {
+            console.info('Complete all', items);
+        });
+
+    });
+
+
 }]);
 
 //not used now
@@ -311,3 +442,6 @@ dentalLinksControllers.controller('PasswordsController', ['$scope', '$routeParam
     };
 }]);
 
+dentalLinksControllers.controller('PDFController', ['$scope', '$sce', function ($scope, $sce) {
+
+}]);

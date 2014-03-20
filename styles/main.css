@@ -64,3 +64,10 @@ canvas {
 .send{
     margin-top: 10px;
 }
+
+.left-col{
+    float:left;
+}
+.top{
+    vertical-align: top;
+}
