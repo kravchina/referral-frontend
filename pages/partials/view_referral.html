@@ -20,8 +20,10 @@
                 <div>
                     Attachments:
                     <div ng-repeat="attachment in referral.attachments">
-                        <a ng-href="{{attachment.filename}}" target="_blank"><img ng-src="{{attachment.filename}}"
-                                                                                  width="250px"/></a>
+                        <a ng-href="{{attachment.filename}}" target="_blank">
+                            <!--<canvas photo-canvas img-src="{{attachment.filename}}" width="250"></canvas>-->
+                            <img pdf-photos total-images="{{referral.attachments.length}}" crossorigin="anonymous"  ng-src="{{attachment.filename}}" width="250"/>
+                        </a>
                         {{attachment.notes}}
                     </div>
                 </div>
@@ -42,7 +44,7 @@
                 <div>
                     <p>PDF</p>
 
-                    <iframe frameborder="0" width="500" height="400" ng-src="{{pdfSrc}}"></iframe>
+                    <iframe id="pdf" frameborder="0" width="500" height="650" ></iframe>
                 </div>
             </td>
         </tr>

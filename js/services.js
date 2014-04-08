@@ -54,3 +54,60 @@ dentalLinksServices.factory('Note', ['$resource', function ($resource) {
 dentalLinksServices.factory('Attachment', ['$resource', function ($resource) {
     return $resource(host + '/attachments');
 }]);
+
+dentalLinksServices.factory('PDF', [function () {
+    var pdf;
+    var totalImages;
+    var processedImages;
+    var font =
+        ['Times', 'Roman'];
+    var size = 16;
+    var lastImagePosition = {
+        x: 10, y: 10
+    };
+    var lastParagraphPosition = {
+        x: 10, y:10
+    };
+    return {
+        create: function () {
+            pdf = new jsPDF();
+            return pdf;
+        },
+        addParagraph: function (text) {
+            pdf = pdf || new jsPDF();
+            pdf.text(lastParagraphPosition.x, lastParagraphPosition.y, text);
+            lastParagraphPosition.y+= 20;
+            return pdf;
+        },
+        addImage: function (index, image, text) {
+            pdf = pdf || new jsPDF();
+            pdf.addImage(image, 'JPEG', lastImagePosition.x, lastImagePosition.y + (50 * index));
+            //lastImagePosition.y += 50;
+            processedImages = processedImages || 0;
+            processedImages++;
+            return pdf;
+        },
+        getEmbeddableString: function () {
+            return pdf.output('datauristring');
+        },
+        setTotalImages: function(number){
+            totalImages = number;
+        },
+        imagesReady: function(){
+            return totalImages == processedImages;
+        }
+    }
+}]);
+
+dentalLinksServices.factory('ImageService', [function () {
+    var images = [];
+    return {
+        getImages: function () {
+            return images;
+        },
+        addImage: function(image, index){
+            images.splice(index, 0, image);
+        }
+
+    }
+}]);
