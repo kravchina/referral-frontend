@@ -57,67 +57,60 @@ dentalLinksServices.factory('Attachment', ['$resource', function ($resource) {
 
 dentalLinksServices.factory('PDF', [function () {
     var pdf;
-    var totalImages;
-    var processedImages;
+    var paragraphs = [];
+    var images = [];
     var font =
         ['Times', 'Roman'];
     var size = 16;
-    var lastImagePosition = {
+    var imageStart = {
+        x: 10, y: 60
+    };
+    var paragraphStart = {
         x: 10, y: 10
     };
-    var lastParagraphPosition = {
-        x: 10, y:10
+    var caret = 10;
+    var buildPdf = function () {
+        var pdf = new jsPDF();
+        for (var i = 0; i < paragraphs.length; i++) {
+            caret = paragraphStart.y + i * 8;
+            pdf.text(paragraphStart.x, caret, paragraphs[i]);
+        }
+        caret += 10;
+        for (var j = 0; j < images.length; j++) {
+            var image = images[j].image;
+            var note = images[j].note;
+            var aspectRatio = image.width / image.height;
+            if (caret + (190 / aspectRatio) > 287 /*end of the A4 paper including margin 10mm*/) {
+                pdf.addPage();
+                caret = 10;
+            }
+            pdf.addImage(image, 'JPEG', imageStart.x, caret, 190, 190 / aspectRatio);
+            caret += 190 / aspectRatio;
+            if (note) {
+                caret += 5;
+                pdf.text(paragraphStart.x, caret, note);
+            }
+            caret += 10;
+
+        }
+        return pdf;
+
     };
     return {
-        create: function () {
-            pdf = new jsPDF();
-            return pdf;
-        },
         addParagraph: function (text) {
-            pdf = pdf || new jsPDF();
-            pdf.text(lastParagraphPosition.x, lastParagraphPosition.y, text);
-            lastParagraphPosition.y+= 20;
-            return pdf;
+            paragraphs.push(text);
         },
         addImage: function (index, image, text) {
-            pdf = pdf || new jsPDF();
-            var aspectRatio = image.width/image.height;
-            if(lastImagePosition.y + (190/aspectRatio * index) + 190/aspectRatio > 287 /*end of the A4 paper including margin 10mm*/){
-                pdf.addPage();
-                pdf.addImage(image, 'JPEG', lastImagePosition.x, lastImagePosition.y, 190, 190/aspectRatio);
-
+            while(index >= images.length){
+                images[images.length] = null;
             }
-            pdf.addImage(image, 'JPEG', lastImagePosition.x, lastImagePosition.y + (190/aspectRatio * index), 190, 190/aspectRatio);
-            //lastImagePosition.y += 50;
-            processedImages = processedImages || 0;
-            processedImages++;
-            return pdf;
+            images.splice(index, 1, {image: image, note: text});
         },
         getEmbeddableString: function () {
-            return pdf.output('datauristring');
+            return buildPdf().output('datauristring');
         },
-        setTotalImages: function(number){
-            totalImages = number;
-        },
-        imagesReady: function(){
-            return totalImages == processedImages;
-        },
-        save: function(filename){
-            pdf.save(filename);
+        save: function (filename) {
+            buildPdf().save(filename);
         }
-
-    }
-}]);
-
-dentalLinksServices.factory('ImageService', [function () {
-    var images = [];
-    return {
-        getImages: function () {
-            return images;
-        },
-        addImage: function(image, index){
-            images.splice(index, 0, image);
-        }
-
     }
 }]);

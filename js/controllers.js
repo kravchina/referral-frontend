@@ -216,149 +216,153 @@ dentalLinksControllers.controller('PracticeModalController', ['$scope', '$modalI
     };
 }]);
 
-dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeParams', '$fileUploader', '$timeout','ImageService', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$sce', function ($scope, $routeParams, $fileUploader, $timeout, ImageService, Referral, PDF, Note, S3Bucket, Attachment, $sce) {
+dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeParams', '$fileUploader', '$timeout', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$sce', function ($scope, $routeParams, $fileUploader, $timeout, Referral, PDF, Note, S3Bucket, Attachment, $sce) {
     $scope.referral = Referral.get({id: $routeParams.referral_id});
 
     $scope.referral.$promise.then(function (data) {
-        var dataUrls=[];
-        PDF.create();
-        PDF.addParagraph("This is a paragraph");
-        PDF.addParagraph("This is another paragraph");
 
-});
+        PDF.addParagraph('Patient: ' + data.patient.first_name + ' ' + data.patient.last_name);
+        PDF.addParagraph('Original practice: ' + data.orig_practice.name);
+        PDF.addParagraph('Original practice description: ' + data.orig_practice.description);
+        PDF.addParagraph('Memo: ' + data.memo);
+        PDF.addParagraph('Referral status: ' + data.status);
+        PDF.addParagraph('Attachments: ');
 
-    $scope.savePdf = function(){
+
+    });
+
+    $scope.savePdf = function () {
         PDF.save('referral.pdf')
     };
 
-$scope.submitNote = function (note) {
-    Note.save({note: {message: note, referral_id: $scope.referral.id}}, function (success) {
-        $scope.newNote = '';
-        $scope.referral.notes.push({message: note});
-    });
-};
+    $scope.submitNote = function (note) {
+        Note.save({note: {message: note, referral_id: $scope.referral.id}}, function (success) {
+            $scope.newNote = '';
+            $scope.referral.notes.push({message: note});
+        });
+    };
 
-$scope.acceptReferral = function (referral) {
-    Referral.updateStatus({id: referral.id }, {status: 'accepted'},
-        function (success) {
-            referral.status = 'accepted';
-            $scope.acceptSuccess = true;
-            $scope.failure = false;
-        },
-        function (failure) {
-            $scope.acceptSuccess = false;
-            $scope.failure = true;
+    $scope.acceptReferral = function (referral) {
+        Referral.updateStatus({id: referral.id }, {status: 'accepted'},
+            function (success) {
+                referral.status = 'accepted';
+                $scope.acceptSuccess = true;
+                $scope.failure = false;
+            },
+            function (failure) {
+                $scope.acceptSuccess = false;
+                $scope.failure = true;
+            });
+
+    };
+
+    $scope.rejectReferral = function (referral) {
+        Referral.updateStatus({id: referral.id}, {status: 'rejected'},
+            function (success) {
+                referral.status = 'rejected';
+                $scope.acceptSuccess = true;
+                $scope.failure = false;
+
+            },
+            function (failure) {
+                $scope.acceptSuccess = false;
+                $scope.failure = true;
+
+            });
+    };
+
+    $scope.completeReferral = function (referral) {
+        Referral.updateStatus({id: referral.id }, {status: 'completed'},
+            function (success) {
+                referral.status = 'completed';
+                $scope.completeSuccess = true;
+                $scope.failure = false;
+            },
+            function (failure) {
+                $scope.completeSuccess = false;
+                $scope.failure = true;
+            });
+
+    };
+
+    S3Bucket.getCredentials(function (success) {
+        var bucket_path = 'uploads/';
+        var uploader = $scope.uploader = $fileUploader.create({
+            scope: $scope,
+            url: 'https://mezerny.s3.amazonaws.com',
+            formData: [
+                { key: bucket_path + '${filename}' },
+                {AWSAccessKeyId: success.s3_access_key_id},
+                {acl: 'authenticated-read'},
+                {success_action_status: '200'},
+                {policy: success.s3_policy},
+                {signature: success.s3_signature}
+            ]
         });
 
-};
+        // ADDING FILTERS
 
-$scope.rejectReferral = function (referral) {
-    Referral.updateStatus({id: referral.id}, {status: 'rejected'},
-        function (success) {
-            referral.status = 'rejected';
-            $scope.acceptSuccess = true;
-            $scope.failure = false;
-
-        },
-        function (failure) {
-            $scope.acceptSuccess = false;
-            $scope.failure = true;
-
-        });
-};
-
-$scope.completeReferral = function (referral) {
-    Referral.updateStatus({id: referral.id }, {status: 'completed'},
-        function (success) {
-            referral.status = 'completed';
-            $scope.completeSuccess = true;
-            $scope.failure = false;
-        },
-        function (failure) {
-            $scope.completeSuccess = false;
-            $scope.failure = true;
+        // Images only
+        uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
+            var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
+            type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
+            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
         });
 
-};
+        // REGISTER HANDLERS
 
-S3Bucket.getCredentials(function (success) {
-    var bucket_path = 'uploads/';
-    var uploader = $scope.uploader = $fileUploader.create({
-        scope: $scope,
-        url: 'https://mezerny.s3.amazonaws.com',
-        formData: [
-            { key: bucket_path + '${filename}' },
-            {AWSAccessKeyId: success.s3_access_key_id},
-            {acl: 'authenticated-read'},
-            {success_action_status: '200'},
-            {policy: success.s3_policy},
-            {signature: success.s3_signature}
-        ]
-    });
+        uploader.bind('afteraddingfile', function (event, item) {
+            console.info('After adding a file', item);
+        });
 
-    // ADDING FILTERS
+        uploader.bind('whenaddingfilefailed', function (event, item) {
+            console.info('When adding a file failed', item);
+        });
 
-    // Images only
-    uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
-        var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
-        type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
-        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-    });
+        uploader.bind('afteraddingall', function (event, items) {
+            console.info('After adding all files', items);
+        });
 
-    // REGISTER HANDLERS
+        uploader.bind('beforeupload', function (event, item) {
+            console.debug('FORM DATA:', uploader.formData);
+            console.debug('SCOPE DATA:', $scope.s3Credentials);
+            console.info('Before upload', item);
+        });
 
-    uploader.bind('afteraddingfile', function (event, item) {
-        console.info('After adding a file', item);
-    });
+        uploader.bind('progress', function (event, item, progress) {
+            console.info('Progress: ' + progress, item);
+        });
 
-    uploader.bind('whenaddingfilefailed', function (event, item) {
-        console.info('When adding a file failed', item);
-    });
+        uploader.bind('success', function (event, xhr, item, response) {
+            console.info('Success', xhr, item, response);
+            var attachment = {filename: item.url + '/' + bucket_path + item.file.name, notes: item.notes, referral_id: $scope.referral.id};
+            Attachment.save({attachment: attachment}, function (success) {
+                $scope.referral.attachments.push(attachment);
+            });
 
-    uploader.bind('afteraddingall', function (event, items) {
-        console.info('After adding all files', items);
-    });
+        });
 
-    uploader.bind('beforeupload', function (event, item) {
-        console.debug('FORM DATA:', uploader.formData);
-        console.debug('SCOPE DATA:', $scope.s3Credentials);
-        console.info('Before upload', item);
-    });
+        uploader.bind('cancel', function (event, xhr, item) {
+            console.info('Cancel', xhr, item);
+        });
 
-    uploader.bind('progress', function (event, item, progress) {
-        console.info('Progress: ' + progress, item);
-    });
+        uploader.bind('error', function (event, xhr, item, response) {
+            console.error('Error', xhr, item, response);
+        });
 
-    uploader.bind('success', function (event, xhr, item, response) {
-        console.info('Success', xhr, item, response);
-        var attachment = {filename: item.url + '/' + bucket_path + item.file.name, notes: item.notes, referral_id: $scope.referral.id};
-        Attachment.save({attachment: attachment}, function (success) {
-            $scope.referral.attachments.push(attachment);
+        uploader.bind('complete', function (event, xhr, item, response) {
+            console.info('Complete', xhr, item, response);
+        });
+
+        uploader.bind('progressall', function (event, progress) {
+            console.info('Total progress: ' + progress);
+        });
+
+        uploader.bind('completeall', function (event, items) {
+            console.info('Complete all', items);
         });
 
     });
-
-    uploader.bind('cancel', function (event, xhr, item) {
-        console.info('Cancel', xhr, item);
-    });
-
-    uploader.bind('error', function (event, xhr, item, response) {
-        console.error('Error', xhr, item, response);
-    });
-
-    uploader.bind('complete', function (event, xhr, item, response) {
-        console.info('Complete', xhr, item, response);
-    });
-
-    uploader.bind('progressall', function (event, progress) {
-        console.info('Total progress: ' + progress);
-    });
-
-    uploader.bind('completeall', function (event, items) {
-        console.info('Complete all', items);
-    });
-
-});
 
 
 }])

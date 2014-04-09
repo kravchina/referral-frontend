@@ -3,21 +3,14 @@ var dentalLinksDirectives = angular.module('dentalLinksDirectives', ['angularFil
 // Only for example
 
 
-dentalLinksDirectives.directive('pdfPhotos', ['$sce', 'ImageService', 'PDF', function ($sce, ImageService, PDF) {
+dentalLinksDirectives.directive('pdfPhotos', ['$sce', 'PDF', function ($sce, PDF) {
     return {
         scope: true,
         restrict: 'A',
         link: function (scope, $element, attrs) {
             var img = $element[0];
-
-            PDF.setTotalImages(+attrs.totalImages);
             img.onload = function () {
                 PDF.addImage(scope.$index, img, scope.attachment.notes);
-                ImageService.addImage(scope.$index, img, scope.attachment.notes);
-                if (PDF.imagesReady()) {
-
-                    /*angular.element(document.querySelector('#pdf')).attr({src: $sce.trustAsResourceUrl(PDF.getEmbeddableString())});*/
-                }
             };
         }
     }
