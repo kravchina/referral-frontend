@@ -22,7 +22,7 @@
                     <div ng-repeat="attachment in referral.attachments">
                         <a ng-href="{{attachment.filename}}" target="_blank">
                             <!--<canvas photo-canvas img-src="{{attachment.filename}}" width="250"></canvas>-->
-                            <img pdf-photos total-images="{{referral.attachments.length}}" crossorigin="anonymous"  ng-src="{{attachment.filename}}" width="250"/>
+                            <img pdf-photos total-images="{{referral.attachments.length}}" crossorigin="anonymous"  ng-src="{{attachment.filename}}" width="300"/>
                         </a>
                         {{attachment.notes}}
                     </div>
@@ -43,7 +43,7 @@
             <td width="50%" class="top">
                 <div>
                     <p>PDF</p>
-
+                    <button ng-click="savePdf()">Save pdf</button>
                     <iframe id="pdf" frameborder="0" width="500" height="650" ></iframe>
                 </div>
             </td>

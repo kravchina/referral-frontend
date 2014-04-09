@@ -9,12 +9,14 @@ dentalLinksDirectives.directive('pdfPhotos', ['$sce', 'ImageService', 'PDF', fun
         restrict: 'A',
         link: function (scope, $element, attrs) {
             var img = $element[0];
-            PDF.setTotalImages(+attrs.totalImages)
+
+            PDF.setTotalImages(+attrs.totalImages);
             img.onload = function () {
                 PDF.addImage(scope.$index, img, scope.attachment.notes);
                 ImageService.addImage(scope.$index, img, scope.attachment.notes);
                 if (PDF.imagesReady()) {
-                    angular.element(document.querySelector('#pdf')).attr({src: $sce.trustAsResourceUrl(PDF.getEmbeddableString())});
+
+                    /*angular.element(document.querySelector('#pdf')).attr({src: $sce.trustAsResourceUrl(PDF.getEmbeddableString())});*/
                 }
             };
         }

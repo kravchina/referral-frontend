@@ -227,6 +227,9 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeP
 
 });
 
+    $scope.savePdf = function(){
+        PDF.save('referral.pdf')
+    };
 
 $scope.submitNote = function (note) {
     Note.save({note: {message: note, referral_id: $scope.referral.id}}, function (success) {

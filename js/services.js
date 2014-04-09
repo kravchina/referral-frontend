@@ -81,7 +81,13 @@ dentalLinksServices.factory('PDF', [function () {
         },
         addImage: function (index, image, text) {
             pdf = pdf || new jsPDF();
-            pdf.addImage(image, 'JPEG', lastImagePosition.x, lastImagePosition.y + (50 * index));
+            var aspectRatio = image.width/image.height;
+            if(lastImagePosition.y + (190/aspectRatio * index) + 190/aspectRatio > 287 /*end of the A4 paper including margin 10mm*/){
+                pdf.addPage();
+                pdf.addImage(image, 'JPEG', lastImagePosition.x, lastImagePosition.y, 190, 190/aspectRatio);
+
+            }
+            pdf.addImage(image, 'JPEG', lastImagePosition.x, lastImagePosition.y + (190/aspectRatio * index), 190, 190/aspectRatio);
             //lastImagePosition.y += 50;
             processedImages = processedImages || 0;
             processedImages++;
@@ -95,7 +101,11 @@ dentalLinksServices.factory('PDF', [function () {
         },
         imagesReady: function(){
             return totalImages == processedImages;
+        },
+        save: function(filename){
+            pdf.save(filename);
         }
+
     }
 }]);
 
