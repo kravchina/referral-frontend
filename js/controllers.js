@@ -1,7 +1,7 @@
 var dentalLinksControllers = angular.module('dentalLinksControllers', ['ui.bootstrap', 'angularFileUpload']);
 
-dentalLinksControllers.controller('LoginController', ['$scope', '$window', '$location', 'Login',
-    function ($scope, $window, $location, Login) {
+dentalLinksControllers.controller('LoginController', ['$scope', '$window', '$location', 'Login', 'redirect',
+    function ($scope, $window, $location, Login, redirect) {
         $scope.authenticated = $window.sessionStorage.token ? true : false;
         $scope.email = $window.sessionStorage.email;
         $scope.login = function (user) {   /*{'user': {'email': user.email, 'password': user.password }}*/
@@ -12,7 +12,7 @@ dentalLinksControllers.controller('LoginController', ['$scope', '$window', '$loc
                     $scope.email = user.email;
                     $scope.message = 'Successful login. Welcome!';
                     $scope.authenticated = true;
-                    $location.path('/create_referral');
+                    $location.path(redirect.path);
                     $scope.success = true;
                     $scope.failure = false;
                 },
@@ -226,9 +226,8 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeP
         PDF.addParagraph('Original practice description: ' + data.orig_practice.description);
         PDF.addParagraph('Memo: ' + data.memo);
         PDF.addParagraph('Referral status: ' + data.status);
-        PDF.addParagraph('Attachments: ');
 
-
+        PDF.addNotes(data.notes);
     });
 
     $scope.savePdf = function () {

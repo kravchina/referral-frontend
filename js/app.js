@@ -30,14 +30,16 @@ dentalLinks.config(['$routeProvider', function ($routeProvider) {
             redirectTo: '/sign_in'
         });
 }])
-    .run(['$rootScope','$window', '$location', function($rootScope, $window, $location){
+    .run(['$rootScope','$window', '$location', 'redirect', function($rootScope, $window, $location, redirect){
 
         $rootScope.$on("$locationChangeStart", function(event, next, current) {
             if(!$window.sessionStorage.token){
+                redirect.path = $location.path();
                 $location.path('/sign_in');
             }
-
         })}]);
+
+dentalLinks.value('redirect', {path: '/'});
 
 dentalLinks.config(['$locationProvider', function($locationProvider){
     /*$locationProvider.html5Mode(true);*/ //doesn't work without server-side url rewriting, to return on every request only the entrypoint page (like index.html)

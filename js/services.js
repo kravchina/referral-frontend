@@ -59,6 +59,7 @@ dentalLinksServices.factory('PDF', [function () {
     var pdf;
     var paragraphs = [];
     var images = [];
+    var notes = [];
     var font =
         ['Times', 'Roman'];
     var size = 16;
@@ -71,10 +72,23 @@ dentalLinksServices.factory('PDF', [function () {
     var caret = 10;
     var buildPdf = function () {
         var pdf = new jsPDF();
+        //printing start paragraphs with referral information
         for (var i = 0; i < paragraphs.length; i++) {
-            caret = paragraphStart.y + i * 8;
+            caret += 8;
             pdf.text(paragraphStart.x, caret, paragraphs[i]);
         }
+        caret +=16;
+
+        //printing notes
+        pdf.text(paragraphStart.x, caret, 'Notes:');
+        for(var k =0; k < notes.length; k++){
+            caret += 8;
+            pdf.text(paragraphStart.x, caret, notes[k].message);
+        }
+
+        //printing image attachments
+        caret += 16;
+        pdf.text(paragraphStart.x, caret, 'Attachments:')
         caret += 10;
         for (var j = 0; j < images.length; j++) {
             var image = images[j].image;
@@ -105,6 +119,9 @@ dentalLinksServices.factory('PDF', [function () {
                 images[images.length] = null;
             }
             images.splice(index, 1, {image: image, note: text});
+        },
+        addNotes: function(notesArray){
+            notes = notesArray;
         },
         getEmbeddableString: function () {
             return buildPdf().output('datauristring');
