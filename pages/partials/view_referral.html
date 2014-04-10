@@ -28,7 +28,7 @@
                     Notes:
                     <ul>
                         <li ng-repeat="note in referral.notes">
-                            {{note.message}}
+                           <b>{{note.user.first_name}} {{note.user.last_name}}</b> at <b>{{note.created_at | date: 'short' }}:</b> {{note.message}}
                             <!--[<a href ng-click="notes.splice($index, 1)">X</a>]-->
                         </li>
                     </ul>
