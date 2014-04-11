@@ -2,40 +2,46 @@
     <h3>Create Patient</h3>
 </div>
 <div class="modal-body">
-<form>
+<form name="userForm">
         <div class="field-group">
             <div>
                 <label>
                     First Name:
-                    <input type="text" ng-model="patient.first_name" ng-required="true"/>
+                    <input type="text" name="firstName" ng-model="patient.first_name" ng-required="true"/>
                 </label>
+                <span ng-hide="userForm.firstName.$valid">First Name is invalid</span>
             </div>
             <div>
                 <label>
                     Last Name:
-                    <input type="text" ng-model="patient.last_name" ng-required="true"/>
+                    <input type="text" name="lastName' ng-model="patient.last_name" ng-required="true"/>
                 </label>
+                <span ng-hide="userForm.lastName.$valid">Last Name is invalid</span>
             </div>
 
             <div>
                 <label>
                     Date of Birth:
-                    <input type="date" ng-model="patient.birthday" ng-required="true"/>
+                    <input type="date" name="birthday" ng-model="patient.birthday" ng-required="true"/>
                 </label>
+                <span ng-hide="userForm.birthday.$valid">Birthday is invalid</span>
             </div>
 
             <div>
                 <label>
                     Email:
-                    <input type="email" ng-model="patient.email" ng-required="true"/>
+                    <input type="email" name="email" ng-model="patient.email" ng-required="true"/>
                 </label>
+                <span ng-hide="userForm.email.$valid">Email is invalid</span>
             </div>
 
             <div>
                 <label>
                     Phone:
-                    <input type="number" ng-model="patient.phone" ng-required="true" integer/>
+                    <input type="text" name="phone" ng-model="patient.phone" ng-required="true" ng-pattern="/^[\d\s\(\)-.]+$/"/>
                 </label>
+
+                <span ng-hide="userForm.phone.$valid">Phone is invalid</span>
             </div>
 
         </div>
