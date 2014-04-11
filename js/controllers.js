@@ -237,7 +237,7 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeP
     $scope.submitNote = function (note) {
         Note.save({note: {message: note, referral_id: $scope.referral.id}}, function (success) {
             $scope.newNote = '';
-            $scope.referral.notes.push({message: note});
+            $scope.referral.notes.push(success);
         });
     };
 
