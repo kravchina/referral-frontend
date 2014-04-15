@@ -8,7 +8,9 @@ var host = 'http://referral-server.herokuapp.com';
 
 dentalLinksServices.factory('Practice', ['$resource',
     function ($resource) {
-        return $resource(host + '/practices/:practiceId');
+        return $resource(host + '/practices/:practiceId', {}, {
+            searchPractice: {method: 'GET', url: host + '/practices/search', isArray: true}
+        });
     }]);
 
 
@@ -88,7 +90,7 @@ dentalLinksServices.factory('PDF', [function () {
 
         //printing image attachments
         caret += 16;
-        pdf.text(paragraphStart.x, caret, 'Attachments:')
+        pdf.text(paragraphStart.x, caret, 'Attachments:');
         caret += 10;
         for (var j = 0; j < images.length; j++) {
             var image = images[j].image;

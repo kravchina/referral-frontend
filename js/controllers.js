@@ -66,6 +66,12 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
 
     };
 
+    /*$scope.findPractice = function(val){
+        return Practice.searchPractice( {search: val }).
+            $promise.then(function(res){
+            return res;
+        });
+    };*/
 
     $scope.patientDialog = function () {
 
@@ -408,6 +414,3 @@ dentalLinksControllers.controller('PasswordsController', ['$scope', '$routeParam
     };
 }]);
 
-dentalLinksControllers.controller('PDFController', ['$scope', '$sce', function ($scope, $sce) {
-
-}]);
