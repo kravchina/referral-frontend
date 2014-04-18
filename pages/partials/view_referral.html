@@ -17,7 +17,7 @@
                 <div>
                     Attachments:
                     <div ng-repeat="attachment in referral.attachments">
-                        <a ng-href="{{attachment.filename}}" target="_blank">
+                        <a access="admin,doctor" ng-href="{{attachment.filename}}" target="_blank">
                             <!--<canvas photo-canvas img-src="{{attachment.filename}}" width="250"></canvas>-->
                             <img pdf-photos total-images="{{referral.attachments.length}}" crossorigin="anonymous"  ng-src="{{attachment.filename}}" width="300"/>
                         </a>

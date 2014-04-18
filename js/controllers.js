@@ -9,13 +9,12 @@ dentalLinksControllers.controller('LoginController', ['$scope', '$window', '$loc
                 function (success) {
                     $window.sessionStorage.token = success.token;
                     $window.sessionStorage.email = user.email;
+                    $window.sessionStorage.roles = success.roles;
                     $scope.email = user.email;
-                    $scope.message = 'Successful login. Welcome!';
                     $scope.authenticated = true;
                     $location.path(redirect.path);
                     $scope.success = true;
-                    $scope.failure = false;
-                },
+                    $scope.failure = false;                },
                 function (failure) {
                     delete $window.sessionStorage.token;
                     delete $window.sessionStorage.email;
@@ -222,8 +221,8 @@ dentalLinksControllers.controller('PracticeModalController', ['$scope', '$modalI
     };
 }]);
 
-dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$routeParams', '$fileUploader', '$timeout', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$sce', function ($scope, $routeParams, $fileUploader, $timeout, Referral, PDF, Note, S3Bucket, Attachment, $sce) {
-    $scope.referral = Referral.get({id: $routeParams.referral_id});
+dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$sce', function ($scope, $stateParams, $fileUploader, $timeout, Referral, PDF, Note, S3Bucket, Attachment, $sce) {
+    $scope.referral = Referral.get({id: $stateParams.referral_id});
 
     $scope.referral.$promise.then(function (data) {
 
@@ -384,7 +383,7 @@ dentalLinksControllers.controller('UsersController', ['$scope', 'Practice', func
 }]);
 
 
-dentalLinksControllers.controller('PasswordsController', ['$scope', '$routeParams', 'Password', function ($scope, $routeParams, Password) {
+dentalLinksControllers.controller('PasswordsController', ['$scope', '$stateParams', 'Password', function ($scope, $stateParams, Password) {
     $scope.requestPasswordReset = function (user) {
         Password.reset({'user': user},
             function (result) {
@@ -401,7 +400,7 @@ dentalLinksControllers.controller('PasswordsController', ['$scope', '$routeParam
     $scope.changePassword = function (model) {
 
 
-        model.reset_password_token = $routeParams.reset_password_token;
+        model.reset_password_token = $stateParams.reset_password_token;
         Password.change({'user': model, 'format': 'json'},
             function (success_result) {
                 $scope.success = true;

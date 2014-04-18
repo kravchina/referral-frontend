@@ -1,47 +1,63 @@
-var dentalLinks = angular.module('dentalLinks', ['ngRoute', 'dentalLinksControllers', 'dentalLinksServices', 'dentalLinksDirectives']);
+var dentalLinks = angular.module('dentalLinks', ['ui.router', 'dentalLinksControllers', 'dentalLinksServices', 'dentalLinksDirectives']);
 
-dentalLinks.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.
-        when('/sign_in', {
+dentalLinks.constant('userRoles', {
+    public: 'public',
+    doctor: 'doctor',
+    admin: 'admin',
+    aux: 'aux'
+});
+
+dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'userRoles', function ($stateProvider, $urlRouterProvider, userRoles) {
+    $stateProvider.
+        state('signIn', {
+            url: '/sign_in',
             templateUrl: 'partials/login.html',
             controller: 'LoginController'
         }).
-        when('/create_referral', {
+        state('createReferral', {
+            url: '/create_referral',
             templateUrl: 'partials/create_referral.html',
-            controller: 'ReferralsController'
+            controller: 'ReferralsController',
+            access: [userRoles.doctor, userRoles.admin]
         }).
-        when('/logout', {
+        state('logout', {
+            url: '/logout',
             templateUrl: 'partials/login.html',
             controller: 'LoginController'
         }).
-        when('/reset_password',{
+        state('resetPassword', {
+            url: '/reset_password',
             templateUrl: 'partials/reset_password.html',
             controller: 'PasswordsController'
         }).
-        when('/edit_password/:reset_password_token',{
+        state('resetPasswordToken', {
+            url: '/edit_password/:reset_password_token',
             templateUrl: 'partials/edit_password.html',
             controller: 'PasswordsController'
         }).
-        when('/view_referral/:referral_id',{
+        state('viewReferral', {
+            url: '/view_referral/:referral_id',
             templateUrl: 'partials/view_referral.html',
-            controller: 'ReferralsViewController'
-        }).
-        otherwise({
-            redirectTo: '/sign_in'
+            controller: 'ReferralsViewController',
+            access: [userRoles.doctor, userRoles.admin]
         });
+    $urlRouterProvider.otherwise('/sign_in');
 }])
-    .run(['$rootScope','$window', '$location', 'redirect', function($rootScope, $window, $location, redirect){
+    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', function ($rootScope, $window, $location, $state, redirect, Auth) {
 
-        $rootScope.$on("$locationChangeStart", function(event, next, current) {
-            if(!$window.sessionStorage.token){
+        $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+            if (!Auth.authorize(toState.access)) {
+                event.preventDefault();
                 redirect.path = $location.path();
-                $location.path('/sign_in');
+                //$location.path('/sign_in');
+                $state.go('signIn');
             }
-        })}]);
+        })
+    }]);
 
 dentalLinks.value('redirect', {path: '/'});
 
-dentalLinks.config(['$locationProvider', function($locationProvider){
+dentalLinks.config(['$locationProvider', function ($locationProvider) {
     /*$locationProvider.html5Mode(true);*/ //doesn't work without server-side url rewriting, to return on every request only the entrypoint page (like index.html)
 }]);
 

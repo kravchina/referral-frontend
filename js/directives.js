@@ -2,8 +2,21 @@ var dentalLinksDirectives = angular.module('dentalLinksDirectives', ['angularFil
 // Angular File Upload module does not include this directive
 // Only for example
 
+dentalLinksDirectives.directive('access', [ 'Auth', function (Auth) {
+    return {
+        scope: true,
+        restrict: 'A',
+        link: function (scope, $element, attrs) {
+            var prevDisp = $element.css('display');
+            if (!Auth.authorize(attrs.access.split(/[,\s]+/)))
+                $element.css('display', 'none');
+            else
+                $element.css('display', prevDisp);
+        }
+    }
+}]);
 
-dentalLinksDirectives.directive('pdfPhotos', ['$sce', 'PDF', function ($sce, PDF) {
+dentalLinksDirectives.directive('pdfPhotos', ['PDF', function (PDF) {
     return {
         scope: true,
         restrict: 'A',

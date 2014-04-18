@@ -6,6 +6,25 @@ var dentalLinksServices = angular.module('dentalLinksServices', ['ngResource']);
 //var host = 'http://localhost:3000';
 var host = 'http://referral-server.herokuapp.com';
 
+dentalLinksServices.factory('Auth', ['$window', function ($window) {
+    return {
+        authorize: function (roles) {
+            if (roles === undefined) {
+                return true;
+            }
+            if ($window.sessionStorage.roles) {
+                for (var i = 0; i < roles.length; i++) {
+                    if ($window.sessionStorage.roles.indexOf(roles[i]) >= 0) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    };
+
+}]);
+
 dentalLinksServices.factory('Practice', ['$resource',
     function ($resource) {
         return $resource(host + '/practices/:practiceId', {}, {
@@ -79,11 +98,11 @@ dentalLinksServices.factory('PDF', [function () {
             caret += 8;
             pdf.text(paragraphStart.x, caret, paragraphs[i]);
         }
-        caret +=16;
+        caret += 16;
 
         //printing notes
         pdf.text(paragraphStart.x, caret, 'Notes:');
-        for(var k =0; k < notes.length; k++){
+        for (var k = 0; k < notes.length; k++) {
             caret += 8;
             pdf.text(paragraphStart.x, caret, notes[k].message);
         }
@@ -117,12 +136,12 @@ dentalLinksServices.factory('PDF', [function () {
             paragraphs.push(text);
         },
         addImage: function (index, image, text) {
-            while(index >= images.length){
+            while (index >= images.length) {
                 images[images.length] = null;
             }
             images.splice(index, 1, {image: image, note: text});
         },
-        addNotes: function(notesArray){
+        addNotes: function (notesArray) {
             notes = notesArray;
         },
         getEmbeddableString: function () {
