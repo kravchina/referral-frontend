@@ -122,12 +122,12 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
         // ADDING FILTERS
 
         // Images only
-        uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
+        /*uploader.filters.push(function (item *//*{File|HTMLInputElement}*//*) {
             var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
             type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
             return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
         });
-
+*/
         // REGISTER HANDLERS
 
         uploader.bind('afteraddingfile', function (event, item) {
@@ -297,7 +297,7 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateP
             formData: [
                 { key: bucket_path + '${filename}' },
                 {AWSAccessKeyId: success.s3_access_key_id},
-                {acl: 'authenticated-read'},
+                {acl: 'public-read'},
                 {success_action_status: '200'},
                 {policy: success.s3_policy},
                 {signature: success.s3_signature}
@@ -307,11 +307,11 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateP
         // ADDING FILTERS
 
         // Images only
-        uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
+        /*uploader.filters.push(function (item *//*{File|HTMLInputElement}*//*) {
             var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
             type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
             return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-        });
+        });*/
 
         // REGISTER HANDLERS
 
