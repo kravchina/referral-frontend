@@ -16,15 +16,17 @@ dentalLinksDirectives.directive('access', [ 'Auth', function (Auth) {
     }
 }]);
 
-dentalLinksDirectives.directive('pdfPhotos', ['PDF', function (PDF) {
+dentalLinksDirectives.directive('pdfPhotos', ['Auth', 'PDF', function (Auth, PDF) {
     return {
         scope: true,
         restrict: 'A',
         link: function (scope, $element, attrs) {
             var img = $element[0];
-            img.onload = function () {
-                PDF.addImage(scope.$index, img, scope.attachment.notes);
-            };
+            if (Auth.authorize(attrs.access.split(/[,\s]+/))) {
+                img.onload = function () {
+                    PDF.addImage(scope.$index, img, scope.attachment.notes);
+                };
+            }
         }
     }
 }]);

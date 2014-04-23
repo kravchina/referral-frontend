@@ -289,6 +289,10 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateP
 
     };
 
+    $scope.isImage = function(attachment){
+        return attachment.filename.search(/(jpg|png|gif)$/) >= 0;
+    };
+
     S3Bucket.getCredentials(function (success) {
         var bucket_path = 'uploads/';
         var uploader = $scope.uploader = $fileUploader.create({

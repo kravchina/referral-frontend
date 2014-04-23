@@ -107,26 +107,28 @@ dentalLinksServices.factory('PDF', [function () {
             pdf.text(paragraphStart.x, caret, notes[k].message);
         }
 
-        //printing image attachments
-        caret += 16;
-        pdf.text(paragraphStart.x, caret, 'Attachments:');
-        caret += 10;
-        for (var j = 0; j < images.length; j++) {
-            var image = images[j].image;
-            var note = images[j].note;
-            var aspectRatio = image.width / image.height;
-            if (caret + (190 / aspectRatio) > 287 /*end of the A4 paper including margin 10mm*/) {
-                pdf.addPage();
-                caret = 10;
-            }
-            pdf.addImage(image, 'JPEG', imageStart.x, caret, 190, 190 / aspectRatio);
-            caret += 190 / aspectRatio;
-            if (note) {
-                caret += 5;
-                pdf.text(paragraphStart.x, caret, note);
-            }
+        if (images.length > 0) {
+            //printing image attachments
+            caret += 16;
+            pdf.text(paragraphStart.x, caret, 'Attachments:');
             caret += 10;
+            for (var j = 0; j < images.length; j++) {
+                var image = images[j].image;
+                var note = images[j].note;
+                var aspectRatio = image.width / image.height;
+                if (caret + (190 / aspectRatio) > 287 /*end of the A4 paper including margin 10mm*/) {
+                    pdf.addPage();
+                    caret = 10;
+                }
+                pdf.addImage(image, 'JPEG', imageStart.x, caret, 190, 190 / aspectRatio);
+                caret += 190 / aspectRatio;
+                if (note) {
+                    caret += 5;
+                    pdf.text(paragraphStart.x, caret, note);
+                }
+                caret += 10;
 
+            }
         }
         return pdf;
 
