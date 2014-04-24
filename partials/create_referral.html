@@ -3,8 +3,8 @@
     <h2>Create Referral</h2>
     <label>
         Search Patient:
-        <input type="text" ng-model="patient" placeholder="Select patient..." typeahead="p as p.first_name +' ' +  p.last_name for p in findPatient($viewValue) | filter:$viewValue" typeahead-loading="loadingPractices" class="form-control">
-        <i ng-show="loadingPractices" class="glyphicon glyphicon-refresh"></i>
+        <input type="text" ng-model="patient" placeholder="Select patient..." typeahead="p as p.first_name +' ' +  p.last_name for p in findPatient($viewValue) | filter:$viewValue" typeahead-loading="loadingPatients" class="form-control">
+        <i ng-show="loadingPatients" class="glyphicon glyphicon-refresh"></i>
         <!--<select ng-disabled="patientFormVisible" ng-model="model.referral.patient_id"
                 ng-options="p.id as p.first_name +' ' +  p.last_name for p in patients"
                 ng-required="!patientFormVisible">

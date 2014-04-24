@@ -15,8 +15,8 @@
             </label>
         </div>
 
-        <div class="success" ng-show="success">You have successfully logged in!</div>
-        <div class="error" ng-show="failure">Unable to login with provided credentials</div>
+        <div class="success" ng-show="result.success">You have successfully logged in!</div>
+        <div class="error" ng-show="result.failure">Unable to login with provided credentials</div>
         <button ng-click="login(user)">Login</button>
 
     </form>

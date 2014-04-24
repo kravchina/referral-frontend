@@ -6,23 +6,32 @@ var dentalLinksServices = angular.module('dentalLinksServices', ['ngResource']);
 //var host = 'http://localhost:3000';
 var host = 'http://referral-server.herokuapp.com';
 
-dentalLinksServices.factory('Auth', ['$window', function ($window) {
+dentalLinksServices.factory('Auth', ['$cookieStore', function ($cookieStore) {
     return {
         authorize: function (roles) {
             if (roles === undefined) {
                 return true;
             }
-            if ($window.sessionStorage.roles) {
+            var auth = $cookieStore.get('auth') || {};
+            if (auth.roles) {
                 for (var i = 0; i < roles.length; i++) {
-                    if ($window.sessionStorage.roles.indexOf(roles[i]) >= 0) {
+                    if (auth.roles.indexOf(roles[i]) >= 0) {
                         return true;
                     }
                 }
             }
             return false;
+        },
+        get: function () {
+            return $cookieStore.get('auth');
+        },
+        set: function (value) {
+            $cookieStore.put('auth', value);
+        },
+        remove: function(){
+            $cookieStore.remove('auth');
         }
     };
-
 }]);
 
 dentalLinksServices.factory('Practice', ['$resource',

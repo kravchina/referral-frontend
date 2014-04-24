@@ -1,37 +1,34 @@
 var dentalLinksControllers = angular.module('dentalLinksControllers', ['ui.bootstrap', 'angularFileUpload']);
 
-dentalLinksControllers.controller('LoginController', ['$scope', '$window', '$location', 'Login', 'redirect',
-    function ($scope, $window, $location, Login, redirect) {
-        $scope.authenticated = $window.sessionStorage.token ? true : false;
-        $scope.email = $window.sessionStorage.email;
+dentalLinksControllers.controller('LoginController', ['$scope', 'Auth', '$location', 'Login', 'redirect',
+    function ($scope, Auth, $location, Login, redirect) {
+        var auth = Auth.get();
+        $scope.authenticated = auth;
+        $scope.email = (auth || {}).email;
         $scope.login = function (user) {   /*{'user': {'email': user.email, 'password': user.password }}*/
             Login.login({'user': {'email': user.email, 'password': user.password }},
                 function (success) {
-                    $window.sessionStorage.token = success.token;
-                    $window.sessionStorage.email = user.email;
-                    $window.sessionStorage.roles = success.roles;
+                    Auth.set({token: success.token, email: user.email, roles: success.roles});
                     $scope.email = user.email;
                     $scope.authenticated = true;
                     $location.path(redirect.path);
-                    $scope.success = true;
-                    $scope.failure = false;                },
+                    $scope.result = {success: true};
+
+                },
                 function (failure) {
-                    delete $window.sessionStorage.token;
-                    delete $window.sessionStorage.email;
+                    Auth.remove();
                     $scope.message = 'Error: invalid username or password';
                     $scope.authenticated = false;
-
-                    $scope.success = false;
-                    $scope.failure = true;
+                    $scope.result = {failure: true};
                 });
         };
         $scope.logout = function () {
             Login.logout(function () {
+                    Auth.remove();
                     $scope.email = null;
                     $scope.message = null;
-                    $scope.isAuthenticated = false;
-                    delete $window.sessionStorage.token;
-                    delete $window.sessionStorage.email;
+                    $scope.authenticated = false;
+                    $scope.result = {};
                     $location.path('/sign_in');
                 }
             );
@@ -43,7 +40,7 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
 
     /*$scope.patients = Patient.query();
 
-    $scope.practices = Practice.query();*/
+     $scope.practices = Practice.query();*/
 
     $scope.model = {referral: {}, practice: {}};
 
@@ -65,14 +62,14 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
 
     };
 
-    $scope.findPatient = function(searchValue){
-        return Patient.searchPatient( {search: searchValue }).$promise.then(function(res){
+    $scope.findPatient = function (searchValue) {
+        return Patient.searchPatient({search: searchValue }).$promise.then(function (res) {
             return res;
         });
     };
 
-    $scope.findPractice = function(searchValue){
-        return Practice.searchPractice( {search: searchValue }).$promise.then(function(res){
+    $scope.findPractice = function (searchValue) {
+        return Practice.searchPractice({search: searchValue }).$promise.then(function (res) {
             return res;
         });
     };
@@ -116,7 +113,7 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
                 { key: bucket_path + '${filename}' },
                 {AWSAccessKeyId: success.s3_access_key_id},
                 {acl: 'public-read'},
-                {success_action_status: '201'},
+                {success_action_status: '200'},
                 {policy: success.s3_policy},
                 {signature: success.s3_signature}
             ]
@@ -292,7 +289,7 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateP
 
     };
 
-    $scope.isImage = function(attachment){
+    $scope.isImage = function (attachment) {
         return attachment.filename.search(/(jpg|png|gif)$/) >= 0;
     };
 
@@ -374,10 +371,7 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateP
         });
 
     });
-
-
-}])
-;
+}]) ;
 
 //not used now
 dentalLinksControllers.controller('UsersController', ['$scope', 'Practice', function ($scope, Practice) {
@@ -405,8 +399,6 @@ dentalLinksControllers.controller('PasswordsController', ['$scope', '$stateParam
     $scope.initial = true;
     $scope.success = false;
     $scope.changePassword = function (model) {
-
-
         model.reset_password_token = $stateParams.reset_password_token;
         Password.change({'user': model, 'format': 'json'},
             function (success_result) {

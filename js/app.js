@@ -1,4 +1,4 @@
-var dentalLinks = angular.module('dentalLinks', ['ui.router', 'dentalLinksControllers', 'dentalLinksServices', 'dentalLinksDirectives']);
+var dentalLinks = angular.module('dentalLinks', ['ui.router', 'ngCookies', 'dentalLinksControllers', 'dentalLinksServices', 'dentalLinksDirectives']);
 
 dentalLinks.constant('userRoles', {
     public: 'public',
@@ -69,13 +69,14 @@ dentalLinks.config(['$httpProvider', function ($httpProvider) {
 ]);
 
 
-dentalLinks.factory('authInterceptor', ['$rootScope', '$q', '$window', function ($rootScope, $q, $window) {
+dentalLinks.factory('authInterceptor', ['$rootScope', '$q', 'Auth', function ($rootScope, $q, Auth) {
     return {
         request: function (config) {
             config.headers = config.headers || {};
-            if ($window.sessionStorage.token) {
-                config.headers.Authorization = $window.sessionStorage.token;
-                config.headers.From = $window.sessionStorage.email;
+            var auth = Auth.get();
+            if (auth && auth.token) {
+                config.headers.Authorization = auth.token;
+                config.headers.From = auth.email;
             }
             return config;
         },
