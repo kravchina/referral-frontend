@@ -2,12 +2,14 @@
 <div>
     <h2>Create Referral</h2>
     <label>
-        Patient:
-        <select ng-disabled="patientFormVisible" ng-model="model.referral.patient_id"
+        Search Patient:
+        <input type="text" ng-model="patient" placeholder="Select patient..." typeahead="p as p.first_name +' ' +  p.last_name for p in findPatient($viewValue) | filter:$viewValue" typeahead-loading="loadingPractices" class="form-control">
+        <i ng-show="loadingPractices" class="glyphicon glyphicon-refresh"></i>
+        <!--<select ng-disabled="patientFormVisible" ng-model="model.referral.patient_id"
                 ng-options="p.id as p.first_name +' ' +  p.last_name for p in patients"
                 ng-required="!patientFormVisible">
             <option value="">-- Select patient --</option>
-        </select>
+        </select>-->
 
     </label>
     Or
@@ -16,13 +18,21 @@
 </div>
 
 <div>
-    <label>
+
+        <label>
+            Search practice:
+            <input type="text" ng-model="destinationPractice" placeholder="Select practice..." typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue" typeahead-loading="loadingPractices" class="form-control">
+            <i ng-show="loadingPractices" class="glyphicon glyphicon-refresh"></i>
+        </label>
+
+
+    <!--<label>
         Select Destination Practice:
         <select ng-disabled="invitePracticeVisible" ng-model="model.referral.dest_practice_id"
                 ng-options="p.id as p.name for p in practices" ng-required="!invitePracticeVisible">
             <option value="">-- Select practice --</option>
         </select>
-    </label>
+    </label>-->
     Or
     <button class="btn" ng-click="practiceDialog()">Invite new practice</button>
 </div>
@@ -34,17 +44,6 @@
         <textarea ng-model="model.referral.memo"></textarea>
     </label>
 </div>
-
-
-<!--
-<div>
-    <label>
-        Search practice:
-        <input type="text" ng-model="asyncSelected" placeholder="Practices loaded via ajax" typeahead="id for name in findPractice($viewValue) | filter:$viewValue" typeahead-loading="loadingPractices" class="form-control">
-        <i ng-show="loadingPractices" class="glyphicon glyphicon-refresh"></i>
-    </label>
-</div>
--->
 
 
 <div>

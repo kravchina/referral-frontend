@@ -41,19 +41,19 @@ dentalLinksControllers.controller('LoginController', ['$scope', '$window', '$loc
 
 dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 'Patient', 'Referral', 'S3Bucket', '$modal', '$fileUploader', function ($scope, Practice, Patient, Referral, S3Bucket, $modal, $fileUploader) {
 
-    $scope.patients = Patient.query();
+    /*$scope.patients = Patient.query();
 
-    $scope.practices = Practice.query();
+    $scope.practices = Practice.query();*/
 
     $scope.model = {referral: {}, practice: {}};
 
     $scope.createReferral = function (model) {
 
+        model.referral.dest_practice_id = $scope.destinationPractice.id;
+        model.referral.patient_id = $scope.patient.id;
+
         $scope.create_referral_result = Referral.save(model,
             function (success) {
-                $scope.patients = Patient.query();
-                $scope.practices = Practice.query();
-
                 $scope.success = true;
                 $scope.failure = false;
             },
@@ -65,12 +65,17 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
 
     };
 
-    /*$scope.findPractice = function(val){
-        return Practice.searchPractice( {search: val }).
-            $promise.then(function(res){
+    $scope.findPatient = function(searchValue){
+        return Patient.searchPatient( {search: searchValue }).$promise.then(function(res){
             return res;
         });
-    };*/
+    };
+
+    $scope.findPractice = function(searchValue){
+        return Practice.searchPractice( {search: searchValue }).$promise.then(function(res){
+            return res;
+        });
+    };
 
     $scope.patientDialog = function () {
 
@@ -85,8 +90,7 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
         });
 
         modalInstance.result.then(function (patient) {
-            $scope.patients.push(patient);
-            $scope.model.referral.patient_id = patient.id;
+            $scope.patient = patient;
         });
     };
 
@@ -97,8 +101,7 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
         });
 
         modalInstance.result.then(function (practice_invite) {
-            $scope.practices.push(practice_invite);
-            $scope.model.practice.practice_id = practice_invite.id;
+            $scope.destinationPractice = {name: practice_invite.practice_name, id: practice_invite.practice_id};
         });
     };
 

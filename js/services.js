@@ -39,7 +39,9 @@ dentalLinksServices.factory('PracticeInvitation', ['$resource',
     }]);
 
 dentalLinksServices.factory('Patient', ['$resource', function ($resource) {
-    return $resource(host + '/patients/:id');
+    return $resource(host + '/patients/:id', {}, {
+        searchPatient: {method: 'GET', url: host + '/patients/search', isArray: true}
+    });
 }]);
 
 dentalLinksServices.factory('Referral', ['$resource', function ($resource) {
