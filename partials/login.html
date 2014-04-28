@@ -22,6 +22,15 @@
     </form>
 
     <div ng-if="authenticated">
+        Testing:
+        <ul>
+            <li><a href="/#/create_referral">create new referral</a> </li>
+            <li>
+                <a href="/#/view_referral/{{existingReferralId}}">view existing referral #{{existingReferralId}}</a>
+                <input ng:model="existingReferralId" style="width:50px; margin-left: 3em;"/>
+            </li>
+        </ul>
+
         You are logged in as {{email}}.
         <button ng-click="logout()">Logout</button>
     </div>

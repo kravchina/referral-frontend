@@ -1,6 +1,32 @@
-<!doctype html>
-<html lang="en" ng-app="dentalLinks">
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html lang="en" ng:app="dentalLinks" class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html lang="en" ng:app="dentalLinks" class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html lang="en" ng:app="dentalLinks" class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng:app="dentalLinks"> <!--<![endif]-->
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="DentalLinks">
+    <meta name="author" content="Alexei Vidmich">
+    <link rel="shortcut icon" href="img/ico/favicon.png">
+    <title>Create Referral &mdash; DentalLinks</title>
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+    <link href="fonts/dlicons/dlicons.css" rel="stylesheet">
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="css/custom.css" rel="stylesheet">
+
+
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
     <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
     <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-route.js"></script>-->
@@ -16,9 +42,6 @@
     <script src="js/services.js" type="text/javascript"></script>
     <script src="js/directives.js" type="text/javascript"></script>
 
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="styles/main.css">
-
 
     <script src="js/lib/jspdf.js" type="text/javascript"></script>
     <script src="js/lib/jspdf.plugin.addimage.js" type="text/javascript"></script>
@@ -28,12 +51,157 @@
     <script src="js/lib/jspdf.plugin.standard_fonts_metrics.js" type="text/javascript"></script>
     <script src="js/lib/FileSaver.min.js" type="text/javascript"></script>
 
-
-    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 </head>
+
 <body>
+<nav class="navbar navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><strong>Dental</strong>Links</a>
+        </div>
+        <!--<div class="navbar-collapse collapse">-->
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hello, <strong>Dr. Who</strong> <b class="caret"></b> <img src="img/avatars/user-avatar.jpg" alt="User Avatar" class="avatar"></a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-header">Settings</li>
+                    <li><a href="#">My Profile</a></li>
+                    <li><a href="#">Account Settings</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Site Preferences</a></li>
+                    <li><a href="#">Log Out</a></li>
+                </ul>
+            </li>
+        </ul>
+        <!--</div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<section class="container">
 
 <div ui-view></div>
 
+</section> <!-- /container -->
+
+<div class="update-ie">You're using an outdated version of Internet Explorer. This website is optimized for modern browser usage.</div>
+
+<!-- Modal Patient -->
+<div class="modal fade" id="modalPatient" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formNewPatient">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Create a New Patient Record</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="block-title">
+                        <h5>Patient Information</h5>
+                    </div>
+                    <div class="alert alert-danger hidden">
+                        <strong>Oops!</strong> Please fix the highlighted errors below.
+                    </div>
+                    <div class="input-block-right has-error">
+                        <select id="selectSalutation" class="form-control">
+                            <option selected="selected" disabled="disabled" class="placeholder" value="default">Select salutation</option>
+                            <option>Mr.</option>
+                            <option>Ms.</option>
+                            <option>Mrs.</option>
+                            <option>Dr.</option>
+                            <option>Engr.</option>
+                        </select>
+                    </div>
+                    <div class="input-block has-error">
+                        <input type="text" class="form-control" placeholder="Enter first name &hellip;">
+                    </div>
+                    <div class="input-block-right">
+                        <input type="text" class="form-control" placeholder="Enter middle initial &hellip;">
+                    </div>
+                    <div class="input-block">
+                        <input type="text" class="form-control" placeholder="Enter last name &hellip;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-orange">Save</button>
+                    <button type="button" class="btn btn-grey" data-dismiss="modal">Discard</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Patient -->
+
+<!-- Modal Provider -->
+<div class="modal fade" id="modalProvider" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formNewProvider">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Invite a New Provider</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="block-title">
+                        <h5>Provider Information</h5>
+                    </div>
+                    <div class="alert alert-danger">
+                        <strong>Oops!</strong> Please fix the highlighted errors below.
+                    </div>
+                    <div class="input-block">
+                        <input type="text" class="form-control" placeholder="Enter provider's name &hellip;">
+                    </div>
+                    <div class="input-block has-error">
+                        <input type="text" class="form-control" placeholder="Enter provider's email address &hellip;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-orange">Save</button>
+                    <button type="button" class="btn btn-grey" data-dismiss="modal">Discard</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Provider -->
+
+<!-- Modal Note -->
+<div class="modal fade" id="modalNote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formNewNote">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Add a New Note</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger">
+                        <strong>Oops!</strong> Please fix the highlighted errors below.
+                    </div>
+                    <div class="input-block has-error">
+                        <textarea placeholder="Write your note here &hellip;" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-orange">Save</button>
+                    <button type="button" class="btn btn-grey" data-dismiss="modal">Discard</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Note -->
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!--<script src="js/main.js"></script>-->
 </body>
 </html>

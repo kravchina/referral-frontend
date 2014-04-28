@@ -3,8 +3,8 @@
     <h2>Create Referral</h2>
     <label>
         Search Patient:
-        <input type="text" ng-model="patient" placeholder="Select patient..." typeahead="p as p.first_name +' ' +  p.last_name for p in findPatient($viewValue) | filter:$viewValue" typeahead-loading="loadingPatients" class="form-control">
-        <i ng-show="loadingPatients" class="glyphicon glyphicon-refresh"></i>
+        <input type="text" ng:model="patient" placeholder="Select patient..." typeahead="p as p.first_name +' ' +  p.last_name for p in findPatient($viewValue) | filter:$viewValue" typeahead-loading="loadingPatients" class="form-control">
+        <i ng:show="loadingPatients" class="glyphicon glyphicon-refresh"></i>
         <!--<select ng-disabled="patientFormVisible" ng-model="model.referral.patient_id"
                 ng-options="p.id as p.first_name +' ' +  p.last_name for p in patients"
                 ng-required="!patientFormVisible">
@@ -13,7 +13,7 @@
 
     </label>
     Or
-    <button class="btn" ng-click="patientDialog()">Create Patient</button>
+    <button class="btn" ng:click="patientDialog()">Create Patient</button>
 
 </div>
 
@@ -21,7 +21,7 @@
 
         <label>
             Search practice:
-            <input type="text" ng-model="destinationPractice" placeholder="Select practice..." typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue" typeahead-loading="loadingPractices" class="form-control">
+            <input type="text" ng:model="destinationPractice" placeholder="Select practice..." typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue" typeahead-loading="loadingPractices" class="form-control">
             <i ng-show="loadingPractices" class="glyphicon glyphicon-refresh"></i>
         </label>
 
@@ -34,14 +34,15 @@
         </select>
     </label>-->
     Or
-    <button class="btn" ng-click="practiceDialog()">Invite new practice</button>
+    <button class="btn" ng:click="practiceDialog()">Invite new practice</button>
 </div>
 
 
 <div>
     <label>
         Referral Note:
-        <textarea ng-model="model.referral.memo"></textarea>
+        <!--<textarea ng-model="model.referral.memo"></textarea>-->
+        <button class="btn" ng:click="newNoteDialog()">New note</button>
     </label>
 </div>
 
@@ -50,7 +51,7 @@
 
     <h3>Select files</h3>
 
-    <div ng-show="uploader.isHTML5">
+    <div ng:show="uploader.isHTML5">
         <!-- 3. ng-file-over | ng-file-over="className" -->
         <!--<div class="well my-drop-zone" ng-file-over>
             Base drop zone

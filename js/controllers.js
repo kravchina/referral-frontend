@@ -34,6 +34,10 @@ dentalLinksControllers.controller('LoginController', ['$scope', 'Auth', '$locati
             );
 
         };
+
+        $scope.existingReferralId = 7;
+
+
     }]);
 
 dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 'Patient', 'Referral', 'S3Bucket', '$modal', '$fileUploader', function ($scope, Practice, Patient, Referral, S3Bucket, $modal, $fileUploader) {
@@ -76,31 +80,43 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
 
     $scope.patientDialog = function () {
 
-        var modalInstance = $modal.open({
-            templateUrl: 'partials/patient_form.html',
-            controller: 'PatientModalController'/*,
-             resolve: {
-             items: function () {
-             return $scope.items;
-             }
-             }*/
-        });
+        $('#modalPatient').modal('show');
 
-        modalInstance.result.then(function (patient) {
-            $scope.patient = patient;
-        });
+//        var modalInstance = $modal.open({
+//            templateUrl: 'partials/patient_form.html',
+//            controller: 'PatientModalController'/*,
+//             resolve: {
+//             items: function () {
+//             return $scope.items;
+//             }
+//             }*/
+//        });
+//
+//        modalInstance.result.then(function (patient) {
+//            $scope.patient = patient;
+//        });
     };
 
     $scope.practiceDialog = function () {
-        var modalInstance = $modal.open({
-            templateUrl: 'partials/practice_form.html',
-            controller: 'PracticeModalController'
-        });
 
-        modalInstance.result.then(function (practice_invite) {
-            $scope.destinationPractice = {name: practice_invite.practice_name, id: practice_invite.practice_id};
-        });
+        $('#modalProvider').modal('show');
+
+//        var modalInstance = $modal.open({
+//            templateUrl: 'partials/practice_form.html',
+//            controller: 'PracticeModalController'
+//        });
+//
+//        modalInstance.result.then(function (practice_invite) {
+//            $scope.destinationPractice = {name: practice_invite.practice_name, id: practice_invite.practice_id};
+//        });
     };
+
+    $scope.newNoteDialog = function() {
+
+        $('#modalNote').modal('show');
+
+    };
+
 
     $scope.model.attachments = [];
 
@@ -237,6 +253,12 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateP
 
     $scope.savePdf = function () {
         PDF.save('referral.pdf')
+    };
+
+    $scope.newNoteDialog = function() {
+
+        $('#modalNote').modal('show');
+
     };
 
     $scope.submitNote = function (note) {
