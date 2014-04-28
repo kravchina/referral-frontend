@@ -9,8 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="DentalLinks">
         <meta name="author" content="Alexei Vidmich">
-        <link rel="shortcut icon" href="img/ico/favicon.png">        
-        <title>View Referral &mdash; DentalLinks</title>
+        <link rel="shortcut icon" href="img/ico/favicon.png">
+        <title>Create Referral &mdash; DentalLinks</title>
         <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
         <link href="fonts/dlicons/dlicons.css" rel="stylesheet">
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -55,9 +55,13 @@
         <section class="container">
         
             <header class="page-header">
-                <h1>View Referral</h1>
-                <p class="page-subheader">View referred patients from another provider.</p>
+                <h1>Create Referral</h1>
+                <p class="page-subheader">Fill out patient information for referral.</p>
             </header><!-- .page-header -->
+            
+            <div class="alert alert-danger">
+            	<strong>Oops!</strong> Please fix the highlighted errors below.
+            </div>
             
             <div class="form-wrapper">
                 <form id="formCreateReferral" action="" method="">
@@ -65,30 +69,35 @@
                     
                         <!-- Patient block -->
                         <div class="row">
-                            <div class="input-block col-xs-12 col-sm-12">
+                            <div class="input-block col-xs-12 col-sm-12 has-error">
                                 <div class="block-title">
                                     <h2>Patient</h2>
+                                    <button type="button" class="btn btn-orange btn-toggle btn-toggle-modal-patient" data-toggle="tooltip" data-placement="top" title="Create a New Patient Record" data-target="#modalPatient"><span class="dlicons-user-add"></span></button>
                                 </div>
-                                <input type="text" class="form-control data1" value="Terence Remollo" disabled="disabled">
+                                <input type="text" class="form-control" placeholder="Enter patient's name &hellip;">
                             </div>
                         </div><!-- .row -->
                         
-                        <!-- From Provider, Practice / To Provider, Practice block -->        
+                        <!-- Practice / Provider block -->        
                         <div class="row">
                             <div class="input-block-left col-xs-12 col-sm-6">
                                 <div class="block-title">
-                                    <h2>From</h2>
+                                    <h2>Practice</h2>
                                 </div>
-                                <input type="text" class="form-control data1" value="Dr. Who" disabled="disabled">
-                                <input type="text" class="form-control data2" value="Tooth Care Dental Center" disabled="disabled">
+                                <input type="text" class="form-control" placeholder="Select practice &hellip;">
                             </div>
                             
-                            <div class="input-block-right col-xs-12 col-sm-6">
+                            <div class="input-block-right col-xs-12 col-sm-6 has-error">
                                 <div class="block-title">
-                                    <h2>To</h2>
+                                    <h2>Provider</h2>
+                                    <button type="button" class="btn btn-orange btn-toggle btn-toggle-modal-provider" data-toggle="tooltip" data-placement="top" title="Invite a New Provider" data-target="#modalProvider"><span class="dlicons-user-add"></span></button>
                                 </div>
-                                <input type="text" class="form-control data1" value="Dr. Vidmich" disabled="disabled">
-                                <input type="text" class="form-control data2" value="Vidmich Dental Clinic" disabled="disabled">
+                                <select id="selectProvider" class="form-control">
+                                    <option selected="selected" disabled="disabled" class="placeholder" value="default">Choose a provider &hellip;</option>
+                                    <option value="brain">Dr. Brain</option>
+                                    <option value="strange">Dr. Strange</option>
+                                    <option value="vidmich">Dr. Vidmich</option>
+                                </select>
                             </div>
                         </div><!-- .row -->
                         
@@ -98,7 +107,20 @@
                                 <div class="block-title">
                                     <h2>Procedure</h2>
                                 </div>
-                                <input type="text" class="form-control data1" value="Extraction" disabled="disabled">
+                                <select id="selectProcedure" class="form-control">
+                                    <option selected="selected" disabled="disabled" class="placeholder" value="default">Select procedure &hellip;</option>
+                                    <option value="treatment-plan">Treatment Plan for Referral</option>
+                                    <option value="extraction">Extraction</option>
+                                    <option value="impacted-teeth">Impacted Teeth</option>
+                                    <option value="dental-implant">Dental Implant</option>
+                                    <option value="pathologic-condition">Pathologic Condition</option>
+                                    <option value="expose-bond">Expose and Bond</option>
+                                    <option value="apicoectomy">Apicoectomy</option>
+                                    <option value="preprosthetic-surgery">Pre-Prosthetic Surgery</option>
+                                    <option value="oral-facial-surgery">Oral-Facial Surgery</option>
+                                    <option value="orthogantic-surgery">Orthogantic Surgery</option>
+                                    <option value="other">Other</option>
+                                </select>
                             </div>
                         </div><!-- .row -->
                         
@@ -116,35 +138,35 @@
                                             <!-- Tooth 1-8 -->
                                             <ul>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>1</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>2</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled" checked="checked">
+                                                    <input type="checkbox">
                                                     <label>3</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>4</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>5</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>6</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled" checked="checked">
+                                                    <input type="checkbox">
                                                     <label>7</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>8</label>
                                                 </li>
                                             </ul>
@@ -152,35 +174,35 @@
                                             <!-- Tooth 9-16 -->
                                             <ul>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>9</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>10</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>11</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>12</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>13</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>14</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>15</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>16</label>
                                                 </li>
                                             </ul>
@@ -191,35 +213,35 @@
                                             <!-- Tooth 17-24 -->
                                             <ul>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled" checked="checked">
+                                                    <input type="checkbox">
                                                     <label>17</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>18</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>19</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>20</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>21</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>22</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>23</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>24</label>
                                                 </li>
                                             </ul>
@@ -227,35 +249,35 @@
                                             <!-- Tooth 25-32 -->
                                             <ul>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>25</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>26</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>27</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>28</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>29</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>30</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>31</label>
                                                 </li>
                                                 <li class="tooth-button">
-                                                    <input type="checkbox" disabled="disabled">
+                                                    <input type="checkbox">
                                                     <label>32</label>
                                                 </li>
                                             </ul>
@@ -385,7 +407,10 @@
                         	<div class="block-title">
                                 <h5>Patient Information</h5>
                             </div>
-                            <div class="input-block-right">
+                            <div class="alert alert-danger hidden">
+                                <strong>Oops!</strong> Please fix the highlighted errors below.
+                            </div>
+                            <div class="input-block-right has-error">
                                 <select id="selectSalutation" class="form-control">
                                     <option selected="selected" disabled="disabled" class="placeholder" value="default">Select salutation</option>
                                     <option>Mr.</option>
@@ -395,7 +420,7 @@
                                     <option>Engr.</option>
                                 </select>
                             </div>
-                            <div class="input-block">
+                            <div class="input-block has-error">
                             	<input type="text" class="form-control" placeholder="Enter first name &hellip;">
                             </div>
                             <div class="input-block-right">
@@ -428,10 +453,13 @@
                         	<div class="block-title">
                                 <h5>Provider Information</h5>
                             </div>
+                            <div class="alert alert-danger">
+                                <strong>Oops!</strong> Please fix the highlighted errors below.
+                            </div>
                             <div class="input-block">
                             	<input type="text" class="form-control" placeholder="Enter provider's name &hellip;">
                             </div>
-                            <div class="input-block">
+                            <div class="input-block has-error">
                             	<input type="text" class="form-control" placeholder="Enter provider's email address &hellip;">
                             </div>
                         </div>
@@ -455,7 +483,10 @@
                             <h4 class="modal-title" id="myModalLabel">Add a New Note</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="input-block">
+                            <div class="alert alert-danger">
+                                <strong>Oops!</strong> Please fix the highlighted errors below.
+                            </div>
+                            <div class="input-block has-error">
                             	<textarea placeholder="Write your note here &hellip;" class="form-control"></textarea>
                             </div>
                         </div>

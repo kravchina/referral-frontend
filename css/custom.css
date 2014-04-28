@@ -513,13 +513,13 @@ textarea.form-control {
 	background-size: contain;
 }
 .attachment-thumb.attach-word {
-	background-image: url(../img/attachments/bg-word.jpg);
+	background-image: url(../../img/attachments/bg-word.jpg);
 }
 .attachment-thumb.attach-excel {
-	background-image: url(../img/attachments/bg-excel.jpg);
+	background-image: url(../../img/attachments/bg-excel.jpg);
 }
 .attachment-thumb.attach-pdf {
-	background-image: url(../img/attachments/bg-pdf.jpg);
+	background-image: url(../../img/attachments/bg-pdf.jpg);
 }
 .attachment-details {
 	background-color: #fcfcfc;
