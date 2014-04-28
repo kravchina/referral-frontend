@@ -1,54 +1,35 @@
-<div class="modal-header">
-    <h3>Create Patient</h3>
-</div>
-<div class="modal-body">
-<form name="userForm">
-        <div class="field-group">
-            <div>
-                <label>
-                    First Name:
-                    <input type="text" name="firstName" ng-model="patient.first_name" ng-required="true"/>
-                </label>
-                <span ng-hide="userForm.firstName.$valid">First Name is invalid</span>
-            </div>
-            <div>
-                <label>
-                    Last Name:
-                    <input type="text" name="lastName" ng-model="patient.last_name" ng-required="true"/>
-                </label>
-                <span ng-hide="userForm.lastName.$valid">Last Name is invalid</span>
-            </div>
+<!-- Modal Patient -->
 
-            <div>
-                <label>
-                    Date of Birth:
-                    <input type="date" name="birthday" ng-model="patient.birthday" ng-required="true"/>
-                </label>
-                <span ng-hide="userForm.birthday.$valid">Birthday is invalid</span>
-            </div>
-
-            <div>
-                <label>
-                    Email:
-                    <input type="email" name="email" ng-model="patient.email" ng-required="true"/>
-                </label>
-                <span ng-hide="userForm.email.$valid">Email is invalid</span>
-            </div>
-
-            <div>
-                <label>
-                    Phone:
-                    <input type="text" name="phone" ng-model="patient.phone" ng-required="true" ng-pattern="/^[\d\s\(\)-.]+$/"/>
-                </label>
-
-                <span ng-hide="userForm.phone.$valid">Phone is invalid</span>
-            </div>
-
-        </div>
-
-    </form>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok(patient)">Save</button>
-    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-</div>
+            <form id="formNewPatient" name="patientForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Create a New Patient Record</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="block-title">
+                        <h5>Patient Information</h5>
+                    </div>
+                    <div ng-show="patientForm.$invalid" class="alert alert-danger">
+                        <strong>Oops!</strong> Please fix the highlighted errors below.
+                    </div>
+                    <div class="input-block-right" ng-class="{ 'has-error': patientForm.salutation.$invalid }">
+                        <select id="selectSalutation" name="salutation" ng-model="patient.salutation" ng-options="s for  s in salutations" class="form-control" ng-required="true">
+                            <option selected="selected" class="placeholder" value="">Select salutation</option>
+                        </select>
+                    </div>
+                    <div class="input-block" ng-class="{ 'has-error': patientForm.firstName.$invalid }">
+                        <input type="text" name="firstName" class="form-control" ng-model="patient.first_name" placeholder="Enter first name &hellip;" ng-required="true">
+                    </div>
+                    <div class="input-block-right" ng-class="{ 'has-error': patientForm.middleInitial.$invalid }">
+                        <input type="text" name="middleInitial" class="form-control" ng-model="patient.middle_initial" placeholder="Enter middle initial &hellip;" ng-required="true">
+                    </div>
+                    <div class="input-block"  ng-class="{ 'has-error': patientForm.lastName.$invalid }" >
+                        <input type="text" name="lastName" class="form-control" ng-model="patient.last_name" placeholder="Enter last name &hellip;" ng-required="true">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"  class="btn btn-orange" ng-disabled="patientForm.$invalid"  ng-click="ok(patient)">Save</button>
+                    <button type="button" class="btn btn-grey" data-dismiss="modal" ng-click="cancel()">Discard</button>
+                </div>
+            </form>
+<!-- End Modal Patient -->

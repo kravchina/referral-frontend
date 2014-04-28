@@ -40,13 +40,13 @@ dentalLinksControllers.controller('LoginController', ['$scope', 'Auth', '$locati
 
     }]);
 
-dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 'Patient', 'Referral', 'S3Bucket', '$modal', '$fileUploader', function ($scope, Practice, Patient, Referral, S3Bucket, $modal, $fileUploader) {
+dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 'Patient', 'Procedure', 'Provider', 'Referral', 'S3Bucket', '$modal', '$fileUploader', function ($scope, Practice, Patient, Procedure, Provider, Referral, S3Bucket, $modal, $fileUploader) {
 
-    /*$scope.patients = Patient.query();
+    $scope.procedures = Procedure.query();
 
-     $scope.practices = Practice.query();*/
+    $scope.providers = Provider.query();
 
-    $scope.model = {referral: {}, practice: {}};
+    $scope.model = {referral: {notes: []}, practice: {}};
 
     $scope.createReferral = function (model) {
 
@@ -67,57 +67,66 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
     };
 
     $scope.findPatient = function (searchValue) {
-        return Patient.searchPatient({search: searchValue }).$promise.then(function (res) {
+        return Patient.searchPatient({search: searchValue, now: Date.now() }).$promise.then(function (res) {
             return res;
         });
     };
 
     $scope.findPractice = function (searchValue) {
-        return Practice.searchPractice({search: searchValue }).$promise.then(function (res) {
+        return Practice.searchPractice({search: searchValue, now: Date.now() }).$promise.then(function (res) {
             return res;
         });
     };
 
     $scope.patientDialog = function () {
 
-        $('#modalPatient').modal('show');
 
-//        var modalInstance = $modal.open({
-//            templateUrl: 'partials/patient_form.html',
-//            controller: 'PatientModalController'/*,
-//             resolve: {
-//             items: function () {
-//             return $scope.items;
-//             }
-//             }*/
-//        });
-//
-//        modalInstance.result.then(function (patient) {
-//            $scope.patient = patient;
-//        });
+        var modalInstance = $modal.open({
+            templateUrl: 'partials/patient_form.html',
+            controller: 'PatientModalController'
+        });
+
+        modalInstance.result.then(function (patient) {
+            $scope.patient = patient;
+        });
     };
 
-    $scope.practiceDialog = function () {
+    $scope.providerDialog = function(){
+        var modalInstance = $modal.open({
+            templateUrl: 'partials/provider_form.html',
+            controller: 'ProviderModalController'
+        });
+
+        modalInstance.result.then(function (provider) {
+            $scope.provider = provider;
+        });
+    };
+
+    $scope.noteDialog = function(){
+        var modalInstance = $modal.open({
+            templateUrl: 'partials/note_form.html',
+            controller: 'NoteModalController'
+        });
+
+        modalInstance.result.then(function (note) {
+            $scope.model.referral.notes.push({message:note, created_at: Date.now()});
+        });
+    };
+
+    /*$scope.practiceDialog = function () {
 
         $('#modalProvider').modal('show');
 
-//        var modalInstance = $modal.open({
-//            templateUrl: 'partials/practice_form.html',
-//            controller: 'PracticeModalController'
-//        });
-//
-//        modalInstance.result.then(function (practice_invite) {
-//            $scope.destinationPractice = {name: practice_invite.practice_name, id: practice_invite.practice_id};
-//        });
+        var modalInstance = $modal.open({
+            templateUrl: 'partials/practice_form.html',
+            controller: 'PracticeModalController'
+        });
+
+        modalInstance.result.then(function (practice_invite) {
+            $scope.destinationPractice = {name: practice_invite.practice_name, id: practice_invite.practice_id};
+        });
     };
-
-    $scope.newNoteDialog = function() {
-
-        $('#modalNote').modal('show');
-
-    };
-
-
+*/
     $scope.model.attachments = [];
 
     S3Bucket.getCredentials(function (success) {
@@ -203,6 +212,8 @@ dentalLinksControllers.controller('PatientModalController', [ '$scope', '$modalI
 
     /*$scope.patient = patient;*/
 
+    $scope.salutations = ['Mr.','Ms.', 'Mrs.','Dr.','Engr.'];
+
     $scope.ok = function (patient) {
         Patient.save({patient: patient},
             function (success) {
@@ -219,6 +230,29 @@ dentalLinksControllers.controller('PatientModalController', [ '$scope', '$modalI
     };
 }]);
 
+dentalLinksControllers.controller('NoteModalController', ['$scope', '$modalInstance', 'Note', function($scope, $modalInstance, Note){
+     $scope.ok = function(note){
+         //nothing to do, we cant save note right here because at this stage referral doesn't exist. We can only add new note to the list on the parent page (create referral) and save simultaneously with referral.
+         $modalInstance.close(note);
+     };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+
+dentalLinksControllers.controller('ProviderModalController', ['$scope', '$modalInstance', 'Provider', function($scope, $modalInstance, Provider){
+    $scope.result = {};
+    $scope.ok = function(provider){
+        Provider.save({user: provider}, function(success){
+            $modalInstance.close(success);
+        }, function(failure){
+            $scope.result.failure = true;
+        });
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
 
 dentalLinksControllers.controller('PracticeModalController', ['$scope', '$modalInstance', 'PracticeInvitation', function ($scope, $modalInstance, PracticeInvitation) {
     $scope.ok = function (practice_invite) {

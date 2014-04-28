@@ -32,7 +32,7 @@
                            <b>{{note.user.first_name}} {{note.user.last_name}}</b> at <b>{{note.created_at | date: 'short' }}:</b> {{note.message}}
                             <!--[<a href ng-click="notes.splice($index, 1)">X</a>]-->
                         </li>
-                        <button class="btn" ng:click="newNoteDialog()">New note</button>
+                        <button class="btn" ng-click="newNoteDialog()">New note</button>
                     </ul>
                     <!--<textarea ng-model="newNote"></textarea>-->
                     <!--<button class="btn" ng-click="submitNote(newNote)">Add note</button>-->

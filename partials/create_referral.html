@@ -1,160 +1,311 @@
-<form class="css-form" name="form" novalidate="novalidate">
-<div>
-    <h2>Create Referral</h2>
-    <label>
-        Search Patient:
-        <input type="text" ng:model="patient" placeholder="Select patient..." typeahead="p as p.first_name +' ' +  p.last_name for p in findPatient($viewValue) | filter:$viewValue" typeahead-loading="loadingPatients" class="form-control">
-        <i ng:show="loadingPatients" class="glyphicon glyphicon-refresh"></i>
-        <!--<select ng-disabled="patientFormVisible" ng-model="model.referral.patient_id"
-                ng-options="p.id as p.first_name +' ' +  p.last_name for p in patients"
-                ng-required="!patientFormVisible">
-            <option value="">-- Select patient --</option>
-        </select>-->
+<header class="page-header">
+    <h1>Create Referral</h1>
+    <p class="page-subheader">Fill out patient information for referral.</p>
+</header><!-- .page-header -->
 
-    </label>
-    Or
-    <button class="btn" ng:click="patientDialog()">Create Patient</button>
-
+<div ng-show="form.$invalid" class="alert alert-danger">
+    <strong>Oops!</strong> Please fix the highlighted errors below.
 </div>
 
-<div>
+<div class="form-wrapper">
+<form id="formCreateReferral" name="form">
+<div class="box-white">
 
-        <label>
-            Search practice:
-            <input type="text" ng:model="destinationPractice" placeholder="Select practice..." typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue" typeahead-loading="loadingPractices" class="form-control">
-            <i ng-show="loadingPractices" class="glyphicon glyphicon-refresh"></i>
-        </label>
+<!-- Patient block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12 has-error">
+        <div class="block-title">
+            <h2>Patient</h2>
+            <button type="button" class="btn btn-orange btn-toggle" ng-click="patientDialog()" data-toggle="tooltip" data-placement="top" title="Create a New Patient Record" data-target="#modalPatient"><span class="dlicons-user-add"></span></button>
+        </div>
+        <input type="text" class="form-control" placeholder="Enter patient's name &hellip;" ng-model="patient" typeahead="p as p.first_name +' ' +  p.last_name for p in findPatient($viewValue) | filter:$viewValue" >
+    </div>
+</div><!-- .row -->
 
+<!-- Practice / Provider block -->
+<div class="row">
+    <div class="input-block-left col-xs-12 col-sm-6">
+        <div class="block-title">
+            <h2>Practice</h2>
+        </div>
+        <input type="text" class="form-control" placeholder="Select practice &hellip;" ng-model="destinationPractice" typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue" >
+    </div>
 
-    <!--<label>
-        Select Destination Practice:
-        <select ng-disabled="invitePracticeVisible" ng-model="model.referral.dest_practice_id"
-                ng-options="p.id as p.name for p in practices" ng-required="!invitePracticeVisible">
-            <option value="">-- Select practice --</option>
+    <div class="input-block-right col-xs-12 col-sm-6 has-error">
+        <div class="block-title">
+            <h2>Provider</h2>
+            <button type="button" class="btn btn-orange btn-toggle" ng-click="providerDialog()" data-toggle="tooltip" data-placement="top" title="Invite a New Provider" data-target="#modalProvider"><span class="dlicons-user-add"></span></button>
+        </div>
+        <select id="selectProvider" class="form-control" ng-model="model.referral.provider_id" ng-options="p.id as 'Dr. ' + p.last_name for p in providers" >
+            <option selected="selected" disabled="disabled" class="placeholder" value="default">Choose a provider &hellip;</option>
         </select>
-    </label>-->
-    Or
-    <button class="btn" ng:click="practiceDialog()">Invite new practice</button>
-</div>
-
-
-<div>
-    <label>
-        Referral Note:
-        <!--<textarea ng-model="model.referral.memo"></textarea>-->
-        <button class="btn" ng:click="newNoteDialog()">New note</button>
-    </label>
-</div>
-
-
-<div>
-
-    <h3>Select files</h3>
-
-    <div ng:show="uploader.isHTML5">
-        <!-- 3. ng-file-over | ng-file-over="className" -->
-        <!--<div class="well my-drop-zone" ng-file-over>
-            Base drop zone
-        </div>-->
-
-        <!-- Example: ng-file-drop | ng-file-drop="options" -->
-        <div class="well my-drop-zone" ng-file-drop ng-file-over="another-file-over-class">
-            Drop images here to attach them to your referral.
-        </div>
     </div>
+</div><!-- .row -->
 
-    <!-- 2. ng-file-select | ng-file-select="options" -->
-    <input ng-file-select type="file" class="btn" multiple/>
+<!-- Procedure block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Procedure</h2>
+        </div>
+        <select id="selectProcedure" class="form-control" ng-model="model.referral.procedure_id" ng-options="p.id as p.name for p in procedures">
+            <option selected="selected" disabled="disabled" class="placeholder" value="default">Select procedure &hellip;</option>
+        </select>
+    </div>
+</div><!-- .row -->
 
-</div>
+<!-- Tooth Chart block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Tooth Chart</h2>
+        </div>
 
-<div>
-    <h2>Image Attachments</h2>
+        <div class="toothchart-wrapper">
+            <div id="toothchart">
+                <div class="upper-chart">
 
-    <h3>The queue</h3>
+                    <!-- Tooth 1-8 -->
+                    <ul>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>1</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>2</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>3</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>4</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>5</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>6</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>7</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>8</label>
+                        </li>
+                    </ul>
 
-    <p>Queue length: {{ uploader.queue.length }}</p>
+                    <!-- Tooth 9-16 -->
+                    <ul>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>9</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>10</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>11</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>12</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>13</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>14</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>15</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>16</label>
+                        </li>
+                    </ul>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th width="50%">Name</th>
-            <th ng-show="uploader.isHTML5">Size</th>
-            <th ng-show="uploader.isHTML5">Progress</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="item in uploader.queue">
-            <td>
-                <div><label for="img-comment-{{item.file.name}}"><strong>{{ item.file.name }}</strong></label></div>
-                <!-- Image preview -->
-                <!--auto height-->
-                <!--<div ng-thumb="{ file: item.file, width: 100 }"></div>-->
-                <!--auto width-->
-                <div class="img-wrapper" ng-show="uploader.isHTML5"
-                     ng-thumb="{ file: item.file, height: 200 }"></div>
-                <!--fixed width and height -->
-                <!--<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>-->
-
-                <textarea id="img-comment-{{item.file.name}}" class="img-comment" ng-model="item.notes"></textarea>
-            </td>
-            <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-            <td ng-show="uploader.isHTML5">
-                <div class="progress" style="margin-bottom: 0;">
-                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
                 </div>
-            </td>
-            <td class="text-center">
-                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-            </td>
-            <td nowrap>
-                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()"
-                        ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-                    <span class="glyphicon glyphicon-upload"></span> Upload
-                </button>
-                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()"
-                        ng-disabled="!item.isUploading">
-                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-                </button>
-                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                    <span class="glyphicon glyphicon-trash"></span> Remove
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                <div class="lower-chart">
 
-    <div>
-        <div>
-            Queue progress:
+                    <!-- Tooth 17-24 -->
+                    <ul>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>17</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>18</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>19</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>20</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>21</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>22</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>23</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>24</label>
+                        </li>
+                    </ul>
 
-            <div class="progress" style="">
-                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
-            </div>
-        </div>
-        <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()"
-                ng-disabled="!uploader.getNotUploadedItems().length">
-            <span class="glyphicon glyphicon-upload"></span> Upload all
-        </button>
-        <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()"
-                ng-disabled="!uploader.isUploading">
-            <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-        </button>
-        <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()"
-                ng-disabled="!uploader.queue.length">
-            <span class="glyphicon glyphicon-trash"></span> Remove all
-        </button>
+                    <!-- Tooth 25-32 -->
+                    <ul>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>25</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>26</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>27</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>28</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>29</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>30</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>31</label>
+                        </li>
+                        <li class="tooth-button">
+                            <input type="checkbox">
+                            <label>32</label>
+                        </li>
+                    </ul>
+
+                </div>
+            </div><!-- #toothchart -->
+        </div><!-- .toothchart-wrapper -->
+
     </div>
+</div><!-- .row -->
 
-</div>
+<!-- Attachments block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Attachments</h2>
+            <button type="button" class="btn btn-orange btn-toggle" data-toggle="tooltip" data-placement="top" title="Add Attachment"><span class="dlicons-plus"></span></button>
+        </div>
 
+        <div class="attachments-wrapper">
+            <div class="drag-drop-area"></div>
+            <ul>
 
-<button class="btn send" ng-click="createReferral(model)" ng-disabled="form.$invalid">Sign and Send</button>
-<div class="success" ng-show="success">Referral was created successfully</div>
-<div class="error" ng-show="failure">There was an error during referral creation</div>
+                <!-- Attachment block -->
+                <li class="attachment-block">
+                    <a href="#">
+                        <div class="attachment-thumb"><img src="img/attachments/001.jpg" alt="img"></div>
+                        <div class="attachment-details">
+                            <span class="filename">DSC_338.JPG</span>
+                            <span class="datestamp">Apr 14, 2014</span>
+                        </div>
+                    </a>
+                </li>
 
+                <!-- Attachment block -->
+                <li class="attachment-block">
+                    <a href="#">
+                        <div class="attachment-thumb attach-word"></div>
+                        <div class="attachment-details">
+                            <span class="filename">Patient History.docx</span>
+                            <span class="datestamp">Apr 14, 2014</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- Attachment block -->
+                <li class="attachment-block">
+                    <a href="#">
+                        <div class="attachment-thumb attach-excel"></div>
+                        <div class="attachment-details">
+                            <span class="filename">Payment Schedule.xcl</span>
+                            <span class="datestamp">Apr 14, 2014</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- Attachment block -->
+                <li class="attachment-block">
+                    <a href="#">
+                        <div class="attachment-thumb attach-pdf"></div>
+                        <div class="attachment-details">
+                            <span class="filename">Tooth Chart.pdf</span>
+                            <span class="datestamp">Apr 14, 2014</span>
+                        </div>
+                    </a>
+                </li>
+
+            </ul>
+        </div><!-- .attachments-wrapper -->
+    </div>
+</div><!-- .row -->
+
+<!-- Notes block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Notes</h2>
+            <button type="button" class="btn btn-orange btn-toggle" ng-click="noteDialog()" data-toggle="tooltip" data-placement="top" title="Add New Note" data-target="#modalNote"><span class="dlicons-plus"></span></button>
+        </div>
+
+        <div class="notes-wrapper">
+            <ul>
+                <!-- Note block -->
+                <li class="note-block" ng-repeat="note in model.referral.notes">
+                    <span class="note-content">{{note.message}}</span>
+                    <span class="datestamp">{{note.created_at | date: 'short' }}</span>
+                </li>
+
+            </ul>
+        </div><!-- .notes-wrapper -->
+    </div>
+</div><!-- .row -->
+
+</div><!-- .box-white -->
+
+<div class="button-block">
+    <button  class="btn btn-orange btn-lg" ng-click="createReferral(model)" ng-disabled="form.$invalid">Sign &amp; Send</button>
+</div><!-- .button-block -->
 </form>
+</div><!-- .form-wrapper -->
+

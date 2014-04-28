@@ -87,6 +87,14 @@ dentalLinksServices.factory('Attachment', ['$resource', function ($resource) {
     return $resource(host + '/attachments');
 }]);
 
+dentalLinksServices.factory('Procedure', ['$resource', function($resource){
+ return $resource(host + '/procedures')
+}]);
+
+dentalLinksServices.factory('Provider', ['$resource', function($resource){
+ return $resource(host + '/users')
+}]);
+
 dentalLinksServices.factory('PDF', [function () {
     var pdf;
     var paragraphs = [];
