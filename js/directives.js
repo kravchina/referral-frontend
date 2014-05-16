@@ -57,8 +57,19 @@ dentalLinksDirectives.directive('ngThumb', ['$window', function ($window) {
             var params = scope.$eval(attributes.ngThumb);
 
             if (!helper.isFile(params.file)) return;
-            if (!helper.isImage(params.file)) return;
+            /*if (!helper.isImage(params.file)) return;*/
 
+            if(!helper.isImage(params.file)){
+                var type = '|' + params.file.type.slice(params.file.type.lastIndexOf('/') + 1) + '|';
+                var cssClass = '';
+                switch (type){
+                    case '|doc|': cssClass = 'attach-word'; break;
+                    case '|pdf|': cssClass = 'attach-pdf'; break;
+                    case '|xls|': cssClass = 'attach-excel'; break;
+                    default : cssClass = 'attach-file';
+                }
+                element.addClass(cssClass)
+            }
             var canvas = element.find('canvas');
             var reader = new FileReader();
 

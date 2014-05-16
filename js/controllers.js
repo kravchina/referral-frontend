@@ -22,6 +22,9 @@ dentalLinksControllers.controller('LoginController', ['$scope', 'Auth', '$locati
                     $scope.result = {failure: true};
                 });
         };
+        $scope.logged = function(){
+            return Auth.get();
+        };
         $scope.logout = function () {
             Login.logout(function () {
                     Auth.remove();
@@ -52,6 +55,11 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
 
         model.referral.dest_practice_id = $scope.destinationPractice.id;
         model.referral.patient_id = $scope.patient.id;
+
+        for (var i = 0; i < $scope.uploader.queue.length; i++){
+            var item = $scope.uploader.queue[i];
+            item.upload();
+        }
 
         $scope.create_referral_result = Referral.save(model,
             function (success) {
@@ -133,7 +141,7 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
         var bucket_path = 'uploads/';
         var uploader = $scope.uploader = $fileUploader.create({
             scope: $scope,
-            url: 'https://mezerny.s3.amazonaws.com',
+            url: 'https://dev1-attachments.s3.amazonaws.com/',
             formData: [
                 { key: bucket_path + '${filename}' },
                 {AWSAccessKeyId: success.s3_access_key_id},
@@ -353,7 +361,7 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateP
         var bucket_path = 'uploads/';
         var uploader = $scope.uploader = $fileUploader.create({
             scope: $scope,
-            url: 'https://mezerny.s3.amazonaws.com',
+            url: 'https://dev1-attachments.s3.amazonaws.com',
             formData: [
                 { key: bucket_path + '${filename}' },
                 {AWSAccessKeyId: success.s3_access_key_id},

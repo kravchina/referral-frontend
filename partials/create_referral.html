@@ -224,58 +224,31 @@
     <div class="input-block col-xs-12 col-sm-12">
         <div class="block-title">
             <h2>Attachments</h2>
-            <button type="button" class="btn btn-orange btn-toggle" data-toggle="tooltip" data-placement="top" title="Add Attachment"><span class="dlicons-plus"></span></button>
+            <label class="btn btn-orange btn-toggle" data-toggle="tooltip" data-placement="top" title="Add Attachment">
+            <input ng-file-select type="file" style="position: absolute; top: 0; opacity: 0; width:0; height:0; cursor:pointer" multiple>
+                <span class="dlicons-plus"></span>
+            </label>
+
         </div>
 
         <div class="attachments-wrapper">
-            <div class="drag-drop-area"></div>
+            <div class="my-drop-zone" ng-file-drop ng-file-over="another-file-over-class">
             <ul>
-
                 <!-- Attachment block -->
-                <li class="attachment-block">
+                <li class="attachment-block" ng-repeat="item in uploader.queue">
                     <a href="#">
-                        <div class="attachment-thumb"><img src="img/attachments/001.jpg" alt="img"></div>
-                        <div class="attachment-details">
-                            <span class="filename">DSC_338.JPG</span>
+                        <div class="attachment-thumb" ng-show="uploader.isHTML5"
+                             ng-thumb="{ file: item.file, height: 80, width:80 }">
+                            <!--<img src="img/attachments/001.jpg" alt="img">-->
+                        </div>
+                        <div class="attachment-details" >
+                            <span class="filename">{{ item.file.name }}</span>
                             <span class="datestamp">Apr 14, 2014</span>
                         </div>
                     </a>
                 </li>
-
-                <!-- Attachment block -->
-                <li class="attachment-block">
-                    <a href="#">
-                        <div class="attachment-thumb attach-word"></div>
-                        <div class="attachment-details">
-                            <span class="filename">Patient History.docx</span>
-                            <span class="datestamp">Apr 14, 2014</span>
-                        </div>
-                    </a>
-                </li>
-
-                <!-- Attachment block -->
-                <li class="attachment-block">
-                    <a href="#">
-                        <div class="attachment-thumb attach-excel"></div>
-                        <div class="attachment-details">
-                            <span class="filename">Payment Schedule.xcl</span>
-                            <span class="datestamp">Apr 14, 2014</span>
-                        </div>
-                    </a>
-                </li>
-
-                <!-- Attachment block -->
-                <li class="attachment-block">
-                    <a href="#">
-                        <div class="attachment-thumb attach-pdf"></div>
-                        <div class="attachment-details">
-                            <span class="filename">Tooth Chart.pdf</span>
-                            <span class="datestamp">Apr 14, 2014</span>
-                        </div>
-                    </a>
-                </li>
-
             </ul>
+            </div>
         </div><!-- .attachments-wrapper -->
     </div>
 </div><!-- .row -->

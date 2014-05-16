@@ -501,6 +501,7 @@ textarea.form-control {
 }
 .attachment-thumb {
 	float: left;
+    background-color: #ffffff;
 	height: 40px;
 	width: 40px;
 }
