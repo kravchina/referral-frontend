@@ -1,46 +1,270 @@
-<div>
-                <h2>View Referral</h2>
+<header class="page-header">
+    <h1>View Referral</h1>
 
-                <div>
-                    Patient: {{referral.patient.first_name}} {{referral.patient.last_name}}
-                </div>
-                <div>
-                    Original Practice: {{referral.orig_practice.name}}
-                </div>
-                <div>
-                    Practice Description: {{referral.orig_practice.description}}
-                </div>
-                <div>
-                    Memo: {{referral.memo}}
-                </div>
-                <div>Status: {{referral.status}}</div>
-                <div>
-                    Attachments:
-                    <div access="admin,doctor" ng-repeat="attachment in referral.attachments">
-                        <a ng-href="{{attachment.filename}}" target="_blank">
-                            <!--<canvas photo-canvas img-src="{{attachment.filename}}" width="250"></canvas>-->
-                            <img ng-if="!isImage(attachment)" width="100" src="data:image/png;base64,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"/>
-                            <img ng-if="isImage(attachment)" pdf-photos access="admin,doctor" total-images="{{referral.attachments.length}}" crossorigin="anonymous"  ng-src="{{attachment.filename}}" width="300"/>
-                        </a>
-                        {{attachment.notes}}
-                    </div>
-                </div>
-                <div>
-                    Notes:
+    <p class="page-subheader">View referred patients from another provider.</p>
+</header><!-- .page-header -->
+
+<div class="form-wrapper">
+<form id="formCreateReferral" action="" method="">
+<div class="box-white">
+
+<!-- Patient block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Patient</h2>
+        </div>
+        <input type="text" class="form-control data1" value="{{referral.patient.first_name}} {{referral.patient.last_name}}" disabled="disabled">
+    </div>
+</div>
+<!-- .row -->
+
+<!-- From Provider, Practice / To Provider, Practice block -->
+<div class="row">
+    <div class="input-block-left col-xs-12 col-sm-6">
+        <div class="block-title">
+            <h2>From</h2>
+        </div>
+        <input type="text" class="form-control data1" value="Dr. Who" disabled="disabled">
+        <input type="text" class="form-control data2" value="{{referral.orig_practice.name}}" disabled="disabled">
+    </div>
+
+    <div class="input-block-right col-xs-12 col-sm-6">
+        <div class="block-title">
+            <h2>To</h2>
+        </div>
+        <input type="text" class="form-control data1" value="Dr. Vidmich" disabled="disabled">
+        <input type="text" class="form-control data2" value="{{referral.dest_practice.name}}" disabled="disabled">
+    </div>
+</div>
+<!-- .row -->
+
+<!-- Procedure block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Procedure</h2>
+        </div>
+        <input type="text" class="form-control data1" value="{{referral.procedure}}" disabled="disabled">
+    </div>
+</div>
+<!-- .row -->
+
+<!-- Tooth Chart block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Tooth Chart</h2>
+        </div>
+
+        <div class="toothchart-wrapper">
+            <div id="toothchart">
+                <div class="upper-chart">
+
+                    <!-- Tooth 1-8 -->
                     <ul>
-                        <li ng-repeat="note in referral.notes">
-                           <b>{{note.user.first_name}} {{note.user.last_name}}</b> at <b>{{note.created_at | date: 'short' }}:</b> {{note.message}}
-                            <!--[<a href ng-click="notes.splice($index, 1)">X</a>]-->
+                        <li class="tooth-button" ng-repeat="item in ['1','2','3','4','5','6','7','8']">
+                            <input type="checkbox" disabled="disabled" ng-checked="referral.teeth.indexOf(item)!= -1">
+                            <label>{{item}}</label>
                         </li>
-                        <button class="btn" ng-click="newNoteDialog()">New note</button>
+
                     </ul>
-                    <!--<textarea ng-model="newNote"></textarea>-->
-                    <!--<button class="btn" ng-click="submitNote(newNote)">Add note</button>-->
+
+                    <!-- Tooth 9-16 -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['9','10','11','12','13','14','15','16']">
+                            <input type="checkbox" disabled="disabled" ng-checked="referral.teeth.indexOf(item)!= -1">
+                            <label>{{item}}</label>
+                        </li>
+                    </ul>
 
                 </div>
-                <div>
-                    <button ng-click="savePdf()">Save pdf</button>
+                <div class="lower-chart">
+
+                    <!-- Tooth 17-24 -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['17','18','19','20','21','22','23','24']">
+                            <input type="checkbox" disabled="disabled" ng-checked="referral.teeth.indexOf(item)!= -1">
+                            <label>{{item}}</label>
+                        </li>
+                    </ul>
+
+                    <!-- Tooth 25-32 -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['25','26','27','28','29','30','31','32']">
+                            <input type="checkbox" disabled="disabled" ng-checked="referral.teeth.indexOf(item)!= -1">
+                            <label>{{item}}</label>
+                        </li>
+                    </ul>
+
                 </div>
+            </div>
+            <!-- #toothchart -->
+        </div>
+        <!-- .toothchart-wrapper -->
+
+    </div>
+</div>
+<!-- .row -->
+
+<!-- Attachments block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Attachments</h2>
+            <button type="button" class="btn btn-orange btn-toggle" data-toggle="tooltip" data-placement="top"
+                    title="Add Attachment"><span class="dlicons-plus"></span></button>
+        </div>
+
+        <div class="attachments-wrapper">
+            <div class="drag-drop-area"></div>
+            <ul>
+
+                <!-- Attachment block -->
+                <li class="attachment-block">
+                    <a href="#">
+                        <div class="attachment-thumb"><img src="img/attachments/001.jpg" alt="img"></div>
+                        <div class="attachment-details">
+                            <span class="filename">DSC_338.JPG</span>
+                            <span class="datestamp">Apr 14, 2014</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- Attachment block -->
+                <li class="attachment-block">
+                    <a href="#">
+                        <div class="attachment-thumb attach-word"></div>
+                        <div class="attachment-details">
+                            <span class="filename">Patient History.docx</span>
+                            <span class="datestamp">Apr 14, 2014</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- Attachment block -->
+                <li class="attachment-block">
+                    <a href="#">
+                        <div class="attachment-thumb attach-excel"></div>
+                        <div class="attachment-details">
+                            <span class="filename">Payment Schedule.xcl</span>
+                            <span class="datestamp">Apr 14, 2014</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- Attachment block -->
+                <li class="attachment-block">
+                    <a href="#">
+                        <div class="attachment-thumb attach-pdf"></div>
+                        <div class="attachment-details">
+                            <span class="filename">Tooth Chart.pdf</span>
+                            <span class="datestamp">Apr 14, 2014</span>
+                        </div>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+        <!-- .attachments-wrapper -->
+    </div>
+</div>
+<!-- .row -->
+
+<!-- Notes block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Notes</h2>
+            <button type="button" class="btn btn-orange btn-toggle btn-toggle-modal-note" data-toggle="tooltip"
+                    data-placement="top" title="Add New Note" data-target="#modalNote"><span
+                    class="dlicons-plus"></span></button>
+        </div>
+
+        <div class="notes-wrapper">
+            <ul>
+
+                <!-- Note block -->
+                <li class="note-block">
+                    <span class="note-content">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</span>
+                    <span class="datestamp">Mar 31, 2014</span>
+                </li>
+
+                <!-- Note block -->
+                <li class="note-block">
+                    <span class="note-content">Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</span>
+                    <span class="datestamp">Apr 7, 2014</span>
+                </li>
+
+                <!-- Note block -->
+                <li class="note-block">
+                    <span class="note-content">Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</span>
+                    <span class="datestamp">Apr 14, 2014</span>
+                </li>
+        </div>
+        <!-- .notes-wrapper -->
+    </div>
+</div>
+<!-- .row -->
+
+</div>
+<!-- .box-white -->
+
+<div class="button-block">
+    <button type="submit" class="btn btn-orange btn-lg">Sign &amp; Send</button>
+</div>
+<!-- .button-block -->
+</form>
+</div><!-- .form-wrapper -->
+
+
+<div>
+    <h2>View Referral</h2>
+
+    <div>
+        Patient: {{referral.patient.first_name}} {{referral.patient.last_name}}
+    </div>
+    <div>
+        Original Practice: {{referral.orig_practice.name}}
+    </div>
+    <div>
+        Practice Description: {{referral.orig_practice.description}}
+    </div>
+    <div>
+        Memo: {{referral.memo}}
+    </div>
+    <div>Status: {{referral.status}}</div>
+    <div>
+        Attachments:
+        <div access="admin,doctor" ng-repeat="attachment in referral.attachments">
+            <a ng-href="{{attachment.filename}}" target="_blank">
+                <!--<canvas photo-canvas img-src="{{attachment.filename}}" width="250"></canvas>-->
+                <img ng-if="!isImage(attachment)" width="100"
+                     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAW4ElEQVR4XuzZzW4SURiH8b/Yhk0N3UHSNswN2KKr2cEdcAnlUsY7cMVW3LPQK/CjSxJtVxUStbKb3cgK0obj1BwNOcZDZRBmmueXTNqE5O3qfc6copwDAAAAAAAAAAAAAAAAAAAAAAAAAAAPVEBRFNUldSS1JDUk7WtbcC7pyv58G0XRO4EA/MfF79nFzy+8kn3SIHwXCMAalv/ULn9xILHBfp6G4JtAAFZc/heSOioy9CRFhIAArOXkr1QqCsNQQRCoVqvJZYzRupk/fynabIfJNHM6nSqO49/PaDjUbDaTR2LfBp4JBOCOd/4rOZrNplqtllwsvn929uVfPmo4HGo0GqWPNwbnkjppCC7kAQLwxv2HX7vdVqPR2ODic+r/+yjz8+2g3+9rPB7rLxIbgdcCAfCc/u7Jn+NTn8W3lCSJut2ulrEReKmtwI7yq+Pc+e3y52PxWXz/h4PBQK6d3V3dXF/L0UsDIDcCIAAtLQjD8J4s/jrnuyM3cM+/4wdxHGvR4+MTHR4d6dPlpb5++ZyTCKCk/GpoQRAEMsasffnNVk797PP9I03m5fePWv433Lv/wcGhyuVyGoJjnTx5KsuNwKkscAXY14JqtZqTU597/ir2Hu1pPp/rVr1e162Ljx+4DhCAzeFrvez3/FU9LJVkFS0CBIDF556fVckG4B5HgACw/LzuG38AChIBAsDi87VehtmeAGSIAAgA9/wiLL7xBIAIEIBNLf7Z2XtNJhNtH2wAiAAB2Nipn//lJwDZIwAC8IO9M+aNowri+BwQHJmCE/IZFyE5lBSJaA6HSC6QuNBRROQjhG8Q2lAQPgI1KUJPEYvGEU3cBQHGKRIqgmMnkhEWsgFHshztsDpkPZ9exNzubHbmPf9HusbznlzNb99/d/7zJC1+6b0/Q5L44BfWcvz38fzYeiE3tibKR/sn/v8U5aP9wv8X/re0v9KalZVTAgAAAQCgFS3+P8XF0d+rFp4AlgkLJwaItF+GS9irgEMEo0n3C30AgAAA0KpNlxVPZWF/zSe6vF9R3KN05VNLlf0SWAUJAAgAAK2adorqT2W5cPQnipDTF3fI6U8UcS4CgwwHPQAAAQBA79bT63wZGsSKwjXX+Sq5Ee9vFgCAAACgN9VwdjpfAJtS5+vlRgyAl2sDABAAABTFn6bOD2s86nwZbAoJAAgAAI0bUrg9nS9rZb3OD+u1Or/muwABLAIAAAEAoOVg8amo1/n6z4r6E0kLckMAk/AOwAICCACgkJ6qNjpbX9wy2GS5oQBblJMAYAABBADAmsKrKRdksAhwUX7Wi/e3D7a4EQgQAABabRRStO+qnspqna9v31W2KLOuUUgvAQABAEBvpZWKq/G333qdryjuhuWG/uVgiE6nAwgAAFatwSw88dC+27gvIgYATgIAgJEhiAu07wpwaN4QRIAAAODCE5B++66830bny05AQMA+YAaCTbd5nS+vAQQAAPvih023rReYMVgAgeYCAGCNIQg6n4jbPlEQIAAANE4AxebkdL5B+26T/RIECHgJmIGKpr+naz8rWtp0ZSmglxuAAADgIpzadKM1iv1ewQYI2AcAoGjfzdSmKxd+U05HQMBHAAD523SlvRZjzQkQAAC8GIJYq7NTt+kajDsDBAAAN4agws6mKxdOkvMH5P0ECAAATmaGyk+17Gy69mPNAQEAwMewYLTvGow1BwQAAFP//1gwbLrtjzUnQAAAMC58Ith0zcaaEyAAABgXfshbte8a6HzTseYh13wAAjAD1W0RLqDzX5zciHIvMAABXA2muBsQNl29zpelEiAAADgzBXGaOj/sdzjWXAYbIGAecAOmf8uO/VjzmoYmAgQAAC9RpGrTNRtrrrcoAwI+Al6Almy6BvP8XY81J0AAAHAiFNjApptk+y43BEYCBAAANx8J7J7K9jZdbaNRbUPS1LF92ts/RgexublJc3NzgAAA0Grxu2rfDTmf7bt6KRDWzL2+Q4+2Zugg1tbWAgDyhcB2+VsEANwUPsGmazTWvN/bGgPA3bt3aWFh4SjIgWH5uwcAeOoJYm76lh3ofAGsg5PrtPzLWTqInZ0dunPnDg2Hw5wh0CWim0T0LgDQ2gu+SVYXsOkKOr9pX0T3tV06NfNHKQN6dBDLy8vU7XZpMBhkA4G/SrD99vDXw4lBKQM+L39fAABWx/0QsOkqJh9r5cbl8z/Sl7c/osOxuLhI29vb2ZwEzp47Rxsb6/Rsf/9w4moJgJvl7xEAoA1V4RNsumbzD4i607v08fwPtLhygcoYOwmsrq6O3gn0+/1kvw483X1KT548DsU/LgWuE9En5Dw65DRKeo5V9LVrn1WmwtLS0ih76Z3bXm26ztp368gFGSy3frpA99bfpiMY/XAKgASw8wdwYdG+69Km27wvQj41XZ7/nvozv9PiygIdsbhKRJ8CALbGIBubblxc7X5WHKX8jDUfnHw4gsCtEgKPtt6kHOPEibfo8eONw4kr1/+LHQDAovBjANjadEPexqYb9puArTv9N115/zva3p2m1fXTtFaCYHPnDdp79mrSRT8726P5+fM0NTVFN258RXt7e4ffBVwmoq8BAHWwYnWWNl3F4BD1KDBVv0R3+h8anl1174v4dvObUfbixQ8nFqOnz5yhB/fvhwQAYIoKhc7O06ar/+aPseZx4QcEnHkOAOAFsBMIVYsbn/XQL1Gj8EOUABhJgZEMCF+0Pih/y2QaMAPBpqvR+fn3S0ysOFlYFMsAGhIRAGDXGlwIOh/tu0JxZ+uL0Bd+HLO9Hj0YTwwgAWwMQXnadKHzFXDQFr4cvdnZqCEIALDyBMTFCZ2PseZC4Xfq950wUa/XI8IJwPyJH4LZXOdD59uPNZd1fqcRPXp86jgGgvgyBDF0vrQm/36JyZ/6rDanAQA2hS+PBfd/y05a03/jvbZyQ1/4PosfAGAFfr3qfP2JwhBs9mPNZbDKx33/T30AQI9fVhxHM7Pp5j/WHMf9ELgbUCiuZG26YY2s8/Mfa64vfHkvZ8QI3A2o0tmp23Q9jzW31/lcTx6wZwTADFQY2HTN23ezHWuu1/ly4YelqRc/zECK42j2Nl3ofI5BwekXPq4GC2Fi09UfxWHTbeu4n3LhAwAsJWDTVcidJHW+/rjPKRU+zEByMtapsOlC58fLOQmdDwBw9QRsuv7HmhvpfLmmWfUdEACw7wTmAjZd27HmXnW+DBYfxQ8AsEIHJK3zQz5Rm24luWGu84k6Ck8AAOBNB2Si8/Mfa26v8zsZewJwN2CzOj+sh03Xlc5XHPedP/UBANZgmGHTtRtrbq7zUfi4G7BVm27Iw6Yrt++61Plxnh0xAgDgKtm0bLpo37XX+ezUCQgAcNUVBrfsGNh07dt389D5XG82IBuhAHZgOVtR59u278Kma3bc1xc+7MCe3wJwpu27aN+VCz/3pz68AHIwK3R6ZjZd6Hy58DmpwocXQF5Q5GTThU2XUfjwAlRYAJuuUuf7b9/VFH7zxc8AgKPih86Hzg/rlVoSZqAkPQHMWdh07dt389f5Id+JFqdd/DADKQo3/1t2oPPDHlwN5jm4TrLIx6bbfPsudH7WhY+7AYXCVRae/pYdpzbd/I/7+sL3zwbcDZi/TTfKp2fTtdP5lYLhBUjQEOT9lh13cgM6nx0XPgDANbKcwjisCvth0xWKX1n4GVp/YQZC+26AC3S+BDv2U/gAgJ7CxXOLB+270Pkx/zqKwocd2KMhCO276sLP7rOeXPjsv/BhBpIXwabr1qbr9LjPqjE0AIBPTwBD5x+N9l2dzudcXwHCDGSg82HT9azz9XXMuBosHT1QRIXj9JYd2HSNj/tyjmEGSu4tIKei8+M1ep3/L3tnjBvHEUTRacMRmTBh7DPQCsTQR+KpfAMfwCegYYVOCQYWAwLK9zsxMYJpoLD4XNT+2lcZR6MmMODf7oept7X/AOc7KCFkoFAemD9lB87fSwbna0Xt+shA9U2DNV00XZ/zcQJ+nBN+FT+d5Ouw4jVdOH9lmoDIQHXw91KDpkv7bhTn5wtBzAZUMRvQmLKDpjuY82uCRAbKC/5eDZou7bvtnO8HHxkoP/hbg6aLpht/3DeEIGSghvDXJTTdOZx/4l1/hTkBuAD1jVK+poum2xv85vDjAlg3H0I1Xdp35RmKhgtRFLMBY7yAyZxP+66/6yMDDReCXM7323fRdGM4vy4lUgAyUB38Se27cL7/TGN2fUaD1aVL0nRp35XtQiADDXsN0KPp7tfOjPPhfN8LwAUIeg1wGKTp0r67nQZx3OCDAP2l/8sAU3amt+/6z7ReW7gAgcHfGjTdwPZdOH8vRe762IAq7kPTLcMP5ytLBGI4aM1ehdAzr30Xzvd3fRnBBwEagl/XAU23mfPrYPZz/n6pwC5OAAHB3ytW06V9tyn48rEUBOg3AffSTM6nfdfnfB2zPjpw3BcCN3A+7bsBnB8afFwAfzQYmi6cXyDOOCOQ0WCapemi6frB3y/MNwKRgQ7jpuzA+Sc87itp10cGqkuXyPm078pHqDrhQgZKeA0Qrumi6fqcHx5+bECnNViuppt53IfzfZzwgw8C9AtBQtOt1p7P+T5CCRko0wnQYRznw/l76dQIpXgvABmIKTtwfo1QdQkXIM4LQNMd375L8A0EGG0CBnI+mm5/8AusYzZgR+m44Ctf06V9dy81PFNkoHgT0Ojbp303nfMJPjIQmi6v9QyESg8/o8HQdOF8A6GYDRjPBYHtu7Tv9r8qZTZgevDTOR9Nt/+ZBjgByEDFrZGcT/tu/zNFBuouv2FDQZyPptv/TI+QgsRosMQRIXA+r/V861OMBgsI/3RNF873X5Ueub6QgSJ3fTTd+e27fgNT8Z0wQgYKDf4G59O+WwSf0WBZwTfCn6rp0r5L8HEBDH+zgfPRdIM4XxXi8AGQ1gSQ3b4L5zfs+kbwmQ2Ypgyi6cL5BYJMCT4yEJrutPZdP/in3vUFAjQFH02X9l2D891ptMIFOLfwj+d8X32G8/3gMxnoTJ2AHiZF04057vs2oHABskzAfM5H0z39cb82AoULkCgEoenOb9/1g/+eG6KCjwyEpstrPf9VaQrnIwPV4Y/lfDRdn/P9ZypcgFAhCM6nfddAKFyAeCcATRfONxAqtZCB4Hzad32EWshAoU0AaLpwvodQAYUNWN+Cpkv7roE4qWIQo8HQdGnfNRDKDD4yUH/w0XThfB+hVn74kYFo34XzjbXrUnP+kYHqEpounF+sHxB8EEDmbWi6cL4f/ADkZzQYmu4oTbcj+Ctx12c02F5K4nw03X7Or21AIQMlBH+8pouma4S/DD4yUFDw66touvX6cP4qMUW4AGG7Ppou7bt18AtMwQYMCH5dimzfRdP1EcoIvnABAuYC+kIQmm76cd/nfCUFHwTQ8WFVQPsumm4X59eiEgiQGHw0XTj/2OM+swExAWnfvVDOX7NMQEaDwfm81qs53/cCxGiwc6eBOvxwPpw/QghCBpK7HpruXsHtu/ODjwzkBx/OH9m+q4sNPi7AWWm6e600zofztTLCz2Sgun779ut2pkWt+t/6S2OFoB9Sg6/6ju36+npziqKurq7e8o8N2F068o6fP3364D4ieZet33G2azeM0dbp1xYyUHL4BwZ/LzWvXSw2JvzCBQh2A9TzoaKPdBvUsTa7vpCBwoFAHxJ8jvsEv6VAAI77BN9gca99Fx2Y4z6cD+cbJQkEMGtJel1r3bxd+Pr17+329vbsOR/OJ/gvLy//vf76r3igy0EAv7Xjj23bfnm78PT0tH8AnDHnw/ns+M/Pz+/+lo90jpWIAOuD///v338APD4+bnd3d82cT/Dh/Pq4/+XLn9u7v+X3+ZCZJXWFdpn3r/q+bT08PPx0c3Pz1/c3fP58v93f32ce93V6lOjnfDj/n/au37WWIgpP7u6LksuzSFAsgqYxRSD+qDSNYPE0jZWFkCp/QezyuojpXqqYvyBVwMLKJlYRmxReCw2IL1WehYiYEHgmkB+767048JFzGL5LDrhzr+eDw5mdPTN5r/i+PXNmdm+v90P4sde703d+fv7G9vb2M0Haxv41S7swTNhiNHH5fXjWv7Gx8W2n03k/AOHRow/DwsJCXuk+Rni6/z8u8D19+mv47uDgTl9d199vbm5+JKchZCdCQe5bfgCNkZmRWt/TZE/EqHlWVlZem5+fRz4lMgFP99sgvhOfP/mB4+PjN/f29n4DEeFh6ddcEjFELIhocJJrwjKysljWTs29trb26fT09JdB4OHDl8Lb/ZrA7OwsioM5Ez/vbb3c1uL5kz9W+wcFv8Ga/+/nz1XA2dnZZzs7O18pcmoLyTaPCyyWfBWCEJ9bZxAMz8cgnscN/Pr6+pOpqalPwojA4bi8vPx6a2vrsSJj2moSJ8ldw5P4tBDotF2TG+1oqi3jyXXQY7igrK6ufjw3N/dFyBwOx8nJyee7u7vfDEdYXKdi2Bh40U6NB5pECq+IXiQ8TI3RwgHjQgIRgEgtLi6+ury8/Ljb7b4VMoPDcXFx8dP+/v6To6OjP0A0QWxCXNxX93Sstkr69PwQAE1+WBGthEdfjGGCUEjSs4yCLR36hcFXlpaWPpiZmVnoi8HrRVF0w38Mh6Oqqos+np2env5yeHh40C/4/UlSef7E1r5ihI92G6+r2IZHnBAUQSwQEISP9kD4UosCF4Phr3ndgAgHBC0JPTc85kQfqZu0CUej2zrtjh59kqhJ4D4hMlnPa7KTa0J6QXbYzV2PGDF3KMUSACSOhI82Gf0L0UMQYizGCTEQ2QAhv/SBCYDwMHIISbdhRIQyJ7+LACGf6GMiguvkfFwAgowlpK/Q1qSPVoPYIHy0q4EHF5QgVrG/gQDAQF6QfnLg0Y6msgGYFACeCXAyS7M8/YUPhPSinTEcTYJ88CCXGGPKAhphVDR4JqDX9jD11L+GgU8gfqhjX4N+CABIA9KC3CD/iwODACAb0JkAvDZeByBnBzqMtISwqp8QfwTTfs8EOBkBfjQXXlpqWUGygHSbF/eQ0uOpX4J/EVo0in/78GZimXjC4kkOgk/CIAIpAUiQvxh2F4AfIOLkv58A6PYor/2d/Pr6PgJARYCTn2/fwVcJEVACIGpwQcQ/iDFFtErypCQkULsBguzCmADAUkKQNIDEoE2gCE0FYITg4EdvVZuAZBOp+bWliY9UHW30oR+cwLgKHJT8S3OjE8YXDkdjixt/lETh6miy6FBGD3XBWKiXLwHahW8FNrb0P/8lAAzXeu8//X8vURUMDQyFAxQYUF0UBYZbLwLmChcBTkzEjngR8PqO4V4FA8fVLoAgf0cUD64CUENpfBswX/gWICesJviYbANeRcN9jIcAYAmQTPtvVD+U5coPAo0T/BDQGB4EukYWoE8sSgGYECeFIuSywI8Cj6cI+DHgsT8KjHFBCIBSuUr+gzFR+y8Dpea7Vx1AGxeVPOCwE7UxrP/rhM/5ZaAGpouAumii9yZv23wdmM2hDWB7/gZRaQEOK1FhvA7An+Z63lF5HbhMKF4tDxpEMlRtfBAEhn4iHIgnQmAQlRzgsBOVEx++IUQWD9DsPwiS/yfBUm25Tteek98kKvnAYScqFwGglp6cA8j5k2D5fxSUj9E2rAAYRCUnOOxE5QIAUJLJdqYfBc3/s+Bs395ydt8kKhnBYSeqpc4w7OvF2XwWPP8fBuH9FuKbRSVbOOxEtc9PYtv8YZD8fxrMMGbCKmwjTXyHnagEnLA8PsufBsvtx0ENRKbxZlHJFg47UTksrxEbiJrNj4Nm8vfswmEQlWzhsBO1BSK3/nryPwanLiIHmvi0AAAAAElFTkSuQmCC"/>
+                <img ng-if="isImage(attachment)" pdf-photos access="admin,doctor"
+                     total-images="{{referral.attachments.length}}" crossorigin="anonymous"
+                     ng-src="{{attachment.filename}}" width="300"/>
+            </a>
+            {{attachment.notes}}
+        </div>
+    </div>
+    <div>
+        Notes:
+        <ul>
+            <li ng-repeat="note in referral.notes">
+                <b>{{note.user.first_name}} {{note.user.last_name}}</b> at <b>{{note.created_at | date: 'short' }}:</b>
+                {{note.message}}
+                <!--[<a href ng-click="notes.splice($index, 1)">X</a>]-->
+            </li>
+            <button class="btn" ng-click="newNoteDialog()">New note</button>
+        </ul>
+        <!--<textarea ng-model="newNote"></textarea>-->
+        <!--<button class="btn" ng-click="submitNote(newNote)">Add note</button>-->
+
+    </div>
+    <div>
+        <button ng-click="savePdf()">Save pdf</button>
+    </div>
 
     <div>
 

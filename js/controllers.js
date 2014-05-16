@@ -55,7 +55,7 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
 
         model.referral.dest_practice_id = $scope.destinationPractice.id;
         model.referral.patient_id = $scope.patient.id;
-
+        model.referral.teeth = teeth.join('+');
         for (var i = 0; i < $scope.uploader.queue.length; i++){
             var item = $scope.uploader.queue[i];
             item.upload();
@@ -121,6 +121,15 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
         });
     };
 
+    var teeth = [];
+    $scope.toggleTooth = function(toothNumber){
+        var index = teeth.indexOf(toothNumber);
+        if (index == -1){
+            teeth.push(toothNumber);
+        }else{
+            teeth.splice(index, 1);
+        }
+    };
     /*$scope.practiceDialog = function () {
 
         $('#modalProvider').modal('show');
@@ -283,6 +292,8 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateP
     $scope.referral = Referral.get({id: $stateParams.referral_id});
 
     $scope.referral.$promise.then(function (data) {
+
+        data.teeth = data.teeth.split('+');
 
         PDF.addParagraph('Patient: ' + data.patient.first_name + ' ' + data.patient.last_name);
         PDF.addParagraph('Original practice: ' + data.orig_practice.name);
