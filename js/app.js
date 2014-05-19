@@ -40,6 +40,18 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'userRoles', functio
             templateUrl: 'partials/view_referral.html',
             controller: 'ReferralsViewController',
             access: [userRoles.doctor, userRoles.admin]
+        }).
+        state('history', {
+            url: '/history',
+            templateUrl: 'partials/history.html',
+            controller: 'HistoryController',
+            access: [userRoles.doctor, userRoles.admin]
+        }).
+        state('admin', {
+            url: '/admin',
+            templateUrl: 'partials/admin.html',
+            controller: 'AdminController',
+            access: [userRoles.doctor, userRoles.admin]
         });
     $urlRouterProvider.otherwise('/sign_in');
 }])

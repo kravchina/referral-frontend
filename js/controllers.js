@@ -487,3 +487,8 @@ dentalLinksControllers.controller('PasswordsController', ['$scope', '$stateParam
     };
 }]);
 
+dentalLinksControllers.controller('HistoryController', ['$scope', 'Practice', function ($scope, Practice) {
+}]);
+
+dentalLinksControllers.controller('AdminController', ['$scope', 'Practice', function ($scope, Practice) {
+}]);

@@ -1,0 +1,430 @@
+            <header class="page-header">
+                <h1>History</h1>
+                <p class="page-subheader">View your sent and received referrals.</p>
+            </header><!-- .page-header -->
+            
+            <div class="box-white">
+            
+                <!-- Filter Controls block -->
+                <div class="row">
+                	<div class="filter-controls-block">
+                    
+                        <div class="date-range-picker col-xs-12 col-sm-4">
+                            <div id="reportrange" style="">
+                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                <span></span> <b class="caret"></b>
+                            </div>
+                        </div>
+                        
+                        <div class="input-block col-xs-12 col-sm-4 col-sm-offset-4">
+                        	<form id="formSearchHistory" method="" action="">
+                            	<input type="search" placeholder="Search &hellip;" class="form-control placeholder search-no-button">
+                            </form>                
+                        </div>
+                        
+                        <div class="results-block">Found <span class="count">78</span> referrals</div>
+                        
+                    </div><!-- .filter-controls-block -->
+                </div><!-- .row -->
+                
+                <!-- Referral Table block -->
+                <div class="row">
+                	<div class="table-wrapper">
+                    	<div class="table-container">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="cell-datetime">Date / Time</th>
+                                        <th class="cell-patient">Patient Name</th>
+                                        <th class="cell-from">From</th>
+                                        <th class="cell-to">To</th>
+                                        <th class="cell-status">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 4, 2014</span>
+                                            <span class="ref-time">10:00 AM</span>
+                                        </td>
+                                        <td class="cell-patient">Terence Remollo</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-warning">Pending</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 3, 2014</span>
+                                            <span class="ref-time">4:30 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Walter White</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-warning">Pending</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 3, 2014</span>
+                                            <span class="ref-time">3:00 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Debra Morgan</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-warning">Pending</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 3, 2014</span>
+                                            <span class="ref-time">2:45 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Sherlock Holmes</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Strange</span>
+                                            <span class="practice">Downtown Plaza Dental Center</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-primary">Sent</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 3, 2014</span>
+                                            <span class="ref-time">12:00 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Terence Remollo</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-success">Completed</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 2, 2014</span>
+                                            <span class="ref-time">5:00 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Tony Stark</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Brain</span>
+                                            <span class="practice">Big Apple Smile Dentistry</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-danger">Rejected</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 2, 2014</span>
+                                            <span class="ref-time">11:45 AM</span>
+                                        </td>
+                                        <td class="cell-patient">Peter Parker</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Wise</span>
+                                            <span class="practice">Daily Happy Dental Clinic</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-info">New</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 1, 2014</span>
+                                            <span class="ref-time">9:00 AM</span>
+                                        </td>
+                                        <td class="cell-patient">Debra Morgan</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-success">Completed</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">Apr 29, 2014</span>
+                                            <span class="ref-time">2:45 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Walter White</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-success">Completed</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">Apr 23, 2014</span>
+                                            <span class="ref-time">1:15 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Peter Parker</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-success">Completed</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 4, 2014</span>
+                                            <span class="ref-time">10:00 AM</span>
+                                        </td>
+                                        <td class="cell-patient">Terence Remollo</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-warning">Pending</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 3, 2014</span>
+                                            <span class="ref-time">4:30 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Walter White</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-warning">Pending</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 3, 2014</span>
+                                            <span class="ref-time">3:00 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Debra Morgan</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-warning">Pending</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 3, 2014</span>
+                                            <span class="ref-time">2:45 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Sherlock Holmes</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Strange</span>
+                                            <span class="practice">Downtown Plaza Dental Center</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-primary">Sent</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 3, 2014</span>
+                                            <span class="ref-time">12:00 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Terence Remollo</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-success">Completed</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 2, 2014</span>
+                                            <span class="ref-time">5:00 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Tony Stark</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Brain</span>
+                                            <span class="practice">Big Apple Smile Dentistry</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-danger">Rejected</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 2, 2014</span>
+                                            <span class="ref-time">11:45 AM</span>
+                                        </td>
+                                        <td class="cell-patient">Peter Parker</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Wise</span>
+                                            <span class="practice">Daily Happy Dental Clinic</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-info">New</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">May 1, 2014</span>
+                                            <span class="ref-time">9:00 AM</span>
+                                        </td>
+                                        <td class="cell-patient">Debra Morgan</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-success">Completed</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">Apr 29, 2014</span>
+                                            <span class="ref-time">2:45 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Walter White</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-success">Completed</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="cell-datetime">
+                                            <span class="ref-date">Apr 23, 2014</span>
+                                            <span class="ref-time">1:15 PM</span>
+                                        </td>
+                                        <td class="cell-patient">Peter Parker</td>
+                                        <td class="cell-from">
+                                            <span class="provider">Dr. Who</span>
+                                            <span class="practice">Tooth Care Dental Center</span>
+                                        </td>
+                                        <td class="cell-to">
+                                            <span class="provider">Dr. Vidmich</span>
+                                            <span class="practice">Vidmich Dental Clinic</span>                                    
+                                        </td>
+                                        <td class="cell-status">
+                                            <span class="label label-success">Completed</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!-- .table-container" -->
+                    </div><!-- .table-wrapper -->
+                </div><!-- .row -->
+                
+            </div><!-- .box-white -->
