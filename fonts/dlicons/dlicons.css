@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'dlicons';
-	src:url('fonts/dlicons.eot?-xdx9x9');
-	src:url('fonts/dlicons.eot?#iefix-xdx9x9') format('embedded-opentype'),
-		url('fonts/dlicons.woff?-xdx9x9') format('woff'),
-		url('fonts/dlicons.ttf?-xdx9x9') format('truetype'),
-		url('fonts/dlicons.svg?-xdx9x9#dlicons') format('svg');
+	src:url('fonts/dlicons.eot?fm9bta');
+	src:url('fonts/dlicons.eot?#iefixfm9bta') format('embedded-opentype'),
+		url('fonts/dlicons.woff?fm9bta') format('woff'),
+		url('fonts/dlicons.ttf?fm9bta') format('truetype'),
+		url('fonts/dlicons.svg?fm9bta#dlicons') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -23,12 +23,6 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.dlicons-user-add:before {
-	content: "\e600";
-}
-.dlicons-plus:before {
-	content: "\e601";
-}
 .dlicons-file-pdf:before {
 	content: "\e602";
 }
@@ -40,4 +34,31 @@
 }
 .dlicons-file-zip:before {
 	content: "\e605";
+}
+.dlicons-plus:before {
+	content: "\e601";
+}
+.dlicons-office:before {
+	content: "\e606";
+}
+.dlicons-remove:before {
+	content: "\e607";
+}
+.dlicons-search:before {
+	content: "\e608";
+}
+.dlicons-user-add:before {
+	content: "\e600";
+}
+.dlicons-user:before {
+	content: "\f007";
+}
+.dlicons-check:before {
+	content: "\f00c";
+}
+.dlicons-pencil:before {
+	content: "\f040";
+}
+.dlicons-group:before {
+	content: "\f0c0";
 }
