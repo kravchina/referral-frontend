@@ -100,3 +100,10 @@ dentalLinks.factory('authInterceptor', ['$rootScope', '$q', 'Auth', function ($r
         }
     };
 }]);
+
+dentalLinks.filter('filename', function () {
+    return function (fullFileName) {
+        return fullFileName.slice(fullFileName.lastIndexOf('/') + 1);
+    }
+});
+

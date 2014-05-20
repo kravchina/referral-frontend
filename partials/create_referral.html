@@ -28,7 +28,7 @@
         <div class="block-title">
             <h2>Practice</h2>
         </div>
-        <input type="text" class="form-control" placeholder="Select practice &hellip;" ng-model="destinationPractice" typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue" >
+        <input type="text" class="form-control" placeholder="Select practice &hellip;" ng-model="destinationPractice" typeahead-on-select="updatePracticeType($item, $model, $label)" typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue" >
     </div>
 
     <div class="input-block-right col-xs-12 col-sm-6 has-error">
@@ -44,12 +44,21 @@
 
 <!-- Procedure block -->
 <div class="row">
-    <div class="input-block col-xs-12 col-sm-12">
+    <div class="input-block-left col-xs-12 col-sm-6">
+        <div class="block-title">
+            <h2>Referral type</h2>
+        </div>
+        <select id="selectRefType" class="form-control" ng-disabled="!destinationPractice" ng-model="practiceType"  ng-options="p as p.name for p in practiceTypes">
+            <option disabled="disabled" class="placeholder" value="">Select type &hellip;</option>
+        </select>
+    </div>
+
+    <div class="input-block-right col-xs-12 col-sm-6">
         <div class="block-title">
             <h2>Procedure</h2>
         </div>
-        <select id="selectProcedure" class="form-control" ng-model="model.referral.procedure_id" ng-options="p.id as p.name for p in procedures">
-            <option selected="selected" disabled="disabled" class="placeholder" value="default">Select procedure &hellip;</option>
+        <select id="selectProcedure" ng-disabled="!practiceType" class="form-control" ng-model="model.referral.procedure_id"  ng-options="p.id as p.name for p in practiceType.procedures">
+            <option disabled="disabled" class="placeholder" value="">Select procedure &hellip;</option>
         </select>
     </div>
 </div><!-- .row -->
@@ -243,7 +252,7 @@
                         </div>
                         <div class="attachment-details" >
                             <span class="filename">{{ item.file.name }}</span>
-                            <span class="datestamp">Apr 14, 2014</span>
+                            <span class="datestamp">{{new Date() | date: 'mediumDate'}}</span>
                         </div>
                     </a>
                 </li>

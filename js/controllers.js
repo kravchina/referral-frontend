@@ -22,7 +22,7 @@ dentalLinksControllers.controller('LoginController', ['$scope', 'Auth', '$locati
                     $scope.result = {failure: true};
                 });
         };
-        $scope.logged = function(){
+        $scope.logged = function () {
             return Auth.get();
         };
         $scope.logout = function () {
@@ -47,16 +47,27 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
 
     $scope.procedures = Procedure.query();
 
+    $scope.practiceTypes = Procedure.practiceTypes();
+
     $scope.providers = Provider.query();
 
     $scope.model = {referral: {notes: []}, practice: {}};
+
+    $scope.updatePracticeType = function (item) {
+        for (var i = 0; i < $scope.practiceTypes.length; i++) {
+            if ($scope.practiceTypes[i].id == item.practice_type_id) {
+                $scope.practiceType = $scope.practiceTypes[i];
+                break;
+            }
+        }
+    };
 
     $scope.createReferral = function (model) {
 
         model.referral.dest_practice_id = $scope.destinationPractice.id;
         model.referral.patient_id = $scope.patient.id;
         model.referral.teeth = teeth.join('+');
-        for (var i = 0; i < $scope.uploader.queue.length; i++){
+        for (var i = 0; i < $scope.uploader.queue.length; i++) {
             var item = $scope.uploader.queue[i];
             item.upload();
         }
@@ -99,7 +110,7 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
         });
     };
 
-    $scope.providerDialog = function(){
+    $scope.providerDialog = function () {
         var modalInstance = $modal.open({
             templateUrl: 'partials/provider_form.html',
             controller: 'ProviderModalController'
@@ -110,40 +121,29 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
         });
     };
 
-    $scope.noteDialog = function(){
+    $scope.noteDialog = function () {
         var modalInstance = $modal.open({
             templateUrl: 'partials/note_form.html',
             controller: 'NoteModalController'
         });
 
         modalInstance.result.then(function (note) {
-            $scope.model.referral.notes.push({message:note, created_at: Date.now()});
+
+            $scope.model.referral.notes.push({message: note, created_at: Date.now()});
         });
     };
 
     var teeth = [];
-    $scope.toggleTooth = function(toothNumber){
+    $scope.toggleTooth = function (toothNumber) {
         var index = teeth.indexOf(toothNumber);
-        if (index == -1){
+        if (index == -1) {
             teeth.push(toothNumber);
-        }else{
+        } else {
             teeth.splice(index, 1);
         }
     };
-    /*$scope.practiceDialog = function () {
 
-        $('#modalProvider').modal('show');
 
-        var modalInstance = $modal.open({
-            templateUrl: 'partials/practice_form.html',
-            controller: 'PracticeModalController'
-        });
-
-        modalInstance.result.then(function (practice_invite) {
-            $scope.destinationPractice = {name: practice_invite.practice_name, id: practice_invite.practice_id};
-        });
-    };
-*/
     $scope.model.attachments = [];
 
     S3Bucket.getCredentials(function (success) {
@@ -161,15 +161,6 @@ dentalLinksControllers.controller('ReferralsController', ['$scope', 'Practice', 
             ]
         });
 
-        // ADDING FILTERS
-
-        // Images only
-        /*uploader.filters.push(function (item *//*{File|HTMLInputElement}*//*) {
-            var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
-            type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
-            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-        });
-*/
         // REGISTER HANDLERS
 
         uploader.bind('afteraddingfile', function (event, item) {
@@ -229,7 +220,7 @@ dentalLinksControllers.controller('PatientModalController', [ '$scope', '$modalI
 
     /*$scope.patient = patient;*/
 
-    $scope.salutations = ['Mr.','Ms.', 'Mrs.','Dr.','Engr.'];
+    $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.', 'Engr.'];
 
     $scope.ok = function (patient) {
         Patient.save({patient: patient},
@@ -247,22 +238,22 @@ dentalLinksControllers.controller('PatientModalController', [ '$scope', '$modalI
     };
 }]);
 
-dentalLinksControllers.controller('NoteModalController', ['$scope', '$modalInstance', 'Note', function($scope, $modalInstance, Note){
-     $scope.ok = function(note){
-         //nothing to do, we cant save note right here because at this stage referral doesn't exist. We can only add new note to the list on the parent page (create referral) and save simultaneously with referral.
-         $modalInstance.close(note);
-     };
+dentalLinksControllers.controller('NoteModalController', ['$scope', '$modalInstance', 'Note', function ($scope, $modalInstance, Note) {
+    $scope.ok = function (note) {
+        //nothing to do, we cant save note right here because at this stage referral doesn't exist. We can only add new note to the list on the parent page (create referral) and save simultaneously with referral.
+        $modalInstance.close(note);
+    };
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
 }]);
 
-dentalLinksControllers.controller('ProviderModalController', ['$scope', '$modalInstance', 'Provider', function($scope, $modalInstance, Provider){
+dentalLinksControllers.controller('ProviderModalController', ['$scope', '$modalInstance', 'Provider', function ($scope, $modalInstance, Provider) {
     $scope.result = {};
-    $scope.ok = function(provider){
-        Provider.save({user: provider}, function(success){
+    $scope.ok = function (provider) {
+        Provider.save({user: provider}, function (success) {
             $modalInstance.close(success);
-        }, function(failure){
+        }, function (failure) {
             $scope.result.failure = true;
         });
     };
@@ -288,18 +279,19 @@ dentalLinksControllers.controller('PracticeModalController', ['$scope', '$modalI
     };
 }]);
 
-dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$sce', function ($scope, $stateParams, $fileUploader, $timeout, Referral, PDF, Note, S3Bucket, Attachment, $sce) {
+dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', function ($scope, $stateParams, $fileUploader, $timeout, Referral, PDF, Note, S3Bucket, Attachment, $modal) {
     $scope.referral = Referral.get({id: $stateParams.referral_id});
 
     $scope.referral.$promise.then(function (data) {
 
-        data.teeth = data.teeth.split('+');
+        if (data.teeth) {
+            data.teeth = data.teeth.split('+');
+        }
 
         PDF.addParagraph('Patient: ' + data.patient.first_name + ' ' + data.patient.last_name);
-        PDF.addParagraph('Original practice: ' + data.orig_practice.name);
-        PDF.addParagraph('Original practice description: ' + data.orig_practice.description);
-        PDF.addParagraph('Memo: ' + data.memo);
-        PDF.addParagraph('Referral status: ' + data.status);
+        PDF.addParagraph('Original provider: ' + data.orig_provider.first_name + ' ' + data.orig_provider.middle_initial + ' ' + data.orig_provider.last_name);
+        PDF.addParagraph('Destination provider: ' + data.dest_provider.first_name + ' ' + data.dest_provider.middle_initial + ' ' + data.dest_provider.last_name);
+        PDF.addParagraph('Procedure: ' + data.procedure.name + '(' + data.procedure.practice_type.name + ')');
 
         PDF.addNotes(data.notes);
     });
@@ -308,16 +300,21 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateP
         PDF.save('referral.pdf')
     };
 
-    $scope.newNoteDialog = function() {
+    $scope.noteDialog = function () {
+        var modalInstance = $modal.open({
+            templateUrl: 'partials/note_form.html',
+            controller: 'NoteModalController'
+        });
 
-        $('#modalNote').modal('show');
+        modalInstance.result.then(function (note) {
+            submitNote(note);
+        });
 
     };
 
-    $scope.submitNote = function (note) {
+    var submitNote = function (note) {
         Note.save({note: {message: note, referral_id: $scope.referral.id}}, function (success) {
-            $scope.newNote = '';
-            $scope.referral.notes.push(success);
+            $scope.referral.notes.push({message: note, created_at: Date.now()});
         });
     };
 
@@ -365,7 +362,23 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateP
     };
 
     $scope.isImage = function (attachment) {
-        return attachment.filename.search(/(jpg|png|gif)$/) >= 0;
+        return attachment.filename.toLowerCase().search(/(jpg|png|gif)$/) >= 0;
+    };
+
+    $scope.attachmentThumbClass = function (attachmentFilename) {
+        var type = attachmentFilename.slice(attachmentFilename.lastIndexOf('.') + 1);
+        switch (type) {
+            case 'doc':
+            case 'docx':
+                return 'attach-word';
+            case 'xls':
+            case 'xlsx':
+                return 'attach-excel';
+            case 'pdf':
+                return 'attach-pdf';
+            default :
+                return 'attach-file';
+        }
     };
 
     S3Bucket.getCredentials(function (success) {
@@ -383,19 +396,14 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateP
             ]
         });
 
-        // ADDING FILTERS
-
-        // Images only
-        /*uploader.filters.push(function (item *//*{File|HTMLInputElement}*//*) {
-            var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
-            type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
-            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-        });*/
+        $scope.now = function(){
+            return Date.now();
+        };
 
         // REGISTER HANDLERS
-
         uploader.bind('afteraddingfile', function (event, item) {
             console.info('After adding a file', item);
+            item.upload();
         });
 
         uploader.bind('whenaddingfilefailed', function (event, item) {
@@ -418,8 +426,10 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateP
 
         uploader.bind('success', function (event, xhr, item, response) {
             console.info('Success', xhr, item, response);
-            var attachment = {filename: item.url + '/' + bucket_path + item.file.name, notes: item.notes, referral_id: $scope.referral.id};
+            var attachment = {filename: item.url + '/' + bucket_path + item.file.name, notes: item.notes, referral_id: $scope.referral.id, created_at: Date.now()};
             Attachment.save({attachment: attachment}, function (success) {
+                var index = $scope.uploader.queue.indexOf(item);
+                $scope.uploader.queue.splice(index, 1);
                 $scope.referral.attachments.push(attachment);
             });
 
@@ -446,7 +456,7 @@ dentalLinksControllers.controller('ReferralsViewController', ['$scope', '$stateP
         });
 
     });
-}]) ;
+}]);
 
 //not used now
 dentalLinksControllers.controller('UsersController', ['$scope', 'Practice', function ($scope, Practice) {

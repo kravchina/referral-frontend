@@ -88,7 +88,9 @@ dentalLinksServices.factory('Attachment', ['$resource', function ($resource) {
 }]);
 
 dentalLinksServices.factory('Procedure', ['$resource', function($resource){
- return $resource(host + '/procedures')
+ return $resource(host + '/procedures', {}, {
+     practiceTypes: {method: 'GET', url: host + '/practice_types', isArray: true}
+ })
 }]);
 
 dentalLinksServices.factory('Provider', ['$resource', function($resource){
@@ -132,6 +134,9 @@ dentalLinksServices.factory('PDF', [function () {
             pdf.text(paragraphStart.x, caret, 'Attachments:');
             caret += 10;
             for (var j = 0; j < images.length; j++) {
+                if(!images[j]){
+                    continue;
+                }
                 var image = images[j].image;
                 var note = images[j].note;
                 var aspectRatio = image.width / image.height;
