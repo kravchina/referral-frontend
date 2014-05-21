@@ -252,7 +252,7 @@
                         </div>
                         <div class="attachment-details" >
                             <span class="filename">{{ item.file.name }}</span>
-                            <span class="datestamp">{{new Date() | date: 'mediumDate'}}</span>
+                            <span class="datestamp">{{ now() | date: 'mediumDate'}}</span>
                         </div>
                     </a>
                 </li>
@@ -273,7 +273,7 @@
         <div class="notes-wrapper">
             <ul>
                 <!-- Note block -->
-                <li class="note-block" ng-repeat="note in model.referral.notes">
+                <li class="note-block" expand-note ng-repeat="note in model.referral.notes">
                     <span class="note-content">{{note.message}}</span>
                     <span class="datestamp">{{note.created_at | date: 'short' }}</span>
                 </li>

@@ -16,6 +16,20 @@ dentalLinksDirectives.directive('access', [ 'Auth', function (Auth) {
     }
 }]);
 
+dentalLinksDirectives.directive('expandNote', [function(){
+    return {
+        scope: true,
+        restrict: 'A',
+        link: function (scope, $element, attrs) {
+            $element.on('click', function(){
+                $element.toggleClass('expand');
+            });
+
+        }
+    }
+
+}]);
+
 dentalLinksDirectives.directive('pdfPhotos', ['Auth', 'PDF', function (Auth, PDF) {
     return {
         scope: true,

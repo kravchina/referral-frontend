@@ -4,8 +4,11 @@
     <p class="page-subheader">View referred patients from another provider.</p>
 </header><!-- .page-header -->
 
+<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.message}}</alert>
+
+
 <div class="form-wrapper">
-<form id="formCreateReferral" action="" method="">
+<form id="formCreateReferral" name="viewReferralForm">
 <div class="box-white">
 
 <!-- Patient block -->
@@ -179,7 +182,7 @@
             <ul>
 
                 <!-- Note block -->
-                <li class="note-block" ng-repeat="note in referral.notes">
+                <li class="note-block" expand-note ng-repeat="note in referral.notes">
                     <span class="note-content">{{note.message}}</span>
                     <span class="datestamp">{{note.created_at | date: 'short' }}</span>
                 </li>

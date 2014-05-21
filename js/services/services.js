@@ -111,21 +111,25 @@ dentalLinksServices.factory('PDF', [function () {
     var paragraphStart = {
         x: 10, y: 10
     };
-    var caret = 10;
     var buildPdf = function () {
+        var caret = 18;
         var pdf = new jsPDF();
+        pdf.setFontSize(size);
         //printing start paragraphs with referral information
         for (var i = 0; i < paragraphs.length; i++) {
-            caret += 8;
-            pdf.text(paragraphStart.x, caret, paragraphs[i]);
+            var lines = pdf.splitTextToSize(paragraphs[i], 190);
+            pdf.text(paragraphStart.x, caret, lines);
+            caret += 3 + lines.length * size / pdf.internal.scaleFactor ;
         }
-        caret += 16;
+        caret += 10;
 
         //printing notes
         pdf.text(paragraphStart.x, caret, 'Notes:');
+        caret += 10;
         for (var k = 0; k < notes.length; k++) {
-            caret += 8;
-            pdf.text(paragraphStart.x, caret, notes[k].message);
+            var noteLines = pdf.splitTextToSize(notes[k].message, 190);
+            pdf.text(paragraphStart.x, caret, noteLines);
+            caret += 3 + noteLines.length * size / pdf.internal.scaleFactor;
         }
 
         if (images.length > 0) {
@@ -151,7 +155,6 @@ dentalLinksServices.factory('PDF', [function () {
                     pdf.text(paragraphStart.x, caret, note);
                 }
                 caret += 10;
-
             }
         }
         return pdf;

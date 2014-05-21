@@ -1,4 +1,13 @@
-var dentalLinks = angular.module('dentalLinks', ['ui.router', 'ngCookies', 'dentalLinksControllers', 'dentalLinksServices', 'dentalLinksDirectives']);
+var dentalLinks = angular.module('dentalLinks', [
+    'ui.router',
+    'ngCookies',
+    'login',
+    'passwords',
+    'createReferrals',
+    'viewReferrals',
+    'modals',
+    'dentalLinksServices',
+    'dentalLinksDirectives']);
 
 dentalLinks.constant('userRoles', {
     public: 'public',
@@ -17,7 +26,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'userRoles', functio
         state('createReferral', {
             url: '/create_referral',
             templateUrl: 'partials/create_referral.html',
-            controller: 'ReferralsController',
+            controller: 'CreateReferralsController',
             access: [userRoles.doctor, userRoles.admin]
         }).
         state('logout', {
@@ -38,7 +47,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'userRoles', functio
         state('viewReferral', {
             url: '/view_referral/:referral_id',
             templateUrl: 'partials/view_referral.html',
-            controller: 'ReferralsViewController',
+            controller: 'ViewReferralsController',
             access: [userRoles.doctor, userRoles.admin]
         }).
         state('history', {
