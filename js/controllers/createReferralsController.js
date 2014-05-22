@@ -1,14 +1,31 @@
 var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-createReferralModule.controller('CreateReferralsController', ['$scope', 'Practice', 'Patient', 'Procedure', 'Provider', 'Referral', 'S3Bucket', '$modal', '$fileUploader', function ($scope, Practice, Patient, Procedure, Provider, Referral, S3Bucket, $modal, $fileUploader) {
+createReferralModule.controller('CreateReferralsController', ['$scope', 'Practice', 'Patient', 'Procedure', 'Provider', 'Referral', 'S3Bucket', '$modal', '$fileUploader', '$timeout', function ($scope, Practice, Patient, Procedure, Provider, Referral, S3Bucket, $modal, $fileUploader, $timeout) {
+
+    $scope.alerts = [];
+
+    var pushAlert = function (type, message) {
+        var alert = { type: type, message: message, promise: $timeout(function () {
+            $scope.alerts.splice($scope.alerts.indexOf(alert), 1);
+        }, 5000) };
+        $scope.alerts.push(alert);
+
+    };
+
+    $scope.closeAlert = function (index) {
+        $timeout.cancel($scope.alerts[index].promise); //cancel automatic removal
+        $scope.alerts.splice(index, 1);
+    };
 
     $scope.procedures = Procedure.query();
 
     $scope.practiceTypes = Procedure.practiceTypes();
 
-    $scope.providers = Provider.query();
+    $scope.providers = Provider.query(function(success){}, function(failure){
+        pushAlert('danger', 'Server doesn\'t respond. Please try again later');
+    });
 
-    $scope.model = {referral: {notes: []}, practice: {}};
+    $scope.model = {referral: {notes_attributes: []}, practice: {}};
 
     $scope.updatePracticeType = function (item) {
         for (var i = 0; i < $scope.practiceTypes.length; i++) {
@@ -35,13 +52,10 @@ createReferralModule.controller('CreateReferralsController', ['$scope', 'Practic
 
         $scope.create_referral_result = Referral.save(model,
             function (success) {
-                $scope.success = true;
-                $scope.failure = false;
+               pushAlert('success', 'Referral was sent successfully!')
             },
             function (failure) {
-                $scope.failure = true;
-                $scope.success = false;
-
+                pushAlert('danger', 'An error occurred during referral creation...')
             });
 
     };
@@ -76,7 +90,10 @@ createReferralModule.controller('CreateReferralsController', ['$scope', 'Practic
         });
 
         modalInstance.result.then(function (provider) {
-            $scope.provider = provider;
+            $scope.destinationPractice = $scope.destinationPractice || {users: [], name: ''};
+            $scope.destinationPractice.users.push(provider);
+            $scope.model.referral.dest_provider_id = provider.id;
+            //$scope.provider = provider;
         });
     };
 
@@ -88,7 +105,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', 'Practic
 
         modalInstance.result.then(function (note) {
 
-            $scope.model.referral.notes.push({message: note, created_at: Date.now()});
+            $scope.model.referral.notes_attributes.push({message: note, created_at: Date.now()});
         });
     };
 
@@ -124,10 +141,12 @@ createReferralModule.controller('CreateReferralsController', ['$scope', 'Practic
 
         uploader.bind('afteraddingfile', function (event, item) {
             console.info('After adding a file', item);
+            $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes});
         });
 
         uploader.bind('whenaddingfilefailed', function (event, item) {
             console.info('When adding a file failed', item);
+            pushAlert('danger', 'Adding file failed. Please try again later.')
         });
 
         uploader.bind('afteraddingall', function (event, items) {
@@ -146,16 +165,18 @@ createReferralModule.controller('CreateReferralsController', ['$scope', 'Practic
 
         uploader.bind('success', function (event, xhr, item, response) {
             console.info('Success', xhr, item, response);
-            $scope.model.attachments.push({url: item.url + '/' + bucket_path + item.file.name, notes: item.notes});
+
 
         });
 
         uploader.bind('cancel', function (event, xhr, item) {
             console.info('Cancel', xhr, item);
+            pushAlert('info', 'Attachment was cancelled.')
         });
 
         uploader.bind('error', function (event, xhr, item, response) {
             console.error('Error', xhr, item, response);
+            pushAlert('danger', 'An error occured during attachment upload. Please try again later.')
         });
 
         uploader.bind('complete', function (event, xhr, item, response) {

@@ -7,8 +7,10 @@
     <strong>Oops!</strong> Please fix the highlighted errors below.
 </div>
 
+<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.message}}</alert>
+
 <div class="form-wrapper">
-<form id="formCreateReferral" name="form">
+<form id="formCreateReferral" name="form" novalidate="novalidate">
 <div class="box-white">
 
 <!-- Patient block -->
@@ -36,7 +38,7 @@
             <h2>Provider</h2>
             <button type="button" class="btn btn-orange btn-toggle" ng-click="providerDialog()" data-toggle="tooltip" data-placement="top" title="Invite a New Provider" data-target="#modalProvider"><span class="dlicons-user-add"></span></button>
         </div>
-        <select id="selectProvider" name="provider" class="form-control" ng-model="model.referral.provider_id" ng-options="p.id as 'Dr. ' + p.last_name for p in providers" ng-required="true">
+        <select id="selectProvider" name="provider" class="form-control" ng-disabled="!destinationPractice" ng-model="model.referral.dest_provider_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in destinationPractice.users" ng-required="true">
             <option disabled="disabled" class="placeholder" value="">Choose a provider &hellip;</option>
         </select>
     </div>
@@ -57,7 +59,7 @@
         <div class="block-title">
             <h2>Procedure</h2>
         </div>
-        <select id="selectProcedure" ng-disabled="!practiceType" name="procedure" class="form-control" ng-model="model.referral.procedure_id"  ng-options="p.id as p.name for p in practiceType.procedures" ng-required="true">
+        <select id="selectProcedure" ng-disabled="!practiceType || !destinationPractice" name="procedure" class="form-control" ng-model="model.referral.procedure_id"  ng-options="p.id as p.name for p in practiceType.procedures" ng-required="true">
             <option disabled="disabled" class="placeholder" value="">Select procedure &hellip;</option>
         </select>
     </div>
@@ -273,7 +275,7 @@
         <div class="notes-wrapper">
             <ul>
                 <!-- Note block -->
-                <li class="note-block" expand-note ng-repeat="note in model.referral.notes">
+                <li class="note-block" expand-note ng-repeat="note in model.referral.notes_attributes">
                     <span class="note-content">{{note.message}}</span>
                     <span class="datestamp">{{note.created_at | date: 'short' }}</span>
                 </li>

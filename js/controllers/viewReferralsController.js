@@ -26,8 +26,8 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         PDF.addParagraph('Destination provider: ' + data.dest_provider.first_name + ' ' + data.dest_provider.middle_initial + ' ' + data.dest_provider.last_name);
         PDF.addParagraph('Procedure: ' + data.procedure.name + '(' + data.procedure.practice_type.name + ')');
         if (data.teeth) {
-            data.teeth = data.teeth.split('+');
-            PDF.addParagraph('Teeth: ' + data.teeth.join(', '));
+            data.teethChart = data.teeth.split('+');
+            PDF.addParagraph('Teeth: ' + data.teethChart.join(', '));
         }
         PDF.addNotes(data.notes);
     });
