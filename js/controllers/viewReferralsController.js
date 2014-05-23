@@ -2,7 +2,7 @@ var viewReferralModule = angular.module('viewReferrals', ['ui.bootstrap', 'angul
 
 viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', function ($scope, $stateParams, $fileUploader, $timeout, Referral, PDF, Note, S3Bucket, Attachment, $modal) {
     $scope.alerts = [];
-
+    PDF.init();
     var pushAlert = function (type, message) {
         var alert = { type: type, message: message, promise: $timeout(function () {
             $scope.alerts.splice($scope.alerts.indexOf(alert), 1);

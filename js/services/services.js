@@ -99,9 +99,9 @@ dentalLinksServices.factory('Provider', ['$resource', function($resource){
 
 dentalLinksServices.factory('PDF', [function () {
     var pdf;
-    var paragraphs = [];
-    var images = [];
-    var notes = [];
+    var paragraphs;
+    var images;
+    var notes;
     var font =
         ['Times', 'Roman'];
     var size = 16;
@@ -161,6 +161,11 @@ dentalLinksServices.factory('PDF', [function () {
 
     };
     return {
+        init: function(){
+            paragraphs = [];
+            images = [];
+            notes = [];
+        },
         addParagraph: function (text) {
             paragraphs.push(text);
         },
