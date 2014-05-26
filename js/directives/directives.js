@@ -30,6 +30,58 @@ dentalLinksDirectives.directive('expandNote', [function(){
 
 }]);
 
+dentalLinksDirectives.directive('editForm', [function(){
+    return {
+        restrict: 'A',
+        scope: {},
+        controller: function($scope, $element) {
+            var inputs = $element.find('input');
+            var selects = $element.find('select');
+            this.enableControls = function(){
+                inputs.removeClass('data1');
+                inputs.removeAttr('disabled');
+                selects.removeClass('data1');
+                selects.removeAttr('disabled');
+            };
+            this.disableControls = function(){
+                inputs.addClass('data1');
+                inputs.attr('disabled', 'disabled');
+                selects.addClass('data1');
+                selects.attr('disabled', 'disabled');
+            };
+        }
+        }
+}]);
+
+dentalLinksDirectives.directive('toggleEdit', [function(){
+    return {
+        scope: {},
+        restrict: 'A',
+        require: '^editForm',
+        link: function (scope, $element, attrs, editFormCtrl) {
+
+            var editButton = $element;
+            var saveButton = $element.next();
+
+            // edit
+            editButton.on('click', function(e) {
+                editButton.addClass('hide');
+                saveButton.removeClass('hide');
+                editFormCtrl.enableControls();
+            });
+
+            // save
+            saveButton.on('click', function(e) {
+                editButton.removeClass('hide');
+                saveButton.addClass('hide');
+                editFormCtrl.disableControls();
+            });
+
+        }
+    }
+
+}]);
+
 dentalLinksDirectives.directive('pdfPhotos', ['Auth', 'PDF', function (Auth, PDF) {
     return {
         scope: true,

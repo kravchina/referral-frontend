@@ -10,38 +10,25 @@
                 	<div class="responsive-tab-content">
                     
                     	<!-- Nav Tabs -->
-                    	<ul id="adminTabs" class="nav nav-tabs nav-justified">
-                        	<li class="active">
-                            	<a href="#admintabAccount" data-toggle="tab"><span class="dlicons-user"></span> Account</a>
-                            </li>
-                        	<li>
-                            	<a href="#admintabPractice" data-toggle="tab"><span class="dlicons-office"></span> Practice</a>
-                            </li>
-                        	<li>
-                            	<a href="#admintabUsers" data-toggle="tab"><span class="dlicons-group"></span> Users</a>
-                            </li>
-                        	<li>
-                            	<a href="#admintabInvite" data-toggle="tab"><span class="dlicons-user-add"></span> Invite Colleague</a>
-                            </li>
-                        </ul>
-                        
-                        <!-- Tab Content -->
-                        <div id="adminTabContent" class="tab-content">
-                        
-                        	<!-- Account Tab -->
-                        	<div id="admintabAccount" class="tab-pane fade in active">
-                            	<form id="formAccountTab">
+                        <tabset id="adminTabContent" justified="true">
+                        <tab>
+                            <tab-heading>
+                                <span class="dlicons-user"></span> Account
+                            </tab-heading>
+                            <!-- Account Tab -->
+                            <div id="admintabAccount" >
+                                <form edit-form id="formAccountTab">
                                     <div class="block-title">
                                         <h2>Account</h2>
-                                        <button type="button" class="btn btn-orange btn-toggle btn-edit hide" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
-                                        <button type="button" class="btn btn-green btn-toggle btn-save" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
+                                        <button type="button" toggle-edit class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
+                                        <button type="button" ng-click="saveAccount()" class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
                                     </div>
-                                    
+
                                     <div id="sectPersonal" class="section-block">
                                         <h3>Personal Information</h3>
-                                        
+
                                         <div class="input-block-inline">
-                                            <select id="selectSalutation" class="form-control">
+                                            <select id="selectSalutation" class="form-control data1" disabled="disabled">
                                                 <option selected="selected" disabled="disabled" class="placeholder" value="default">Select salutation</option>
                                                 <option>Mr.</option>
                                                 <option>Ms.</option>
@@ -51,38 +38,38 @@
                                             </select>
                                             <label>Salutation</label>
                                         </div>
-                                        
+
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control" placeholder="Enter first name &hellip;">
+                                            <input type="text" class="form-control data1" disabled="disabled" placeholder="Enter first name &hellip;">
                                             <label>First Name</label>
                                         </div>
-                                        
+
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control" placeholder="Enter middle initial &hellip;">
+                                            <input type="text" class="form-control data1" placeholder="Enter middle initial &hellip;">
                                             <label>Middle Initial</label>
                                         </div>
-                                        
+
                                         <div class="input-block-inline-right">
-                                            <input type="text" class="form-control" placeholder="Enter last name &hellip;">
+                                            <input type="text" class="form-control data1" disabled="disabled" placeholder="Enter last name &hellip;">
                                             <label>Last Name</label>
                                         </div>
                                     </div><!-- .section-block -->
-                                    
+
                                     <div id="sectPayment" class="section-block">
                                         <h3>Payment Information</h3>
-                                        
+
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control" placeholder="Enter name on card &hellip;">
+                                            <input type="text" class="form-control data1" disabled="disabled" placeholder="Enter name on card &hellip;">
                                             <label>Name on Card</label>
                                         </div>
-                                        
+
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control" placeholder="Enter card number &hellip;">
+                                            <input type="text" class="form-control data1" disabled="disabled" placeholder="Enter card number &hellip;">
                                             <label>Card Number</label>
                                         </div>
-                                        
+
                                         <div class="input-block-inline-right">
-                                            <select id="selectExpMM" class="form-control">
+                                            <select id="selectExpMM" class="form-control data1" disabled="disabled">
                                                 <option selected="selected" disabled="disabled" class="placeholder" value="default">Select month</option>
                                                 <option>01</option>
                                                 <option>02</option>
@@ -97,7 +84,7 @@
                                                 <option>11</option>
                                                 <option>12</option>
                                             </select>
-                                            <select id="selectExpYYYY" class="form-control">
+                                            <select id="selectExpYYYY" class="form-control data1" disabled="disabled">
                                                 <option selected="selected" disabled="disabled" class="placeholder" value="default">Select year</option>
                                                 <option>2014</option>
                                                 <option>2015</option>
@@ -109,230 +96,249 @@
                                         </div>
                                     </div><!-- .section-block -->
                                 </form>
-                                
+
                             </div>
-                            
+
+                        </tab>
+
+                        <tab>
+                            <tab-heading>
+                                <span class="dlicons-office"></span> Practice
+                            </tab-heading>
                             <!-- Practice Tab -->
-                        	<div id="admintabPractice" class="tab-pane fade">
-                            	<form id="formPracticeTab">
+                            <div id="admintabPractice">
+                                <form edit-form id="formPracticeTab">
                                     <div class="block-title">
                                         <h2>Practice</h2>
-                                        <button type="button" class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
-                                        <button type="button" class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
+                                        <button type="button" toggle-edit class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
+                                        <button type="button" ng-click='savePractice()' class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
                                     </div>
-                                    
+
                                     <div id="sectPractice" class="section-block">
-                                        
+
                                         <div class="input-block">
                                             <input type="text" class="form-control data1" placeholder="Enter practice name &hellip;" value="Tooth Care Dental Clinic" disabled="disabled">
                                             <label>Practice Name</label>
                                         </div>
-                                        
+
                                         <div class="input-block-inline-left">
                                             <input type="text" class="form-control data1" placeholder="Enter house number and street &hellip;" value="Unit 1A, 1st Floor, UBC Bldg., Cross Street" disabled="disabled">
                                             <label>House Number and Street Name</label>
                                         </div>
-                                        
+
                                         <div class="input-block-inline">
                                             <input type="text" class="form-control data1" placeholder="Enter town / county &hellip;" value="Holliston" disabled="disabled">
                                             <label>Town / County</label>
                                         </div>
-                                        
+
                                         <div class="input-block-inline">
                                             <input type="text" class="form-control data1" placeholder="Enter state &hellip;" value="Massachusetts" disabled="disabled">
                                             <label>State</label>
                                         </div>
-                                        
+
                                         <div class="input-block-inline-right">
                                             <input type="number" class="form-control data1" placeholder="Enter ZIP code &hellip;" value="01746" disabled="disabled">
                                             <label>ZIP Code</label>
                                         </div>
-                                        
+
                                         <div class="input-block-inline-left">
                                             <input type="tel" class="form-control data1" placeholder="Enter phone number &hellip;" value="978 321 5460" disabled="disabled">
                                             <label>Phone Number</label>
                                         </div>
-                                        
+
                                         <div class="input-block-inline website-block">
                                             <input type="url" class="form-control data1" placeholder="Enter website address &hellip;" value="www.toothcaredentalcenter.com" disabled="disabled">
                                             <label>Website</label>
                                         </div>
-                                    </div><!-- .section-block -->                            
+                                    </div><!--.section-block-->
                                 </form>
                             </div>
-                            
+
+                        </tab>
+
+                        <tab>
+                            <tab-heading>
+                                <span class="dlicons-group"></span> Users
+                            </tab-heading>
                             <!-- Users Tab -->
-                        	<div id="admintabUsers" class="tab-pane fade">
+                            <div id="admintabUsers">
                                 <div class="block-title">
                                     <h2>Users</h2>
-                                    <button type="button" class="btn btn-orange btn-toggle btn-toggle-modal-user" data-toggle="tooltip" data-placement="top" title="Add a New User" data-target="#modalUser"><span class="dlicons-user-add"></span></button>
+                                    <button type="button" ng-click="usersDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-user" data-toggle="tooltip" data-placement="top" title="Add a New User" data-target="#modalUser"><span class="dlicons-user-add"></span></button>
                                 </div>
-                                
+
                                 <div id="sectUsers" class="section-block">
                                     <div class="table-wrapper">
                                         <div class="table-container">
                                             <table class="table table-hover table-striped">
                                                 <thead>
-                                                    <tr>
-                                                        <th class="cell-user">Name</th>
-                                                        <th class="cell-username">Username</th>
-                                                        <th class="cell-created">Created on</th>
-                                                    </tr>
+                                                <tr>
+                                                    <th class="cell-user">Name</th>
+                                                    <th class="cell-username">Username</th>
+                                                    <th class="cell-created">Created on</th>
+                                                </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td class="cell-user">Terence Remollo</td>
-                                                        <td class="cell-username">tremollo</td>
-                                                        <td class="cell-created">
-                                                        	<div class="button-block btn-delete">
-                                                            	<span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                            </div>
-                                                        	<span class="create-date">May 1, 2014</span>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                    <tr>
-                                                        <td class="cell-user">Walter White</td>
-                                                        <td class="cell-username">heisenberg</td>
-                                                        <td class="cell-created">
-                                                        	<div class="button-block btn-delete">
-                                                            	<span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                            </div>
-                                                        	<span class="create-date">Apr 25, 2014</span>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                    <tr>
-                                                        <td class="cell-user">Tony Stark</td>
-                                                        <td class="cell-username">ironman</td>
-                                                        <td class="cell-created">
-                                                        	<div class="button-block btn-delete">
-                                                            	<span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                            </div>
-                                                        	<span class="create-date">Apr 1, 2014</span>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                    <tr>
-                                                        <td class="cell-user">Peter Parker</td>
-                                                        <td class="cell-username">spider-man</td>
-                                                        <td class="cell-created">
-                                                        	<div class="button-block btn-delete">
-                                                            	<span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                            </div>
-                                                        	<span class="create-date">Mar 10, 2014</span>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                    <tr>
-                                                        <td class="cell-user">Bruce Wayne</td>
-                                                        <td class="cell-username">batman</td>
-                                                        <td class="cell-created">
-                                                        	<div class="button-block btn-delete">
-                                                            	<span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                            </div>
-                                                        	<span class="create-date">Feb 14, 2014</span>
-                                                        </td>
-                                                    </tr>
-                                                    
+                                                <tr>
+                                                    <td class="cell-user">Terence Remollo</td>
+                                                    <td class="cell-username">tremollo</td>
+                                                    <td class="cell-created">
+                                                        <div class="button-block btn-delete">
+                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
+                                                        </div>
+                                                        <span class="create-date">May 1, 2014</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="cell-user">Walter White</td>
+                                                    <td class="cell-username">heisenberg</td>
+                                                    <td class="cell-created">
+                                                        <div class="button-block btn-delete">
+                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
+                                                        </div>
+                                                        <span class="create-date">Apr 25, 2014</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="cell-user">Tony Stark</td>
+                                                    <td class="cell-username">ironman</td>
+                                                    <td class="cell-created">
+                                                        <div class="button-block btn-delete">
+                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
+                                                        </div>
+                                                        <span class="create-date">Apr 1, 2014</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="cell-user">Peter Parker</td>
+                                                    <td class="cell-username">spider-man</td>
+                                                    <td class="cell-created">
+                                                        <div class="button-block btn-delete">
+                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
+                                                        </div>
+                                                        <span class="create-date">Mar 10, 2014</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="cell-user">Bruce Wayne</td>
+                                                    <td class="cell-username">batman</td>
+                                                    <td class="cell-created">
+                                                        <div class="button-block btn-delete">
+                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
+                                                        </div>
+                                                        <span class="create-date">Feb 14, 2014</span>
+                                                    </td>
+                                                </tr>
+
                                                 </tbody>
                                             </table>
-                                        </div><!-- .table-container --> 
-                                    </div><!-- .table-wrapper --> 
-                                </div><!-- .section-block --> 
-                            
+                                        </div><!-- .table-container -->
+                                    </div><!-- .table-wrapper -->
+                                </div><!-- .section-block -->
+
                             </div>
-                            
+                        </tab>
+                        <tab>
+                            <tab-heading>
+                                <span class="dlicons-user-add"></span> Invite Colleague
+
+                            </tab-heading>
                             <!-- Invite Tab -->
-                        	<div id="admintabInvite" class="tab-pane fade">
+                            <div id="admintabInvite">
                                 <div class="block-title">
                                     <h2>Invite Colleague</h2>
-                                    <button type="button" class="btn btn-orange btn-toggle btn-toggle-modal-provider" data-toggle="tooltip" data-placement="top" title="Invite a New Provider" data-target="#modalProvider"><span class="dlicons-user-add"></span></button>
+                                    <button type="button" ng-click="inviteDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-provider" data-toggle="tooltip" data-placement="top" title="Invite a New Provider" data-target="#modalProvider"><span class="dlicons-user-add"></span></button>
                                 </div>
-                                
+
                                 <div id="sectInvite" class="section-block">
                                     <div class="table-wrapper">
                                         <div class="table-container">
                                             <table class="table table-hover table-striped">
                                                 <thead>
-                                                    <tr>
-                                                        <th class="cell-provider">Provider's Name</th>
-                                                        <th class="cell-practice">Practice Name</th>
-                                                        <th class="cell-invited">Invited on</th>
-                                                        <th class="cell-status">Status</th>
-                                                    </tr>
+                                                <tr>
+                                                    <th class="cell-provider">Provider's Name</th>
+                                                    <th class="cell-practice">Practice Name</th>
+                                                    <th class="cell-invited">Invited on</th>
+                                                    <th class="cell-status">Status</th>
+                                                </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td class="cell-provider">Dr. Vidmich</td>
-                                                        <td class="cell-practice">Vidmich Dental Clinic</td>
-                                                        <td class="cell-invited">May 1, 2014</td>
-                                                        <td class="cell-status">
-                                                        	<div class="button-block btn-delete">
-                                                            	<span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                            </div>
-                                                        	<span class="label label-success">Accepted</span>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                    <tr>
-                                                        <td class="cell-provider">Dr. Brain</td>
-                                                        <td class="cell-practice">Downtown Plaza Dental Center</td>
-                                                        <td class="cell-invited">Apr 25, 2014</td>
-                                                        <td class="cell-status">
-                                                        	<div class="button-block btn-delete">
-                                                            	<span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                            </div>
-                                                        	<span class="label label-success">Accepted</span>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                    <tr>
-                                                        <td class="cell-provider">Dr. Wise</td>
-                                                        <td class="cell-practice">Big Apple Smile Dentistry</td>
-                                                        <td class="cell-invited">Apr 1, 2014</td>
-                                                        <td class="cell-status">
-                                                        	<div class="button-block btn-delete">
-                                                            	<span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                            </div>
-                                                        	<span class="label label-danger">Rejected</span>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                    <tr>
-                                                        <td class="cell-provider">Dr. Strange</td>
-                                                        <td class="cell-practice">Daily Happy Dental Clinic</td>
-                                                        <td class="cell-invited">Mar 10, 2014</td>
-                                                        <td class="cell-status">
-                                                        	<div class="button-block btn-delete">
-                                                            	<span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                            </div>
-                                                        	<span class="label label-warning">Pending</span>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                    <tr>
-                                                        <td class="cell-provider">Dr. Savage</td>
-                                                        <td class="cell-practice">Central Plaza Dentistry Clinic</td>
-                                                        <td class="cell-invited">Feb 14, 2014</td>
-                                                        <td class="cell-status">
-                                                        	<div class="button-block btn-delete">
-                                                            	<span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                            </div>
-                                                        	<span class="label label-warning">Pending</span>
-                                                        </td>
-                                                    </tr>
-                                                    
+                                                <tr>
+                                                    <td class="cell-provider">Dr. Vidmich</td>
+                                                    <td class="cell-practice">Vidmich Dental Clinic</td>
+                                                    <td class="cell-invited">May 1, 2014</td>
+                                                    <td class="cell-status">
+                                                        <div class="button-block btn-delete">
+                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
+                                                        </div>
+                                                        <span class="label label-success">Accepted</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="cell-provider">Dr. Brain</td>
+                                                    <td class="cell-practice">Downtown Plaza Dental Center</td>
+                                                    <td class="cell-invited">Apr 25, 2014</td>
+                                                    <td class="cell-status">
+                                                        <div class="button-block btn-delete">
+                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
+                                                        </div>
+                                                        <span class="label label-success">Accepted</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="cell-provider">Dr. Wise</td>
+                                                    <td class="cell-practice">Big Apple Smile Dentistry</td>
+                                                    <td class="cell-invited">Apr 1, 2014</td>
+                                                    <td class="cell-status">
+                                                        <div class="button-block btn-delete">
+                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
+                                                        </div>
+                                                        <span class="label label-danger">Rejected</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="cell-provider">Dr. Strange</td>
+                                                    <td class="cell-practice">Daily Happy Dental Clinic</td>
+                                                    <td class="cell-invited">Mar 10, 2014</td>
+                                                    <td class="cell-status">
+                                                        <div class="button-block btn-delete">
+                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
+                                                        </div>
+                                                        <span class="label label-warning">Pending</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="cell-provider">Dr. Savage</td>
+                                                    <td class="cell-practice">Central Plaza Dentistry Clinic</td>
+                                                    <td class="cell-invited">Feb 14, 2014</td>
+                                                    <td class="cell-status">
+                                                        <div class="button-block btn-delete">
+                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
+                                                        </div>
+                                                        <span class="label label-warning">Pending</span>
+                                                    </td>
+                                                </tr>
+
                                                 </tbody>
                                             </table>
-                                        </div><!-- .table-container --> 
-                                    </div><!-- .table-wrapper --> 
-                                
-                                </div><!-- .section-block --> 
-                            
+                                        </div><!-- .table-container -->
+                                    </div><!-- .table-wrapper -->
+
+                                </div><!-- .section-block -->
+
                             </div>
-                        </div>
-                        
+                        </tab>
+
+                    </tabset>
+
                         
                     </div><!-- .responsive-tab-content -->
                     

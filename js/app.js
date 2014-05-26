@@ -1,6 +1,7 @@
 var dentalLinks = angular.module('dentalLinks', [
     'ui.router',
     'ngCookies',
+    'admin',
     'login',
     'passwords',
     'createReferrals',
