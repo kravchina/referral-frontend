@@ -37,7 +37,8 @@ dentalLinksServices.factory('Auth', ['$cookieStore', function ($cookieStore) {
 dentalLinksServices.factory('Practice', ['$resource',
     function ($resource) {
         return $resource(host + '/practices/:practiceId', {}, {
-            searchPractice: {method: 'GET', url: host + '/practices/search', isArray: true}
+            searchPractice: {method: 'GET', url: host + '/practices/search', isArray: true},
+            update: {method: 'PUT'}
         });
     }]);
 
@@ -95,6 +96,13 @@ dentalLinksServices.factory('Procedure', ['$resource', function($resource){
 
 dentalLinksServices.factory('Provider', ['$resource', function($resource){
  return $resource(host + '/users')
+}]);
+
+dentalLinksServices.factory('User', ['$resource', function($resource){
+    return $resource(host + '/users/:id', {}, {
+        getInvitees: {method:'GET',url: host + '/invitees/:user_id', isArray: true},
+        update: {method: 'PUT' }
+    })
 }]);
 
 dentalLinksServices.factory('PDF', [function () {

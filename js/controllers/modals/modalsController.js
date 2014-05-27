@@ -32,9 +32,10 @@ modalsModule.controller('NoteModalController', ['$scope', '$modalInstance', 'Not
     };
 }]);
 
-modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'Provider', function ($scope, $modalInstance, Provider) {
+modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'Provider', 'Auth', function ($scope, $modalInstance, Provider, Auth) {
     $scope.result = {};
     $scope.ok = function (provider) {
+        provider.inviter_id = Auth.get().id;
         Provider.save({user: provider}, function (success) {
             $modalInstance.close(success);
         }, function (failure) {

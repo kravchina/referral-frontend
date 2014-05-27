@@ -8,7 +8,7 @@ loginModule.controller('LoginController', ['$scope', 'Auth', '$location', 'Login
         $scope.login = function (user) {   /*{'user': {'email': user.email, 'password': user.password }}*/
             Login.login({'user': {'email': user.email, 'password': user.password }},
                 function (success) {
-                    Auth.set({token: success.token, email: user.email, roles: success.roles});
+                    Auth.set({token: success.token, email: user.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
                     $scope.email = user.email;
                     $scope.authenticated = true;
                     $location.path(redirect.path);

@@ -28,29 +28,29 @@
                                         <h3>Personal Information</h3>
 
                                         <div class="input-block-inline">
-                                            <select id="selectSalutation" class="form-control data1" disabled="disabled">
+                                            <select id="selectSalutation" ng-model="account.title" class="form-control data1" disabled="disabled">
                                                 <option selected="selected" disabled="disabled" class="placeholder" value="default">Select salutation</option>
-                                                <option>Mr.</option>
-                                                <option>Ms.</option>
-                                                <option>Mrs.</option>
-                                                <option>Dr.</option>
-                                                <option>Engr.</option>
+                                                <option value="Mr.">Mr.</option>
+                                                <option value="Ms.">Ms.</option>
+                                                <option value="Mrs.">Mrs.</option>
+                                                <option value="Dr.">Dr.</option>
+                                                <option value="Engr.">Engr.</option>
                                             </select>
-                                            <label>Salutation</label>
+                                            <label for="selectSalutation">Salutation</label>
                                         </div>
 
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" disabled="disabled" placeholder="Enter first name &hellip;">
+                                            <input type="text" class="form-control data1" ng-model="account.first_name" disabled="disabled" placeholder="Enter first name &hellip;">
                                             <label>First Name</label>
                                         </div>
 
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" placeholder="Enter middle initial &hellip;">
+                                            <input type="text" class="form-control data1" ng-model="account.middle_initial" placeholder="Enter middle initial &hellip;">
                                             <label>Middle Initial</label>
                                         </div>
 
                                         <div class="input-block-inline-right">
-                                            <input type="text" class="form-control data1" disabled="disabled" placeholder="Enter last name &hellip;">
+                                            <input type="text" class="form-control data1" ng-model="account.last_name"  disabled="disabled" placeholder="Enter last name &hellip;">
                                             <label>Last Name</label>
                                         </div>
                                     </div><!-- .section-block -->
@@ -59,7 +59,7 @@
                                         <h3>Payment Information</h3>
 
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" disabled="disabled" placeholder="Enter name on card &hellip;">
+                                            <input type="text" class="form-control data1"  disabled="disabled" placeholder="Enter name on card &hellip;">
                                             <label>Name on Card</label>
                                         </div>
 
@@ -117,37 +117,37 @@
                                     <div id="sectPractice" class="section-block">
 
                                         <div class="input-block">
-                                            <input type="text" class="form-control data1" placeholder="Enter practice name &hellip;" value="Tooth Care Dental Clinic" disabled="disabled">
+                                            <input type="text" class="form-control data1" ng-model="practice.name" placeholder="Enter practice name &hellip;" value="Tooth Care Dental Clinic" disabled="disabled">
                                             <label>Practice Name</label>
                                         </div>
 
                                         <div class="input-block-inline-left">
-                                            <input type="text" class="form-control data1" placeholder="Enter house number and street &hellip;" value="Unit 1A, 1st Floor, UBC Bldg., Cross Street" disabled="disabled">
+                                            <input type="text" class="form-control data1" ng-model="practice.address.street_line_1" placeholder="Enter house number and street &hellip;" disabled="disabled">
                                             <label>House Number and Street Name</label>
                                         </div>
 
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" placeholder="Enter town / county &hellip;" value="Holliston" disabled="disabled">
+                                            <input type="text" class="form-control data1" ng-model="practice.address.city" placeholder="Enter town / county &hellip;"  disabled="disabled">
                                             <label>Town / County</label>
                                         </div>
 
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" placeholder="Enter state &hellip;" value="Massachusetts" disabled="disabled">
+                                            <input type="text" class="form-control data1" ng-model="practice.address.state" placeholder="Enter state &hellip;"  disabled="disabled">
                                             <label>State</label>
                                         </div>
 
                                         <div class="input-block-inline-right">
-                                            <input type="number" class="form-control data1" placeholder="Enter ZIP code &hellip;" value="01746" disabled="disabled">
+                                            <input type="text" class="form-control data1" ng-model="practice.address.zip" placeholder="Enter ZIP code &hellip;" disabled="disabled">
                                             <label>ZIP Code</label>
                                         </div>
 
                                         <div class="input-block-inline-left">
-                                            <input type="tel" class="form-control data1" placeholder="Enter phone number &hellip;" value="978 321 5460" disabled="disabled">
+                                            <input type="tel" class="form-control data1" ng-model="practice.address.phone" placeholder="Enter phone number &hellip;" disabled="disabled">
                                             <label>Phone Number</label>
                                         </div>
 
                                         <div class="input-block-inline website-block">
-                                            <input type="url" class="form-control data1" placeholder="Enter website address &hellip;" value="www.toothcaredentalcenter.com" disabled="disabled">
+                                            <input type="text" class="form-control data1" ng-model="practice.address.website" placeholder="Enter website address &hellip;"  disabled="disabled">
                                             <label>Website</label>
                                         </div>
                                     </div><!--.section-block-->
@@ -179,61 +179,16 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <td class="cell-user">Terence Remollo</td>
-                                                    <td class="cell-username">tremollo</td>
+                                                <tr  ng-repeat="user in practice.users">
+                                                    <td class="cell-user">{{user.first_name}} {{user.middle_initial}} {{user.last_name}}</td>
+                                                    <td class="cell-username">{{user.username}}</td>
                                                     <td class="cell-created">
                                                         <div class="button-block btn-delete">
                                                             <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
                                                         </div>
-                                                        <span class="create-date">May 1, 2014</span>
+                                                        <span class="create-date">{{user.created_at | date: 'mediumDate'}}</span>
                                                     </td>
                                                 </tr>
-
-                                                <tr>
-                                                    <td class="cell-user">Walter White</td>
-                                                    <td class="cell-username">heisenberg</td>
-                                                    <td class="cell-created">
-                                                        <div class="button-block btn-delete">
-                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                        </div>
-                                                        <span class="create-date">Apr 25, 2014</span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="cell-user">Tony Stark</td>
-                                                    <td class="cell-username">ironman</td>
-                                                    <td class="cell-created">
-                                                        <div class="button-block btn-delete">
-                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                        </div>
-                                                        <span class="create-date">Apr 1, 2014</span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="cell-user">Peter Parker</td>
-                                                    <td class="cell-username">spider-man</td>
-                                                    <td class="cell-created">
-                                                        <div class="button-block btn-delete">
-                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                        </div>
-                                                        <span class="create-date">Mar 10, 2014</span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="cell-user">Bruce Wayne</td>
-                                                    <td class="cell-username">batman</td>
-                                                    <td class="cell-created">
-                                                        <div class="button-block btn-delete">
-                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                        </div>
-                                                        <span class="create-date">Feb 14, 2014</span>
-                                                    </td>
-                                                </tr>
-
                                                 </tbody>
                                             </table>
                                         </div><!-- .table-container -->
@@ -267,66 +222,17 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <td class="cell-provider">Dr. Vidmich</td>
-                                                    <td class="cell-practice">Vidmich Dental Clinic</td>
-                                                    <td class="cell-invited">May 1, 2014</td>
+                                                <tr ng-repeat="provider in providers">
+                                                    <td class="cell-provider">{{provider.title}} {{provider.first_name}} {{provider.middle_initial}} {{provider.last_name}}</td>
+                                                    <td class="cell-practice">{{provider.practice.name}}</td>
+                                                    <td class="cell-invited">{{provider.created_at | date: 'mediumDate'}}</td>
                                                     <td class="cell-status">
                                                         <div class="button-block btn-delete">
                                                             <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
                                                         </div>
-                                                        <span class="label label-success">Accepted</span>
+                                                        <span class="label" ng-class="{'label-success': provider.status == 'accepted', 'label-warning':provider.status == 'sent', 'label-info' : provier.status = 'invited',  'label-dander': provider.status == 'rejecte'}">{{provider.status}}</span>
                                                     </td>
                                                 </tr>
-
-                                                <tr>
-                                                    <td class="cell-provider">Dr. Brain</td>
-                                                    <td class="cell-practice">Downtown Plaza Dental Center</td>
-                                                    <td class="cell-invited">Apr 25, 2014</td>
-                                                    <td class="cell-status">
-                                                        <div class="button-block btn-delete">
-                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                        </div>
-                                                        <span class="label label-success">Accepted</span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="cell-provider">Dr. Wise</td>
-                                                    <td class="cell-practice">Big Apple Smile Dentistry</td>
-                                                    <td class="cell-invited">Apr 1, 2014</td>
-                                                    <td class="cell-status">
-                                                        <div class="button-block btn-delete">
-                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                        </div>
-                                                        <span class="label label-danger">Rejected</span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="cell-provider">Dr. Strange</td>
-                                                    <td class="cell-practice">Daily Happy Dental Clinic</td>
-                                                    <td class="cell-invited">Mar 10, 2014</td>
-                                                    <td class="cell-status">
-                                                        <div class="button-block btn-delete">
-                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                        </div>
-                                                        <span class="label label-warning">Pending</span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="cell-provider">Dr. Savage</td>
-                                                    <td class="cell-practice">Central Plaza Dentistry Clinic</td>
-                                                    <td class="cell-invited">Feb 14, 2014</td>
-                                                    <td class="cell-status">
-                                                        <div class="button-block btn-delete">
-                                                            <span class="dlicons-remove"></span> Delete this user? <a href="#" class="link-green">Yes</a> | <a href="#" class="link-orange">No</a>
-                                                        </div>
-                                                        <span class="label label-warning">Pending</span>
-                                                    </td>
-                                                </tr>
-
                                                 </tbody>
                                             </table>
                                         </div><!-- .table-container -->
