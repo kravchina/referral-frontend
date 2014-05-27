@@ -41,4 +41,12 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Practice
         });
     };
 
+    $scope.deleteUser = function(user){
+        console.log("User delete", user) ;
+    };
+
+    $scope.deleteProvider = function(provider){
+        console.log("Provider delete", provider) ;
+    }
+
 }]);

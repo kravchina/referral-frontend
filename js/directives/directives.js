@@ -16,12 +16,12 @@ dentalLinksDirectives.directive('access', [ 'Auth', function (Auth) {
     }
 }]);
 
-dentalLinksDirectives.directive('expandNote', [function(){
+dentalLinksDirectives.directive('expandNote', [function () {
     return {
         scope: true,
         restrict: 'A',
         link: function (scope, $element, attrs) {
-            $element.on('click', function(){
+            $element.on('click', function () {
                 $element.toggleClass('expand');
             });
 
@@ -30,30 +30,44 @@ dentalLinksDirectives.directive('expandNote', [function(){
 
 }]);
 
-dentalLinksDirectives.directive('editForm', [function(){
+dentalLinksDirectives.directive('editForm', [function () {
     return {
         restrict: 'A',
         scope: {},
-        controller: function($scope, $element) {
+        controller: function ($scope, $element) {
             var inputs = $element.find('input');
             var selects = $element.find('select');
-            this.enableControls = function(){
+            this.enableControls = function () {
                 inputs.removeClass('data1');
                 inputs.removeAttr('disabled');
                 selects.removeClass('data1');
                 selects.removeAttr('disabled');
             };
-            this.disableControls = function(){
+            this.disableControls = function () {
                 inputs.addClass('data1');
                 inputs.attr('disabled', 'disabled');
                 selects.addClass('data1');
                 selects.attr('disabled', 'disabled');
             };
         }
-        }
+    }
 }]);
 
-dentalLinksDirectives.directive('toggleEdit', [function(){
+dentalLinksDirectives.directive('deleteButton', [function () {
+    return {
+        scope: {},
+        restrict: 'A',
+        link: function (scope, $element, attrs) {
+
+            $element.on('click', function () {
+                $element.toggleClass('active');
+            });
+        }
+    }
+
+}]);
+
+dentalLinksDirectives.directive('toggleEdit', [function () {
     return {
         scope: {},
         restrict: 'A',
@@ -64,14 +78,14 @@ dentalLinksDirectives.directive('toggleEdit', [function(){
             var saveButton = $element.next();
 
             // edit
-            editButton.on('click', function(e) {
+            editButton.on('click', function (e) {
                 editButton.addClass('hide');
                 saveButton.removeClass('hide');
                 editFormCtrl.enableControls();
             });
 
             // save
-            saveButton.on('click', function(e) {
+            saveButton.on('click', function (e) {
                 editButton.removeClass('hide');
                 saveButton.addClass('hide');
                 editFormCtrl.disableControls();
@@ -125,14 +139,21 @@ dentalLinksDirectives.directive('ngThumb', ['$window', function ($window) {
             if (!helper.isFile(params.file)) return;
             /*if (!helper.isImage(params.file)) return;*/
 
-            if(!helper.isImage(params.file)){
+            if (!helper.isImage(params.file)) {
                 var type = '|' + params.file.type.slice(params.file.type.lastIndexOf('/') + 1) + '|';
                 var cssClass = '';
-                switch (type){
-                    case '|doc|': cssClass = 'attach-word'; break;
-                    case '|pdf|': cssClass = 'attach-pdf'; break;
-                    case '|xls|': cssClass = 'attach-excel'; break;
-                    default : cssClass = 'attach-file';
+                switch (type) {
+                    case '|doc|':
+                        cssClass = 'attach-word';
+                        break;
+                    case '|pdf|':
+                        cssClass = 'attach-pdf';
+                        break;
+                    case '|xls|':
+                        cssClass = 'attach-excel';
+                        break;
+                    default :
+                        cssClass = 'attach-file';
                 }
                 element.addClass(cssClass)
             }
