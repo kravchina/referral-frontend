@@ -1,18 +1,20 @@
 dentalLinks.controller('NavController', ['$scope', 'Auth', 'User', '$location', 'Login', 'redirect',
     function ($scope, Auth, User, $location, Login, redirect) {
 
-        $scope.current_user = null
+        if(Auth.get()){
+            Auth.current_user = User.get({id: Auth.get().id});
+        }else{
+            Auth.current_user = null;
+        }
 
-        $scope.account = function() {
-            var auth = Auth.get();
-            $scope.authenticated = auth;
-            $scope.email = (auth || {}).email;
+        $scope.first_name = function() {
+            var current_user = Auth.current_user;
+            return (current_user || {}).first_name;
+        }
 
-            if(auth){
-                $scope.current_user =  User.get({id: auth.id});
-            }else{
-                $scope.current_user = null;
-            }
+        $scope.last_name = function() {
+            var current_user = Auth.current_user;
+            return (current_user || {}).last_name;
         }
 
         $scope.logged = function () {
