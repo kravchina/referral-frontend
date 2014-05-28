@@ -42,11 +42,15 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Practice
     };
 
     $scope.deleteUser = function(user){
-        console.log("User delete", user) ;
+        User.delete({id: user.id}, function(success){
+            $scope.practice.users.splice($scope.practice.users.indexOf(user), 1);
+        });
     };
 
     $scope.deleteProvider = function(provider){
-        console.log("Provider delete", provider) ;
+        Provider.delete({id: provider.id}, function(success){
+            $scope.providers.splice($scope.providers.indexOf(provider), 1);
+        });
     }
 
 }]);
