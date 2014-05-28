@@ -1,3 +1,5 @@
-/**
- * Created by TopaZ on 21.05.2014.
- */
+var historyModule = angular.module('history', ['ui.bootstrap']);
+
+historyModule.controller('HistoryController', ['$scope', 'Auth', 'Referral', function ($scope, Auth, Referral) {
+    $scope.referrals = Referral.findByPractice({id: Auth.get().practice_id});
+}]);

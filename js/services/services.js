@@ -56,7 +56,8 @@ dentalLinksServices.factory('Patient', ['$resource', function ($resource) {
 
 dentalLinksServices.factory('Referral', ['$resource', function ($resource) {
     return $resource(host + '/referrals/:id', {id: '@id'}, {
-        updateStatus: {method: 'PUT', url: host + '/referrals/:id/status'}
+        updateStatus: {method: 'PUT', url: host + '/referrals/:id/status'},
+        findByPractice: {method: 'GET', url: host + '/referrals/practice/:id', isArray: true}
     });
 }]);
 
