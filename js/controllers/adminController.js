@@ -1,6 +1,7 @@
 var adminModule = angular.module('admin', ['ui.bootstrap']);
 
-adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Practice', 'Provider', 'User', function ($scope, $modal, Auth, Practice, Provider, User) {
+adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Practice', 'Provider', 'User',
+    function ($scope, $modal, Auth, Practice, Provider, User) {
     var auth = Auth.get();
     $scope.providers = User.getInvitees({user_id: auth.id });
     $scope.account = User.get({id: auth.id});
@@ -13,6 +14,10 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Practice
         Practice.update({practiceId: $scope.practice.id}, {
             practice: {
                 name: $scope.practice.name,
+                card_number: $scope.practice.card_number,
+                name_on_card: $scope.practice.name_on_card,
+                card_exp_month: $scope.practice.card_exp_month,
+                card_exp_year: $scope.practice.card_exp_year,
                 address_attributes: $scope.practice.address
             }
         });

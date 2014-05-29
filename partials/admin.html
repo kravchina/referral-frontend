@@ -55,46 +55,7 @@
                                         </div>
                                     </div><!-- .section-block -->
 
-                                    <div id="sectPayment" class="section-block">
-                                        <h3>Payment Information</h3>
 
-                                        <div class="input-block-inline">
-                                            <input type="text" class="form-control data1"  disabled="disabled" placeholder="Enter name on card &hellip;">
-                                            <label>Name on Card</label>
-                                        </div>
-
-                                        <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" disabled="disabled" placeholder="Enter card number &hellip;">
-                                            <label>Card Number</label>
-                                        </div>
-
-                                        <div class="input-block-inline-right">
-                                            <select id="selectExpMM" class="form-control data1" disabled="disabled">
-                                                <option selected="selected" disabled="disabled" class="placeholder" value="default">Select month</option>
-                                                <option>01</option>
-                                                <option>02</option>
-                                                <option>03</option>
-                                                <option>04</option>
-                                                <option>05</option>
-                                                <option>06</option>
-                                                <option>07</option>
-                                                <option>08</option>
-                                                <option>09</option>
-                                                <option>10</option>
-                                                <option>11</option>
-                                                <option>12</option>
-                                            </select>
-                                            <select id="selectExpYYYY" class="form-control data1" disabled="disabled">
-                                                <option selected="selected" disabled="disabled" class="placeholder" value="default">Select year</option>
-                                                <option>2014</option>
-                                                <option>2015</option>
-                                                <option>2016</option>
-                                                <option>2017</option>
-                                                <option>2018</option>
-                                            </select>
-                                            <label>Expiration Date</label>
-                                        </div>
-                                    </div><!-- .section-block -->
                                 </form>
 
                             </div>
@@ -150,7 +111,48 @@
                                             <input type="text" class="form-control data1" ng-model="practice.address.website" placeholder="Enter website address &hellip;"  disabled="disabled">
                                             <label>Website</label>
                                         </div>
-                                    </div><!--.section-block-->
+                                    </div>
+
+                                    <div id="sectPayment" class="section-block">
+                                        <h3>Payment Information</h3>
+
+                                        <div class="input-block-inline">
+                                            <input type="text" class="form-control data1" ng-model="practice.name_on_card"  disabled="disabled" placeholder="Enter name on card &hellip;">
+                                            <label>Name on Card</label>
+                                        </div>
+
+                                        <div class="input-block-inline">
+                                            <input type="text" class="form-control data1" ng-model="practice.card_number" disabled="disabled" placeholder="Enter card number &hellip;">
+                                            <label>Card Number</label>
+                                        </div>
+
+                                        <div class="input-block-inline-right">
+                                            <select id="selectExpMM" ng-model="practice.card_exp_month" class="form-control data1" disabled="disabled">
+                                                <option selected="selected" disabled="disabled" class="placeholder" value="default">Select month</option>
+                                                <option value="1">01</option>
+                                                <option value="2">02</option>
+                                                <option value="3">03</option>
+                                                <option value="4">04</option>
+                                                <option value="5">05</option>
+                                                <option value="6">06</option>
+                                                <option value="7">07</option>
+                                                <option value="8">08</option>
+                                                <option value="9">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                            </select>
+                                            <select id="selectExpYYYY" ng-model="practice.card_exp_year" class="form-control data1" disabled="disabled">
+                                                <option selected="selected" disabled="disabled" class="placeholder" value="default">Select year</option>
+                                                <option>2014</option>
+                                                <option>2015</option>
+                                                <option>2016</option>
+                                                <option>2017</option>
+                                                <option>2018</option>
+                                            </select>
+                                            <label>Expiration Date</label>
+                                        </div>
+                                    </div><!-- .section-block --><!--.section-block-->
                                 </form>
                             </div>
 
