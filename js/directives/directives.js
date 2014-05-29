@@ -30,97 +30,6 @@ dentalLinksDirectives.directive('expandNote', [function () {
 
 }]);
 
-dentalLinksDirectives.directive('editForm', [function () {
-    return {
-        restrict: 'A',
-        scope: {},
-        controller: function ($scope, $element) {
-            var inputs = $element.find('input');
-            var selects = $element.find('select');
-            this.enableControls = function () {
-                inputs.removeClass('data1');
-                inputs.removeAttr('disabled');
-                selects.removeClass('data1');
-                selects.removeAttr('disabled');
-            };
-            this.disableControls = function () {
-                inputs.addClass('data1');
-                inputs.attr('disabled', 'disabled');
-                selects.addClass('data1');
-                selects.attr('disabled', 'disabled');
-            };
-        }
-    }
-}]);
-
-dentalLinksDirectives.directive('deleteButton', [function () {
-    return {
-        scope: {},
-        restrict: 'A',
-        link: function (scope, $element, attrs) {
-
-            $element.on('click', function () {
-                $element.toggleClass('active');
-            });
-        }
-    }
-
-}]);
-
-dentalLinksDirectives.directive('toggleEdit', [function () {
-    return {
-        scope: {},
-        restrict: 'A',
-        require: '^editForm',
-        link: function (scope, $element, attrs, editFormCtrl) {
-
-            var editButton = $element;
-            var saveButton = $element.next();
-
-            // edit
-            editButton.on('click', function (e) {
-                editButton.addClass('hide');
-                saveButton.removeClass('hide');
-                editFormCtrl.enableControls();
-            });
-
-            // save
-            saveButton.on('click', function (e) {
-                editButton.removeClass('hide');
-                saveButton.addClass('hide');
-                editFormCtrl.disableControls();
-            });
-
-        }
-    }
-
-}]);
-
-dentalLinksDirectives.directive('dateRangePicker', ['$parse', function($parse){
-    return {
-        restrict: 'A',
-        link: function (scope, $element, attrs){
-            var dateRangeCallback = $parse(attrs.dateRangePicker);
-            $element.daterangepicker(
-                {
-                    startDate: moment().subtract('days', 29),
-                    endDate: moment(),
-                    ranges: {
-                        'Last 7 Days': [moment().subtract('days', 6), moment()],
-                        'Last 30 Days': [moment().subtract('days', 29), moment()],
-                        'All': [moment().startOf('days'), moment().endOf('days')] // not sure what formula to use
-                    }
-                },
-                function(start, end) {
-                    $element.find('span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                    dateRangeCallback(scope, {start: start, end: end});
-                }
-            );
-
-            $element.find('span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-        }
-    }
-}]);
 
 dentalLinksDirectives.directive('pdfPhotos', ['Auth', 'PDF', function (Auth, PDF) {
     return {
@@ -203,4 +112,95 @@ dentalLinksDirectives.directive('ngThumb', ['$window', function ($window) {
             }
         }
     };
+}]);
+
+dentalLinksDirectives.directive('dateRangePicker', [function(){
+    return {
+        scope: {},
+        restrict: 'A',
+        link: function (scope, $element, attrs){
+            $element.daterangepicker(
+                {
+                    startDate: moment().subtract('days', 29),
+                    endDate: moment(),
+                    ranges: {
+                        'Last 7 Days': [moment().subtract('days', 6), moment()],
+                        'Last 30 Days': [moment().subtract('days', 29), moment()],
+                        'All': [moment().startOf('days'), moment().endOf('days')] // not sure what formula to use
+                    }
+                },
+                function(start, end) {
+                    $element.find('span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                }
+            );
+
+            $element.find('span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+        }
+    }
+}]);
+
+dentalLinksDirectives.directive('editForm', [function () {
+    return {
+        restrict: 'A',
+        scope: {},
+        controller: function ($scope, $element) {
+            var inputs = $element.find('input');
+            var selects = $element.find('select');
+            this.enableControls = function () {
+                inputs.removeClass('data1');
+                inputs.removeAttr('disabled');
+                selects.removeClass('data1');
+                selects.removeAttr('disabled');
+            };
+            this.disableControls = function () {
+                inputs.addClass('data1');
+                inputs.attr('disabled', 'disabled');
+                selects.addClass('data1');
+                selects.attr('disabled', 'disabled');
+            };
+        }
+    }
+}]);
+
+dentalLinksDirectives.directive('deleteButton', [function () {
+    return {
+        scope: {},
+        restrict: 'A',
+        link: function (scope, $element, attrs) {
+
+            $element.on('click', function () {
+                $element.toggleClass('active');
+            });
+        }
+    }
+
+}]);
+
+dentalLinksDirectives.directive('toggleEdit', [function () {
+    return {
+        scope: {},
+        restrict: 'A',
+        require: '^editForm',
+        link: function (scope, $element, attrs, editFormCtrl) {
+
+            var editButton = $element;
+            var saveButton = $element.next();
+
+            // edit
+            editButton.on('click', function (e) {
+                editButton.addClass('hide');
+                saveButton.removeClass('hide');
+                editFormCtrl.enableControls();
+            });
+
+            // save
+            saveButton.on('click', function (e) {
+                editButton.removeClass('hide');
+                saveButton.addClass('hide');
+                editFormCtrl.disableControls();
+            });
+
+        }
+    }
+
 }]);
