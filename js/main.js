@@ -1,23 +1,23 @@
 /*----------
  TOOLTIP
 ----------*/
-$( function() {
+/*$( function() {
 	$('.btn-toggle').tooltip({
 		container: 'body'
 	});
-});
+});*/
 
 /*----------
  jQuery Placeholder
 ----------*/
-$(function() {
+/*$(function() {
 	$('input,textarea').placeholder();
-});
+});*/
 
 /*----------
  Date Range Picker
 ----------*/
-$( function() {
+/*$( function() {
 	
 	$('#reportrange').daterangepicker(
 		{
@@ -36,7 +36,7 @@ $( function() {
 	
 	$('#reportrange span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
-});
+});*/
 
 /*----------
  Tab Collapse
@@ -47,7 +47,7 @@ $( function() {
  Edit / Save Section
 ----------*/
 
-$( function() {
+/*$( function() {
 	
 	$formTab = $('#formAccountTab, #formPracticeTab'),
 	$editBtn = $('#formAccountTab .btn-edit, #formPracticeTab .btn-edit'),
@@ -70,13 +70,13 @@ $( function() {
 		$formControls.attr('disabled', 'disabled');
 	});
 	
-});
+});*/
 
 /*----------
  Remove Button
 ----------*/
-$( function() {
+/*$( function() {
 	$('.section-block .table').on('click', '.btn-delete', function(e) {
 		$(this).toggleClass('active');
 	});
-});
+});*/
