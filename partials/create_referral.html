@@ -50,7 +50,7 @@
         <div class="block-title">
             <h2>Referral type</h2>
         </div>
-        <select id="selectRefType" class="form-control" name="practiceType" ng-disabled="!destinationPractice" ng-model="practiceType"  ng-options="p as p.name for p in practiceTypes" ng-required="true">
+        <select id="selectRefType" class="form-control" name="practiceType" ng-model="practiceType"  ng-options="p as p.name for p in practiceTypes" ng-required="true">
             <option disabled="disabled" class="placeholder" value="">Select type &hellip;</option>
         </select>
     </div>
@@ -59,7 +59,7 @@
         <div class="block-title">
             <h2>Procedure</h2>
         </div>
-        <select id="selectProcedure" ng-disabled="!practiceType || !destinationPractice" name="procedure" class="form-control" ng-model="model.referral.procedure_id"  ng-options="p.id as p.name for p in practiceType.procedures" ng-required="true">
+        <select id="selectProcedure" ng-disabled="!practiceType" name="procedure" class="form-control" ng-model="model.referral.procedure_id"  ng-options="p.id as p.name for p in practiceType.procedures" ng-required="true">
             <option disabled="disabled" class="placeholder" value="">Select procedure &hellip;</option>
         </select>
     </div>
