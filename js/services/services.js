@@ -112,7 +112,7 @@ dentalLinksServices.factory('Procedure', ['$resource', function($resource){
 }]);
 
 dentalLinksServices.factory('Provider', ['$resource', function($resource){
- return $resource(host + '/users')
+ return $resource(host + '/users/:id');
 }]);
 
 dentalLinksServices.factory('User', ['$resource', function($resource){
