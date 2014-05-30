@@ -1,20 +1,12 @@
 var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-createReferralModule.controller('CreateReferralsController', ['$scope', 'Practice', 'Patient', 'Procedure', 'Provider', 'Referral', 'S3Bucket', '$modal', '$fileUploader', '$timeout', function ($scope, Practice, Patient, Procedure, Provider, Referral, S3Bucket, $modal, $fileUploader, $timeout) {
+createReferralModule.controller('CreateReferralsController', ['$scope','Alert', 'Practice', 'Patient', 'Procedure', 'Provider', 'Referral', 'S3Bucket', '$modal', '$fileUploader',
+    function ($scope, Alert, Practice, Patient, Procedure, Provider, Referral, S3Bucket, $modal, $fileUploader) {
 
     $scope.alerts = [];
 
-    var pushAlert = function (type, message) {
-        var alert = { type: type, message: message, promise: $timeout(function () {
-            $scope.alerts.splice($scope.alerts.indexOf(alert), 1);
-        }, 5000) };
-        $scope.alerts.push(alert);
-
-    };
-
     $scope.closeAlert = function (index) {
-        $timeout.cancel($scope.alerts[index].promise); //cancel automatic removal
-        $scope.alerts.splice(index, 1);
+        Alert.close($scope.alerts, index);
     };
 
     $scope.procedures = Procedure.query();
@@ -22,7 +14,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', 'Practic
     $scope.practiceTypes = Procedure.practiceTypes();
 
     $scope.providers = Provider.query(function(success){}, function(failure){
-        pushAlert('danger', 'Server doesn\'t respond. Please try again later');
+        Alert.push($scope.alerts, 'danger', 'Server doesn\'t respond. Please try again later');
     });
 
     $scope.model = {referral: {notes_attributes: []}, practice: {}};
@@ -52,10 +44,10 @@ createReferralModule.controller('CreateReferralsController', ['$scope', 'Practic
 
         $scope.create_referral_result = Referral.save(model,
             function (success) {
-               pushAlert('success', 'Referral was sent successfully!')
+               Alert.push($scope.alerts, 'success', 'Referral was sent successfully!');
             },
             function (failure) {
-                pushAlert('danger', 'An error occurred during referral creation...')
+                Alert.push($scope.alerts, 'danger', 'An error occurred during referral creation...');
             });
 
     };
@@ -146,7 +138,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', 'Practic
 
         uploader.bind('whenaddingfilefailed', function (event, item) {
             console.info('When adding a file failed', item);
-            pushAlert('danger', 'Adding file failed. Please try again later.')
+            Alert.push($scope.alerts, 'danger', 'Adding file failed. Please try again later.')
         });
 
         uploader.bind('afteraddingall', function (event, items) {
@@ -171,12 +163,12 @@ createReferralModule.controller('CreateReferralsController', ['$scope', 'Practic
 
         uploader.bind('cancel', function (event, xhr, item) {
             console.info('Cancel', xhr, item);
-            pushAlert('info', 'Attachment was cancelled.')
+            Alert.push($scope.alerts, 'info', 'Attachment was cancelled.')
         });
 
         uploader.bind('error', function (event, xhr, item, response) {
             console.error('Error', xhr, item, response);
-            pushAlert('danger', 'An error occured during attachment upload. Please try again later.')
+            Alert.push($scope.alerts, 'danger', 'An error occured during attachment upload. Please try again later.')
         });
 
         uploader.bind('complete', function (event, xhr, item, response) {

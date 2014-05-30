@@ -2,7 +2,9 @@
                 <h1>Admin</h1>
                 <p class="page-subheader">Manage you account details.</p>
             </header><!-- .page-header -->
-            
+
+            <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.message}}</alert>
+
             <div class="box-white">
             
                 <div class="row">
@@ -21,14 +23,14 @@
                                     <div class="block-title">
                                         <h2>Account</h2>
                                         <button type="button" toggle-edit class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
-                                        <button type="button" ng-click="saveAccount()" class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
+                                        <button type="button" ng-click="savePractice()" class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
                                     </div>
 
                                     <div id="sectPersonal" class="section-block">
                                         <h3>Personal Information</h3>
 
                                         <div class="input-block-inline">
-                                            <select id="selectSalutation" ng-model="account.title" class="form-control data1" disabled="disabled">
+                                            <select id="selectSalutation" ng-model="practice.salutation" class="form-control data1" disabled="disabled">
                                                 <option selected="selected" disabled="disabled" class="placeholder" value="default">Select salutation</option>
                                                 <option value="Mr.">Mr.</option>
                                                 <option value="Ms.">Ms.</option>
@@ -40,21 +42,55 @@
                                         </div>
 
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" ng-model="account.first_name" disabled="disabled" placeholder="Enter first name &hellip;">
+                                            <input type="text" class="form-control data1" ng-model="practice.account_first_name" disabled="disabled" placeholder="Enter first name &hellip;">
                                             <label>First Name</label>
                                         </div>
 
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" ng-model="account.middle_initial" disabled="disabled" placeholder="Enter middle initial &hellip;">
+                                            <input type="text" class="form-control data1" ng-model="practice.account_middle_initial" disabled="disabled" maxlength="1" placeholder="Enter middle initial &hellip;">
                                             <label>Middle Initial</label>
                                         </div>
 
                                         <div class="input-block-inline-right">
-                                            <input type="text" class="form-control data1" ng-model="account.last_name"  disabled="disabled" placeholder="Enter last name &hellip;">
+                                            <input type="text" class="form-control data1" ng-model="practice.account_last_name"  disabled="disabled" placeholder="Enter last name &hellip;">
                                             <label>Last Name</label>
                                         </div>
                                     </div><!-- .section-block -->
+                                    <div id="sectPayment" class="section-block">
+                                        <h3>Payment Information</h3>
 
+                                        <div class="input-block-inline">
+                                            <input type="text" class="form-control data1" ng-model="practice.name_on_card"  disabled="disabled" placeholder="Enter name on card &hellip;">
+                                            <label>Name on Card</label>
+                                        </div>
+
+                                        <div class="input-block-inline">
+                                            <input type="text" class="form-control data1" ng-model="practice.card_number" disabled="disabled" placeholder="Enter card number &hellip;">
+                                            <label>Card Number</label>
+                                        </div>
+
+                                        <div class="input-block-inline-right">
+                                            <select id="selectExpMM" ng-model="practice.card_exp_month" class="form-control data1" disabled="disabled">
+                                                <option selected="selected" disabled="disabled" class="placeholder" value="default">Select month</option>
+                                                <option value="1">01</option>
+                                                <option value="2">02</option>
+                                                <option value="3">03</option>
+                                                <option value="4">04</option>
+                                                <option value="5">05</option>
+                                                <option value="6">06</option>
+                                                <option value="7">07</option>
+                                                <option value="8">08</option>
+                                                <option value="9">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                            </select>
+                                            <select id="selectExpYYYY" ng-model="practice.card_exp_year" ng-options="year as year for year in years" class="form-control data1" disabled="disabled">
+                                                <option selected="selected" disabled="disabled" class="placeholder" value="">Select year</option>
+                                            </select>
+                                            <label>Expiration Date</label>
+                                        </div>
+                                    </div><!-- .section-block -->
 
                                 </form>
 
@@ -113,46 +149,7 @@
                                         </div>
                                     </div>
 
-                                    <div id="sectPayment" class="section-block">
-                                        <h3>Payment Information</h3>
-
-                                        <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" ng-model="practice.name_on_card"  disabled="disabled" placeholder="Enter name on card &hellip;">
-                                            <label>Name on Card</label>
-                                        </div>
-
-                                        <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" ng-model="practice.card_number" disabled="disabled" placeholder="Enter card number &hellip;">
-                                            <label>Card Number</label>
-                                        </div>
-
-                                        <div class="input-block-inline-right">
-                                            <select id="selectExpMM" ng-model="practice.card_exp_month" class="form-control data1" disabled="disabled">
-                                                <option selected="selected" disabled="disabled" class="placeholder" value="default">Select month</option>
-                                                <option value="1">01</option>
-                                                <option value="2">02</option>
-                                                <option value="3">03</option>
-                                                <option value="4">04</option>
-                                                <option value="5">05</option>
-                                                <option value="6">06</option>
-                                                <option value="7">07</option>
-                                                <option value="8">08</option>
-                                                <option value="9">09</option>
-                                                <option value="10">10</option>
-                                                <option value="11">11</option>
-                                                <option value="12">12</option>
-                                            </select>
-                                            <select id="selectExpYYYY" ng-model="practice.card_exp_year" class="form-control data1" disabled="disabled">
-                                                <option selected="selected" disabled="disabled" class="placeholder" value="default">Select year</option>
-                                                <option>2014</option>
-                                                <option>2015</option>
-                                                <option>2016</option>
-                                                <option>2017</option>
-                                                <option>2018</option>
-                                            </select>
-                                            <label>Expiration Date</label>
-                                        </div>
-                                    </div><!-- .section-block --><!--.section-block-->
+                                    <!--.section-block-->
                                 </form>
                             </div>
 
