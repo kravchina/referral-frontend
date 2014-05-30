@@ -5,7 +5,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
         $scope.alerts = [];
 
         var currentYear = moment().year();
-        $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4 ]
+        $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4 ];
 
         $scope.closeAlert = function (index) {
             Alert.close($scope.alerts, index);
