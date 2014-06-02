@@ -23,10 +23,15 @@ dentalLinksServices.factory('Auth', ['$cookieStore', function ($cookieStore) {
             return false;
         },
         get: function () {
-            return $cookieStore.get('auth');
+            //return $cookieStore.get('auth');
+            if($.cookie('auth') != undefined){
+                return $.parseJSON($.cookie('auth'));
+            }
+            return undefined;
         },
         set: function (value) {
-            $cookieStore.put('auth', value);
+            $.cookie('auth', JSON.stringify(value), {expires: 1/48});
+            //$cookieStore.put('auth', value);
         },
         remove: function(){
             $cookieStore.remove('auth');
