@@ -114,11 +114,11 @@ dentalLinksDirectives.directive('ngThumb', ['$window', function ($window) {
     };
 }]);
 
-dentalLinksDirectives.directive('dateRangePicker', [function(){
+dentalLinksDirectives.directive('dateRangePicker', ['$parse', function($parse){
     return {
-        scope: {},
         restrict: 'A',
         link: function (scope, $element, attrs){
+            var dateRangeCallback = $parse(attrs.dateRangePicker);
             $element.daterangepicker(
                 {
                     startDate: moment().subtract('days', 29),
@@ -131,6 +131,7 @@ dentalLinksDirectives.directive('dateRangePicker', [function(){
                 },
                 function(start, end) {
                     $element.find('span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                    dateRangeCallback(scope, {start: start, end: end});
                 }
             );
 
