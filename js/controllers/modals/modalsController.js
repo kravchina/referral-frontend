@@ -63,3 +63,20 @@ modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 
         $modalInstance.dismiss('cancel');
     };
 }]);
+
+modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'User', 'Auth', function ($scope, $modalInstance, User, Auth) {
+    $scope.result = {};
+    $scope.ok = function (user) {
+        user.practice_id = Auth.get().practice_id;
+        user.inviter_id = Auth.get().id;
+        User.save({user: user}, function (success) {
+            $modalInstance.close(success);
+        }, function (failure) {
+            $scope.result.failure = true;
+        });
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+

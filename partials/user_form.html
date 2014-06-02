@@ -1,0 +1,33 @@
+<form id="formNewuser" name="userForm">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Add User</h4>
+    </div>
+    <div class="modal-body">
+        <div class="block-title">
+            <h5>User Information</h5>
+        </div>
+        <div ng-show="userForm.$invalid" class="alert alert-danger">
+            <strong>Oops!</strong> Please fix the highlighted errors below.
+        </div>
+        <div class="input-block" ng-class="{ 'has-error': userForm.username.$invalid }">
+            <input type="text" name="username" class="form-control" ng-model="user.username" placeholder="Enter username &hellip;" ng-required="true">
+        </div>
+        <div class="input-block" ng-class="{ 'has-error': userForm.firstName.$invalid }">
+            <input type="text" name="firstName" class="form-control" ng-model="user.first_name" placeholder="Enter first name &hellip;" ng-required="true">
+        </div>
+        <div class="input-block-right" ng-class="{ 'has-error': userForm.middleInitial.$invalid }">
+            <input type="text" name="middleInitial" class="form-control" ng-model="user.middle_initial" maxlength="1" placeholder="Enter middle initial &hellip;" ng-required="true">
+        </div>
+        <div class="input-block"  ng-class="{ 'has-error': userForm.lastName.$invalid }" >
+            <input type="text" name="lastName" class="form-control" ng-model="user.last_name" placeholder="Enter last name &hellip;" ng-required="true">
+        </div>
+        <div class="input-block" ng-class="{ 'has-error': userForm.email.$invalid }">
+            <input type="email" class="form-control" name="email" ng-model="user.email" placeholder="Enter user's email address &hellip;" ng-required="true">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-orange" ng-click="ok(user)">Save</button>
+        <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Discard</button>
+    </div>
+</form>

@@ -21,6 +21,16 @@ dentalLinks.controller('NavController', ['$scope', 'Auth', 'User', '$location', 
             return Auth.get() != undefined;
         };
 
+        $scope.logout = function(){
+            Login.logout(function () {
+                    Auth.remove();
+                    Auth.current_user = null;
+                    $location.path('/sign_in');
+                }
+            );
+
+        }
+
     }]);
 
 
