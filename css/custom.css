@@ -204,11 +204,11 @@ textarea.form-control {
 .btn {
 	border: none;
 	border-radius: 5px;
-	color: #fff;
-	font-size: 12px;
-	font-size: 1.2rem;
+	color: #fff       !important;
+	font-size: 12px   !important;
+	font-size: 1.2rem !important;
 	font-weight: 700;
-	padding: 8px 10px;
+	padding: 8px 10px !important;
 	text-transform: uppercase;
 	transition: all 0.3s ease;
 		-moz-transition: all 0.3s ease;
@@ -248,7 +248,7 @@ textarea.form-control {
 	padding: 10px 0;
 }
 .btn-orange {
-	background-color: #e98b39;
+	background-color: #e98b39 !important;
 }
 .btn-orange:hover {
 	background-color: #d35400;
@@ -1349,9 +1349,9 @@ td.cell-from .practice, td.cell-to .practice {
 		font-size: 1.4rem;
 	}
 	.btn {
-		font-size: 14px;
-		font-size: 1.4rem;
-		padding: 10px 14px;
+		font-size: 14px    !important;
+		font-size: 1.4rem  !important;
+		padding: 10px 14px !important;
 	}
 	.btn-lg {
 		font-size: 30px;
