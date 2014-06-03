@@ -7,24 +7,24 @@
         <div class="block-title">
             <h5>Provider Information</h5>
         </div>
-        <div ng-show="providerForm.$invalid" class="alert alert-danger">
+        <!--<div ng-show="providerForm.$invalid" class="alert alert-danger">
             <strong>Oops!</strong> Please fix the highlighted errors below.
-        </div>
-        <div class="input-block" ng-class="{ 'has-error': providerForm.firstName.$invalid }">
+        </div>-->
+        <div class="input-block" ng-class="{ 'has-error': providerForm.firstName.$dirty && providerForm.firstName.$invalid }">
             <input type="text" name="firstName" class="form-control" ng-model="provider.first_name" placeholder="Enter first name &hellip;" ng-required="true">
         </div>
-        <div class="input-block-right" ng-class="{ 'has-error': providerForm.middleInitial.$invalid }">
+        <div class="input-block-right" ng-class="{ 'has-error': providerForm.middleInitial.$dirty && providerForm.middleInitial.$invalid }">
             <input type="text" name="middleInitial" class="form-control" ng-model="provider.middle_initial" maxlength="1" placeholder="Enter middle initial &hellip;" ng-required="true">
         </div>
-        <div class="input-block"  ng-class="{ 'has-error': providerForm.lastName.$invalid }" >
+        <div class="input-block"  ng-class="{ 'has-error': providerForm.lastName.$dirty && providerForm.lastName.$invalid }" >
             <input type="text" name="lastName" class="form-control" ng-model="provider.last_name" placeholder="Enter last name &hellip;" ng-required="true">
         </div>
-        <div class="input-block" ng-class="{ 'has-error': providerForm.email.$invalid }">
+        <div class="input-block" ng-class="{ 'has-error': providerForm.email.$dirty && providerForm.email.$invalid }">
             <input type="email" class="form-control" name="email" ng-model="provider.email" placeholder="Enter provider's email address &hellip;" ng-required="true">
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-orange" ng-click="ok(provider)">Save</button>
+        <button type="submit" class="btn btn-orange" ng-click="ok(provider)" ng-disabled="providerForm.$invalid">Save</button>
         <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Discard</button>
     </div>
 </form>

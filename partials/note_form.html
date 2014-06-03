@@ -4,15 +4,15 @@
         <h4 class="modal-title" id="myModalLabel">Add a New Note</h4>
     </div>
     <div class="modal-body">
-        <div ng-show="noteForm.$invalid" class="alert alert-danger">
+        <!--<div ng-show="noteForm.$invalid" class="alert alert-danger">
             <strong>Oops!</strong> Please fix the highlighted errors below.
-        </div>
-        <div class="input-block"  ng-class="{ 'has-error': noteForm.note.$invalid }">
+        </div>-->
+        <div class="input-block"  ng-class="{ 'has-error': noteForm.note.$dirty && noteForm.note.$invalid }">
             <textarea placeholder="Write your note here &hellip;" name="note" class="form-control" ng-model="note" ng-required="true"></textarea>
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-orange" ng-click="ok(note)">Save</button>
+        <button type="submit" class="btn btn-orange" ng-click="ok(note)" ng-disabled="noteForm.$invalid">Save</button>
         <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Discard</button>
     </div>
 </form>
