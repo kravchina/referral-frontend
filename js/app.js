@@ -31,6 +31,12 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'userRoles', functio
             controller: 'CreateReferralsController',
             access: [userRoles.doctor, userRoles.admin]
         }).
+        state('reviewReferral', {
+            url: '/create_referral/:referral_id',
+            templateUrl: 'partials/create_referral.html',
+            controller: 'CreateReferralsController',
+            access: [userRoles.doctor, userRoles.admin]
+        }).
         state('logout', {
             url: '/logout',
             templateUrl: 'partials/login.html',

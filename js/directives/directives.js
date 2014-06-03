@@ -126,7 +126,7 @@ dentalLinksDirectives.directive('dateRangePicker', ['$parse', function($parse){
                     ranges: {
                         'Last 7 Days': [moment().subtract('days', 6), moment()],
                         'Last 30 Days': [moment().subtract('days', 29), moment()],
-                        'All': [moment().startOf('days'), moment().endOf('days')] // not sure what formula to use
+                        'All': [moment(0), moment().endOf('day')] // not sure what formula to use
                     }
                 },
                 function(start, end) {

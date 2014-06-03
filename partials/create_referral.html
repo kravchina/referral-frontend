@@ -78,73 +78,17 @@
 
                     <!-- Tooth 1-8 -->
                     <ul>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(1)" >
-                            <label>1</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(2)">
-                            <label>2</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(3)">
-                            <label>3</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(4)">
-                            <label>4</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(5)">
-                            <label>5</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(6)">
-                            <label>6</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(7)">
-                            <label>7</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(8)">
-                            <label>8</label>
+                        <li class="tooth-button" ng-repeat="item in ['1','2','3','4','5','6','7','8']">
+                            <input type="checkbox" ng-click="toggleTooth(item)" ng-checked="teeth && teeth.indexOf(item)!= -1">
+                            <label>{{item}}</label>
                         </li>
                     </ul>
 
                     <!-- Tooth 9-16 -->
                     <ul>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(9)">
-                            <label>9</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(10)">
-                            <label>10</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(11)">
-                            <label>11</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(12)">
-                            <label>12</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(13)">
-                            <label>13</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(14)">
-                            <label>14</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(15)">
-                            <label>15</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(16)">
-                            <label>16</label>
+                        <li class="tooth-button" ng-repeat="item in ['9','10','11','12','13','14','15','16']">
+                            <input type="checkbox" ng-click="toggleTooth(item)" ng-checked="teeth && teeth.indexOf(item)!= -1">
+                            <label>{{item}}</label>
                         </li>
                     </ul>
 
@@ -153,73 +97,17 @@
 
                     <!-- Tooth 17-24 -->
                     <ul>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(17)">
-                            <label>17</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(18)">
-                            <label>18</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(19)">
-                            <label>19</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(20)">
-                            <label>20</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(21)">
-                            <label>21</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(22)">
-                            <label>22</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(23)">
-                            <label>23</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(24)">
-                            <label>24</label>
+                        <li class="tooth-button" ng-repeat="item in ['17','18','19','20','21','22','23','24']">
+                            <input type="checkbox" ng-click="toggleTooth(item)" ng-checked="teeth && teeth.indexOf(item)!= -1">
+                            <label>{{item}}</label>
                         </li>
                     </ul>
 
                     <!-- Tooth 25-32 -->
                     <ul>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(25)">
-                            <label>25</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(26)">
-                            <label>26</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(27)">
-                            <label>27</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(28)">
-                            <label>28</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(29)">
-                            <label>29</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(30)">
-                            <label>30</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(31)">
-                            <label>31</label>
-                        </li>
-                        <li class="tooth-button">
-                            <input type="checkbox" ng-click="toggleTooth(32)">
-                            <label>32</label>
+                        <li class="tooth-button" ng-repeat="item in ['25','26','27','28','29','30','31','32']">
+                            <input type="checkbox" ng-click="toggleTooth(item)" ng-checked="teeth && teeth.indexOf(item)!= -1">
+                            <label>{{item}}</label>
                         </li>
                     </ul>
 
@@ -245,6 +133,19 @@
         <div class="attachments-wrapper">
             <div class="my-drop-zone" ng-file-drop ng-file-over="another-file-over-class">
             <ul>
+                <!-- Attachment block -->
+                <li class="attachment-block" ng-repeat="attachment in model.attachments">
+                    <a href="#">
+                        <div class="attachment-thumb" ng-class="attachmentThumbClass(attachment.filename)">
+                            <img ng-if="isImage(attachment)" access="admin, doctor" ng-src="{{attachment.filename}}" total-images="{{referral.attachments.length}}" crossorigin="anonymous" alt="img">
+                        </div>
+                        <div class="attachment-details">
+                            <span class="filename">{{attachment.filename | filename}}</span>
+                            <span class="datestamp">{{attachment.created_at | date: 'mediumDate'}}</span>
+                        </div>
+                    </a>
+                </li>
+
                 <!-- Attachment block -->
                 <li class="attachment-block" ng-repeat="item in uploader.queue">
                     <a href="#">
@@ -288,7 +189,8 @@
 </div><!-- .box-white -->
 
 <div class="button-block">
-    <button  class="btn btn-orange btn-lg" ng-click="createReferral(model)" ng-disabled="form.$invalid">Sign &amp; Send</button>
+    <button class="btn btn-green btn-lg" ng-click="saveReferral(model)" ng-disabled="form.$invalid">Save</button>
+    <button  class="btn btn-orange btn-lg" access="admin, doctor" ng-click="createReferral(model)" ng-disabled="form.$invalid">Sign &amp; Send</button>
 </div><!-- .button-block -->
 </form>
 </div><!-- .form-wrapper -->
