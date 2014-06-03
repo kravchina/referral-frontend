@@ -22,9 +22,9 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
     $scope.referral.$promise.then(function (data) {
 
         PDF.addParagraph('Patient: ' + data.patient.first_name + ' ' + data.patient.last_name);
-        PDF.addParagraph('Original provider: ' + data.orig_provider.first_name + ' ' + data.orig_provider.middle_initial + ' ' + data.orig_provider.last_name);
-        PDF.addParagraph('Destination provider: ' + data.dest_provider.first_name + ' ' + data.dest_provider.middle_initial + ' ' + data.dest_provider.last_name);
-        PDF.addParagraph('Procedure: ' + data.procedure.name + '(' + data.procedure.practice_type.name + ')');
+        PDF.addParagraph('Original provider: ' + (data.orig_provider || {}).first_name + ' ' + (data.orig_provider || {}).middle_initial + ' ' + (data.orig_provider || {}).last_name);
+        PDF.addParagraph('Destination provider: ' + (data.dest_provider || {}).first_name + ' ' + (data.dest_provider || {}).middle_initial + ' ' + (data.dest_provider || {}).last_name);
+        PDF.addParagraph('Procedure: ' + (data.procedure || {}).name + '(' + ((data.procedure || {}).practice_type || {}).name + ')');
         if (data.teeth) {
             data.teethChart = data.teeth.split('+');
             PDF.addParagraph('Teeth: ' + data.teethChart.join(', '));
@@ -71,17 +71,12 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
     };
 
     $scope.rejectReferral = function (referral) {
-        Referral.updateStatus({id: referral.id}, {status: 'rejected'},
+        Referral.updateStatus({id: referral.id}, {status: 'sent'},
             function (success) {
-                referral.status = 'rejected';
-                $scope.acceptSuccess = true;
-                $scope.failure = false;
-
+                referral.status = 'sent';
             },
             function (failure) {
-                $scope.acceptSuccess = false;
-                $scope.failure = true;
-
+                pushAlert('danger', 'Something went wrong while changing status...');
             });
     };
 
@@ -89,12 +84,9 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         Referral.updateStatus({id: referral.id }, {status: 'completed'},
             function (success) {
                 referral.status = 'completed';
-                $scope.completeSuccess = true;
-                $scope.failure = false;
             },
             function (failure) {
-                $scope.completeSuccess = false;
-                $scope.failure = true;
+                pushAlert('danger', 'Something went wrong while changing status...');
             });
 
     };
