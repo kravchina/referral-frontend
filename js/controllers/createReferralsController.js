@@ -18,8 +18,8 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
                     $scope.updatePracticeType(referral.procedure);
                 });
                 $scope.model.referral.notes_attributes = referral.notes;
-                $scope.model.attachments = referral.attachments;
-                $scope.teeth = referral.teeth.split('+');
+                $scope.attachments = referral.attachments;
+                teeth = $scope.teeth = referral.teeth.split('+');
             });
 
         }
@@ -67,15 +67,20 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
 
         };
 
-        $scope.saveReferral = function (model) {
+        $scope.saveTemplate = function (model) {
             prepareSubmit(model);
-            Referral.save(model,
-                function (success) {
-                    Alert.push($scope.alerts, 'success', 'Referral was sent successfully!');
-                },
-                function (failure) {
-                    Alert.push($scope.alerts, 'danger', 'An error occurred during referral creation...');
-                });
+            var resultHandlers = {
+                success: function (success) {
+                    Alert.push($scope.alerts, 'success', 'Template was saved successfully!');
+                }, failure: function (failure) {
+                    Alert.push($scope.alerts, 'danger', 'An error occurred during referral template creation...');
+                }};
+            if ($stateParams.referral_id) {
+                //edit existing referral
+                Referral.update({id: $stateParams.referral_id}, model, resultHandlers.success, resultHandlers.failure);
+            } else {
+                Referral.saveTemplate(model, resultHandlers.success, resultHandlers.failure);
+            }
         };
 
         $scope.createReferral = function (model) {
@@ -197,8 +202,6 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
 
             uploader.bind('success', function (event, xhr, item, response) {
                 console.info('Success', xhr, item, response);
-
-
             });
 
             uploader.bind('cancel', function (event, xhr, item) {

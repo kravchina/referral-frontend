@@ -46,6 +46,32 @@ dentalLinksDirectives.directive('pdfPhotos', ['Auth', 'PDF', function (Auth, PDF
     }
 }]);
 
+dentalLinksDirectives.directive('attachmentThumb', [function () {
+    return {
+        link: function (scope, element, attributes) {
+            var type = attributes.attachmentThumb.slice(attributes.attachmentThumb.lastIndexOf('.') + 1);
+            var cssClass;
+            switch (type) {
+                case 'doc':
+                case 'docx':
+                    cssClass = 'attach-word';
+                    break;
+                case 'xls':
+                case 'xlsx':
+                    cssClass = 'attach-excel';
+                    break;
+                case 'pdf':
+                    cssClass = 'attach-pdf';
+                    break;
+                default :
+                    cssClass = 'attach-file';
+
+            }
+            element.addClass(cssClass);
+        }
+    }
+}]);
+
 /**
  * The ng-thumb directive
  * @author: nerv
@@ -75,16 +101,18 @@ dentalLinksDirectives.directive('ngThumb', ['$window', function ($window) {
             /*if (!helper.isImage(params.file)) return;*/
 
             if (!helper.isImage(params.file)) {
-                var type = '|' + params.file.type.slice(params.file.type.lastIndexOf('/') + 1) + '|';
+                var type = params.file.name.slice(params.file.name.lastIndexOf('.') + 1);
                 var cssClass = '';
                 switch (type) {
-                    case '|doc|':
+                    case 'docx':
+                    case 'doc':
                         cssClass = 'attach-word';
                         break;
-                    case '|pdf|':
+                    case 'pdf':
                         cssClass = 'attach-pdf';
                         break;
-                    case '|xls|':
+                    case 'xlsx':
+                    case 'xls':
                         cssClass = 'attach-excel';
                         break;
                     default :

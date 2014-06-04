@@ -1122,6 +1122,11 @@ td.cell-from .practice, td.cell-to .practice {
 	padding: 8px 15px;
 }
 
+.my-drop-zone { border: dotted 3px lightgray; }
+.ng-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+.another-file-over-class { border: dotted 3px green; }
+
+
 /* RESPONSIVE CSS */
 /* Mobile devices (mobile, 540px and up) */
 @media (min-width: 540px) {

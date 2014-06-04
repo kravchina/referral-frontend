@@ -1,20 +1,13 @@
 var viewReferralModule = angular.module('viewReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', function ($scope, $stateParams, $fileUploader, $timeout, Referral, PDF, Note, S3Bucket, Attachment, $modal) {
+viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 
+    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal) {
     $scope.alerts = [];
     PDF.init();
-    var pushAlert = function (type, message) {
-        var alert = { type: type, message: message, promise: $timeout(function () {
-            $scope.alerts.splice($scope.alerts.indexOf(alert), 1);
-        }, 5000) };
-        $scope.alerts.push(alert);
-
-    };
-
-    $scope.referral = Referral.get({id: $stateParams.referral_id}, function (success) {
-
-        }, function (failure) {
-            pushAlert('danger', 'Something happened... Data was not retrieved from server.')
+    
+    $scope.referral = Referral.get({id: $stateParams.referral_id}, function (success) { },
+        function (failure) {
+            Alert.push('danger', 'Something happened... Data was not retrieved from server.')
         }
     );
 
@@ -52,63 +45,33 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         Note.save({note: {message: note, referral_id: $scope.referral.id}}, function (success) {
             $scope.referral.notes.push({message: note, created_at: Date.now()});
         }, function (failure) {
-            pushAlert('danger', 'Something went wrong, note was not saved.');
+            Alert.push($scope.alerts, 'danger', 'Something went wrong, note was not saved.');
         });
-    };
-
-    $scope.acceptReferral = function (referral) {
-        Referral.updateStatus({id: referral.id }, {status: 'accepted'},
-            function (success) {
-                referral.status = 'accepted';
-                $scope.acceptSuccess = true;
-                $scope.failure = false;
-            },
-            function (failure) {
-                $scope.acceptSuccess = false;
-                $scope.failure = true;
-            });
-
     };
 
     $scope.rejectReferral = function (referral) {
         Referral.updateStatus({id: referral.id}, {status: 'sent'},
             function (success) {
-                referral.status = 'sent';
+                Alert.push($scope.alerts, 'success', 'Status was updated successfully!');
             },
             function (failure) {
-                pushAlert('danger', 'Something went wrong while changing status...');
+                Alert.push($scope.alerts, 'danger', 'Something went wrong while changing status...');
             });
     };
 
     $scope.completeReferral = function (referral) {
         Referral.updateStatus({id: referral.id }, {status: 'completed'},
             function (success) {
-                referral.status = 'completed';
+                Alert.push($scope.alerts, 'success', 'Status was updated successfully!');
             },
             function (failure) {
-                pushAlert('danger', 'Something went wrong while changing status...');
+                Alert.push($scope.alerts, 'danger', 'Something went wrong while changing status...');
             });
 
     };
 
     $scope.isImage = function (attachment) {
         return attachment.filename.toLowerCase().search(/(jpg|png|gif)$/) >= 0;
-    };
-
-    $scope.attachmentThumbClass = function (attachmentFilename) {
-        var type = attachmentFilename.slice(attachmentFilename.lastIndexOf('.') + 1);
-        switch (type) {
-            case 'doc':
-            case 'docx':
-                return 'attach-word';
-            case 'xls':
-            case 'xlsx':
-                return 'attach-excel';
-            case 'pdf':
-                return 'attach-pdf';
-            default :
-                return 'attach-file';
-        }
     };
 
     S3Bucket.getCredentials(function (success) {
@@ -139,7 +102,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
         uploader.bind('whenaddingfilefailed', function (event, item) {
             console.info('When adding a file failed', item);
-            pushAlert('danger', 'Something went wrong while adding attachment...');
+            Alert.push($scope.alerts, 'danger', 'Something went wrong while adding attachment...');
         });
 
         uploader.bind('afteraddingall', function (event, items) {
@@ -160,21 +123,19 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             console.info('Success', xhr, item, response);
             var attachment = {filename: item.url + '/' + bucket_path + item.file.name, notes: item.notes, referral_id: $scope.referral.id, created_at: Date.now()};
             Attachment.save({attachment: attachment}, function (success) {
-                var index = $scope.uploader.queue.indexOf(item);
-                $scope.uploader.queue.splice(index, 1);
-                $scope.referral.attachments.push(attachment);
+                Alert.push($scope.alerts, 'success', 'Attachment was added successfully!');
             });
 
         });
 
         uploader.bind('cancel', function (event, xhr, item) {
             console.info('Cancel', xhr, item);
-            pushAlert('info', 'Attachment upload was cancelled.');
+            Alert.push($scope.alerts, 'info', 'Attachment upload was cancelled.');
         });
 
         uploader.bind('error', function (event, xhr, item, response) {
             console.error('Error', xhr, item, response);
-            pushAlert('danger', 'Something went wrong while adding attachment...')
+            Alert.push($scope.alerts, 'danger', 'Something went wrong while adding attachment...');
         });
 
         uploader.bind('complete', function (event, xhr, item, response) {
