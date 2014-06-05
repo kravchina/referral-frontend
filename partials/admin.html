@@ -19,11 +19,11 @@
                             </tab-heading>
                             <!-- Account Tab -->
                             <div id="admintabAccount" >
-                                <form edit-form id="formAccountTab">
+                                <form edit-form id="formAccountTab" name="accountForm">
                                     <div class="block-title">
                                         <h2>Account</h2>
                                         <button type="button" toggle-edit class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
-                                        <button type="button" ng-click="savePractice()" class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
+                                        <button type="button" ng-click="savePractice(accountForm)" class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
                                     </div>
 
                                     <div id="sectPersonal" class="section-block">
@@ -104,11 +104,11 @@
                             </tab-heading>
                             <!-- Practice Tab -->
                             <div id="admintabPractice">
-                                <form edit-form id="formPracticeTab">
+                                <form edit-form id="formPracticeTab" name="practiceForm">
                                     <div class="block-title">
                                         <h2>Practice</h2>
                                         <button type="button" toggle-edit class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
-                                        <button type="button" ng-click='savePractice()' class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
+                                        <button type="button" ng-click='savePractice(practiceForm)' class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
                                     </div>
 
                                     <div id="sectPractice" class="section-block">

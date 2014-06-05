@@ -15,27 +15,30 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
         $scope.providers = User.getInvitees({user_id: auth.id });
         $scope.practice = Practice.get({practiceId: auth.practice_id});
 
-        $scope.savePractice = function () {
-            Practice.update({practiceId: $scope.practice.id}, {
-                    practice: {
-                        name: $scope.practice.name,
-                        card_number: $scope.practice.card_number,
-                        name_on_card: $scope.practice.name_on_card,
-                        card_exp_month: $scope.practice.card_exp_month,
-                        card_exp_year: $scope.practice.card_exp_year,
-                        salutation: $scope.practice.salutation,
-                        account_first_name: $scope.practice.account_first_name,
-                        account_middle_initial: $scope.practice.account_middle_initial,
-                        account_last_name: $scope.practice.account_last_name,
-                        address_attributes: $scope.practice.address
-                    }
-                },
-                function (success) {
-                    Alert.push($scope.alerts, 'success', 'Account was updated successfully!')
-                },
-                function (failure) {
-                    Alert.push($scope.alerts, 'danger', 'An error occurred during account update...')
-                });
+        $scope.savePractice = function (form) {
+            if (form.$dirty) {
+                Practice.update({practiceId: $scope.practice.id}, {
+                        practice: {
+                            name: $scope.practice.name,
+                            card_number: $scope.practice.card_number,
+                            name_on_card: $scope.practice.name_on_card,
+                            card_exp_month: $scope.practice.card_exp_month,
+                            card_exp_year: $scope.practice.card_exp_year,
+                            salutation: $scope.practice.salutation,
+                            account_first_name: $scope.practice.account_first_name,
+                            account_middle_initial: $scope.practice.account_middle_initial,
+                            account_last_name: $scope.practice.account_last_name,
+                            address_attributes: $scope.practice.address
+                        }
+                    },
+                    function (success) {
+                        form.$setPristine();
+                        Alert.push($scope.alerts, 'success', 'Account was updated successfully!')
+                    },
+                    function (failure) {
+                        Alert.push($scope.alerts, 'danger', 'An error occurred during account update...')
+                    });
+            }
         };
 
 
