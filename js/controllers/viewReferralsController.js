@@ -52,6 +52,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
     $scope.rejectReferral = function (referral) {
         Referral.updateStatus({id: referral.id}, {status: 'sent'},
             function (success) {
+                referral.status = 'sent';
                 Alert.push($scope.alerts, 'success', 'Status was updated successfully!');
             },
             function (failure) {
@@ -62,6 +63,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
     $scope.completeReferral = function (referral) {
         Referral.updateStatus({id: referral.id }, {status: 'completed'},
             function (success) {
+                referral.status = 'completed';
                 Alert.push($scope.alerts, 'success', 'Status was updated successfully!');
             },
             function (failure) {
