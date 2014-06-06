@@ -12,7 +12,12 @@ dentalLinksServices.factory('Auth', ['$cookieStore', function ($cookieStore) {
             if (roles === undefined) {
                 return true;
             }
-            var auth = $cookieStore.get('auth') || {};
+            //var auth = $cookieStore.get('auth') || {};
+            var auth = {};
+            if($.cookie('auth') != undefined){
+                auth = $.parseJSON($.cookie('auth'));
+            }
+
             if (auth.roles) {
                 for (var i = 0; i < roles.length; i++) {
                     if (auth.roles.indexOf(roles[i]) >= 0) {
