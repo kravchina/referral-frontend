@@ -59,14 +59,19 @@
                                     <div id="sectPayment" class="section-block">
                                         <h3>Payment Information</h3>
 
-                                        <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" ng-model="practice.name_on_card"  disabled="disabled" placeholder="Enter name on card &hellip;">
+                                        <div class="input-block-inline" ng-class="{'has-error': accountForm.name_on_card.$dirty && accountForm.name_on_card.$invalid }">
+                                            <input type="text" name="name_on_card" class="form-control data1" ng-model="practice.name_on_card"  disabled="disabled" placeholder="Enter name on card &hellip;">
                                             <label>Name on Card</label>
                                         </div>
 
-                                        <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" ng-model="practice.card_number" disabled="disabled" placeholder="Enter card number &hellip;">
+                                        <div class="input-block-inline" ng-class="{'has-error': accountForm.card_number.$dirty && accountForm.card_number.$invalid }">
+                                            <input type="text" name="card_number" class="form-control data1" ng-model="practice.card_number" disabled="disabled" placeholder="Enter card number &hellip;" payments-validate="card">
                                             <label>Card Number</label>
+                                        </div>
+
+                                        <div class="input-block-inline">
+                                            <input type="text" class="form-control data1" ng-model="practice.card_cvc" disabled="disabled" placeholder="Enter cvc     &hellip;" payments-validate="cvc">
+                                            <label>CVC</label>
                                         </div>
 
                                         <div class="input-block-inline-right">

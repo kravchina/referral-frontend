@@ -1,6 +1,6 @@
 dentalLinks.controller('NavController', ['$scope', 'Auth', 'User', '$location', 'Login', 'redirect',
     function ($scope, Auth, User, $location, Login, redirect) {
-
+        console.log(Auth.get());
         if(Auth.get()){
             Auth.current_user = User.get({id: Auth.get().id});
         }else{
