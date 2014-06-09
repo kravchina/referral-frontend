@@ -30,7 +30,7 @@
                                         <h3>Personal Information</h3>
 
                                         <div class="input-block-inline">
-                                            <select id="selectSalutation" ng-model="practice.salutation" class="form-control data1" disabled="disabled">
+                                            <select id="selectSalutation" name="salutation" ng-model="practice.salutation" class="form-control data1" disabled="disabled">
                                                 <option selected="selected" disabled="disabled" class="placeholder" value="default">Select salutation</option>
                                                 <option value="Mr.">Mr.</option>
                                                 <option value="Ms.">Ms.</option>
@@ -41,19 +41,24 @@
                                             <label for="selectSalutation">Salutation</label>
                                         </div>
 
-                                        <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" ng-model="practice.account_first_name" disabled="disabled" placeholder="Enter first name &hellip;">
+                                        <div class="input-block-inline" ng-class="{'has-error': accountForm.account_first_name.$dirty && accountForm.account_first_name.$invalid }">
+                                            <input type="text" name="account_first_name" class="form-control data1" ng-model="practice.account_first_name" disabled="disabled" placeholder="Enter first name &hellip;" ng-required="true">
                                             <label>First Name</label>
                                         </div>
 
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" ng-model="practice.account_middle_initial" disabled="disabled" maxlength="1" placeholder="Enter middle initial &hellip;">
+                                            <input type="text" name="account_middle_initial" class="form-control data1" ng-model="practice.account_middle_initial" disabled="disabled" maxlength="1" placeholder="Enter middle initial &hellip;">
                                             <label>Middle Initial</label>
                                         </div>
 
-                                        <div class="input-block-inline-right">
-                                            <input type="text" class="form-control data1" ng-model="practice.account_last_name"  disabled="disabled" placeholder="Enter last name &hellip;">
+                                        <div class="input-block-inline" ng-class="{'has-error': accountForm.account_last_name.$dirty && accountForm.account_last_name.$invalid }">
+                                            <input type="text" name="account_last_name" class="form-control data1" ng-model="practice.account_last_name"  disabled="disabled" placeholder="Enter last name &hellip;" ng-required="true">
                                             <label>Last Name</label>
+                                        </div>
+
+                                        <div class="input-block-inline-right" ng-class="{'has-error': accountForm.account_email.$dirty && accountForm.account_email.$invalid }">
+                                            <input type="email" name="account_email" class="form-control data1" ng-model="practice.account_email"  disabled="disabled" placeholder="Enter email &hellip;" ng-required="true">
+                                            <label>Email</label>
                                         </div>
                                     </div><!-- .section-block -->
                                     <div id="sectPayment" class="section-block">

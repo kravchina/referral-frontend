@@ -1628,10 +1628,10 @@ td.cell-from .practice, td.cell-to .practice {
 		padding-right: 18px;
 	}
 	#sectPersonal .input-block-inline {
-		width: 265px;
+		width: 205px;
 	}
 	#sectPersonal .input-block-inline-left, #sectPersonal .input-block-inline-right {
-		width: 245px;
+		width: 205px;
 	}
 	#sectPayment .input-block-inline {
 		width: 230px;
