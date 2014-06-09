@@ -25,22 +25,6 @@ loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location'
                     $scope.result = {failure: true};
                 });
         };
-        $scope.logged = function () {
-            return Auth.get();
-        };
-        $scope.logout = function () {
-            Login.logout(function () {
-                    Auth.remove();
-                    Auth.current_user = null;
-                    $scope.email = null;
-                    $scope.message = null;
-                    $scope.authenticated = false;
-                    $scope.result = {};
-                    $location.path('/sign_in');
-                }
-            );
-
-        };
 
         $scope.existingReferralId = 7;
 
