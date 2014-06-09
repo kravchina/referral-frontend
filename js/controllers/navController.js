@@ -1,5 +1,5 @@
-dentalLinks.controller('NavController', ['$scope', 'Auth', 'User', '$location', 'Login', 'redirect',
-    function ($scope, Auth, User, $location, Login, redirect) {
+dentalLinks.controller('NavController', ['$scope', 'Auth', 'User', '$state', 'Login', 'redirect',
+    function ($scope, Auth, User, $state, Login, redirect) {
 
         if(Auth.get()){
             Auth.current_user = User.get({id: Auth.get().id});
@@ -25,7 +25,7 @@ dentalLinks.controller('NavController', ['$scope', 'Auth', 'User', '$location', 
             Login.logout(function () {
                     Auth.remove();
                     Auth.current_user = null;
-                    $location.path('/sign_in');
+                    $state.go('signIn', {}, {reload: true});
                 }
             );
 

@@ -12,11 +12,7 @@ dentalLinksServices.factory('Auth', ['$cookieStore', function ($cookieStore) {
             if (roles === undefined) {
                 return true;
             }
-            //var auth = $cookieStore.get('auth') || {};
-            var auth = {};
-            if($.cookie('auth') != undefined){
-                auth = $.parseJSON($.cookie('auth'));
-            }
+            var auth = $cookieStore.get('auth') || {};
 
             if (auth.roles) {
                 for (var i = 0; i < roles.length; i++) {
@@ -28,15 +24,10 @@ dentalLinksServices.factory('Auth', ['$cookieStore', function ($cookieStore) {
             return false;
         },
         get: function () {
-            //return $cookieStore.get('auth');
-            if($.cookie('auth') != undefined){
-                return $.parseJSON($.cookie('auth'));
-            }
-            return undefined;
+            return $cookieStore.get('auth');
         },
         set: function (value) {
-            $.cookie('auth', JSON.stringify(value), {expires: 1/48});
-            //$cookieStore.put('auth', value);
+            $cookieStore.put('auth', value);
         },
         remove: function(){
             $cookieStore.remove('auth');
