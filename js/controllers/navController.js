@@ -1,6 +1,6 @@
-dentalLinks.controller('NavController', ['$scope', 'Auth', 'User', '$location', 'Login', 'redirect',
-    function ($scope, Auth, User, $location, Login, redirect) {
-        console.log(Auth.get());
+dentalLinks.controller('NavController', ['$scope', 'Auth', 'User', '$state', 'Login', 'redirect', 'dentalLinksUnsavedChangesService', 'dlLogger',
+    function ($scope, Auth, User, $state, Login, redirect, dentalLinksUnsavedChangesService, dlLogger) {
+
         if(Auth.get()){
             Auth.current_user = User.get({id: Auth.get().id});
         }else{
@@ -22,13 +22,16 @@ dentalLinks.controller('NavController', ['$scope', 'Auth', 'User', '$location', 
         };
 
         $scope.logout = function(){
-            Login.logout(function () {
+            if (dentalLinksUnsavedChangesService.canLeaveSafely()) {
+                dlLogger.log('logout(): allowed');
+                Login.logout(function () {
                     Auth.remove();
                     Auth.current_user = null;
-                    $location.path('/sign_in');
-                }
-            );
-
+                    $state.go('signIn', {}, {reload: true});
+                });
+            } else {
+                dlLogger.log('logout(): cancelled');
+            }
         }
 
     }]);

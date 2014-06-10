@@ -9,16 +9,22 @@ var dentalLinks = angular.module('dentalLinks', [
     'viewReferrals',
     'modals',
     'dentalLinksServices',
-    'dentalLinksDirectives']);
+    'dentalLinksDirectives',
+    'dentalLinksUnsavedChanges'
+]);
 
-dentalLinks.constant('userRoles', {
+dentalLinks.constant('USER_ROLES', {
     public: 'public',
     doctor: 'doctor',
     admin: 'admin',
     aux: 'aux'
 });
 
-dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'userRoles', function ($stateProvider, $urlRouterProvider, userRoles) {
+dentalLinks.constant('AUTH_EVENTS', {
+    notAuthenticated: 'auth-not-authenticated'
+});
+
+dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', function ($stateProvider, $urlRouterProvider, USER_ROLES) {
     $stateProvider.
         state('signIn', {
             url: '/sign_in',
@@ -29,13 +35,13 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'userRoles', functio
             url: '/create_referral',
             templateUrl: 'partials/create_referral.html',
             controller: 'CreateReferralsController',
-            access: [userRoles.doctor, userRoles.admin]
+            access: [USER_ROLES.doctor, USER_ROLES.admin]
         }).
         state('reviewReferral', {
             url: '/create_referral/:referral_id',
             templateUrl: 'partials/create_referral.html',
             controller: 'CreateReferralsController',
-            access: [userRoles.doctor, userRoles.admin]
+            access: [USER_ROLES.doctor, USER_ROLES.admin]
         }).
         state('logout', {
             url: '/logout',
@@ -56,32 +62,36 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'userRoles', functio
             url: '/view_referral/:referral_id',
             templateUrl: 'partials/view_referral.html',
             controller: 'ViewReferralsController',
-            access: [userRoles.doctor, userRoles.admin]
+            access: [USER_ROLES.doctor, USER_ROLES.admin]
         }).
         state('history', {
             url: '/history',
             templateUrl: 'partials/history.html',
             controller: 'HistoryController',
-            access: [userRoles.doctor, userRoles.admin]
+            access: [USER_ROLES.doctor, USER_ROLES.admin]
         }).
         state('admin', {
             url: '/admin',
             templateUrl: 'partials/admin.html',
             controller: 'AdminController',
-            access: [userRoles.doctor, userRoles.admin]
+            access: [USER_ROLES.doctor, USER_ROLES.admin]
         });
     $urlRouterProvider.otherwise('/sign_in');
 }])
-    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', function ($rootScope, $window, $location, $state, redirect, Auth) {
+    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'dentalLinksUnsavedChangesService', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, dentalLinksUnsavedChangesService) {
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
             if (!Auth.authorize(toState.access)) {
                 event.preventDefault();
-                redirect.path = $location.path();
-                //$location.path('/sign_in');
-                $state.go('signIn');
+                $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
             }
-        })
+        });
+        $rootScope.$on(AUTH_EVENTS.notAuthenticated, function(event, args){
+            Auth.remove();
+            redirect.path = args.redirect;
+            $state.go('signIn', {}, {reload: true});
+        });
+        dentalLinksUnsavedChangesService.init();
     }]);
 
 dentalLinks.value('redirect', {path: '/'});
@@ -98,7 +108,7 @@ dentalLinks.config(['$httpProvider', function ($httpProvider) {
 ]);
 
 
-dentalLinks.factory('authInterceptor', ['$rootScope', '$q', 'Auth', function ($rootScope, $q, Auth) {
+dentalLinks.factory('authInterceptor', ['$rootScope', '$q','AUTH_EVENTS', '$location', 'redirect', 'Auth', function ($rootScope, $q, AUTH_EVENTS, $location, redirect, Auth) {
     return {
         request: function (config) {
             config.headers = config.headers || {};
@@ -109,11 +119,17 @@ dentalLinks.factory('authInterceptor', ['$rootScope', '$q', 'Auth', function ($r
             }
             return config;
         },
-        response: function (response) {
-            if (response.status === 401) {
+        responseError: function (response) {
+            if (response.status === 401 || response.status === 403) {
                 // handle the case where the user is not authenticated
+                if ($location.path() !== '/sign_in') { //TODO! [mezerny] consider more elegant implementation - now we need to check the location because consequent requests to server from previous view could be finished after redirect to 'sign_in', in that case we are loosing desired 'redirect' location (it is replaced with '/sign_in')
+                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
+                }else{
+                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: redirect.path});
+                }
+
             }
-            return response || $q.when(response);
+            return $q.reject(response);
         }
     };
 }]);

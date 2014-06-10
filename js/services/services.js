@@ -12,11 +12,7 @@ dentalLinksServices.factory('Auth', ['$cookieStore', function ($cookieStore) {
             if (roles === undefined) {
                 return true;
             }
-            //var auth = $cookieStore.get('auth') || {};
-            var auth = {};
-            if($.cookie('auth') != undefined){
-                auth = $.parseJSON($.cookie('auth'));
-            }
+            var auth = $cookieStore.get('auth') || {};
 
             if (auth.roles) {
                 for (var i = 0; i < roles.length; i++) {
@@ -28,15 +24,10 @@ dentalLinksServices.factory('Auth', ['$cookieStore', function ($cookieStore) {
             return false;
         },
         get: function () {
-            //return $cookieStore.get('auth');
-            if($.cookie('auth') != undefined){
-                return $.parseJSON($.cookie('auth'));
-            }
-            return undefined;
+            return $cookieStore.get('auth');
         },
         set: function (value) {
-            $.cookie('auth', JSON.stringify(value), {expires: 1/48});
-            //$cookieStore.put('auth', value);
+            $cookieStore.put('auth', value);
         },
         remove: function(){
             $cookieStore.remove('auth');
@@ -154,14 +145,21 @@ dentalLinksServices.factory('PDF', [function () {
         pdf.setFontSize(size);
         //printing start paragraphs with referral information
         for (var i = 0; i < paragraphs.length; i++) {
-            var lines = pdf.splitTextToSize(paragraphs[i], 190);
-            pdf.text(paragraphStart.x, caret, lines);
+            var titleText = paragraphs[i].title;
+            pdf.setFontType('bold');
+            var width = pdf.getStringUnitWidth(titleText) * size / pdf.internal.scaleFactor;
+            pdf.text(paragraphStart.x, caret, titleText);
+            pdf.setFontType('normal');
+            var lines = pdf.splitTextToSize(paragraphs[i].value, 190 - width);
+            pdf.text(paragraphStart.x + width, caret, lines);
             caret += 3 + lines.length * size / pdf.internal.scaleFactor ;
         }
         caret += 10;
 
         //printing notes
+        pdf.setFontType('bold');
         pdf.text(paragraphStart.x, caret, 'Notes:');
+        pdf.setFontType('normal');
         caret += 10;
         for (var k = 0; k < notes.length; k++) {
             var noteLines = pdf.splitTextToSize(notes[k].message, 190);
@@ -172,7 +170,9 @@ dentalLinksServices.factory('PDF', [function () {
         if (images.length > 0) {
             //printing image attachments
             caret += 16;
+            pdf.setFontType('bold');
             pdf.text(paragraphStart.x, caret, 'Attachments:');
+            pdf.setFontType('normal');
             caret += 10;
             for (var j = 0; j < images.length; j++) {
                 if(!images[j]){
@@ -203,8 +203,8 @@ dentalLinksServices.factory('PDF', [function () {
             images = [];
             notes = [];
         },
-        addParagraph: function (text) {
-            paragraphs.push(text);
+        addParagraph: function (title, value) {
+            paragraphs.push({title: title, value: value});
         },
         addImage: function (index, image, text) {
             while (index >= images.length) {

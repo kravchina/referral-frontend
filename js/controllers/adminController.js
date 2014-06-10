@@ -1,14 +1,5 @@
 var adminModule = angular.module('admin', ['ui.bootstrap', 'angularPayments']);
 
-// stripeResponseHandler = function(status, response){
-//     console.log(response);
-//     if(response.error) {
-//         // there was an error. Fix it.
-//     } else {
-//         // got stripe token, now charge it or smt
-//         token = response.id
-//     }
-// }
 adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'Practice', 'Provider', 'User',
     function ($scope, $modal, Auth, Alert, Practice, Provider, User) {
         // set the stripe publishable key
@@ -72,6 +63,9 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                         });
                     }
                 });
+            } else {
+                // form is not dirty, we're just getting out of edit state
+                dentalLinksUnsavedChangesService.setUnsavedChanges(false);
             }
         };
 
