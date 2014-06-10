@@ -1,7 +1,7 @@
 var adminModule = angular.module('admin', ['ui.bootstrap', 'angularPayments']);
 
-adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'Practice', 'Provider', 'User',
-    function ($scope, $modal, Auth, Alert, Practice, Provider, User) {
+adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'Practice', 'Provider', 'User', 'dentalLinksUnsavedChangesService',
+    function ($scope, $modal, Auth, Alert, Practice, Provider, User, dentalLinksUnsavedChangesService) {
         // set the stripe publishable key
         Stripe.setPublishableKey('pk_test_TAdWKoNc4HgjFknjuuzsb99p');
 
