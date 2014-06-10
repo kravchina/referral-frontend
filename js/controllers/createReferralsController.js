@@ -1,9 +1,11 @@
 var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-createReferralModule.controller('CreateReferralsController', ['$scope', '$stateParams', 'Alert', 'Practice', 'Patient', 'Procedure', 'Provider', 'Referral', 'S3Bucket', '$modal', '$fileUploader',
-    function ($scope, $stateParams, Alert, Practice, Patient, Procedure, Provider, Referral, S3Bucket, $modal, $fileUploader) {
+createReferralModule.controller('CreateReferralsController', ['$scope', '$stateParams', 'Alert', 'Practice', 'Patient', 'Procedure', 'Provider', 'Referral', 'S3Bucket', '$modal', '$fileUploader', 'dentalLinksUnsavedChangesService', 'dlLogger',
+    function ($scope, $stateParams, Alert, Practice, Patient, Procedure, Provider, Referral, S3Bucket, $modal, $fileUploader, dentalLinksUnsavedChangesService, dlLogger) {
 
         $scope.alerts = [];
+        
+        var self = this;
 
         if ($stateParams.referral_id) {
             Referral.get({id: $stateParams.referral_id}).$promise.then(function (referral) {
@@ -72,6 +74,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
             var resultHandlers = {
                 success: function (success) {
                     Alert.push($scope.alerts, 'success', 'Template was saved successfully!');
+                    dentalLinksUnsavedChangesService.setUnsavedChanges(false);
                 }, failure: function (failure) {
                     Alert.push($scope.alerts, 'danger', 'An error occurred during referral template creation...');
                 }};
@@ -90,6 +93,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
             $scope.create_referral_result = Referral.save(model,
                 function (success) {
                     Alert.push($scope.alerts, 'success', 'Referral was sent successfully!');
+                    dentalLinksUnsavedChangesService.setUnsavedChanges(false);
                 },
                 function (failure) {
                     Alert.push($scope.alerts, 'danger', 'An error occurred during referral creation...');
@@ -141,13 +145,14 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
             });
 
             modalInstance.result.then(function (note) {
-
+                self.processFormChange(note);
                 $scope.model.referral.notes_attributes.push({message: note, created_at: Date.now()});
             });
         };
 
         var teeth = $scope.teeth = [];
         $scope.toggleTooth = function (toothNumber) {
+            self.processFormChange(toothNumber);
             var index = teeth.indexOf(toothNumber);
             if (index == -1) {
                 teeth.push(toothNumber);
@@ -177,55 +182,75 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
             // REGISTER HANDLERS
 
             uploader.bind('afteraddingfile', function (event, item) {
-                console.info('After adding a file', item);
+                dlLogger.info('After adding a file', item);
                 $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes});
+                self.processFormChange(item);
             });
 
             uploader.bind('whenaddingfilefailed', function (event, item) {
-                console.info('When adding a file failed', item);
+                dlLogger.info('When adding a file failed', item);
                 Alert.push($scope.alerts, 'danger', 'Adding file failed. Please try again later.')
             });
 
             uploader.bind('afteraddingall', function (event, items) {
-                console.info('After adding all files', items);
+                dlLogger.info('After adding all files', items);
             });
 
             uploader.bind('beforeupload', function (event, item) {
-                console.debug('FORM DATA:', uploader.formData);
-                console.debug('SCOPE DATA:', $scope.s3Credentials);
-                console.info('Before upload', item);
+                dlLogger.debug('FORM DATA:', uploader.formData);
+                dlLogger.debug('SCOPE DATA:', $scope.s3Credentials);
+                dlLogger.info('Before upload', item);
             });
 
             uploader.bind('progress', function (event, item, progress) {
-                console.info('Progress: ' + progress, item);
+                dlLogger.info('Progress: ' + progress, item);
             });
 
             uploader.bind('success', function (event, xhr, item, response) {
-                console.info('Success', xhr, item, response);
+                dlLogger.info('Success', xhr, item, response);
             });
 
             uploader.bind('cancel', function (event, xhr, item) {
-                console.info('Cancel', xhr, item);
+                dlLogger.info('Cancel', xhr, item);
                 Alert.push($scope.alerts, 'info', 'Attachment was cancelled.')
             });
 
             uploader.bind('error', function (event, xhr, item, response) {
-                console.error('Error', xhr, item, response);
+                dlLogger.error('Error', xhr, item, response);
                 Alert.push($scope.alerts, 'danger', 'An error occured during attachment upload. Please try again later.')
             });
 
             uploader.bind('complete', function (event, xhr, item, response) {
-                console.info('Complete', xhr, item, response);
+                dlLogger.info('Complete', xhr, item, response);
             });
 
             uploader.bind('progressall', function (event, progress) {
-                console.info('Total progress: ' + progress);
+                dlLogger.info('Total progress: ' + progress);
             });
 
             uploader.bind('completeall', function (event, items) {
-                console.info('Complete all', items);
+                dlLogger.info('Complete all', items);
             });
 
         });
+        
+        // VERY ugly. But I needed a quick way of finding out when this particular form is changed, in order to warn for unsaved changes.
+        // Property $dirty on this form isn't set up properly, i.e. it doesn't cover the teeth, notes, etc.
+        // Even assuming that data are toggled changed when form is simply shown would not be a solution, because after saving it's possible to start over again on the same form by simply modifying its controls.
+        
+        this.processFormChange = function(newVal) {
+            dlLogger.log('Changed a field to "' + newVal + '"');
+            dentalLinksUnsavedChangesService.setUnsavedChanges(true);
+        };
+        
+        $scope.$watch('patient', this.processFormChange);
+        $scope.$watch('destinationPractice', this.processFormChange);
+        $scope.$watch('model.referral.dest_provider_id', this.processFormChange);
+        $scope.$watch('practiceType', this.processFormChange);
+        $scope.$watch('model.referral.procedure_id', this.processFormChange);
+        // teeth caught in $scope.toggleTooth
+        // attachments caught in afteraddingfile handler
+        // notes caught in $scope.noteDialog
+        
     }]);
 

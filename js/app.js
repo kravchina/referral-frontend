@@ -9,7 +9,9 @@ var dentalLinks = angular.module('dentalLinks', [
     'viewReferrals',
     'modals',
     'dentalLinksServices',
-    'dentalLinksDirectives']);
+    'dentalLinksDirectives',
+    'dentalLinksUnsavedChanges'
+]);
 
 dentalLinks.constant('USER_ROLES', {
     public: 'public',
@@ -76,7 +78,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         });
     $urlRouterProvider.otherwise('/sign_in');
 }])
-    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS) {
+    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'dentalLinksUnsavedChangesService', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, dentalLinksUnsavedChangesService) {
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
             if (!Auth.authorize(toState.access)) {
@@ -89,6 +91,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             redirect.path = args.redirect;
             $state.go('signIn', {}, {reload: true});
         });
+        dentalLinksUnsavedChangesService.init();
     }]);
 
 dentalLinks.value('redirect', {path: '/'});

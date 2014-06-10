@@ -1,7 +1,7 @@
 var adminModule = angular.module('admin', ['ui.bootstrap']);
 
-adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'Practice', 'Provider', 'User',
-    function ($scope, $modal, Auth, Alert, Practice, Provider, User) {
+adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'Practice', 'Provider', 'User', 'dentalLinksUnsavedChangesService',
+    function ($scope, $modal, Auth, Alert, Practice, Provider, User, dentalLinksUnsavedChangesService) {
         $scope.alerts = [];
 
         var currentYear = moment().year();
@@ -34,10 +34,15 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                     function (success) {
                         form.$setPristine();
                         Alert.push($scope.alerts, 'success', 'Account was updated successfully!')
+                        // only now we can say changes are saved
+                        dentalLinksUnsavedChangesService.setUnsavedChanges(false);
                     },
                     function (failure) {
                         Alert.push($scope.alerts, 'danger', 'An error occurred during account update...')
                     });
+            } else {
+                // form is not dirty, we're just getting out of edit state
+                dentalLinksUnsavedChangesService.setUnsavedChanges(false);
             }
         };
 

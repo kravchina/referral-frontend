@@ -1,7 +1,7 @@
 var viewReferralModule = angular.module('viewReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 
-    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal) {
+viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'dlLogger',
+    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, dlLogger) {
     $scope.alerts = [];
     PDF.init();
     
@@ -98,31 +98,31 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
         // REGISTER HANDLERS
         uploader.bind('afteraddingfile', function (event, item) {
-            console.info('After adding a file', item);
+            dlLogger.info('After adding a file', item);
             item.upload();
         });
 
         uploader.bind('whenaddingfilefailed', function (event, item) {
-            console.info('When adding a file failed', item);
+            dlLogger.info('When adding a file failed', item);
             Alert.push($scope.alerts, 'danger', 'Something went wrong while adding attachment...');
         });
 
         uploader.bind('afteraddingall', function (event, items) {
-            console.info('After adding all files', items);
+            dlLogger.info('After adding all files', items);
         });
 
         uploader.bind('beforeupload', function (event, item) {
-            console.debug('FORM DATA:', uploader.formData);
-            console.debug('SCOPE DATA:', $scope.s3Credentials);
-            console.info('Before upload', item);
+            dlLogger.debug('FORM DATA:', uploader.formData);
+            dlLogger.debug('SCOPE DATA:', $scope.s3Credentials);
+            dlLogger.info('Before upload', item);
         });
 
         uploader.bind('progress', function (event, item, progress) {
-            console.info('Progress: ' + progress, item);
+            dlLogger.info('Progress: ' + progress, item);
         });
 
         uploader.bind('success', function (event, xhr, item, response) {
-            console.info('Success', xhr, item, response);
+            dlLogger.info('Success', xhr, item, response);
             var attachment = {filename: item.url + '/' + bucket_path + item.file.name, notes: item.notes, referral_id: $scope.referral.id, created_at: Date.now()};
             Attachment.save({attachment: attachment}, function (success) {
                 Alert.push($scope.alerts, 'success', 'Attachment was added successfully!');
@@ -131,25 +131,25 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         });
 
         uploader.bind('cancel', function (event, xhr, item) {
-            console.info('Cancel', xhr, item);
+            dlLogger.info('Cancel', xhr, item);
             Alert.push($scope.alerts, 'info', 'Attachment upload was cancelled.');
         });
 
         uploader.bind('error', function (event, xhr, item, response) {
-            console.error('Error', xhr, item, response);
+            dlLogger.error('Error', xhr, item, response);
             Alert.push($scope.alerts, 'danger', 'Something went wrong while adding attachment...');
         });
 
         uploader.bind('complete', function (event, xhr, item, response) {
-            console.info('Complete', xhr, item, response);
+            dlLogger.info('Complete', xhr, item, response);
         });
 
         uploader.bind('progressall', function (event, progress) {
-            console.info('Total progress: ' + progress);
+            dlLogger.info('Total progress: ' + progress);
         });
 
         uploader.bind('completeall', function (event, items) {
-            console.info('Complete all', items);
+            dlLogger.info('Complete all', items);
         });
 
     });

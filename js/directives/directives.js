@@ -205,7 +205,7 @@ dentalLinksDirectives.directive('deleteButton', [function () {
 
 }]);
 
-dentalLinksDirectives.directive('toggleEdit', [function () {
+dentalLinksDirectives.directive('toggleEdit', ['dentalLinksUnsavedChangesService', function (dentalLinksUnsavedChangesService) {
     return {
         scope: {},
         restrict: 'A',
@@ -220,6 +220,7 @@ dentalLinksDirectives.directive('toggleEdit', [function () {
                 editButton.addClass('hide');
                 saveButton.removeClass('hide');
                 editFormCtrl.enableControls();
+                dentalLinksUnsavedChangesService.setUnsavedChanges(true);
             });
 
             // save
@@ -227,6 +228,7 @@ dentalLinksDirectives.directive('toggleEdit', [function () {
                 editButton.removeClass('hide');
                 saveButton.addClass('hide');
                 editFormCtrl.disableControls();
+                // not setting unsaved changes to false here. It's happening in adminController.savePractice()
             });
 
         }
