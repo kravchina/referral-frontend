@@ -14,13 +14,18 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
     $scope.referral.$promise.then(function (data) {
 
-        PDF.addParagraph('Patient: ' + data.patient.first_name + ' ' + data.patient.last_name);
-        PDF.addParagraph('Original provider: ' + (data.orig_provider || {}).first_name + ' ' + (data.orig_provider || {}).middle_initial + ' ' + (data.orig_provider || {}).last_name);
-        PDF.addParagraph('Destination provider: ' + (data.dest_provider || {}).first_name + ' ' + (data.dest_provider || {}).middle_initial + ' ' + (data.dest_provider || {}).last_name);
-        PDF.addParagraph('Procedure: ' + (data.procedure || {}).name + '(' + ((data.procedure || {}).practice_type || {}).name + ')');
+        PDF.addParagraph('Patient: ', data.patient.first_name + ' ' + data.patient.last_name);
+        PDF.addParagraph('Original provider: ', (data.orig_provider || {}).first_name + ' ' + (data.orig_provider || {}).middle_initial + ' ' + (data.orig_provider || {}).last_name);
+        PDF.addParagraph('Destination practice: ', data.dest_provider.practice.name);
+        var address = data.dest_provider.practice.address;
+        PDF.addParagraph('Practice address: ', address.street_line_1 + ', ' + address.city + ', ' + address.state + ', ' + address.zip);
+        PDF.addParagraph('Practice phone: ', address.phone);
+        PDF.addParagraph('Practice website: ', address.website);
+        PDF.addParagraph('Destination provider: ', (data.dest_provider || {}).first_name + ' ' + (data.dest_provider || {}).middle_initial + ' ' + (data.dest_provider || {}).last_name);
+        PDF.addParagraph('Procedure: ', (data.procedure || {}).name + '(' + ((data.procedure || {}).practice_type || {}).name + ')');
         if (data.teeth) {
             data.teethChart = data.teeth.split('+');
-            PDF.addParagraph('Teeth: ' + data.teethChart.join(', '));
+            PDF.addParagraph('Teeth: ', data.teethChart.join(', '));
         }
         PDF.addNotes(data.notes);
     });
