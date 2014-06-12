@@ -179,6 +179,21 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
                 ]
             });
 
+            var each_file_size_limit = 50 * 1024 * 1024;
+            var total_file_size_limit = 100 * 1024 * 1024;
+            
+            var total_size = 0;
+
+            // Filters
+            uploader.filters.push(function(item /*{File|HTMLInputElement}*/) {
+                //var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
+                //type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
+                //return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+
+                console.log(item);
+                return item.size < each_file_size_limit && total_size + item.size <= total_file_size_limit;
+            });
+
             // REGISTER HANDLERS
 
             uploader.bind('afteraddingfile', function (event, item) {
