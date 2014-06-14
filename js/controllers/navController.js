@@ -1,10 +1,20 @@
 dentalLinks.controller('NavController', ['$scope', 'Auth', 'User', '$state', 'Login', 'redirect', 'dentalLinksUnsavedChangesService', 'dlLogger',
     function ($scope, Auth, User, $state, Login, redirect, dentalLinksUnsavedChangesService, dlLogger) {
 
+        $scope.loading = false;
+
         if(Auth.get()){
             Auth.current_user = User.get({id: Auth.get().id});
         }else{
             Auth.current_user = null;
+        }
+
+        $scope.loadingIndicatorStart = function(){
+            $scope.loading = true;
+        }
+
+        $scope.loadingIndicatorEnd = function(){
+            $scope.loading = false;
         }
 
         $scope.first_name = function() {

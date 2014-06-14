@@ -74,8 +74,14 @@
 
 </head>
 
-<body>
-<div ng-controller="NavController">
+<body ng-controller="NavController">
+
+<div id="resultLoading" ng-if="loading">
+    <div class="loading-container"><img src="/img/loading.gif"><div>loading... please wait...</div></div>
+    <div class="bg"></div>
+</div>
+
+<div>
 <nav class="navbar navbar-fixed-top" role="navigation">
 
     <div class="container">
