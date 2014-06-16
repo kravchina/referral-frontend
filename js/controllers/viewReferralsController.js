@@ -143,7 +143,8 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         uploader.bind('success', function (event, xhr, item, response) {
             dlLogger.info('Success', xhr, item, response);
             var attachment = {filename: item.url + '/' + bucket_path + item.file.name, notes: item.notes, referral_id: $scope.referral.id, created_at: Date.now()};
-            Attachment.save({attachment: attachment}, function (success) {
+            Attachment.save({attachment: attachment}, function (newAttachment) {
+                $scope.referral.attachments.push(newAttachment);
                 Alert.push($scope.alerts, 'success', 'Attachment was added successfully!');
             });
 

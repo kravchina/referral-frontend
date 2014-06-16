@@ -135,27 +135,13 @@
 
                     <!-- Attachment block -->
                     <li class="attachment-block" ng-repeat="attachment in referral.attachments">
-                        <a href="#">
+                        <a href="{{attachment.filename}}">
                             <div class="attachment-thumb" attachment-thumb="{{attachment.filename}}">
                                 <img ng-if="isImage(attachment)" pdf-photos access="admin, doctor" ng-src="{{attachment.filename}}" total-images="{{referral.attachments.length}}" crossorigin="anonymous" alt="img">
                             </div>
                             <div class="attachment-details">
                                 <span class="filename">{{attachment.filename | filename}}</span>
                                 <span class="datestamp">{{attachment.created_at | date: 'mediumDate'}}</span>
-                            </div>
-                        </a>
-                    </li>
-
-                    <!-- Attachment block -->
-                    <li class="attachment-block" ng-repeat="item in uploader.queue">
-                        <a href="#">
-                            <div class="attachment-thumb" ng-show="uploader.isHTML5"
-                                 ng-thumb="{ file: item.file, height: 80, width:80 }">
-                                <!--<img src="img/attachments/001.jpg" alt="img">-->
-                            </div>
-                            <div class="attachment-details" >
-                                <span class="filename">{{ item.file.name }}</span>
-                                <span class="datestamp">{{ now() | date: 'mediumDate'}}</span>
                             </div>
                         </a>
                     </li>
