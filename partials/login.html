@@ -1,23 +1,24 @@
 <div>
-    <form novalidate class="simple-form" ng-if="!authenticated">
+    <form name="form" novalidate class="simple-form" ng-if="!authenticated">
 
         <div>
             <label>
                 E-Mail:
-                <input type="email" ng-model="user.email"/>
+                <input type="email" name="email" ng-model="user.email" ng-required="true"/>
             </label>
         </div>
 
         <div>
             <label>
                 Password:
-                <input type="password" ng-model="user.password"/>
+                <input type="password" ng-model="user.password" ng-required="true"/>
             </label>
         </div>
 
         <div class="success" ng-show="result.success">You have successfully logged in!</div>
-        <div class="error" ng-show="result.failure">Unable to login with provided credentials</div>
-        <button ng-click="login(user)">Login</button>
+        <div class="error" ng-show="result.failure">{{result.statusText}}</div>
+        <div class="error" ng-show="form.$invalid && form.$dirty">Invalid login credentials!</div>
+        <button ng-click="login(user)" ng-disabled="form.$invalid">Login</button>
         <br />
         <a href="#/reset_password">Forgot password?</a>
     </form>

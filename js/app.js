@@ -87,6 +87,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             }
         });
         $rootScope.$on(AUTH_EVENTS.notAuthenticated, function(event, args){
+            console.log('notAuthenticated');
             Auth.remove();
             redirect.path = args.redirect;
             $state.go('signIn', {}, {reload: true});
@@ -125,7 +126,7 @@ dentalLinks.factory('authInterceptor', ['$rootScope', '$q','AUTH_EVENTS', '$loca
                 if ($location.path() !== '/sign_in') { //TODO! [mezerny] consider more elegant implementation - now we need to check the location because consequent requests to server from previous view could be finished after redirect to 'sign_in', in that case we are loosing desired 'redirect' location (it is replaced with '/sign_in')
                     $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
                 }else{
-                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: redirect.path});
+                    //$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: redirect.path});
                 }
 
             }

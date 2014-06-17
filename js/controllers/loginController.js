@@ -5,12 +5,12 @@ loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location'
         var auth = Auth.get();
         $scope.authenticated = auth;
         $scope.email = (auth || {}).email;
+
+        $scope.result = {failure: false};
         $scope.login = function (user) {   /*{'user': {'email': user.email, 'password': user.password }}*/
             
             // show the loading indicator
-            //loadingIndicatorStart();
             $scope.$parent.loadingIndicatorStart()
-
             Login.login({'user': {'email': user.email, 'password': user.password }},
                 function (success) {
                     Auth.set({token: success.token, email: user.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
@@ -27,9 +27,16 @@ loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location'
 
                 },
                 function (failure) {
+                    console.log(failure)
                     Auth.remove();
                     $scope.authenticated = false;
-                    $scope.result = {failure: true};
+                    if(failure.status == 0){
+                        $scope.result = {failure: true, statusText: 'Upstream server connectivity error. Administrator was informed. Please try again later'};
+                    }else{
+                        $scope.result = {failure: true, statusText: 'Unable to login with provided credentials'};
+                    }
+                    
+                    console.log($scope.result)
 
                     $scope.$parent.loadingIndicatorEnd()
 
