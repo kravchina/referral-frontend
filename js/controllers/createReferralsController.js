@@ -162,6 +162,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
         };
 
 
+        // non-displayed list of attachments to be uploaded on Save or Send
         $scope.model.attachments = [];
 
         S3Bucket.getCredentials(function (success) {
@@ -198,6 +199,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
 
             uploader.bind('afteraddingfile', function (event, item) {
                 dlLogger.info('After adding a file', item);
+                // marking an attachment for saving
                 $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes});
                 self.processFormChange(item);
             });
