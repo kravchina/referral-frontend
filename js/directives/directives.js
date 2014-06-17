@@ -31,15 +31,18 @@ dentalLinksDirectives.directive('expandNote', [function () {
 }]);
 
 
-dentalLinksDirectives.directive('pdfPhotos', ['Auth', 'PDF', function (Auth, PDF) {
+dentalLinksDirectives.directive('pdfPhotos', ['Auth', 'PDF', 'File', function (Auth, PDF, File) {
     return {
         scope: true,
         restrict: 'A',
         link: function (scope, $element, attrs) {
             var img = $element[0];
             if (Auth.authorize(attrs.access.split(/[,\s]+/))) {
+                if(!File.isImage(scope.attachment.filename)){
+                    PDF.addImage(scope.$index, null, scope.attachment);
+                }
                 img.onload = function () {
-                    PDF.addImage(scope.$index, img, scope.attachment.notes);
+                    PDF.addImage(scope.$index, img, scope.attachment);
                 };
             }
         }

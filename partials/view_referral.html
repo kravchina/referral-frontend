@@ -137,7 +137,7 @@
                     <li class="attachment-block" ng-repeat="attachment in referral.attachments">
                         <a href="{{attachment.filename}}">
                             <div class="attachment-thumb" attachment-thumb="{{attachment.filename}}">
-                                <img ng-if="isImage(attachment)" pdf-photos access="admin, doctor" ng-src="{{attachment.filename}}" total-images="{{referral.attachments.length}}" crossorigin="anonymous" alt="img">
+                                <img ng-show="isImage(attachment)" pdf-photos access="admin, doctor" ng-src="{{attachment.filename}}" total-images="{{referral.attachments.length}}" crossorigin="anonymous" alt="img">
                             </div>
                             <div class="attachment-details">
                                 <span class="filename">{{attachment.filename | filename}}</span>
@@ -189,6 +189,7 @@
         <button type="button" ng-show="referral.status == 'sent'" ng-click="completeReferral(referral)" class="btn btn-success">Complete Referral</button>
 
     <button type="button" ng-click="savePdf()" class="btn btn-orange btn-lg">Download PDF</button>
+    <button type="button" ng-click="savePatientPdf()" class="btn btn-orange btn-lg">Download patient copy</button>
 </div>
 <!-- .button-block -->
 </form>
