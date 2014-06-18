@@ -130,6 +130,8 @@
 
         </div>
 
+        <alert ng-repeat="alert in attachment_alerts" type="alert.type" close="closeAttachmentAlert($index)">{{alert.message}}</alert>
+
         <div class="attachments-wrapper">
             <div class="my-drop-zone" ng-file-drop ng-file-over="another-file-over-class">
             <ul>

@@ -4,6 +4,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
     function ($scope, $stateParams, Alert, Practice, Patient, Procedure, Provider, Referral, S3Bucket, $modal, $fileUploader, dentalLinksUnsavedChangesService, dlLogger) {
 
         $scope.alerts = [];
+        $scope.attachment_alerts = [];
         
         var self = this;
 
@@ -32,6 +33,10 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
 
         $scope.closeAlert = function (index) {
             Alert.close($scope.alerts, index);
+        };
+
+        $scope.closeAttachmentAlert = function (index) {
+            Alert.close($scope.attachment_alerts, index);
         };
 
         $scope.procedures = Procedure.query();
@@ -180,10 +185,12 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
                 ]
             });
 
-            var each_file_size_limit = 50 * 1024 * 1024;
-            var total_file_size_limit = 100 * 1024 * 1024;
+            var each_file_size_limit = 10 * 1024 * 1024;
+            var total_file_size_limit = 20 * 1024 * 1024;
             
             var total_size = 0;
+
+            $scope.attachment_error = false;
 
             // Filters
             uploader.filters.push(function(item /*{File|HTMLInputElement}*/) {
@@ -192,7 +199,18 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
                 //return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
 
                 console.log(item);
-                return item.size < each_file_size_limit && total_size + item.size <= total_file_size_limit;
+
+                if (item.size > each_file_size_limit){
+                    Alert.push($scope.attachment_alerts, 'danger', 'You can not upload a file with more than 50 MB size.');
+                    
+                    return false;
+                }else if (total_size + item.size > total_file_size_limit){
+                    Alert.push($scope.attachment_alerts, 'danger', 'You can not upload files with more than 100 MB size.');
+                    return false;
+                }else{
+                    return true;
+                }
+              
             });
 
             // REGISTER HANDLERS
