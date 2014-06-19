@@ -185,8 +185,8 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
                 ]
             });
 
-            var each_file_size_limit = 10 * 1024 * 1024;
-            var total_file_size_limit = 20 * 1024 * 1024;
+            var each_file_size_limit = 50 * 1024 * 1024;
+            var total_file_size_limit = 100 * 1024 * 1024;
             
             var total_size = 0;
 
