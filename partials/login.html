@@ -1,23 +1,27 @@
 <div>
     <form name="form" novalidate class="simple-form" ng-if="!authenticated">
+        <br />
+        <div  ng-show="result.failure" class="alert alert-danger">
+            {{result.statusText}}
+        </div>
 
-        <div>
+        <div ng-class="{'has-error': form.email.$invalid && form.email.$dirty}">
             <label>
                 E-Mail:
-                <input type="email" name="email" ng-model="user.email" ng-required="true"/>
+                <input type="email" name="email" ng-model="user.email" ng-required="true" class="form-control login"/>
             </label>
         </div>
 
-        <div>
+        <div ng-class="{'has-error': form.password.$invalid && form.password.$dirty}">
             <label>
                 Password:
-                <input type="password" ng-model="user.password" ng-required="true"/>
+                <input type="password" ng-model="user.password" name="password" ng-required="true" class="form-control login"/>
             </label>
         </div>
 
-        <div class="success" ng-show="result.success">You have successfully logged in!</div>
+        <!--<div class="success" ng-show="result.success">You have successfully logged in!</div>
         <div class="error" ng-show="result.failure">{{result.statusText}}</div>
-        <div class="error" ng-show="form.$invalid && form.$dirty">Invalid login credentials!</div>
+        <div class="error" ng-show="form.$invalid && form.$dirty">Invalid login credentials!</div>-->
         <button ng-click="login(user)" ng-disabled="form.$invalid">Login</button>
         <br />
         <a href="#/reset_password">Forgot password?</a>
