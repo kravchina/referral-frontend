@@ -8,6 +8,8 @@ var dentalLinks = angular.module('dentalLinks', [
     'createReferrals',
     'viewReferrals',
     'modals',
+    'pdf',
+    'registration',
     'dentalLinksServices',
     'dentalLinksDirectives',
     'dentalLinksUnsavedChanges'
@@ -30,6 +32,11 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             url: '/sign_in',
             templateUrl: 'partials/login.html',
             controller: 'LoginController'
+        }).
+        state('registration', {
+            url: '/register/:invitation_token',
+            templateUrl: 'partials/registration.html',
+            controller: 'RegistrationController'
         }).
         state('createReferral', {
             url: '/create_referral',

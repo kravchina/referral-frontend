@@ -32,15 +32,18 @@ modalsModule.controller('NoteModalController', ['$scope', '$modalInstance', 'Not
     };
 }]);
 
-modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'Provider', 'Auth', function ($scope, $modalInstance, Provider, Auth) {
-    $scope.result = {};
+modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Alert', 'Auth', function ($scope, $modalInstance, ProviderInvitation, Alert, Auth) {
+    $scope.alerts = [];
     $scope.ok = function (provider) {
         provider.inviter_id = Auth.get().id;
-        Provider.save({user: provider}, function (success) {
+        ProviderInvitation.save({provider_invitation: provider}, function (success) {
             $modalInstance.close(success);
         }, function (failure) {
-            $scope.result.failure = true;
+            Alert.push($scope.alerts, 'danger', 'Error: ' + failure.data.message);
         });
+    };
+    $scope.closeAlert = function (index) {
+        Alert.close($scope.alerts, index);
     };
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');

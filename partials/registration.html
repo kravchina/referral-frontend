@@ -1,0 +1,91 @@
+<header class="page-header">
+    <h1>Registration</h1>
+
+    <p class="page-subheader">Submit your registration details.</p>
+</header><!-- .page-header -->
+
+<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.message}}</alert>
+
+<div class="form-wrapper">
+    <form name="form" novalidate class="simple-form">
+        <div class="box-white">
+
+            <div class="row">
+
+                <div class="responsive-tab-content">
+                    <div class="tab-content">
+
+                        <div id="sectPersonal" class="section-block">
+                            <h3>Personal Information</h3>
+
+                            <div class="input-block-inline">
+                                <select id="selectSalutation" name="salutation" ng-model="user.title" class="form-control">
+                                    <option selected="selected" disabled="disabled" class="placeholder" value="">Select salutation</option>
+                                    <option value="Mr.">Mr.</option>
+                                    <option value="Ms.">Ms.</option>
+                                    <option value="Mrs.">Mrs.</option>
+                                    <option value="Dr.">Dr.</option>
+                                    <option value="Engr.">Engr.</option>
+                                </select>
+                                <label for="selectSalutation">Salutation</label>
+                            </div>
+
+                            <div class="input-block-inline" ng-class="{'has-error': form.first_name.$dirty && form.first_name.$invalid }">
+                                <input type="text" name="first_name" class="form-control" ng-model="user.first_name" placeholder="Enter first name &hellip;" ng-required="true">
+                                <label>First Name</label>
+                            </div>
+
+                            <div class="input-block-inline">
+                                <input type="text" name="middle_initial" class="form-control" ng-model="user.middle_initial" maxlength="1" placeholder="Enter middle initial &hellip;">
+                                <label>Middle Initial</label>
+                            </div>
+
+                            <div class="input-block-inline" ng-class="{'has-error': form.last_name.$dirty && form.last_name.$invalid }">
+                                <input type="text" name="last_name" class="form-control" ng-model="user.last_name" placeholder="Enter last name &hellip;" ng-required="true">
+                                <label>Last Name</label>
+                            </div>
+
+                            <div class="input-block-inline" ng-class="{'has-error': form.practice.$dirty && form.practice.$invalid }">
+                                <input type="text" class="form-control" name="practice" placeholder="Select practice &hellip;"
+                                       ng-model="user.practice"
+                                       typeahead-editable="false"
+                                       typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue"
+                                       ng-required="true">
+                                <label>Practice</label>
+                            </div>
+
+
+
+                        </div>
+                        <div class="section-block">
+                            <h3>Access details</h3>
+
+                            <div class="input-block-inline" ng-class="{'has-error': form.email.$dirty && form.email.$invalid }">
+                                <input type="email" name="email" class="form-control" ng-model="user.email" disabled="disabled" placeholder="Enter email &hellip;" ng-required="true">
+                                <label>Email</label>
+                            </div>
+
+                            <div class="input-block-inline" ng-class="{'has-error': form.password.$dirty && form.password.$invalid }">
+                                <input type="password" name="password" class="form-control" ng-model="user.password" placeholder="Enter password &hellip;" ng-minlength="8" ng-requred="true">
+                                <label>Password</label>
+                            </div>
+
+                            <div class="input-block-inline" ng-class="{'has-error': form.confirmation.$dirty && (form.confirmation.$invalid || user.password_confirmation !== user.password) }">
+                                <input type="password" name="confirmation" class="form-control" ng-model="user.password_confirmation" placeholder="Enter password confirmation &hellip;"
+                                       ng-minlength="8" ng-required="true">
+                                <label>Password confirmation</label>
+                            </div>
+                            <div class="button-block">
+                                <button class="btn btn-green btn-lg" ng-click="register(user)" ng-disabled="form.$invalid || user.password_confirmation !== user.password">Register</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+</div>

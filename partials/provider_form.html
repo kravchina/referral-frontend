@@ -10,11 +10,9 @@
         <!--<div ng-show="providerForm.$invalid" class="alert alert-danger">
             <strong>Oops!</strong> Please fix the highlighted errors below.
         </div>-->
+        <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.message}}</alert>
         <div class="input-block" ng-class="{ 'has-error': providerForm.firstName.$dirty && providerForm.firstName.$invalid }">
             <input type="text" name="firstName" class="form-control" ng-model="provider.first_name" placeholder="Enter first name &hellip;" ng-required="true">
-        </div>
-        <div class="input-block-right" ng-class="{ 'has-error': providerForm.middleInitial.$dirty && providerForm.middleInitial.$invalid }">
-            <input type="text" name="middleInitial" class="form-control" ng-model="provider.middle_initial" maxlength="1" placeholder="Enter middle initial &hellip;" ng-required="true">
         </div>
         <div class="input-block"  ng-class="{ 'has-error': providerForm.lastName.$dirty && providerForm.lastName.$invalid }" >
             <input type="text" name="lastName" class="form-control" ng-model="provider.last_name" placeholder="Enter last name &hellip;" ng-required="true">

@@ -1,7 +1,7 @@
 var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-createReferralModule.controller('CreateReferralsController', ['$scope', '$stateParams', 'Alert', 'Practice', 'Patient', 'Procedure', 'Provider', 'Referral', 'S3Bucket', '$modal', '$fileUploader', 'dentalLinksUnsavedChangesService', 'dlLogger',
-    function ($scope, $stateParams, Alert, Practice, Patient, Procedure, Provider, Referral, S3Bucket, $modal, $fileUploader, dentalLinksUnsavedChangesService, dlLogger) {
+createReferralModule.controller('CreateReferralsController', ['$scope', '$stateParams', 'Alert', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', '$modal', '$fileUploader', 'dentalLinksUnsavedChangesService', 'dlLogger',
+    function ($scope, $stateParams, Alert, Practice, Patient, Procedure, User, Referral, S3Bucket, $modal, $fileUploader, dentalLinksUnsavedChangesService, dlLogger) {
 
         $scope.alerts = [];
         $scope.attachment_alerts = [];
@@ -43,7 +43,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
 
         $scope.practiceTypes = Procedure.practiceTypes();
 
-        $scope.providers = Provider.query(function (success) {
+        $scope.providers = User.query(function (success) {
         }, function (failure) {
             Alert.push($scope.alerts, 'danger', 'Server doesn\'t respond. Please try again later');
         });
@@ -107,13 +107,13 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
         };
 
         $scope.findPatient = function (searchValue) {
-            return Patient.searchPatient({search: searchValue, now: Date.now() }).$promise.then(function (res) {
+            return Patient.searchPatient({search: searchValue}).$promise.then(function (res) {
                 return res;
             });
         };
 
         $scope.findPractice = function (searchValue) {
-            return Practice.searchPractice({search: searchValue, now: Date.now() }).$promise.then(function (res) {
+            return Practice.searchPractice({search: searchValue }).$promise.then(function (res) {
                 return res;
             });
         };

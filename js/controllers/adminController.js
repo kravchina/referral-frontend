@@ -1,7 +1,7 @@
 var adminModule = angular.module('admin', ['ui.bootstrap', 'angularPayments']);
 
-adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'Practice', 'Provider', 'User', 'dentalLinksUnsavedChangesService',
-    function ($scope, $modal, Auth, Alert, Practice, Provider, User, dentalLinksUnsavedChangesService) {
+adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'Practice', 'ProviderInvitation', 'User', 'dentalLinksUnsavedChangesService',
+    function ($scope, $modal, Auth, Alert, Practice, ProviderInvitation, User, dentalLinksUnsavedChangesService) {
         // set the stripe publishable key
         Stripe.setPublishableKey('pk_test_TAdWKoNc4HgjFknjuuzsb99p');
 
@@ -22,7 +22,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
             
             if (form.$dirty && !form.$invalid) {
                 console.log($scope.practice);
-                console.log($scope.practice.card_exp_month)
+                console.log($scope.practice.card_exp_month);
                 Stripe.card.createToken({
                     number: $scope.practice.card_number,
                     cvc: $scope.practice.card_cvc,
@@ -35,7 +35,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                         Alert.push($scope.alerts, 'danger', 'An error occurred during account update...')
                     } else {
                         // got stripe token, now charge it or smt
-                        $scope.practice.stripe_token = response.id
+                        $scope.practice.stripe_token = response.id;
 
                         Practice.update({practiceId: $scope.practice.id}, {
                             practice: {
@@ -101,8 +101,8 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                 });
         };
 
-        $scope.deleteProvider = function (provider) {
-            Provider.delete({id: provider.id},
+        $scope.deleteProviderInvitation = function (provider) {
+            ProviderInvitation.delete({id: provider.id},
                 function (success) {
                     $scope.providers.splice($scope.providers.indexOf(provider), 1);
                 },
