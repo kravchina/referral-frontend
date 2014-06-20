@@ -43,7 +43,7 @@
                                     <tr ng-repeat="referral in referrals | filter: query">
                                         <td class="cell-datetime">
                                             <span class="ref-date">{{referral.created_at | date: 'mediumDate'}}</span>
-                                            <span class="ref-time">{{referral.create_at | date: 'shortTime'}}</span>
+                                            <span class="ref-time">{{referral.created_at | date: 'shortTime'}}</span>
                                         </td>
                                         <td class="cell-patient">{{referral.patient.first_name}} {{referral.patient.last_name}}</td>
                                         <td class="cell-from">
