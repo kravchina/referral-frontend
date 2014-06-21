@@ -1,4 +1,4 @@
-<form id="formNewNote" name="noteForm">
+<form id="formNewNote" name="noteForm" ng-ctrl-enter="ok(note)">
     <div class="modal-header">
         <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel">Add a New Note</h4>
@@ -8,11 +8,11 @@
             <strong>Oops!</strong> Please fix the highlighted errors below.
         </div>-->
         <div class="input-block"  ng-class="{ 'has-error': noteForm.note.$dirty && noteForm.note.$invalid }">
-            <textarea placeholder="Write your note here &hellip;" name="note" class="form-control" ng-model="note" ng-required="true"></textarea>
+            <textarea id="note" ng-focus-me placeholder="Write your note here &hellip;" name="note" class="form-control" ng-model="note" ng-required="true"></textarea>
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-orange" ng-click="ok(note)" ng-disabled="noteForm.$invalid">Save</button>
-        <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Discard</button>
+        <button type="submit" class="btn btn-orange" ng-click="ok(note)" ng-disabled="noteForm.$invalid" ng-ctrl-enter="ok(note)">Save</button>
+        <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal" ng-ctrl-enter="ok(note)">Discard</button>
     </div>
 </form>

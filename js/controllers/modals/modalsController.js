@@ -25,11 +25,17 @@ modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 
 modalsModule.controller('NoteModalController', ['$scope', '$modalInstance', 'Note', function ($scope, $modalInstance, Note) {
     $scope.ok = function (note) {
         //nothing to do, we cant save note right here because at this stage referral doesn't exist. We can only add new note to the list on the parent page (create referral) and save simultaneously with referral.
-        $modalInstance.close(note);
+        if (note == undefined){
+            $modalInstance.dismiss('cancel');
+        }else{
+            $modalInstance.close(note);
+        }
+        
     };
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+
 }]);
 
 modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Alert', 'Auth', function ($scope, $modalInstance, ProviderInvitation, Alert, Auth) {

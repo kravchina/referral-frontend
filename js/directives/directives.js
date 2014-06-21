@@ -238,3 +238,34 @@ dentalLinksDirectives.directive('toggleEdit', ['dentalLinksUnsavedChangesService
     }
 
 }]);
+
+dentalLinksDirectives.directive('ngFocusMe', ['$parse', '$timeout', function($parse, $timeout){
+    return {
+        restrict: 'AC',
+        link: function(scope, element, attrs){
+            
+            $timeout(function() {
+                console.log(element[0]);
+                element[0].focus(); 
+            }, 100);
+        }
+    }
+}]);
+
+dentalLinksDirectives.directive('ngCtrlEnter', ['$parse', '$timeout', function($parse, $timeout){
+    return {
+        restrict: 'AC',
+        link: function(scope, element, attrs){
+            
+            element.bind("keydown keypress", function(event) {
+                if(event.which === 13 && event.ctrlKey == true) {
+                    scope.$apply(function(){
+                        scope.$eval(attrs.ngCtrlEnter, {'event': event});
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        }
+    }
+}]);
