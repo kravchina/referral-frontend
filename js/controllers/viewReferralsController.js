@@ -127,7 +127,21 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 //return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
 
                 console.log(item);
-                return item.size < each_file_size_limit && total_size + item.size <= total_file_size_limit;
+                
+                if (item.size > each_file_size_limit){
+                    Alert.push($scope.attachment_alerts, 'danger', 'You can not upload a file with more than 50 MB size.');
+                    
+                    return false;
+                }
+
+                if (total_size + item.size > total_file_size_limit){
+                    Alert.push($scope.attachment_alerts, 'danger', 'You can not upload files with more than 100 MB size.');
+                    return false;
+                }
+                
+                total_size = total_size + item.size;
+
+                return true;
             });
 
             // REGISTER HANDLERS

@@ -204,12 +204,17 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
                     Alert.push($scope.attachment_alerts, 'danger', 'You can not upload a file with more than 50 MB size.');
                     
                     return false;
-                }else if (total_size + item.size > total_file_size_limit){
+                }
+
+                if (total_size + item.size > total_file_size_limit){
                     Alert.push($scope.attachment_alerts, 'danger', 'You can not upload files with more than 100 MB size.');
                     return false;
-                }else{
-                    return true;
                 }
+                
+                total_size = total_size + item.size;
+
+                return true;
+                
               
             });
 
