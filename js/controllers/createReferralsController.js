@@ -1,13 +1,11 @@
 var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-createReferralModule.controller('CreateReferralsController', ['$scope', '$stateParams', 'Alert', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', '$modal', '$fileUploader', 'dentalLinksUnsavedChangesService', 'dlLogger',
-    function ($scope, $stateParams, Alert, Practice, Patient, Procedure, User, Referral, S3Bucket, $modal, $fileUploader, dentalLinksUnsavedChangesService, dlLogger) {
+createReferralModule.controller('CreateReferralsController', ['$scope', '$stateParams', 'Alert', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', '$modal', '$fileUploader', 'UnsavedChanges', 'dlLogger',
+    function ($scope, $stateParams, Alert, Practice, Patient, Procedure, User, Referral, S3Bucket, $modal, $fileUploader, UnsavedChanges, dlLogger) {
 
         $scope.alerts = [];
         $scope.attachment_alerts = [];
         
-        var self = this;
-
         if ($stateParams.referral_id) {
             Referral.get({id: $stateParams.referral_id}).$promise.then(function (referral) {
                 $scope.patient = referral.patient;
@@ -45,7 +43,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
 
         $scope.providers = User.query(function (success) {
         }, function (failure) {
-            Alert.push($scope.alerts, 'danger', 'Server doesn\'t respond. Please try again later');
+            Alert.error($scope.alerts, 'Server doesn\'t respond. Please try again later');
         });
 
         $scope.model = {referral: {notes_attributes: []}, practice: {}};
@@ -64,6 +62,16 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
         };
 
         var prepareSubmit = function (model) {
+            if(!model.referral.dest_provider_invited_id){
+                //if provider was not invited, but existing one was selected.
+                /*We have two different situations
+                 1)when provider was invited (but not registered)
+                  in that case we save dest_provider_invited_id that is a foreign key from provider_invitations table
+                 2)provider is registered and selected from dropdown
+                  in that case we save dest_provider_id that is a foreign key from users table
+                * */
+                model.referral.dest_provider_id = model.dest_provider;
+            }
             model.referral.dest_practice_id = $scope.destinationPractice.id;
             model.referral.patient_id = $scope.patient.id;
             model.referral.teeth = teeth.join('+');
@@ -78,10 +86,10 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
             prepareSubmit(model);
             var resultHandlers = {
                 success: function (success) {
-                    Alert.push($scope.alerts, 'success', 'Template was saved successfully!');
-                    dentalLinksUnsavedChangesService.setUnsavedChanges(false);
+                    Alert.success($scope.alerts, 'Template was saved successfully!');
+                    UnsavedChanges.setUnsavedChanges(false);
                 }, failure: function (failure) {
-                    Alert.push($scope.alerts, 'danger', 'An error occurred during referral template creation...');
+                    Alert.error($scope.alerts, 'An error occurred during referral template creation...');
                 }};
             if ($stateParams.referral_id) {
                 //edit existing referral
@@ -97,11 +105,11 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
 
             $scope.create_referral_result = Referral.save(model,
                 function (success) {
-                    Alert.push($scope.alerts, 'success', 'Referral was sent successfully!');
-                    dentalLinksUnsavedChangesService.setUnsavedChanges(false);
+                    Alert.success($scope.alerts, 'Referral was sent successfully!');
+                    UnsavedChanges.setUnsavedChanges(false);
                 },
                 function (failure) {
-                    Alert.push($scope.alerts, 'danger', 'An error occurred during referral creation...');
+                    Alert.error($scope.alerts, 'An error occurred during referral creation...');
                 });
 
         };
@@ -138,7 +146,8 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
             modalInstance.result.then(function (provider) {
                 $scope.destinationPractice = $scope.destinationPractice || {users: [], name: ''};
                 $scope.destinationPractice.users.push(provider);
-                $scope.model.referral.dest_provider_id = provider.id;
+                $scope.model.dest_provider = provider.id;
+                $scope.model.referral.dest_provider_invited_id = provider.id;
                 //$scope.provider = provider;
             });
         };
@@ -150,14 +159,14 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
             });
 
             modalInstance.result.then(function (note) {
-                self.processFormChange(note);
+                processFormChange(note);
                 $scope.model.referral.notes_attributes.push({message: note, created_at: Date.now()});
             });
         };
 
         var teeth = $scope.teeth = [];
         $scope.toggleTooth = function (toothNumber) {
-            self.processFormChange(toothNumber);
+            processFormChange(toothNumber);
             var index = teeth.indexOf(toothNumber);
             if (index == -1) {
                 teeth.push(toothNumber);
@@ -201,13 +210,13 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
                 console.log(item);
 
                 if (item.size > each_file_size_limit){
-                    Alert.push($scope.attachment_alerts, 'danger', 'You can not upload a file with more than 50 MB size.');
+                    Alert.error($scope.attachment_alerts, 'You can not upload a file with more than 50 MB size.');
                     
                     return false;
                 }
 
                 if (total_size + item.size > total_file_size_limit){
-                    Alert.push($scope.attachment_alerts, 'danger', 'You can not upload files with more than 100 MB size.');
+                    Alert.error($scope.attachment_alerts, 'You can not upload files with more than 100 MB size.');
                     return false;
                 }
                 
@@ -225,11 +234,12 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
                 // marking an attachment for saving
                 $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes, size: item.file.size});
                 self.processFormChange(item);
+
             });
 
             uploader.bind('whenaddingfilefailed', function (event, item) {
                 dlLogger.info('When adding a file failed', item);
-                Alert.push($scope.alerts, 'danger', 'Adding file failed. Please try again later.')
+                Alert.error($scope.alerts, 'Adding file failed. Please try again later.')
             });
 
             uploader.bind('afteraddingall', function (event, items) {
@@ -252,12 +262,12 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
 
             uploader.bind('cancel', function (event, xhr, item) {
                 dlLogger.info('Cancel', xhr, item);
-                Alert.push($scope.alerts, 'info', 'Attachment was cancelled.')
+                Alert.info($scope.alerts, 'Attachment was cancelled.')
             });
 
             uploader.bind('error', function (event, xhr, item, response) {
                 dlLogger.error('Error', xhr, item, response);
-                Alert.push($scope.alerts, 'danger', 'An error occured during attachment upload. Please try again later.')
+                Alert.error($scope.alerts, 'An error occured during attachment upload. Please try again later.')
             });
 
             uploader.bind('complete', function (event, xhr, item, response) {
@@ -278,9 +288,9 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
         // Property $dirty on this form isn't set up properly, i.e. it doesn't cover the teeth, notes, etc.
         // Even assuming that data are toggled changed when form is simply shown would not be a solution, because after saving it's possible to start over again on the same form by simply modifying its controls.
         
-        this.processFormChange = function(newVal) {
+        var processFormChange = function(newVal) {
             dlLogger.log('Changed a field to "' + newVal + '"');
-            dentalLinksUnsavedChangesService.setUnsavedChanges(true);
+            UnsavedChanges.setUnsavedChanges(true);
         };
         
         $scope.$watch('patient', this.processFormChange);

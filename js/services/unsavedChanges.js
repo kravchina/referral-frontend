@@ -1,6 +1,6 @@
-var dentalLinksUnsavedChanges = angular.module('dentalLinksUnsavedChanges', []);
+var dentalLinksUnsavedChanges = angular.module('unsavedChanges', []);
 
-dentalLinksUnsavedChanges.service('dentalLinksUnsavedChangesService', ['$rootScope', 'dlLogger', function($rootScope, dlLogger) {
+dentalLinksUnsavedChanges.service('UnsavedChanges', ['$rootScope', 'dlLogger', function($rootScope, dlLogger) {
     var strUnsavedWarning = 'You have unsaved changes.';
     var strUnsavedQuestion = 'You have unsaved changes. Are you sure you want to leave?';
     

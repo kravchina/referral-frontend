@@ -45,7 +45,7 @@ modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 
         ProviderInvitation.save({provider_invitation: provider}, function (success) {
             $modalInstance.close(success);
         }, function (failure) {
-            Alert.push($scope.alerts, 'danger', 'Error: ' + failure.data.message);
+            Alert.error($scope.alerts, 'Error: ' + failure.data.message);
         });
     };
     $scope.closeAlert = function (index) {
@@ -56,15 +56,16 @@ modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 
     };
 }]);
 
-modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 'PracticeInvitation', function ($scope, $modalInstance, PracticeInvitation) {
-    $scope.ok = function (practice_invite) {
-        PracticeInvitation.save({practice: practice_invite},
+modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 'Alert', 'Practice', 'Procedure', function ($scope, $modalInstance, Alert, Practice, Procedure) {
+    $scope.alerts = [];
+    $scope.practiceTypes = Procedure.practiceTypes();
+    $scope.ok = function (practice) {
+        Practice.save({practice: practice},
             function (success) {
                 $modalInstance.close(success);
             },
             function (failure) {
-                $scope.success = false;
-                $scope.failure = true;
+                Alert.error($scope.alerts, 'Can\'t create practice.');
             });
     };
 
@@ -73,15 +74,15 @@ modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 
     };
 }]);
 
-modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'User', 'Auth', function ($scope, $modalInstance, User, Auth) {
+modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Auth', function ($scope, $modalInstance, ProviderInvitation, Auth) {
     $scope.result = {};
     $scope.ok = function (user) {
         user.practice_id = Auth.get().practice_id;
         user.inviter_id = Auth.get().id;
-        User.save({user: user}, function (success) {
+        ProviderInvitation.save({provider_invitation: user}, function (success) {
             $modalInstance.close(success);
-        }, function (failure) {
-            $scope.result.failure = true;
+        },  function (failure) {
+            Alert.error($scope.alerts, 'Error: ' + failure.data.message);
         });
     };
     $scope.cancel = function () {
