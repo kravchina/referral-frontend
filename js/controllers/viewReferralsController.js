@@ -3,15 +3,24 @@ var viewReferralModule = angular.module('viewReferrals', ['ui.bootstrap', 'angul
 viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'dlLogger', 'Auth',
     function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, dlLogger, Auth) {
         $scope.alerts = [];
+        $scope.attachment_alerts = [];
+
+        $scope.total_size = 0;
+
         PDF.init();
 
         $scope.referral = Referral.get({id: $stateParams.referral_id}, function (success) {
+                angular.forEach(success.attachments, function(attachment, key){
+                    console.log(attachment);
+                    $scope.total_size = $scope.total_size + attachment.size;
+                });
+
+                console.log($scope.total_size);
             },
             function (failure) {
                 Alert.push($scope.alerts, 'danger', 'Something happened... Data was not retrieved from server.')
             }
         );
-
 
         $scope.referral.$promise.then(function (data) {
 
@@ -118,7 +127,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             var each_file_size_limit = 50 * 1024 * 1024;
             var total_file_size_limit = 100 * 1024 * 1024;
 
-            var total_size = 0;
+            
 
             // Filters
             uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
@@ -127,19 +136,19 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 //return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
 
                 console.log(item);
-                
+
                 if (item.size > each_file_size_limit){
                     Alert.push($scope.attachment_alerts, 'danger', 'You can not upload a file with more than 50 MB size.');
                     
                     return false;
                 }
 
-                if (total_size + item.size > total_file_size_limit){
+                if ($scope.total_size + item.size > total_file_size_limit){
                     Alert.push($scope.attachment_alerts, 'danger', 'You can not upload files with more than 100 MB size.');
                     return false;
                 }
                 
-                total_size = total_size + item.size;
+                $scope.total_size = $scope.total_size + item.size;
 
                 return true;
             });
@@ -171,7 +180,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
             uploader.bind('success', function (event, xhr, item, response) {
                 dlLogger.info('Success', xhr, item, response);
-                var attachment = {filename: item.url + '/' + bucket_path + item.file.name, notes: item.notes, referral_id: $scope.referral.id, created_at: Date.now()};
+                var attachment = {filename: item.url + '/' + bucket_path + item.file.name, size: item.file.size, notes: item.notes, referral_id: $scope.referral.id, created_at: Date.now()};
                 Attachment.save({attachment: attachment}, function (newAttachment) {
                     $scope.referral.attachments.push(newAttachment);
                     Alert.push($scope.alerts, 'success', 'Attachment was added successfully!');
@@ -206,6 +215,11 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         $scope.closeAlert = function (index) {
             $timeout.cancel($scope.alerts[index].promise); //cancel automatic removal
             $scope.alerts.splice(index, 1);
+        };
+
+        $scope.closeAttachmentAlert = function (index) {
+            $timeout.cancel($scope.attachment_alerts[index].promise); //cancel automatic removal
+            $scope.attachment_alerts.splice(index, 1);
         };
     }]) ;
 
