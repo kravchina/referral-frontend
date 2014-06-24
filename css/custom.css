@@ -798,6 +798,11 @@ td.cell-from .practice, td.cell-to .practice {
 .responsive-tab-content {
 	padding: 0 15px;
 }
+
+.nav-tabs.nav-justified > li{
+    cursor: pointer;
+}
+
 .responsive-tab-content .nav-tabs > li > a {
 	background-color: #ecf0f1;
 	border-bottom: 1px solid #ddd;
