@@ -40,7 +40,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="referral in referrals | filter: query">
+                                    <tr ng-repeat="referral in referrals | filter: query" class="clickable" ng-click="viewReferral(referral.id)">
                                         <td class="cell-datetime">
                                             <span class="ref-date">{{referral.created_at | date: 'mediumDate'}}</span>
                                             <span class="ref-time">{{referral.created_at | date: 'shortTime'}}</span>

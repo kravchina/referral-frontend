@@ -1709,3 +1709,7 @@ td.cell-from .practice, td.cell-to .practice {
 	z-index: 10;
 	color: #ffffff;
 }
+
+.clickable{
+	cursor: pointer;
+}
