@@ -146,7 +146,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
             modalInstance.result.then(function (provider) {
                 $scope.destinationPractice = $scope.destinationPractice || {users: [], name: ''};
                 $scope.destinationPractice.users.push(provider);
-                $scope.dest_provider = provider.id;
+                $scope.model.dest_provider = provider.id;
                 $scope.model.referral.dest_provider_invited_id = provider.id;
                 //$scope.provider = provider;
             });
