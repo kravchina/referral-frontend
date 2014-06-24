@@ -10,9 +10,9 @@ var dentalLinks = angular.module('dentalLinks', [
     'modals',
     'pdf',
     'registration',
+    'unsavedChanges',
     'dentalLinksServices',
-    'dentalLinksDirectives',
-    'dentalLinksUnsavedChanges'
+    'dentalLinksDirectives'
 ]);
 
 dentalLinks.constant('USER_ROLES', {
@@ -85,7 +85,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         });
     $urlRouterProvider.otherwise('/sign_in');
 }])
-    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'dentalLinksUnsavedChangesService', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, dentalLinksUnsavedChangesService) {
+    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges) {
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
             if (!Auth.authorize(toState.access)) {
@@ -99,7 +99,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             redirect.path = args.redirect;
             $state.go('signIn', {}, {reload: true});
         });
-        dentalLinksUnsavedChangesService.init();
+        UnsavedChanges.init();
     }]);
 
 dentalLinks.value('redirect', {path: '/'});

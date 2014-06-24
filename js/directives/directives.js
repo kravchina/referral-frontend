@@ -208,7 +208,7 @@ dentalLinksDirectives.directive('deleteButton', [function () {
 
 }]);
 
-dentalLinksDirectives.directive('toggleEdit', ['dentalLinksUnsavedChangesService', function (dentalLinksUnsavedChangesService) {
+dentalLinksDirectives.directive('toggleEdit', ['UnsavedChanges', function (UnsavedChanges) {
     return {
         scope: {},
         restrict: 'A',
@@ -223,7 +223,7 @@ dentalLinksDirectives.directive('toggleEdit', ['dentalLinksUnsavedChangesService
                 editButton.addClass('hide');
                 saveButton.removeClass('hide');
                 editFormCtrl.enableControls();
-                dentalLinksUnsavedChangesService.setUnsavedChanges(true);
+                UnsavedChanges.setUnsavedChanges(true);
             });
 
             // save

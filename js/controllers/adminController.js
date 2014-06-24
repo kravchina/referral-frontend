@@ -1,7 +1,7 @@
 var adminModule = angular.module('admin', ['ui.bootstrap', 'angularPayments']);
 
-adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'Practice', 'ProviderInvitation', 'User', 'dentalLinksUnsavedChangesService',
-    function ($scope, $modal, Auth, Alert, Practice, ProviderInvitation, User, dentalLinksUnsavedChangesService) {
+adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges',
+    function ($scope, $modal, Auth, Alert, Practice, ProviderInvitation, User, UnsavedChanges) {
         // set the stripe publishable key
         Stripe.setPublishableKey('pk_test_TAdWKoNc4HgjFknjuuzsb99p');
 
@@ -32,7 +32,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                     console.log(response);
                     if(response.error) {
                         // there was an error. Fix it.
-                        Alert.push($scope.alerts, 'danger', 'An error occurred during account update...')
+                        Alert.error($scope.alerts, 'An error occurred during account update...')
                     } else {
                         // got stripe token, now charge it or smt
                         $scope.practice.stripe_token = response.id;
@@ -56,16 +56,16 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                         },
                         function (success) {
                             form.$setPristine();
-                            Alert.push($scope.alerts, 'success', 'Account was updated successfully!')
+                            Alert.success($scope.alerts, 'Account was updated successfully!')
                         },
                         function (failure) {
-                            Alert.push($scope.alerts, 'danger', 'An error occurred during account update...')
+                            Alert.error($scope.alerts, 'An error occurred during account update...')
                         });
                     }
                 });
             } else {
                 // form is not dirty, we're just getting out of edit state
-                dentalLinksUnsavedChangesService.setUnsavedChanges(false);
+                UnsavedChanges.setUnsavedChanges(false);
             }
         };
 
@@ -97,7 +97,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                     $scope.practice.users.splice($scope.practice.users.indexOf(user), 1);
                 },
                 function (failure) {
-                    Alert.push($scope.alerts, 'danger', 'An error occurred during user removal...')
+                    Alert.error($scope.alerts, 'An error occurred during user removal...')
                 });
         };
 
@@ -107,7 +107,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                     $scope.providers.splice($scope.providers.indexOf(provider), 1);
                 },
                 function (failure) {
-                    Alert.push($scope.alerts, 'danger', 'An error occurred during provider removal...')
+                    Alert.error($scope.alerts, 'An error occurred during provider removal...')
                 });
         }
 

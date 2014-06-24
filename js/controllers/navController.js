@@ -1,5 +1,5 @@
-dentalLinks.controller('NavController', ['$scope', 'Auth', 'User', '$state', 'Login', 'redirect', 'dentalLinksUnsavedChangesService', 'dlLogger',
-    function ($scope, Auth, User, $state, Login, redirect, dentalLinksUnsavedChangesService, dlLogger) {
+dentalLinks.controller('NavController', ['$scope', 'Auth', 'User', '$state', 'Login', 'redirect', 'UnsavedChanges', 'dlLogger',
+    function ($scope, Auth, User, $state, Login, redirect, UnsavedChanges, dlLogger) {
 
         $scope.loading = false;
 
@@ -32,7 +32,7 @@ dentalLinks.controller('NavController', ['$scope', 'Auth', 'User', '$state', 'Lo
         };
 
         $scope.logout = function(){
-            if (dentalLinksUnsavedChangesService.canLeaveSafely()) {
+            if (UnsavedChanges.canLeaveSafely()) {
                 dlLogger.log('logout(): allowed');
                 Login.logout(function () {
                     Auth.remove();

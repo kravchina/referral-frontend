@@ -36,13 +36,25 @@ dentalLinksServices.factory('Auth', ['$cookieStore', function ($cookieStore) {
 }]);
 
 dentalLinksServices.factory('Alert', ['$timeout', function ($timeout) {
-    return {
-        push: function (alerts, type, message) {
-            var alert = { type: type, message: message, promise: $timeout(function () {
-                alerts.splice(alerts.indexOf(alert), 1);
-            }, 5000) };
-            alerts.push(alert);
+    var push = function (alerts, type, message) {
+        var alert = { type: type, message: message, promise: $timeout(function () {
+            alerts.splice(alerts.indexOf(alert), 1);
+        }, 5000) };
+        alerts.push(alert);
 
+    };
+    return {
+        error: function(alerts, message){
+            push(alerts, 'danger', message);
+        },
+        warning: function(alerts, message){
+            push(alerts, 'warning', message);
+        },
+        info: function(alerts, message){
+            push(alerts, 'info', message);
+        },
+        success: function(alerts, message){
+            push(alerts, 'success', message);
         },
         close: function (alerts, index) {
             $timeout.cancel(alerts[index].promise); //cancel automatic removal

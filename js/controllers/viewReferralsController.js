@@ -6,15 +6,17 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         PDF.init();
 
         $scope.referral = Referral.get({id: $stateParams.referral_id}, function (success) {
+                if(!success.dest_provider){
+                    success.dest_provider = success.dest_provider_invited;
+                }
             },
             function (failure) {
-                Alert.push($scope.alerts, 'danger', 'Something happened... Data was not retrieved from server.')
+                Alert.error($scope.alerts, 'Something happened... Data was not retrieved from server.')
             }
         );
 
 
         $scope.referral.$promise.then(function (data) {
-
             PDF.addParagraph('Patient: ', data.patient.first_name + ' ' + data.patient.last_name);
             if (data.orig_provider) {
                 PDF.addParagraph('Original provider: ', data.orig_provider.first_name + ' ' + data.orig_provider.middle_initial + ' ' + data.orig_provider.last_name);
@@ -65,7 +67,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             Note.save({note: {message: note, referral_id: $scope.referral.id}}, function (success) {
                 $scope.referral.notes.push({message: note, created_at: Date.now()});
             }, function (failure) {
-                Alert.push($scope.alerts, 'danger', 'Something went wrong, note was not saved.');
+                Alert.error($scope.alerts, 'Something went wrong, note was not saved.');
             });
         };
 
@@ -73,10 +75,10 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             Referral.updateStatus({id: referral.id}, {status: 'sent'},
                 function (success) {
                     referral.status = 'sent';
-                    Alert.push($scope.alerts, 'success', 'Status was updated successfully!');
+                    Alert.success($scope.alerts, 'Status was updated successfully!');
                 },
                 function (failure) {
-                    Alert.push($scope.alerts, 'danger', 'Something went wrong while changing status...');
+                    Alert.error($scope.alerts, 'Something went wrong while changing status...');
                 });
         };
 
@@ -84,10 +86,10 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             Referral.updateStatus({id: referral.id }, {status: 'completed'},
                 function (success) {
                     referral.status = 'completed';
-                    Alert.push($scope.alerts, 'success', 'Status was updated successfully!');
+                    Alert.success($scope.alerts, 'Status was updated successfully!');
                 },
                 function (failure) {
-                    Alert.push($scope.alerts, 'danger', 'Something went wrong while changing status...');
+                    Alert.error($scope.alerts, 'Something went wrong while changing status...');
                 });
 
         };
@@ -129,13 +131,13 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 console.log(item);
                 
                 if (item.size > each_file_size_limit){
-                    Alert.push($scope.attachment_alerts, 'danger', 'You can not upload a file with more than 50 MB size.');
+                    Alert.error($scope.attachment_alerts, 'You can not upload a file with more than 50 MB size.');
                     
                     return false;
                 }
 
                 if (total_size + item.size > total_file_size_limit){
-                    Alert.push($scope.attachment_alerts, 'danger', 'You can not upload files with more than 100 MB size.');
+                    Alert.error($scope.attachment_alerts, 'You can not upload files with more than 100 MB size.');
                     return false;
                 }
                 
@@ -152,7 +154,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
             uploader.bind('whenaddingfilefailed', function (event, item) {
                 dlLogger.info('When adding a file failed', item);
-                Alert.push($scope.alerts, 'danger', 'Something went wrong while adding attachment...');
+                Alert.error($scope.alerts, 'Something went wrong while adding attachment...');
             });
 
             uploader.bind('afteraddingall', function (event, items) {
@@ -174,19 +176,19 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 var attachment = {filename: item.url + '/' + bucket_path + item.file.name, notes: item.notes, referral_id: $scope.referral.id, created_at: Date.now()};
                 Attachment.save({attachment: attachment}, function (newAttachment) {
                     $scope.referral.attachments.push(newAttachment);
-                    Alert.push($scope.alerts, 'success', 'Attachment was added successfully!');
+                    Alert.success($scope.alerts, 'Attachment was added successfully!');
                 });
 
             });
 
             uploader.bind('cancel', function (event, xhr, item) {
                 dlLogger.info('Cancel', xhr, item);
-                Alert.push($scope.alerts, 'info', 'Attachment upload was cancelled.');
+                Alert.info($scope.alerts, 'Attachment upload was cancelled.');
             });
 
             uploader.bind('error', function (event, xhr, item, response) {
                 dlLogger.error('Error', xhr, item, response);
-                Alert.push($scope.alerts, 'danger', 'Something went wrong while adding attachment...');
+                Alert.error($scope.alerts, 'Something went wrong while adding attachment...');
             });
 
             uploader.bind('complete', function (event, xhr, item, response) {
