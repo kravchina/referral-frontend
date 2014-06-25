@@ -148,7 +148,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 }
 
                 if ($scope.total_size + item.size > total_file_size_limit){
-                    Alert.push($scope.attachment_alerts, 'danger', 'You can not upload files with more than 100 MB size.');
+                    Alert.error($scope.attachment_alerts, 'You can not upload files with more than 100 MB size.');
                     return false;
                 }
                 

@@ -233,7 +233,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
                 dlLogger.info('After adding a file', item);
                 // marking an attachment for saving
                 $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes, size: item.file.size});
-                self.processFormChange(item);
+                processFormChange(item);
 
             });
 
