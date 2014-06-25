@@ -109,6 +109,10 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             return attachment.filename.toLowerCase().search(/(jpg|png|gif)$/) >= 0;
         };
 
+        $scope.userBelongsToDestPractice = function(){
+          return Auth.get().practice_id == $scope.referral.dest_practice_id;
+        };
+
         S3Bucket.getCredentials(function (success) {
             var bucket_path = 'uploads/';
             var uploader = $scope.uploader = $fileUploader.create({
