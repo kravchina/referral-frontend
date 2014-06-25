@@ -10,7 +10,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
             Referral.get({id: $stateParams.referral_id}).$promise.then(function (referral) {
                 $scope.patient = referral.patient;
                 $scope.destinationPractice = referral.dest_provider.practice;
-                $scope.model.referral.dest_provider_id = referral.dest_provider_id;
+                $scope.model.dest_provider = referral.dest_provider_id;
                 $scope.practiceType = referral.procedure.practice_type;
                 $scope.model.referral.procedure_id = referral.procedure.id;
 
