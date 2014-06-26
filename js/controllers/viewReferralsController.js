@@ -167,15 +167,12 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
             // REGISTER HANDLERS
             uploader.bind('afteraddingfile', function (event, item) {
-<<<<<<< HEAD
+
                 dlLogger.info('After adding a file', item);
                 
                 // show the loading indicator
                 $scope.$parent.progressIndicatorStart()
 
-=======
-                Logger.info('After adding a file', item);
->>>>>>> 2d8d193076e6dd0b544ff808ecafe4be45171f09
                 item.upload();
 
             });
@@ -190,16 +187,12 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             });
 
             uploader.bind('beforeupload', function (event, item) {
-<<<<<<< HEAD
+
                 dlLogger.debug('FORM DATA:', uploader.formData);
                 dlLogger.debug('SCOPE DATA:', $scope.s3Credentials);
                 dlLogger.info('Before upload', item);
                 
-=======
-                Logger.debug('FORM DATA:', uploader.formData);
-                Logger.debug('SCOPE DATA:', $scope.s3Credentials);
-                Logger.info('Before upload', item);
->>>>>>> 2d8d193076e6dd0b544ff808ecafe4be45171f09
+
             });
 
             uploader.bind('progress', function (event, item, progress) {
@@ -235,7 +228,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             });
 
             uploader.bind('progressall', function (event, progress) {
-<<<<<<< HEAD
+
                 dlLogger.info('Total progress: ' + progress);
                 // show the loading indicator
                 $scope.$parent.setProgress(progress)
@@ -246,13 +239,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
                 // show the loading indicator
                 $scope.$parent.progressIndicatorEnd()
-=======
-                Logger.info('Total progress: ' + progress);
-            });
 
-            uploader.bind('completeall', function (event, items) {
-                Logger.info('Complete all', items);
->>>>>>> 2d8d193076e6dd0b544ff808ecafe4be45171f09
             });
 
         });
