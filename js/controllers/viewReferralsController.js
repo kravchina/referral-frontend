@@ -17,7 +17,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
                 console.log($scope.total_size);
 
-                if(!success.dest_provider){
+                if (!success.dest_provider) {
                     success.dest_provider = success.dest_provider_invited;
                 }
 
@@ -44,7 +44,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             if (data.dest_provider) {
                 PDF.addParagraph('Destination provider: ', (data.dest_provider || {}).first_name + ' ' + (data.dest_provider || {}).middle_initial + ' ' + (data.dest_provider || {}).last_name);
             }
-            if(data.procedure){
+            if (data.procedure) {
                 PDF.addParagraph('Procedure: ', data.procedure.name + '(' + (data.procedure.practice_type || {}).name + ')');
             }
             if (data.teeth) {
@@ -54,12 +54,16 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             PDF.addNotes(data.notes);
         });
 
+        var buildFileName = function (suffix) {
+            return $scope.referral.patient.first_name + '-' + $scope.referral.patient.last_name + '-' + suffix + '.pdf';
+        };
+
         $scope.savePdf = function () {
-            PDF.save('referral.pdf');
+            PDF.save(buildFileName('referral'));
         };
 
         $scope.savePatientPdf = function () {
-            PDF.saveForPatient('referral.pdf');
+            PDF.saveForPatient(buildFileName('patient'));
         };
 
         $scope.noteDialog = function () {
@@ -109,8 +113,8 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             return attachment.filename.toLowerCase().search(/(jpg|png|gif)$/) >= 0;
         };
 
-        $scope.userBelongsToDestPractice = function(){
-          return Auth.get().practice_id == $scope.referral.dest_practice_id;
+        $scope.userBelongsToDestPractice = function () {
+            return Auth.get().practice_id == $scope.referral.dest_practice_id;
         };
 
         S3Bucket.getCredentials(function (success) {
@@ -135,7 +139,6 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             var each_file_size_limit = 50 * 1024 * 1024;
             var total_file_size_limit = 100 * 1024 * 1024;
 
-            
 
             // Filters
             uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
@@ -145,17 +148,17 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
                 console.log(item);
 
-                if (item.size > each_file_size_limit){
+                if (item.size > each_file_size_limit) {
                     Alert.error($scope.attachment_alerts, 'You can not upload a file with more than 50 MB size.');
-                    
+
                     return false;
                 }
 
-                if ($scope.total_size + item.size > total_file_size_limit){
+                if ($scope.total_size + item.size > total_file_size_limit) {
                     Alert.error($scope.attachment_alerts, 'You can not upload files with more than 100 MB size.');
                     return false;
                 }
-                
+
                 $scope.total_size = $scope.total_size + item.size;
 
                 return true;
@@ -229,5 +232,5 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             $timeout.cancel($scope.attachment_alerts[index].promise); //cancel automatic removal
             $scope.attachment_alerts.splice(index, 1);
         };
-    }]) ;
+    }]);
 
