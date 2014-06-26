@@ -83,13 +83,16 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
         };
 
         $scope.saveTemplate = function (model) {
+
             prepareSubmit(model);
             var resultHandlers = {
                 success: function (success) {
                     Alert.success($scope.alerts, 'Template was saved successfully!');
                     UnsavedChanges.setUnsavedChanges(false);
+
                 }, failure: function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during referral template creation...');
+
                 }};
             if ($stateParams.referral_id) {
                 //edit existing referral
@@ -250,6 +253,9 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
                 dlLogger.debug('FORM DATA:', uploader.formData);
                 dlLogger.debug('SCOPE DATA:', $scope.s3Credentials);
                 dlLogger.info('Before upload', item);
+
+                // show the loading indicator
+                $scope.$parent.progressIndicatorStart()
             });
 
             uploader.bind('progress', function (event, item, progress) {
@@ -276,10 +282,16 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
 
             uploader.bind('progressall', function (event, progress) {
                 dlLogger.info('Total progress: ' + progress);
+
+                // show the loading indicator
+                $scope.$parent.setProgress(progress)
             });
 
             uploader.bind('completeall', function (event, items) {
                 dlLogger.info('Complete all', items);
+
+                // show the loading indicator
+                $scope.$parent.progressIndicatorEnd()
             });
 
         });

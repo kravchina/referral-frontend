@@ -154,13 +154,19 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 
                 $scope.total_size = $scope.total_size + item.size;
 
+                
                 return true;
             });
 
             // REGISTER HANDLERS
             uploader.bind('afteraddingfile', function (event, item) {
                 dlLogger.info('After adding a file', item);
+                
+                // show the loading indicator
+                $scope.$parent.progressIndicatorStart()
+
                 item.upload();
+
             });
 
             uploader.bind('whenaddingfilefailed', function (event, item) {
@@ -176,6 +182,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 dlLogger.debug('FORM DATA:', uploader.formData);
                 dlLogger.debug('SCOPE DATA:', $scope.s3Credentials);
                 dlLogger.info('Before upload', item);
+                
             });
 
             uploader.bind('progress', function (event, item, progress) {
@@ -188,6 +195,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 Attachment.save({attachment: attachment}, function (newAttachment) {
                     $scope.referral.attachments.push(newAttachment);
                     Alert.success($scope.alerts, 'Attachment was added successfully!');
+                    
                 });
 
             });
@@ -200,6 +208,9 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             uploader.bind('error', function (event, xhr, item, response) {
                 dlLogger.error('Error', xhr, item, response);
                 Alert.error($scope.alerts, 'Something went wrong while adding attachment...');
+
+                // show the loading indicator
+                $scope.$parent.progressIndicatorEnd()
             });
 
             uploader.bind('complete', function (event, xhr, item, response) {
@@ -208,10 +219,15 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
             uploader.bind('progressall', function (event, progress) {
                 dlLogger.info('Total progress: ' + progress);
+                // show the loading indicator
+                $scope.$parent.setProgress(progress)
             });
 
             uploader.bind('completeall', function (event, items) {
                 dlLogger.info('Complete all', items);
+
+                // show the loading indicator
+                $scope.$parent.progressIndicatorEnd()
             });
 
         });

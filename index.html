@@ -83,6 +83,12 @@
     <div class="bg"></div>
 </div>
 
+<div id="resultLoading" ng-if="loadingProgress">
+    <div class="loading-container">
+        <progressbar animate="true" value="progressValue" type="success"><b>{{progressValue}}%</b></progressbar><div>Uploading... please wait...</div></div>
+    <div class="bg"></div>
+</div>
+
 <div>
 <nav class="navbar navbar-fixed-top" role="navigation">
 
