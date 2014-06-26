@@ -112,9 +112,34 @@ dentalLinks.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.interceptors.push('authInterceptor');
+    $httpProvider.interceptors.push('spinnerInterceptor');
 }
 ]);
 
+dentalLinks.factory('spinnerInterceptor', ['$q', 'Spinner', function ($q, Spinner) {
+    return {
+        request: function(config) {
+            // do something on success
+            Spinner.show();
+            return config;
+        },
+
+        requestError: function(rejection) {
+            Spinner.hide();
+            return $q.reject(rejection);
+        },
+
+        response: function(response) {
+            Spinner.hide();
+            return response;
+        },
+
+        responseError: function(rejection) {
+            Spinner.hide();
+            return $q.reject(rejection);
+        }
+    };
+}]);
 
 dentalLinks.factory('authInterceptor', ['$rootScope', '$q','AUTH_EVENTS', '$location', 'redirect', 'Auth', function ($rootScope, $q, AUTH_EVENTS, $location, redirect, Auth) {
     return {

@@ -9,8 +9,6 @@ loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location'
         $scope.result = {failure: false};
         $scope.login = function (user) {   /*{'user': {'email': user.email, 'password': user.password }}*/
             
-            // show the loading indicator
-            $scope.$parent.loadingIndicatorStart()
             Login.login({'user': {'email': user.email, 'password': user.password }},
                 function (success) {
                     Auth.set({token: success.token, email: user.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
@@ -23,11 +21,9 @@ loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location'
                     $location.path(redirect.path);
                     $scope.result = {success: true};
 
-                    $scope.$parent.loadingIndicatorEnd()
-
                 },
                 function (failure) {
-                    console.log(failure)
+                    console.log(failure);
                     Auth.remove();
                     $scope.authenticated = false;
                     if(failure.status == 0){
@@ -35,16 +31,9 @@ loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location'
                     }else{
                         $scope.result = {failure: true, statusText: 'Unable to login with provided credentials'};
                     }
-                    
-                    console.log($scope.result)
-
-                    $scope.$parent.loadingIndicatorEnd()
-
+                    console.log($scope.result);
                 });
         };
-
         $scope.existingReferralId = 7;
-
-
     }]);
 

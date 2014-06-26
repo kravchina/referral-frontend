@@ -1,7 +1,7 @@
 var viewReferralModule = angular.module('viewReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'dlLogger', 'Auth',
-    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, dlLogger, Auth) {
+viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',
+    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth) {
         $scope.alerts = [];
         $scope.attachment_alerts = [];
 
@@ -17,7 +17,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
                 console.log($scope.total_size);
 
-                if(!success.dest_provider){
+                if (!success.dest_provider) {
                     success.dest_provider = success.dest_provider_invited;
                 }
 
@@ -44,7 +44,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             if (data.dest_provider) {
                 PDF.addParagraph('Destination provider: ', (data.dest_provider || {}).first_name + ' ' + (data.dest_provider || {}).middle_initial + ' ' + (data.dest_provider || {}).last_name);
             }
-            if(data.procedure){
+            if (data.procedure) {
                 PDF.addParagraph('Procedure: ', data.procedure.name + '(' + (data.procedure.practice_type || {}).name + ')');
             }
             if (data.teeth) {
@@ -54,12 +54,16 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             PDF.addNotes(data.notes);
         });
 
+        var buildFileName = function (suffix) {
+            return $scope.referral.patient.first_name + '-' + $scope.referral.patient.last_name + '-' + suffix + '.pdf';
+        };
+
         $scope.savePdf = function () {
-            PDF.save('referral.pdf');
+            PDF.save(buildFileName('referral'));
         };
 
         $scope.savePatientPdf = function () {
-            PDF.saveForPatient('referral.pdf');
+            PDF.saveForPatient(buildFileName('patient'));
         };
 
         $scope.noteDialog = function () {
@@ -109,6 +113,10 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             return attachment.filename.toLowerCase().search(/(jpg|png|gif)$/) >= 0;
         };
 
+        $scope.userBelongsToDestPractice = function () {
+            return Auth.get().practice_id == $scope.referral.dest_practice_id;
+        };
+
         S3Bucket.getCredentials(function (success) {
             var bucket_path = 'uploads/';
             var uploader = $scope.uploader = $fileUploader.create({
@@ -131,7 +139,6 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             var each_file_size_limit = 50 * 1024 * 1024;
             var total_file_size_limit = 100 * 1024 * 1024;
 
-            
 
             // Filters
             uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
@@ -141,17 +148,17 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
                 console.log(item);
 
-                if (item.size > each_file_size_limit){
+                if (item.size > each_file_size_limit) {
                     Alert.error($scope.attachment_alerts, 'You can not upload a file with more than 50 MB size.');
-                    
+
                     return false;
                 }
 
-                if ($scope.total_size + item.size > total_file_size_limit){
-                    Alert.push($scope.attachment_alerts, 'danger', 'You can not upload files with more than 100 MB size.');
+                if ($scope.total_size + item.size > total_file_size_limit) {
+                    Alert.error($scope.attachment_alerts, 'You can not upload files with more than 100 MB size.');
                     return false;
                 }
-                
+
                 $scope.total_size = $scope.total_size + item.size;
 
                 
@@ -160,37 +167,47 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
             // REGISTER HANDLERS
             uploader.bind('afteraddingfile', function (event, item) {
+<<<<<<< HEAD
                 dlLogger.info('After adding a file', item);
                 
                 // show the loading indicator
                 $scope.$parent.progressIndicatorStart()
 
+=======
+                Logger.info('After adding a file', item);
+>>>>>>> 2d8d193076e6dd0b544ff808ecafe4be45171f09
                 item.upload();
 
             });
 
             uploader.bind('whenaddingfilefailed', function (event, item) {
-                dlLogger.info('When adding a file failed', item);
+                Logger.info('When adding a file failed', item);
                 Alert.error($scope.alerts, 'Something went wrong while adding attachment...');
             });
 
             uploader.bind('afteraddingall', function (event, items) {
-                dlLogger.info('After adding all files', items);
+                Logger.info('After adding all files', items);
             });
 
             uploader.bind('beforeupload', function (event, item) {
+<<<<<<< HEAD
                 dlLogger.debug('FORM DATA:', uploader.formData);
                 dlLogger.debug('SCOPE DATA:', $scope.s3Credentials);
                 dlLogger.info('Before upload', item);
                 
+=======
+                Logger.debug('FORM DATA:', uploader.formData);
+                Logger.debug('SCOPE DATA:', $scope.s3Credentials);
+                Logger.info('Before upload', item);
+>>>>>>> 2d8d193076e6dd0b544ff808ecafe4be45171f09
             });
 
             uploader.bind('progress', function (event, item, progress) {
-                dlLogger.info('Progress: ' + progress, item);
+                Logger.info('Progress: ' + progress, item);
             });
 
             uploader.bind('success', function (event, xhr, item, response) {
-                dlLogger.info('Success', xhr, item, response);
+                Logger.info('Success', xhr, item, response);
                 var attachment = {filename: item.url + '/' + bucket_path + item.file.name, size: item.file.size, notes: item.notes, referral_id: $scope.referral.id, created_at: Date.now()};
                 Attachment.save({attachment: attachment}, function (newAttachment) {
                     $scope.referral.attachments.push(newAttachment);
@@ -201,12 +218,12 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             });
 
             uploader.bind('cancel', function (event, xhr, item) {
-                dlLogger.info('Cancel', xhr, item);
+                Logger.info('Cancel', xhr, item);
                 Alert.info($scope.alerts, 'Attachment upload was cancelled.');
             });
 
             uploader.bind('error', function (event, xhr, item, response) {
-                dlLogger.error('Error', xhr, item, response);
+                Logger.error('Error', xhr, item, response);
                 Alert.error($scope.alerts, 'Something went wrong while adding attachment...');
 
                 // show the loading indicator
@@ -214,10 +231,11 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             });
 
             uploader.bind('complete', function (event, xhr, item, response) {
-                dlLogger.info('Complete', xhr, item, response);
+                Logger.info('Complete', xhr, item, response);
             });
 
             uploader.bind('progressall', function (event, progress) {
+<<<<<<< HEAD
                 dlLogger.info('Total progress: ' + progress);
                 // show the loading indicator
                 $scope.$parent.setProgress(progress)
@@ -228,6 +246,13 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
                 // show the loading indicator
                 $scope.$parent.progressIndicatorEnd()
+=======
+                Logger.info('Total progress: ' + progress);
+            });
+
+            uploader.bind('completeall', function (event, items) {
+                Logger.info('Complete all', items);
+>>>>>>> 2d8d193076e6dd0b544ff808ecafe4be45171f09
             });
 
         });
@@ -241,5 +266,5 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             $timeout.cancel($scope.attachment_alerts[index].promise); //cancel automatic removal
             $scope.attachment_alerts.splice(index, 1);
         };
-    }]) ;
+    }]);
 

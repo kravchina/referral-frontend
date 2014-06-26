@@ -590,7 +590,7 @@ textarea.form-control {
 .attachment-thumb > img {
 	width: 100%;
 }
-.attachment-thumb.attach-word, .attachment-thumb.attach-excel, .attachment-thumb.attach-pdf {
+.attachment-thumb.attach-word, .attachment-thumb.attach-excel, .attachment-thumb.attach-pdf, .attachment-thumb.attach-file {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -603,6 +603,9 @@ textarea.form-control {
 }
 .attachment-thumb.attach-pdf {
 	background-image: url(../../img/attachments/bg-pdf.jpg);
+}
+.attachment-thumb.attach-file {
+	background-image: url(../../img/attachments/bg-file.jpg);
 }
 .attachment-details {
 	background-color: #fcfcfc;
@@ -1456,7 +1459,6 @@ td.cell-from .practice, td.cell-to .practice {
 		padding: 15px;
 	}
 	.attachments-wrapper {
-		margin-bottom: -20px;
 		margin-top: 15px;
 	}
 	.attachments-wrapper ul {

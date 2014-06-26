@@ -187,8 +187,8 @@
 
 <div class="button-block">
 
-        <button type="button" ng-show="referral.status == 'completed'" ng-click="rejectReferral(referral)" class="btn btn-danger">Undo Completion</button>
-        <button type="button" ng-show="referral.status == 'sent'" ng-click="completeReferral(referral)" class="btn btn-success">Complete Referral</button>
+        <button type="button" ng-show="referral.status == 'completed' && userBelongsToDestPractice()" ng-click="rejectReferral(referral)" class="btn btn-danger">Undo Completion</button>
+        <button type="button" access="doctor" ng-show="referral.status == 'sent' && userBelongsToDestPractice()" ng-click="completeReferral(referral)" class="btn btn-success">Complete Referral</button>
 
     <button type="button" ng-click="savePdf()" class="btn btn-orange btn-lg">Download PDF</button>
     <button type="button" ng-click="savePatientPdf()" class="btn btn-orange btn-lg">Download patient copy</button>

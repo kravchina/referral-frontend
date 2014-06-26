@@ -1,7 +1,7 @@
 var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-createReferralModule.controller('CreateReferralsController', ['$scope', '$stateParams', 'Alert', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', '$modal', '$fileUploader', 'UnsavedChanges', 'dlLogger',
-    function ($scope, $stateParams, Alert, Practice, Patient, Procedure, User, Referral, S3Bucket, $modal, $fileUploader, UnsavedChanges, dlLogger) {
+createReferralModule.controller('CreateReferralsController', ['$scope', '$stateParams', 'Alert', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger',
+    function ($scope, $stateParams, Alert, Practice, Patient, Procedure, User, Referral, S3Bucket, $modal, $fileUploader, UnsavedChanges, Logger) {
 
         $scope.alerts = [];
         $scope.attachment_alerts = [];
@@ -10,7 +10,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
             Referral.get({id: $stateParams.referral_id}).$promise.then(function (referral) {
                 $scope.patient = referral.patient;
                 $scope.destinationPractice = referral.dest_provider.practice;
-                $scope.model.referral.dest_provider_id = referral.dest_provider_id;
+                $scope.model.dest_provider = referral.dest_provider_id;
                 $scope.practiceType = referral.procedure.practice_type;
                 $scope.model.referral.procedure_id = referral.procedure.id;
 
@@ -233,54 +233,57 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
             // REGISTER HANDLERS
 
             uploader.bind('afteraddingfile', function (event, item) {
-                dlLogger.info('After adding a file', item);
+                Logger.info('After adding a file', item);
                 // marking an attachment for saving
                 $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes, size: item.file.size});
-                self.processFormChange(item);
+                processFormChange(item);
 
             });
 
             uploader.bind('whenaddingfilefailed', function (event, item) {
-                dlLogger.info('When adding a file failed', item);
+                Logger.info('When adding a file failed', item);
                 Alert.error($scope.alerts, 'Adding file failed. Please try again later.')
             });
 
             uploader.bind('afteraddingall', function (event, items) {
-                dlLogger.info('After adding all files', items);
+                Logger.info('After adding all files', items);
             });
 
             uploader.bind('beforeupload', function (event, item) {
+
                 dlLogger.debug('FORM DATA:', uploader.formData);
                 dlLogger.debug('SCOPE DATA:', $scope.s3Credentials);
                 dlLogger.info('Before upload', item);
 
                 // show the loading indicator
                 $scope.$parent.progressIndicatorStart()
+
             });
 
             uploader.bind('progress', function (event, item, progress) {
-                dlLogger.info('Progress: ' + progress, item);
+                Logger.info('Progress: ' + progress, item);
             });
 
             uploader.bind('success', function (event, xhr, item, response) {
-                dlLogger.info('Success', xhr, item, response);
+                Logger.info('Success', xhr, item, response);
             });
 
             uploader.bind('cancel', function (event, xhr, item) {
-                dlLogger.info('Cancel', xhr, item);
+                Logger.info('Cancel', xhr, item);
                 Alert.info($scope.alerts, 'Attachment was cancelled.')
             });
 
             uploader.bind('error', function (event, xhr, item, response) {
-                dlLogger.error('Error', xhr, item, response);
+                Logger.error('Error', xhr, item, response);
                 Alert.error($scope.alerts, 'An error occured during attachment upload. Please try again later.')
             });
 
             uploader.bind('complete', function (event, xhr, item, response) {
-                dlLogger.info('Complete', xhr, item, response);
+                Logger.info('Complete', xhr, item, response);
             });
 
             uploader.bind('progressall', function (event, progress) {
+
                 dlLogger.info('Total progress: ' + progress);
 
                 // show the loading indicator
@@ -292,6 +295,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
 
                 // show the loading indicator
                 $scope.$parent.progressIndicatorEnd()
+
             });
 
         });
@@ -301,7 +305,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
         // Even assuming that data are toggled changed when form is simply shown would not be a solution, because after saving it's possible to start over again on the same form by simply modifying its controls.
         
         var processFormChange = function(newVal) {
-            dlLogger.log('Changed a field to "' + newVal + '"');
+            Logger.log('Changed a field to "' + newVal + '"');
             UnsavedChanges.setUnsavedChanges(true);
         };
         

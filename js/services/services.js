@@ -158,4 +158,22 @@ dentalLinksServices.factory('File', [function () {
     }
 }]);
 
-
+dentalLinksServices.factory('Spinner', [function () {
+    /*
+    This spinner implementation supports several asynchronous requests at the same time.
+    It shows spinner until all requests are resolved. Every call to show() will add request to a pseudo-queue and will remove it from queue after hide() is called.
+    Loading indicator is shown only when loading().numLoads > 0 (indicator is shown until last request is finished)
+    */
+    var loading = {numLoads: 0}; //need an object to pass and return by reference
+    return {
+        show: function () {
+            loading.numLoads++;
+        },
+        hide: function () {
+            loading.numLoads--;
+        },
+        loading: function () {
+            return loading;
+        }
+    }
+}]);
