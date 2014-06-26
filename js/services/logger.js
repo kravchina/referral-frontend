@@ -1,6 +1,6 @@
 var dentalLinksLogger = angular.module('dentalLinksLogger', []);
 
-dentalLinksUnsavedChanges.service('dlLogger', function() {
+dentalLinksUnsavedChanges.service('Logger', function() {
     
     var loggingEnabled = true;
     

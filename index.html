@@ -78,7 +78,7 @@
 
 <body ng-controller="NavController">
 
-<div id="resultLoading" ng-if="loading">
+<div id="resultLoading" ng-show="loading.numLoads > 0">
     <div class="loading-container"><img src="/img/loading.gif"><div>loading... please wait...</div></div>
     <div class="bg"></div>
 </div>
