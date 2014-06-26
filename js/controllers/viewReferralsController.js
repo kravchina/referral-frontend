@@ -168,7 +168,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             // REGISTER HANDLERS
             uploader.bind('afteraddingfile', function (event, item) {
 
-                dlLogger.info('After adding a file', item);
+                Logger.info('After adding a file', item);
                 
                 // show the loading indicator
                 $scope.$parent.progressIndicatorStart()
@@ -188,9 +188,9 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
             uploader.bind('beforeupload', function (event, item) {
 
-                dlLogger.debug('FORM DATA:', uploader.formData);
-                dlLogger.debug('SCOPE DATA:', $scope.s3Credentials);
-                dlLogger.info('Before upload', item);
+                Logger.debug('FORM DATA:', uploader.formData);
+                Logger.debug('SCOPE DATA:', $scope.s3Credentials);
+                Logger.info('Before upload', item);
                 
 
             });
@@ -229,13 +229,13 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
             uploader.bind('progressall', function (event, progress) {
 
-                dlLogger.info('Total progress: ' + progress);
+                Logger.info('Total progress: ' + progress);
                 // show the loading indicator
                 $scope.$parent.setProgress(progress)
             });
 
             uploader.bind('completeall', function (event, items) {
-                dlLogger.info('Complete all', items);
+                Logger.info('Complete all', items);
 
                 // show the loading indicator
                 $scope.$parent.progressIndicatorEnd()
