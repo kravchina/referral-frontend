@@ -26,6 +26,9 @@
                     <div class="input-block"  ng-class="{ 'has-error': patientForm.lastName.$dirty && patientForm.lastName.$invalid }" >
                         <input type="text" name="lastName" class="form-control" ng-model="patient.last_name" placeholder="Enter last name &hellip;" ng-required="true">
                     </div>
+                    <div class="input-block"  ng-class="{ 'has-error': patientForm.birthday.$dirty && patientForm.birthday.$invalid }" >
+                        <input type="date" name="birthday" class="form-control" ng-model="patient.birthday" placeholder="Enter birthday &hellip;" ng-required="true">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button"  class="btn btn-orange" ng-disabled="patientForm.$invalid"  ng-click="ok(patient)">Save</button>
