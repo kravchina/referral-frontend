@@ -28,11 +28,60 @@
         </div>
 
         <div class="input-block" ng-class="{ 'has-error': practiceForm.state.$dirty && practiceForm.state.$invalid }">
-            <input type="text" name="state" class="form-control" ng-model="practice.address_attributes.state" placeholder="State &hellip;" ng-required="true">
+            <select name="state" class="form-control" ng-model="practice.address_attributes.state" placeholder="State &hellip;" ng-required="true">
+                <option disabled="disabled" class="placeholder" value="">Select state &hellip;</option>
+                <option>Alabama</option>
+                <option>Alaska</option>
+                <option>Arizona</option>
+                <option>Arkansas</option>
+                <option>California</option>
+                <option>Colorado</option>
+                <option>Connecticut</option>
+                <option>Delaware</option>
+                <option>Florida</option>
+                <option>Georgia</option>
+                <option>Hawaii</option>
+                <option>Idaho</option>
+                <option>Illinois Indiana</option>
+                <option>Iowa</option>
+                <option>Kansas</option>
+                <option>Kentucky</option>
+                <option>Louisiana</option>
+                <option>Maine</option>
+                <option>Maryland</option>
+                <option>Massachusetts</option>
+                <option>Michigan</option>
+                <option>Minnesota</option>
+                <option>Mississippi</option>
+                <option>Missouri</option>
+                <option>Montana Nebraska</option>
+                <option>Nevada</option>
+                <option>New Hampshire</option>
+                <option>New Jersey</option>
+                <option>New Mexico</option>
+                <option>New York</option>
+                <option>North Carolina</option>
+                <option>North Dakota</option>
+                <option>Ohio</option>
+                <option>Oklahoma</option>
+                <option>Oregon</option>
+                <option>Pennsylvania Rhode Island</option>
+                <option>South Carolina</option>
+                <option>South Dakota</option>
+                <option>Tennessee</option>
+                <option>Texas</option>
+                <option>Utah</option>
+                <option>Vermont</option>
+                <option>Virginia</option>
+                <option>Washington</option>
+                <option>West Virginia</option>
+                <option>Wisconsin</option>
+                <option>Wyoming</option>
+            </select>
         </div>
 
         <div class="input-block" ng-class="{ 'has-error': practiceForm.zip.$dirty && practiceForm.zip.$invalid }">
-            <input type="text" name="zip" class="form-control" ng-model="practice.address_attributes.zip" placeholder="Zip code &hellip;" ng-required="true">
+            <input type="number" name="zip" class="form-control" ng-model="practice.address_attributes.zip" placeholder="Zip code &hellip;" ng-required="true">
         </div>
 
         <div class="input-block" ng-class="{ 'has-error': practiceForm.phone.$dirty && practiceForm.phone.$invalid }">
