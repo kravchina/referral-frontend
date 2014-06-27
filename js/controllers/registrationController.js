@@ -1,7 +1,7 @@
 var registrationModule = angular.module('registration', []);
 
-registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', 'Alert', 'Auth', 'Practice',  'ProviderInvitation', 'Registration',
-    function ($scope, $location, $stateParams, $modal, Alert, Auth, Practice, ProviderInvitation, Registration) {
+registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', 'Alert', 'Auth', 'Practice',  'ProviderInvitation', 'Registration', 'Spinner',
+    function ($scope, $location, $stateParams, $modal, Alert, Auth, Practice, ProviderInvitation, Registration, Spinner) {
         $scope.alerts = [];
 
         $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token}, function (success) {
@@ -12,7 +12,9 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
         );
 
         $scope.findPractice = function (searchValue) {
+            Spinner.hide(); //workaround that disables spinner to avoid flicker.
             return Practice.searchPractice({search: searchValue }).$promise.then(function (res) {
+                Spinner.show();  //workaround that disables spinner to avoid flicker.
                 return res;
             });
         };

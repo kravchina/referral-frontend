@@ -1,7 +1,6 @@
 dentalLinks.controller('NavController', ['$scope', '$state', 'Auth', 'Logger', 'Login', 'Spinner',  'UnsavedChanges', 'User',
     function ($scope, $state, Auth, Logger, Login, Spinner, UnsavedChanges, User) {
 
-        //$scope.loading = false;
         $scope.progressValue = 0;
 
         $scope.loading = Spinner.loading();
@@ -12,25 +11,16 @@ dentalLinks.controller('NavController', ['$scope', '$state', 'Auth', 'Logger', '
             Auth.current_user = null;
         }
 
-        // $scope.loadingIndicatorStart = function(){
-        //     $scope.loading = true;
-        //     $scope.$apply()
-        // }
-
-        // $scope.loadingIndicatorEnd = function(){
-        //     $scope.loading = false;
-        //     $scope.$apply()
-        // }
-
         $scope.progressIndicatorStart = function(){
             $scope.loadingProgress = true;
-        }
+            $scope.$apply()
+        };
 
         $scope.progressIndicatorEnd = function(){
             $scope.loadingProgress = false;
             $scope.progressValue = 0;
             $scope.$apply()
-        }
+        };
 
         $scope.setProgress = function(progress){
             if ($scope.progressValue < progress){
@@ -38,7 +28,7 @@ dentalLinks.controller('NavController', ['$scope', '$state', 'Auth', 'Logger', '
                 $scope.$apply()
             }
             
-        }
+        };
 
         $scope.first_name = function() {
             var current_user = Auth.current_user;
