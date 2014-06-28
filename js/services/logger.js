@@ -4,24 +4,24 @@ dentalLinksUnsavedChanges.service('Logger', function() {
     
     var loggingEnabled = true;
     
-    this.log = function(s) {
-        if (loggingEnabled) console.log(s);
+    this.log = function() {
+        if (loggingEnabled) console.log.apply(console, arguments);
     };
     
-    this.debug = function(s) {
-        if (loggingEnabled) console.debug(s);
+    this.debug = function() {
+        if (loggingEnabled) console.debug.apply(console, arguments);
     };
     
-    this.info = function(s) {
-        if (loggingEnabled) console.info(s);
+    this.info = function() {
+        if (loggingEnabled) console.info.apply(console, arguments);
     };
     
-    this.warn = function(s) {
-        if (loggingEnabled) console.warn(s);
+    this.warn = function() {
+        if (loggingEnabled) console.warn.apply(console, arguments);
     };
     
-    this.error = function(s) {
-        if (loggingEnabled) console.error(s);
+    this.error = function() {
+        if (loggingEnabled) console.error.apply(console, arguments);
     };
     
 });
