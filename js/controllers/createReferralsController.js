@@ -1,13 +1,22 @@
 var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-createReferralModule.controller('CreateReferralsController', ['$scope', '$stateParams', 'Alert', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger',
-    function ($scope, $stateParams, Alert, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger) {
+createReferralModule.controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Alert', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger',
+    function ($scope, $state, $stateParams, Alert, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger) {
 
         $scope.alerts = [];
         $scope.attachment_alerts = [];
         
         if ($stateParams.referral_id) {
+            Logger.debug('Referral id present, getting referral #' + $stateParams.referral_id + '...');
             Referral.get({id: $stateParams.referral_id}).$promise.then(function (referral) {
+                Logger.debug('Got referral #' + $stateParams.referral_id + ', referral status: ' + referral.status);
+                if ("new" != referral.status) {
+                    Logger.debug('Redirecting to viewReferral...');
+                    $state.go('viewReferral', {referral_id: $stateParams.referral_id});
+                    return;
+                }
+                
+                Logger.debug('Setting $scope values from obtained referral...');
                 $scope.patient = referral.patient;
                 $scope.destinationPractice = referral.dest_provider.practice;
                 $scope.model.dest_provider = referral.dest_provider_id;
@@ -21,6 +30,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
                 $scope.model.referral.notes_attributes = referral.notes;
                 $scope.attachments = referral.attachments;
                 teeth = $scope.teeth = referral.teeth.split('+');
+                Logger.debug('Set $scope values from obtained referral.');
             });
 
         }
@@ -107,9 +117,11 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$stateP
             prepareSubmit(model);
 
             $scope.create_referral_result = Referral.save(model,
-                function (success) {
+                function (referral) {
+                    Logger.debug('Sent referral #' + referral.id);
                     Alert.success($scope.alerts, 'Referral was sent successfully!');
                     UnsavedChanges.setUnsavedChanges(false);
+                    $state.go('viewReferral', {referral_id: referral.id});
                 },
                 function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during referral creation...');
