@@ -41,7 +41,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="referral in referrals | filter: query" class="clickable" ui-sref="{{referral.status == 'new' ? 'reviewReferral({referral_id: referral.id})' : 'viewReferral({referral_id: referral.id})' }}">
+                                    <tr ng-repeat="referral in referrals | filter: query" class="clickable" ui-sref="{{referral.status == 'draft' ? 'reviewReferral({referral_id: referral.id})' : 'viewReferral({referral_id: referral.id})' }}">
                                         <td class="cell-datetime">
                                             <span class="ref-date">{{referral.created_at | date: 'mediumDate'}}</span>
                                             <span class="ref-time">{{referral.created_at | date: 'shortTime'}}</span>
@@ -56,7 +56,7 @@
                                             <span class="practice">{{referral.dest_practice.name}}</span>
                                         </td>
                                         <td class="cell-status">
-                                            <span class="label" ng-class="{'label-success': referral.status == 'completed', 'label-warning': referral.status == 'sent', 'label-info' : referral.status == 'new'}">{{referral.status}}</span>
+                                            <span class="label" ng-class="{'label-success': referral.status == 'completed', 'label-warning': referral.status == 'active', 'label-info' : referral.status == 'new', 'label-danger' : referral.status == 'draft'}">{{referral.status}}</span>
                                         </td>
                                     </tr>
                                 </tbody>
