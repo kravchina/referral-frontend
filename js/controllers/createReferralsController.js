@@ -10,7 +10,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             Logger.debug('Referral id present, getting referral #' + $stateParams.referral_id + '...');
             Referral.get({id: $stateParams.referral_id}).$promise.then(function (referral) {
                 Logger.debug('Got referral #' + $stateParams.referral_id + ', referral status: ' + referral.status);
-                if ("new" != referral.status) {
+                if ('draft' != referral.status) {
                     Logger.debug('Redirecting to viewReferral...');
                     $state.go('viewReferral', {referral_id: $stateParams.referral_id});
                     return;

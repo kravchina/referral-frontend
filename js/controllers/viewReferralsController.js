@@ -87,9 +87,9 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         };
 
         $scope.rejectReferral = function (referral) {
-            Referral.updateStatus({id: referral.id}, {status: 'sent'},
+            Referral.updateStatus({id: referral.id}, {status: 'active'},
                 function (success) {
-                    referral.status = 'sent';
+                    referral.status = 'active';
                     Alert.success($scope.alerts, 'Status was updated successfully!');
                 },
                 function (failure) {
