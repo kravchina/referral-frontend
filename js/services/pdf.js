@@ -1,9 +1,10 @@
 var dentalLinksPdf = angular.module('pdf', []);
-dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
+dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner) {
     var pdf;
     var paragraphs;
     var images;
     var notes;
+    var origPracticeAddress;
     var font =
         ['Times', 'Roman'];
     var size = 16;
@@ -13,6 +14,10 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
     var paragraphStart = {
         x: 10, y: 10
     };
+    var printableArea = {
+        width: 190,
+        height: 287 /*end of the A4 paper including margin 10mm*/
+    };
 
     var extractFileName = function (filename) {
         var n = $filter('filename')(filename) || '';
@@ -21,52 +26,54 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
     var formatDate = function (date, format) {
         return $filter('date')(date, format) || '';
     };
-    
+
     var addPageIfNeeded = function (pdf, caret, expectedHeight) {
-        if (caret + expectedHeight > 287 /*end of the A4 paper including margin 10mm*/) {
+        if (caret + expectedHeight > printableArea.height) {
             pdf.addPage();
             caret = appendHeader(pdf);
         }
         return caret;
     };
-    
+
     var appendHeader = function (pdf) {
-        caret = 12;
-        
+        var caret = 12;
+
         pdf.setFillColor(52, 73, 94);
-        
-        headerWidth = 600; // in order to cover the whole page both in portrait and landscape modes
-        
+
+        var headerWidth = 600; // in order to cover the whole page both in portrait and landscape modes
+
         pdf.rect(0, 0, headerWidth, 20, 'F');
-        
+
         pdf.setTextColor(255, 255, 255);
-        
-        strBold = 'Dental';
+
+        var strBold = 'Dental';
         pdf.setFontType('bold');
         var width = pdf.getStringUnitWidth(strBold) * size / pdf.internal.scaleFactor;
         pdf.text(paragraphStart.x, caret, strBold);
-        
-        strNormal = 'Links';
+
+        var strNormal = 'Links';
         pdf.setFontType('normal');
         pdf.text(paragraphStart.x + width, caret, strNormal);
-        
+
         pdf.setTextColor(0, 0, 0);
         pdf.setFillColor(255, 255, 255);
-        
+
         caret += 20;
         return caret;
     };
-    
-    var appendParagraphs = function (pdf, caret) {
+
+    var appendParagraphs = function (pdf, caret, patientCopy) {
         for (var i = 0; i < paragraphs.length; i++) {
-            var titleText = paragraphs[i].title;
-            pdf.setFontType('bold');
-            var width = pdf.getStringUnitWidth(titleText) * size / pdf.internal.scaleFactor;
-            pdf.text(paragraphStart.x, caret, titleText);
-            pdf.setFontType('normal');
-            var lines = pdf.splitTextToSize(paragraphs[i].value, 190 - width);
-            pdf.text(paragraphStart.x + width, caret, lines);
-            caret += 3 + lines.length * size / pdf.internal.scaleFactor;
+            if (patientCopy  || (!patientCopy && !paragraphs[i].patientCopy)) {
+                var titleText = paragraphs[i].title;
+                pdf.setFontType('bold');
+                var width = pdf.getStringUnitWidth(titleText) * size / pdf.internal.scaleFactor;
+                pdf.text(paragraphStart.x, caret, titleText);
+                pdf.setFontType('normal');
+                var lines = pdf.splitTextToSize(paragraphs[i].value, printableArea.width - width);
+                pdf.text(paragraphStart.x + width, caret, lines);
+                caret += 3 + lines.length * size / pdf.internal.scaleFactor;
+            }
         }
         return caret;
     };
@@ -80,7 +87,7 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
             caret += 10;
         }
         for (var k = 0; k < notes.length; k++) {
-            var noteLines = pdf.splitTextToSize(notes[k].message, 190);
+            var noteLines = pdf.splitTextToSize(notes[k].message, printableArea.width);
             var noteHeight = noteLines.length * size / pdf.internal.scaleFactor;
             caret = addPageIfNeeded(pdf, caret, noteHeight);
             pdf.text(paragraphStart.x, caret, noteLines);
@@ -93,19 +100,14 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
         if (images) {
 
             for (var j = 0; j < images.length; j++) {
-                if (!images[j].image) {
+                var image = images[j].image;
+                if (!image) {
                     continue;
                 }
-                var image = images[j].image;
-                var note = images[j].metadata.note;
                 var aspectRatio = image.width / image.height;
                 caret = addPageIfNeeded(pdf, caret, 190 / aspectRatio);
                 pdf.addImage(image, 'JPEG', imageStart.x, caret, 190, 190 / aspectRatio);
                 caret += 190 / aspectRatio;
-                if (note) {
-                    caret += 5;
-                    pdf.text(paragraphStart.x, caret, note);
-                }
                 caret += 10;
             }
         }
@@ -145,9 +147,9 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
                     xCaret = imageStart.x;
                     caret += thumbnailSize + 10;
                 }
-                
+
                 caret = addPageIfNeeded(pdf, caret, thumbnailSize);
-                
+
                 pdf.addImage(image, 'JPEG', xCaret, caret, thumbnailSize, thumbnailSize);
                 pdf.text(xCaret + 100 / pdf.internal.scaleFactor, caret + 10, extractFileName(metadata.filename));
                 pdf.text(xCaret + 100 / pdf.internal.scaleFactor, caret + 20, formatDate(metadata.created_at, 'mediumDate'));
@@ -158,7 +160,7 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
         return caret;
     };
 
-    var appendAttachmensTitle = function(pdf, caret){
+    var appendAttachmensTitle = function (pdf, caret) {
 
         pdf.setFontType('bold');
         pdf.text(paragraphStart.x, caret, 'Attachments:');
@@ -169,11 +171,11 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
 
     var buildPdf = function (forPatient) {
         var pdf = new jsPDF();
-        
-        caret = appendHeader(pdf);
-        
+
+        var caret = appendHeader(pdf);
+
         pdf.setFontSize(size);
-        caret = appendParagraphs(pdf, caret);
+        caret = appendParagraphs(pdf, caret, forPatient);
 
         caret += 10;
 
@@ -183,14 +185,14 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
         caret += 10;
 
         if (forPatient) {
-            if (images && images.length){
+            if (images && images.length) {
                 caret = appendAttachmensTitle(pdf, caret);
             }
             appendThumbnails(pdf, caret);
         } else {
-            if(images){
-                for(var i = 0; i < images.length; i++){
-                    if(images[i].image){
+            if (images) {
+                for (var i = 0; i < images.length; i++) {
+                    if (images[i].image) {
                         caret = appendAttachmensTitle(pdf, caret);
                         break;
                     }
@@ -207,9 +209,10 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
             paragraphs = [];
             images = [];
             notes = [];
+            origPracticeAddress = {};
         },
-        addParagraph: function (title, value) {
-            paragraphs.push({title: title, value: value});
+        addParagraph: function (title, value, patientCopy) {
+            paragraphs.push({title: title, value: value, patientCopy: patientCopy || false});
         },
         addImage: function (index, image, metadata) {
             while (index >= images.length) {
@@ -222,6 +225,47 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
         },
         getEmbeddableString: function () {
             return buildPdf().output('datauristring');
+        },
+        prepare: function (data) {
+            this.addParagraph('Patient: ', data.patient.first_name + ' ' + data.patient.last_name);
+            this.addParagraph('Patient\'s birthday: ', data.patient.birthday);
+            if ((data.orig_provider || {}).practice) {
+                this.addParagraph('Original practice: ', (data.orig_provider.practice || {}).name);
+            }
+            var orig_address = ((data.dest_provider || {}).practice || {}).address;
+            if (orig_address) {
+                this.addParagraph('Original practice address: ', orig_address.street_line_1 + ', ' + orig_address.city + ', ' + orig_address.state + ', ' + orig_address.zip, true);
+                this.addParagraph('Original practice phone: ', orig_address.phone, true);
+                if (orig_address.website) {
+                    this.addParagraph('Original practice website: ', orig_address.website, true);
+                }
+            }
+            if (data.orig_provider) {
+                this.addParagraph('Referred by: ', data.orig_provider.first_name + ' ' + (data.orig_provider.middle_initial || '') + ' ' + (data.orig_provider.last_name || ''));
+            }
+            if ((data.dest_provider || {}).practice) {
+                this.addParagraph('Destination practice: ', (data.dest_provider.practice || {}).name);
+            }
+            var address = ((data.dest_provider || {}).practice || {}).address;
+            if (address) {
+                this.addParagraph('Practice address: ', address.street_line_1 + ', ' + address.city + ', ' + address.state + ', ' + address.zip);
+                this.addParagraph('Practice phone: ', address.phone);
+                if (address.website) {
+                    this.addParagraph('Practice website: ', address.website);
+                }
+            }
+            if (data.dest_provider) {
+                this.addParagraph('Referred to: ', (data.dest_provider || {}).first_name + ' ' + ((data.dest_provider || {}).middle_initial || '') + ' ' + ((data.dest_provider || {}).last_name || ''));
+            }
+            if (data.procedure) {
+                this.addParagraph('Procedure: ', data.procedure.name + ' (' + (data.procedure.practice_type || {}).name + ')');
+            }
+            if (data.teeth) {
+                data.teethChart = data.teeth.split('+');
+                this.addParagraph('Tooth #: ', data.teethChart.sort(function(a, b) { return a - b; }).join(', '));
+            }
+            this.addNotes(data.notes);
+
         },
         save: function (filename) {
             buildPdf(false).save(filename);

@@ -29,31 +29,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
         $scope.referral.$promise.then(function (data) {
             Logger.debug('Filling in PDF data...');
-            PDF.addParagraph('Patient: ', data.patient.first_name + ' ' + data.patient.last_name);
-            PDF.addParagraph('Patient birthday: ', data.patient.birthday);
-            if (data.orig_provider) {
-                PDF.addParagraph('Referred by: ', data.orig_provider.first_name + ' ' + (data.orig_provider.middle_initial || '') + ' ' + (data.orig_provider.last_name || ''));
-            }
-            if ((data.dest_provider || {}).practice) {
-                PDF.addParagraph('Destination practice: ', (data.dest_provider.practice || {}).name);
-            }
-            var address = ((data.dest_provider || {}).practice || {}).address;
-            if (address) {
-                PDF.addParagraph('Practice address: ', address.street_line_1 + ', ' + address.city + ', ' + address.state + ', ' + address.zip);
-                PDF.addParagraph('Practice phone: ', address.phone);
-                PDF.addParagraph('Practice website: ', address.website);
-            }
-            if (data.dest_provider) {
-                PDF.addParagraph('Referred to: ', (data.dest_provider || {}).first_name + ' ' + ((data.dest_provider || {}).middle_initial || '') + ' ' + ((data.dest_provider || {}).last_name || ''));
-            }
-            if (data.procedure) {
-                PDF.addParagraph('Procedure: ', data.procedure.name + ' (' + (data.procedure.practice_type || {}).name + ')');
-            }
-            if (data.teeth) {
-                data.teethChart = data.teeth.split('+');
-                PDF.addParagraph('Tooth #: ', data.teethChart.join(', '));
-            }
-            PDF.addNotes(data.notes);
+            PDF.prepare(data);
             Logger.debug('Filled in PDF data.');
         });
 
