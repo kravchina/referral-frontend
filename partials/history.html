@@ -1,7 +1,6 @@
             <header class="page-header">
                 <h1>History</h1>
                 <p class="page-subheader">View your sent and received referrals.</p>
-                <button type="button" ui-sref="createReferral" class="btn btn-orange btn-lg" >New Referral</button>
             </header><!-- .page-header -->
             
             <div class="box-white">
@@ -11,17 +10,17 @@
                 	<div class="filter-controls-block">
                     
                         <div class="date-range-picker col-xs-12 col-sm-4">
-                            <div id="reportrange" date-range-picker="findReferrals(start, end)" style="">
+                            <div id="reportrange" date-range-picker="findReferralsByDateRange(start, end)" style="">
                                 <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                                 <span></span> <b class="caret"></b>
                             </div>
                         </div>
                         
                         <div class="input-block col-xs-12 col-sm-4 col-sm-offset-4">
-                        		<input type="search" ng-model="query" placeholder="Search &hellip;" class="form-control placeholder search-no-button">
+                        		<input type="search" ng-model="query" placeholder="Search &hellip;" class="form-control placeholder search-no-button" ng-change="findReferralsByTerm()">
                         </div>
                         
-                        <div class="results-block">Found <span class="count">{{referrals.length}}</span> referrals</div>
+                        <div class="results-block">Showing <span class="count">{{referrals_show}} of {{referrals.length}}</span></div>
                         
                     </div><!-- .filter-controls-block -->
                 </div><!-- .row -->
@@ -41,7 +40,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="referral in referrals | filter: query" class="clickable" ui-sref="{{referral.status == 'new' ? 'reviewReferral({referral_id: referral.id})' : 'viewReferral({referral_id: referral.id})' }}">
+                                    <tr ng-repeat="referral in referrals | limitTo: 20" class="clickable" ui-sref="{{referral.status == 'new' ? 'reviewReferral({referral_id: referral.id})' : 'viewReferral({referral_id: referral.id})' }}">
                                         <td class="cell-datetime">
                                             <span class="ref-date">{{referral.created_at | date: 'mediumDate'}}</span>
                                             <span class="ref-time">{{referral.created_at | date: 'shortTime'}}</span>
