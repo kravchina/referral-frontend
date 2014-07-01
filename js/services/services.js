@@ -96,7 +96,7 @@ dentalLinksServices.factory('Referral', ['$resource', function ($resource) {
         saveTemplate: {method: 'POST', url: host + '/referrals/new/template'},
         update: {method: 'PUT'},
         updateStatus: {method: 'PUT', url: host + '/referrals/:id/status'},
-        findByPractice: {method: 'GET', url: host + '/referrals/practice/:id', isArray: true}
+        findByPractice: {method: 'GET', url: host + '/referrals/practice/:id', isArray: false}
     });
 }]);
 
