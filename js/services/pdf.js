@@ -21,7 +21,42 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
     var formatDate = function (date, format) {
         return $filter('date')(date, format) || '';
     };
-
+    
+    var addPageIfNeeded = function (pdf, caret, expectedHeight) {
+        if (caret + expectedHeight > 287 /*end of the A4 paper including margin 10mm*/) {
+            pdf.addPage();
+            caret = appendHeader(pdf);
+        }
+        return caret;
+    };
+    
+    var appendHeader = function (pdf) {
+        caret = 12;
+        
+        pdf.setFillColor(52, 73, 94);
+        
+        headerWidth = 600; // in order to cover the whole page both in portrait and landscape modes
+        
+        pdf.rect(0, 0, headerWidth, 20, 'F');
+        
+        pdf.setTextColor(255, 255, 255);
+        
+        strBold = 'Dental';
+        pdf.setFontType('bold');
+        var width = pdf.getStringUnitWidth(strBold) * size / pdf.internal.scaleFactor;
+        pdf.text(paragraphStart.x, caret, strBold);
+        
+        strNormal = 'Links';
+        pdf.setFontType('normal');
+        pdf.text(paragraphStart.x + width, caret, strNormal);
+        
+        pdf.setTextColor(0, 0, 0);
+        pdf.setFillColor(255, 255, 255);
+        
+        caret += 20;
+        return caret;
+    };
+    
     var appendParagraphs = function (pdf, caret) {
         for (var i = 0; i < paragraphs.length; i++) {
             var titleText = paragraphs[i].title;
@@ -47,10 +82,7 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
         for (var k = 0; k < notes.length; k++) {
             var noteLines = pdf.splitTextToSize(notes[k].message, 190);
             var noteHeight = noteLines.length * size / pdf.internal.scaleFactor;
-            if (caret + noteHeight > 287 /*end of the A4 paper including margin 10mm*/) {
-                pdf.addPage();
-                caret = 10;
-            }
+            caret = addPageIfNeeded(pdf, caret, noteHeight);
             pdf.text(paragraphStart.x, caret, noteLines);
             caret += 3 + noteHeight;
         }
@@ -67,10 +99,7 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
                 var image = images[j].image;
                 var note = images[j].metadata.note;
                 var aspectRatio = image.width / image.height;
-                if (caret + (190 / aspectRatio) > 287 /*end of the A4 paper including margin 10mm*/) {
-                    pdf.addPage();
-                    caret = 10;
-                }
+                caret = addPageIfNeeded(pdf, caret, 190 / aspectRatio);
                 pdf.addImage(image, 'JPEG', imageStart.x, caret, 190, 190 / aspectRatio);
                 caret += 190 / aspectRatio;
                 if (note) {
@@ -116,12 +145,9 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
                     xCaret = imageStart.x;
                     caret += thumbnailSize + 10;
                 }
-
-                if (caret + thumbnailSize > 287 /*end of the A4 paper including margin 10mm*/) {
-                    pdf.addPage();
-                    caret = 10;
-
-                }
+                
+                caret = addPageIfNeeded(pdf, caret, thumbnailSize);
+                
                 pdf.addImage(image, 'JPEG', xCaret, caret, thumbnailSize, thumbnailSize);
                 pdf.text(xCaret + 100 / pdf.internal.scaleFactor, caret + 10, extractFileName(metadata.filename));
                 pdf.text(xCaret + 100 / pdf.internal.scaleFactor, caret + 20, formatDate(metadata.created_at, 'mediumDate'));
@@ -142,8 +168,10 @@ dentalLinksPdf.factory('PDF', ['$filter', function ($filter) {
     };
 
     var buildPdf = function (forPatient) {
-        var caret = 18;
         var pdf = new jsPDF();
+        
+        caret = appendHeader(pdf);
+        
         pdf.setFontSize(size);
         caret = appendParagraphs(pdf, caret);
 
