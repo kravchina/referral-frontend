@@ -167,7 +167,7 @@ dentalLinks.factory('authInterceptor', ['$rootScope', '$q','AUTH_EVENTS', '$loca
             }
 
             return $q.reject(response);
-        },
+        }
     };
 }]);
 
