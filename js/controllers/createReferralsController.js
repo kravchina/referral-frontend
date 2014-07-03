@@ -163,6 +163,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
             modalInstance.result.then(function (patient) {
                 $scope.patient = patient;
+                $scope.form.patient.$setValidity('editable', true);
             });
         };
 
