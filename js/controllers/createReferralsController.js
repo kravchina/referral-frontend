@@ -291,6 +291,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
             uploader.bind('success', function (event, xhr, item, response) {
                 Logger.info('Success', xhr, item, response);
+                item.downloadUrl = item.url + bucket_path + item.file.name;
             });
 
             uploader.bind('cancel', function (event, xhr, item) {

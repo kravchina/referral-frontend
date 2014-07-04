@@ -150,7 +150,8 @@
 
                 <!-- Attachments in the queue, no links -->
                 <li class="attachment-block" ng-repeat="item in uploader.queue">
-                        <div class="attachment-thumb" ng-show="uploader.isHTML5"
+                    <a ng-href="{{item.downloadUrl}}" target="_blank">
+                    <div class="attachment-thumb" ng-show="uploader.isHTML5"
                              ng-thumb="{ file: item.file, height: 80, width:80 }">
                             <!-- no img, canvas is automatically generated here -->
                         </div>
@@ -158,6 +159,7 @@
                             <span class="filename">{{ item.file.name }}</span>
                             <span class="datestamp">{{ now() | date: 'mediumDate'}}</span>
                         </div>
+                    </a>
                 </li>
             </ul>
             </div>
