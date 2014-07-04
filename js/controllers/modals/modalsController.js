@@ -1,12 +1,13 @@
 var modalsModule = angular.module('modals', ['ui.bootstrap']);
 
-modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Patient', function ($scope, $modalInstance, Patient) {
+modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'Patient', function ($scope, $modalInstance, Auth, Patient) {
 
     /*$scope.patient = patient;*/
 
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.', 'Engr.'];
 
     $scope.ok = function (patient) {
+        patient.practice_id = Auth.get().practice_id;
         Patient.save({patient: patient},
             function (success) {
                 $modalInstance.close(success);

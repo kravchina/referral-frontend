@@ -1,7 +1,7 @@
 var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-createReferralModule.controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Alert', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger',
-    function ($scope, $state, $stateParams, Alert, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger) {
+createReferralModule.controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Alert', 'Auth', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger',
+    function ($scope, $state, $stateParams, Alert, Auth, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger) {
 
         $scope.alerts = [];
         $scope.attachment_alerts = [];
@@ -141,7 +141,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         $scope.findPatient = function (searchValue) {
             Spinner.hide(); //workaround that disables spinner to avoid flicker.
-            return Patient.searchPatient({search: searchValue}).$promise.then(function (res) {
+            return Patient.searchPatient({practice_id: Auth.get().practice_id, search: searchValue}).$promise.then(function (res) {
                 Spinner.show();
                 return res;
             });
