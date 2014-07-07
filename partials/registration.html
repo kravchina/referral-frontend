@@ -5,7 +5,10 @@
 </header><!-- .page-header -->
 
 <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.message}}</alert>
-
+<div class="alert alert-success" role="alert" ng-show="registrationSuccessful">
+    <strong>Well done!</strong> You've successfully registered.
+    <button class="btn btn-green btn-lg" ui-sref="signIn">OK</button>
+</div>
 <div class="form-wrapper">
     <form name="form" novalidate class="simple-form">
         <div class="box-white">

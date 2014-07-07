@@ -1,6 +1,6 @@
 var registrationModule = angular.module('registration', []);
 
-registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$timeout', 'Alert', 'Auth', 'Practice',  'ProviderInvitation', 'Registration', 'Spinner',
+registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$timeout', 'Alert', 'Auth', 'Practice', 'ProviderInvitation', 'Registration', 'Spinner',
     function ($scope, $location, $stateParams, $modal, $timeout, Alert, Auth, Practice, ProviderInvitation, Registration, Spinner) {
         $scope.alerts = [];
 
@@ -33,13 +33,9 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             user.practice_id = user.practice.id;
             Registration.save({user: user, invitation_token: $stateParams.invitation_token},
                 function (success) {
-                    Alert.success($scope.alerts, 'You have successfully registered! Please wait a second for redirect...');
-                    $timeout(function(){
-                        Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
-                        Auth.current_user = success;
-                        $location.path('/admin');
-                    }, 3000);
-
+                    Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
+                    Auth.current_user = success;
+                    $scope.registrationSuccessful = true;
                 },
                 function (failure) {
                     Alert.error($scope.alerts, 'Error during registration.')
