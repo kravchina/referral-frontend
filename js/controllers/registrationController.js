@@ -1,7 +1,7 @@
 var registrationModule = angular.module('registration', []);
 
-registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$timeout', 'Alert', 'Auth', 'Practice', 'ProviderInvitation', 'Registration', 'Spinner',
-    function ($scope, $location, $stateParams, $modal, $timeout, Alert, Auth, Practice, ProviderInvitation, Registration, Spinner) {
+registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$timeout', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Spinner',
+    function ($scope, $location, $stateParams, $modal, $timeout, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Spinner) {
         $scope.alerts = [];
 
         $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token}, function (success) {
@@ -24,6 +24,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                 templateUrl: 'partials/practice_form.html',
                 controller: 'PracticeModalController'
             });
+            ModalHandler.set(modalInstance);
             modalInstance.result.then(function (practice) {
                 $scope.user.practice = practice;
             });

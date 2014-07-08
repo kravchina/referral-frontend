@@ -1,7 +1,7 @@
 var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-createReferralModule.controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Alert', 'Auth', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger',
-    function ($scope, $state, $stateParams, Alert, Auth, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger) {
+createReferralModule.controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Alert', 'Auth', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger', 'ModalHandler',
+    function ($scope, $state, $stateParams, Alert, Auth, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger, ModalHandler) {
 
         $scope.alerts = [];
         $scope.attachment_alerts = [];
@@ -160,7 +160,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                 templateUrl: 'partials/patient_form.html',
                 controller: 'PatientModalController'
             });
-
+            ModalHandler.set(modalInstance);
             modalInstance.result.then(function (patient) {
                 $scope.patient = patient;
                 $scope.form.patient.$setValidity('editable', true);
@@ -172,7 +172,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                 templateUrl: 'partials/provider_form.html',
                 controller: 'ProviderModalController'
             });
-
+            ModalHandler.set(modalInstance);
             modalInstance.result.then(function (provider) {
                 $scope.destinationPractice = $scope.destinationPractice || {users: [], name: ''};
                 $scope.destinationPractice.users.push(provider);
@@ -187,7 +187,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                 templateUrl: 'partials/note_form.html',
                 controller: 'NoteModalController'
             });
-
+            ModalHandler.set(modalInstance);
             modalInstance.result.then(function (note) {
                 processFormChange(note);
                 $scope.model.referral.notes.push({message: note, created_at: Date.now()});
