@@ -1,5 +1,5 @@
 <div>
-    <form name="form" novalidate class="simple-form" ng-if="!authenticated">
+    <form name="form" novalidate class="simple-form">
         <br />
         <div  ng-show="result.failure" class="alert alert-danger">
             {{result.statusText}}
@@ -19,28 +19,8 @@
             </label>
         </div>
 
-        <!--<div class="success" ng-show="result.success">You have successfully logged in!</div>
-        <div class="error" ng-show="result.failure">{{result.statusText}}</div>
-        <div class="error" ng-show="form.$invalid && form.$dirty">Invalid login credentials!</div>-->
         <button ng-click="login(user)" ng-disabled="form.$invalid">Login</button>
         <br />
         <a href="#/reset_password">Forgot password?</a>
     </form>
-
-    <div ng-if="authenticated">
-        Testing:
-        <ul>
-            <li><a href="/#/create_referral">create new referral</a> </li>
-            <li>
-                <a href="/#/view_referral/{{existingReferralId}}">view existing referral #{{existingReferralId}}</a>
-                <input ng-model="existingReferralId" style="width:50px; margin-left: 3em;"/>
-            </li>
-            <li>
-                <a href="#/history">history</a>
-            </li>
-            <li>
-                <a href="#/admin">admin</a>
-            </li>
-        </ul>
-    </div>
 </div>

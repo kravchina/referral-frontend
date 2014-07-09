@@ -3,7 +3,9 @@ var loginModule = angular.module('login', []);
 loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location', 'Login', 'redirect',
     function ($scope, Auth, User, $location, Login, redirect) {
         var auth = Auth.get();
-        $scope.authenticated = auth;
+        if(auth){// user is authenticated by tries to open login window
+            $location.path('/history');
+        }
         $scope.email = (auth || {}).email;
 
         $scope.result = {failure: false};
@@ -17,7 +19,6 @@ loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location'
                     Auth.current_user = user;
 
                     $scope.email = user.email;
-                    $scope.authenticated = true;
                     $location.path(redirect.path);
                     $scope.result = {success: true};
 
@@ -25,7 +26,6 @@ loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location'
                 function (failure) {
                     console.log(failure);
                     Auth.remove();
-                    $scope.authenticated = false;
                     if(failure.status == 0){
                         $scope.result = {failure: true, statusText: 'Upstream server connectivity error. Administrator was informed. Please try again later'};
                     }else{
@@ -34,6 +34,5 @@ loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location'
                     console.log($scope.result);
                 });
         };
-        $scope.existingReferralId = 7;
     }]);
 
