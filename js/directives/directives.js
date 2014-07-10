@@ -67,6 +67,7 @@ dentalLinksDirectives.directive('attachmentThumb', [function () {
                     cssClass = 'attach-pdf';
                     break;
                 case 'jpg':
+                case 'jpeg':
                 case 'png':
                 case 'gif':
                     cssClass = '';
@@ -124,6 +125,7 @@ dentalLinksDirectives.directive('ngThumb', ['$window', function ($window) {
                         cssClass = 'attach-excel';
                         break;
                     case 'jpg':
+                    case 'jpeg':
                     case 'png':
                     case 'gif':
                         cssClass = '';

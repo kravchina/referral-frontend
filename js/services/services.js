@@ -49,7 +49,6 @@ dentalLinksServices.factory('Alert', ['$timeout', function ($timeout) {
             alerts.splice(alerts.indexOf(alert), 1);
         }, 5000) };
         alerts.push(alert);
-
     };
     return {
         error: function (alerts, message) {
@@ -161,7 +160,7 @@ dentalLinksServices.factory('User', ['$resource', function ($resource) {
 dentalLinksServices.factory('File', [function () {
     return {
         isImage: function (filename) {
-            return filename.toLowerCase().search(/\.(jpg|png|gif)$/) >= 0;
+            return filename.toLowerCase().search(/\.(jpg|jpeg|png|gif|bmp)$/) >= 0;
         }
     }
 }]);

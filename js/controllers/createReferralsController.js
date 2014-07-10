@@ -37,7 +37,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         }
 
         $scope.isImage = function (attachment) {
-            return attachment.filename.toLowerCase().search(/(jpg|png|gif)$/) >= 0;
+            return attachment.filename.toLowerCase().search(/(jpg|png|gif|bmp|jpeg)$/) >= 0;
         };
 
         $scope.closeAlert = function (index) {

@@ -89,7 +89,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         };
 
         $scope.isImage = function (attachment) {
-            return attachment.filename.toLowerCase().search(/(jpg|png|gif)$/) >= 0;
+            return attachment.filename.toLowerCase().search(/(jpg|png|gif|bmp|jpeg)$/) >= 0;
         };
 
         $scope.userBelongsToDestPractice = function () {
