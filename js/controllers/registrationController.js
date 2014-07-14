@@ -1,7 +1,7 @@
 var registrationModule = angular.module('registration', []);
 
-registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$timeout', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Spinner',
-    function ($scope, $location, $stateParams, $modal, $timeout, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Spinner) {
+registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Spinner',
+    function ($scope, $location, $stateParams, $modal, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Spinner) {
         $scope.alerts = [];
 
         $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token}, function (success) {
