@@ -139,7 +139,7 @@
                 <li class="attachment-block" ng-repeat="attachment in attachments">
                     <a href="{{attachment.filename}}">
                         <div class="attachment-thumb" attachment-thumb="{{attachment.filename}}">
-                            <img ng-if="isImage(attachment)" access="admin, doctor" ng-src="{{attachment.filename}}" total-images="{{attachments.length}}" crossorigin="anonymous" alt="img">
+                            <img ng-if="isImage(attachment.filename)" access="admin, doctor" ng-src="{{attachment.filename}}" total-images="{{attachments.length}}" crossorigin="anonymous" alt="img">
                         </div>
                         <div class="attachment-details">
                             <span class="filename">{{attachment.filename | filename}}</span>

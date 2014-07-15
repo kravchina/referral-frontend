@@ -1,7 +1,7 @@
 var viewReferralModule = angular.module('viewReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner',
-    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner) {
+viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File',
+    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File) {
         $scope.alerts = [];
         $scope.attachment_alerts = [];
 
@@ -97,9 +97,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
         };
 
-        $scope.isImage = function (attachment) {
-            return attachment.filename.toLowerCase().search(/(jpg|png|gif|bmp|jpeg)$/) >= 0;
-        };
+        $scope.isImage = File.isImage;
 
         $scope.userBelongsToDestPractice = function () {
             return Auth.get().practice_id == $scope.referral.dest_practice_id;

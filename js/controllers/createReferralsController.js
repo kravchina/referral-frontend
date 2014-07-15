@@ -1,7 +1,7 @@
 var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-createReferralModule.controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Alert', 'Auth', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger', 'ModalHandler',
-    function ($scope, $state, $stateParams, Alert, Auth, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger, ModalHandler) {
+createReferralModule.controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Alert', 'Auth', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger', 'ModalHandler', 'File',
+    function ($scope, $state, $stateParams, Alert, Auth, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger, ModalHandler, File) {
 
         $scope.alerts = [];
         $scope.attachment_alerts = [];
@@ -36,9 +36,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         }
 
-        $scope.isImage = function (attachment) {
-            return attachment.filename.toLowerCase().search(/(jpg|png|gif|bmp|jpeg)$/) >= 0;
-        };
+        $scope.isImage = File.isImage;
 
         $scope.closeAlert = function (index) {
             Alert.close($scope.alerts, index);
