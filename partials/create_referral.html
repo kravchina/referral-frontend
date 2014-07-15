@@ -39,7 +39,7 @@
             <button type="button" class="btn btn-orange btn-toggle" ng-click="providerDialog()" data-toggle="tooltip" data-placement="top" title="Invite a New Provider" data-target="#modalProvider"><span class="dlicons-user-add"></span></button>
         </div>
         <select id="selectProvider" name="provider" class="form-control" ng-disabled="!destinationPractice" ng-model="model.dest_provider" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in destinationPractice.users" ng-required="true">
-            <option disabled="disabled" class="placeholder" value="">Choose a provider &hellip;</option>
+            <option selected="selected" class="placeholder" value="">Choose a provider &hellip;</option>
         </select>
     </div>
 </div><!-- .row -->
@@ -51,7 +51,7 @@
             <h2>Referral type</h2>
         </div>
         <select id="selectRefType" class="form-control" name="practiceType" ng-model="practiceType"  ng-options="p as p.name for p in practiceTypes" ng-required="true">
-            <option disabled="disabled" class="placeholder" value="">Select type &hellip;</option>
+            <option selected="selected" class="placeholder" value="">Select type &hellip;</option>
         </select>
     </div>
 
@@ -60,7 +60,7 @@
             <h2>Procedure</h2>
         </div>
         <select id="selectProcedure" ng-disabled="!practiceType" name="procedure" class="form-control" ng-model="model.referral.procedure_id"  ng-options="p.id as p.name for p in practiceType.procedures" ng-required="true">
-            <option disabled="disabled" class="placeholder" value="">Select procedure &hellip;</option>
+            <option selected="selected" class="placeholder" value="">Select procedure &hellip;</option>
         </select>
     </div>
 </div><!-- .row -->
