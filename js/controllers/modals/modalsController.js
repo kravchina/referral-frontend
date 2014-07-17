@@ -1,12 +1,13 @@
 var modalsModule = angular.module('modals', ['ui.bootstrap']);
 
-modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Patient', function ($scope, $modalInstance, Patient) {
+modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'Patient', function ($scope, $modalInstance, Auth, Patient) {
 
     /*$scope.patient = patient;*/
 
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.', 'Engr.'];
 
     $scope.ok = function (patient) {
+        patient.practice_id = Auth.getOrRedirect().practice_id;
         Patient.save({patient: patient},
             function (success) {
                 $modalInstance.close(success);
@@ -41,7 +42,7 @@ modalsModule.controller('NoteModalController', ['$scope', '$modalInstance', 'Not
 modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Alert', 'Auth', function ($scope, $modalInstance, ProviderInvitation, Alert, Auth) {
     $scope.alerts = [];
     $scope.ok = function (provider) {
-        provider.inviter_id = Auth.get().id;
+        provider.inviter_id = Auth.getOrRedirect().id;
         ProviderInvitation.save({provider_invitation: provider}, function (success) {
             $modalInstance.close(success);
         }, function (failure) {
@@ -77,8 +78,8 @@ modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 
 modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Auth', function ($scope, $modalInstance, ProviderInvitation, Auth) {
     $scope.result = {};
     $scope.ok = function (user) {
-        user.practice_id = Auth.get().practice_id;
-        user.inviter_id = Auth.get().id;
+        user.practice_id = Auth.getOrRedirect().practice_id;
+        user.inviter_id = Auth.getOrRedirect().id;
         ProviderInvitation.save({provider_invitation: user}, function (success) {
             $modalInstance.close(success);
         },  function (failure) {

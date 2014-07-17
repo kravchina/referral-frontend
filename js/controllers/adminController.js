@@ -1,7 +1,7 @@
 var adminModule = angular.module('admin', ['ui.bootstrap', 'angularPayments']);
 
-adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges',
-    function ($scope, $modal, Auth, Alert, Practice, ProviderInvitation, User, UnsavedChanges) {
+adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges',
+    function ($scope, $modal, Auth, Alert, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges) {
         // set the stripe publishable key
         Stripe.setPublishableKey('pk_test_TAdWKoNc4HgjFknjuuzsb99p');
 
@@ -75,7 +75,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                 templateUrl: 'partials/user_form.html',
                 controller: 'UserModalController'
             });
-
+            ModalHandler.set(modalInstance);
             modalInstance.result.then(function (user) {
                 $scope.practice.users.push(user);
             });
@@ -86,7 +86,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                 templateUrl: 'partials/provider_form.html',
                 controller: 'ProviderModalController'
             });
-
+            ModalHandler.set(modalInstance);
             modalInstance.result.then(function (provider) {
                 $scope.providers.push(provider);
             });

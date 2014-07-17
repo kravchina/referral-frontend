@@ -6,7 +6,7 @@ var dentalLinksServices = angular.module('dentalLinksServices', ['ngResource']);
 //var host = 'http://localhost:3000';
 var host = 'http://referral-server.herokuapp.com';
 
-dentalLinksServices.factory('Auth', ['$cookieStore', function ($cookieStore) {
+dentalLinksServices.factory('Auth', ['$cookieStore', '$location', function ($cookieStore, $location) {
     return {
         authorize: function (roles) {
             if (roles === undefined) {
@@ -26,6 +26,14 @@ dentalLinksServices.factory('Auth', ['$cookieStore', function ($cookieStore) {
         get: function () {
             return $cookieStore.get('auth');
         },
+        getOrRedirect: function () {
+            var result = $cookieStore.get('auth');
+            if (result) {
+                return result;
+            }else{
+                $location.path('/sign_in');
+            }
+        },
         set: function (value) {
             $cookieStore.put('auth', value);
         },
@@ -41,19 +49,18 @@ dentalLinksServices.factory('Alert', ['$timeout', function ($timeout) {
             alerts.splice(alerts.indexOf(alert), 1);
         }, 5000) };
         alerts.push(alert);
-
     };
     return {
-        error: function(alerts, message){
+        error: function (alerts, message) {
             push(alerts, 'danger', message);
         },
-        warning: function(alerts, message){
+        warning: function (alerts, message) {
             push(alerts, 'warning', message);
         },
-        info: function(alerts, message){
+        info: function (alerts, message) {
             push(alerts, 'info', message);
         },
-        success: function(alerts, message){
+        success: function (alerts, message) {
             push(alerts, 'success', message);
         },
         close: function (alerts, index) {
@@ -66,10 +73,10 @@ dentalLinksServices.factory('Alert', ['$timeout', function ($timeout) {
 dentalLinksServices.factory('Practice', ['$resource',
     function ($resource) {
         return $resource(host + '/practices/:practiceId', {}, {
-            searchPractice: {method: 'GET', url: host + '/practices/search', isArray: true, headers : {
+            searchPractice: {method: 'GET', url: host + '/practices/search', isArray: true, headers: {
                 'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma' : 'no-cache',
-                'Expires' : '0'
+                'Pragma': 'no-cache',
+                'Expires': '0'
             }},
             update: {method: 'PUT'}
         });
@@ -83,10 +90,10 @@ dentalLinksServices.factory('PracticeInvitation', ['$resource',
 
 dentalLinksServices.factory('Patient', ['$resource', function ($resource) {
     return $resource(host + '/patients/:id', {}, {
-        searchPatient: {method: 'GET', url: host + '/patients/search', isArray: true,  headers : {
+        searchPatient: {method: 'GET', url: host + '/patients/search', isArray: true, headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma' : 'no-cache',
-            'Expires' : '0'
+            'Pragma': 'no-cache',
+            'Expires': '0'
         }}
     });
 }]);
@@ -106,14 +113,14 @@ dentalLinksServices.factory('Login', ['$resource', function ($resource) {
         logout: {method: 'DELETE', url: host + '/sign_out'}
     });
 }]);
-dentalLinksServices.factory('ProviderInvitation', ['$resource', function($resource){
+dentalLinksServices.factory('ProviderInvitation', ['$resource', function ($resource) {
     return $resource(host + '/invitations/:invitation_token', {}, {
         delete: {method: 'DELETE', url: host + '/invitations/:id'}
     });
 }]);
 
-dentalLinksServices.factory('Registration', ['$resource', function($resource){
-   return $resource(host + '/sign_up')
+dentalLinksServices.factory('Registration', ['$resource', function ($resource) {
+    return $resource(host + '/sign_up')
 }]);
 
 dentalLinksServices.factory('Password', ['$resource', function ($resource) {
@@ -153,17 +160,17 @@ dentalLinksServices.factory('User', ['$resource', function ($resource) {
 dentalLinksServices.factory('File', [function () {
     return {
         isImage: function (filename) {
-            return filename.toLowerCase().search(/\.(jpg|png|gif)$/) >= 0;
+            return filename.toLowerCase().search(/\.(jpg|jpeg|png|gif|bmp)$/) >= 0;
         }
     }
 }]);
 
 dentalLinksServices.factory('Spinner', [function () {
     /*
-    This spinner implementation supports several asynchronous requests at the same time.
-    It shows spinner until all requests are resolved. Every call to show() will add request to a pseudo-queue and will remove it from queue after hide() is called.
-    Loading indicator is shown only when loading().numLoads > 0 (indicator is shown until last request is finished)
-    */
+     This spinner implementation supports several asynchronous requests at the same time.
+     It shows spinner until all requests are resolved. Every call to show() will add request to a pseudo-queue and will remove it from queue after hide() is called.
+     Loading indicator is shown only when loading().numLoads > 0 (indicator is shown until last request is finished)
+     */
     var loading = {numLoads: 0}; //need an object to pass and return by reference
     return {
         show: function () {
@@ -174,6 +181,20 @@ dentalLinksServices.factory('Spinner', [function () {
         },
         loading: function () {
             return loading;
+        }
+    }
+}]);
+
+dentalLinksServices.factory('ModalHandler', [function () {
+    var modalInstance = {};
+    return {
+        close: function () {
+            if (modalInstance && modalInstance.dismiss) {
+                modalInstance.dismiss('cancel');
+            }
+        },
+        set: function (modal) {
+            modalInstance = modal;
         }
     }
 }]);

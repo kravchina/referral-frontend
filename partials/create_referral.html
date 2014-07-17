@@ -39,7 +39,7 @@
             <button type="button" class="btn btn-orange btn-toggle" ng-click="providerDialog()" data-toggle="tooltip" data-placement="top" title="Invite a New Provider" data-target="#modalProvider"><span class="dlicons-user-add"></span></button>
         </div>
         <select id="selectProvider" name="provider" class="form-control" ng-disabled="!destinationPractice" ng-model="model.dest_provider" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in destinationPractice.users" ng-required="true">
-            <option disabled="disabled" class="placeholder" value="">Choose a provider &hellip;</option>
+            <option selected="selected" class="placeholder" value="">Choose a provider &hellip;</option>
         </select>
     </div>
 </div><!-- .row -->
@@ -51,7 +51,7 @@
             <h2>Referral type</h2>
         </div>
         <select id="selectRefType" class="form-control" name="practiceType" ng-model="practiceType"  ng-options="p as p.name for p in practiceTypes" ng-required="true">
-            <option disabled="disabled" class="placeholder" value="">Select type &hellip;</option>
+            <option selected="selected" class="placeholder" value="">Select type &hellip;</option>
         </select>
     </div>
 
@@ -60,7 +60,7 @@
             <h2>Procedure</h2>
         </div>
         <select id="selectProcedure" ng-disabled="!practiceType" name="procedure" class="form-control" ng-model="model.referral.procedure_id"  ng-options="p.id as p.name for p in practiceType.procedures" ng-required="true">
-            <option disabled="disabled" class="placeholder" value="">Select procedure &hellip;</option>
+            <option selected="selected" class="placeholder" value="">Select procedure &hellip;</option>
         </select>
     </div>
 </div><!-- .row -->
@@ -137,9 +137,11 @@
             <ul>
                 <!-- Attachments on server -->
                 <li class="attachment-block" ng-repeat="attachment in attachments">
+
                     <a href="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filename | filename}}">
                         <div class="attachment-thumb" attachment-thumb="{{attachment.filename | filename}}">
                             <img ng-if="isImage(attachment)" access="admin, doctor" ng-src="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filename | filename}}" total-images="{{attachments.length}}" crossorigin="anonymous" alt="img">
+
                         </div>
                         <div class="attachment-details">
                             <span class="filename">{{attachment.filename | filename}}</span>
@@ -150,7 +152,8 @@
 
                 <!-- Attachments in the queue, no links -->
                 <li class="attachment-block" ng-repeat="item in uploader.queue">
-                        <div class="attachment-thumb" ng-show="uploader.isHTML5"
+                    <a ng-href="{{item.downloadUrl}}" target="_blank">
+                    <div class="attachment-thumb" ng-show="uploader.isHTML5"
                              ng-thumb="{ file: item.file, height: 80, width:80 }">
                             <!-- no img, canvas is automatically generated here -->
                         </div>
@@ -158,6 +161,7 @@
                             <span class="filename">{{ item.file.name }}</span>
                             <span class="datestamp">{{ now() | date: 'mediumDate'}}</span>
                         </div>
+                    </a>
                 </li>
             </ul>
             </div>
@@ -176,7 +180,7 @@
         <div class="notes-wrapper">
             <ul>
                 <!-- Note block -->
-                <li class="note-block" expand-note ng-repeat="note in model.referral.notes_attributes">
+                <li class="note-block" expand-note ng-repeat="note in model.referral.notes">
                     <span class="note-content">{{note.message}}</span>
                     <span class="datestamp">{{note.created_at | date: 'short' }}</span>
                 </li>

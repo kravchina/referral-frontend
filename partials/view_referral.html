@@ -137,9 +137,11 @@
 
                     <!-- Attachment block -->
                     <li class="attachment-block" ng-repeat="attachment in referral.attachments">
+
                         <a href="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filename | filename}}">
                             <div class="attachment-thumb" attachment-thumb="{{attachment.filename | filename}}">
                                 <img ng-show="isImage(attachment)" pdf-photos access="admin, doctor" ng-src="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filename | filename}}" total-images="{{referral.attachments.length}}" crossorigin="anonymous" alt="img">
+
                             </div>
                             <div class="attachment-details">
                                 <span class="filename">{{attachment.filename | filename}}</span>

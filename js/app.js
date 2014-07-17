@@ -85,17 +85,18 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         });
     $urlRouterProvider.otherwise('/sign_in');
 }])
-    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges) {
+    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler) {
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
-            console.log(toState);
-            console.log(fromState);
+
+            ModalHandler.close();  //close dialog if open.
+
             if (!Auth.authorize(toState.access)) {
                 event.preventDefault();
                 $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
             }
         });
-        $rootScope.$on(AUTH_EVENTS.notAuthenticated, function(event, args){
+        $rootScope.$on(AUTH_EVENTS.notAuthenticated, function (event, args) {
             console.log('notAuthenticated');
             Auth.remove();
             redirect.path = args.redirect;
@@ -104,7 +105,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         UnsavedChanges.init();
     }]);
 
-dentalLinks.value('redirect', {path: '/'});
+dentalLinks.value('redirect', {path: '/history'});
 
 dentalLinks.config(['$locationProvider', function ($locationProvider) {
     /*$locationProvider.html5Mode(true);*/ //doesn't work without server-side url rewriting, to return on every request only the entrypoint page (like index.html)
@@ -120,30 +121,30 @@ dentalLinks.config(['$httpProvider', function ($httpProvider) {
 
 dentalLinks.factory('spinnerInterceptor', ['$q', 'Spinner', function ($q, Spinner) {
     return {
-        request: function(config) {
+        request: function (config) {
             // do something on success
             Spinner.show();
             return config;
         },
 
-        requestError: function(rejection) {
+        requestError: function (rejection) {
             Spinner.hide();
             return $q.reject(rejection);
         },
 
-        response: function(response) {
+        response: function (response) {
             Spinner.hide();
             return response;
         },
 
-        responseError: function(rejection) {
+        responseError: function (rejection) {
             Spinner.hide();
             return $q.reject(rejection);
         }
     };
 }]);
 
-dentalLinks.factory('authInterceptor', ['$rootScope', '$q','AUTH_EVENTS', '$location', 'redirect', 'Auth', function ($rootScope, $q, AUTH_EVENTS, $location, redirect, Auth) {
+dentalLinks.factory('authInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', '$location', 'redirect', 'Auth', function ($rootScope, $q, AUTH_EVENTS, $location, redirect, Auth) {
     return {
         request: function (config) {
             config.headers = config.headers || {};
@@ -170,7 +171,7 @@ dentalLinks.factory('authInterceptor', ['$rootScope', '$q','AUTH_EVENTS', '$loca
             }
 
             return $q.reject(response);
-        },
+        }
     };
 }]);
 

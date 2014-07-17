@@ -1,7 +1,7 @@
 var viewReferralModule = angular.module('viewReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',
-    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth) {
+viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File',
+    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File) {
         $scope.alerts = [];
         $scope.attachment_alerts = [];
 
@@ -44,11 +44,20 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         };
 
         $scope.savePdf = function () {
-            PDF.save(buildFileName('referral'));
+            Spinner.show();
+            $timeout(function () {
+                PDF.save(buildFileName('referral'));
+                Spinner.hide();
+            }, 50);
+
         };
 
         $scope.savePatientPdf = function () {
-            PDF.saveForPatient(buildFileName('patient'));
+            Spinner.show();
+            $timeout(function () {
+                PDF.saveForPatient(buildFileName('patient'));
+                Spinner.hide();
+            }, 50);
         };
 
         $scope.noteDialog = function () {
@@ -56,7 +65,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 templateUrl: 'partials/note_form.html',
                 controller: 'NoteModalController'
             });
-
+            ModalHandler.set(modalInstance);
             modalInstance.result.then(function (note) {
                 submitNote(note);
             });
@@ -94,9 +103,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
         };
 
-        $scope.isImage = function (attachment) {
-            return attachment.filename.toLowerCase().search(/(jpg|png|gif)$/) >= 0;
-        };
+        $scope.isImage = File.isImage;
 
         $scope.userBelongsToDestPractice = function () {
             return Auth.get().practice_id == $scope.referral.dest_practice_id;
@@ -146,7 +153,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
                 $scope.total_size = $scope.total_size + item.size;
 
-                
+
                 return true;
             });
 
@@ -154,7 +161,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             uploader.bind('afteraddingfile', function (event, item) {
 
                 Logger.info('After adding a file', item);
-                
+
                 // show the loading indicator
                 $scope.$parent.progressIndicatorStart()
 
@@ -176,7 +183,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 Logger.debug('FORM DATA:', uploader.formData);
                 Logger.debug('SCOPE DATA:', $scope.s3Credentials);
                 Logger.info('Before upload', item);
-                
+
 
             });
 
@@ -190,7 +197,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 Attachment.save({attachment: attachment}, function (newAttachment) {
                     $scope.referral.attachments.push(newAttachment);
                     Alert.success($scope.alerts, 'Attachment was added successfully!');
-                    
+
                 });
 
             });

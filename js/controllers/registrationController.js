@@ -1,7 +1,7 @@
 var registrationModule = angular.module('registration', []);
 
-registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', 'Alert', 'Auth', 'Practice',  'ProviderInvitation', 'Registration', 'Spinner',
-    function ($scope, $location, $stateParams, $modal, Alert, Auth, Practice, ProviderInvitation, Registration, Spinner) {
+registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Spinner',
+    function ($scope, $location, $stateParams, $modal, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Spinner) {
         $scope.alerts = [];
 
         $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token}, function (success) {
@@ -24,6 +24,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                 templateUrl: 'partials/practice_form.html',
                 controller: 'PracticeModalController'
             });
+            ModalHandler.set(modalInstance);
             modalInstance.result.then(function (practice) {
                 $scope.user.practice = practice;
             });
@@ -33,10 +34,9 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             user.practice_id = user.practice.id;
             Registration.save({user: user, invitation_token: $stateParams.invitation_token},
                 function (success) {
-                    Alert.success($scope.alerts, 'You have successfully registered!');
                     Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
                     Auth.current_user = success;
-                    $location.path('/admin');
+                    $scope.registrationSuccessful = true;
                 },
                 function (failure) {
                     Alert.error($scope.alerts, 'Error during registration.')
