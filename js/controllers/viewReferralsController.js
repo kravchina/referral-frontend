@@ -7,6 +7,11 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
         $scope.total_size = 0;
 
+        auth = Auth.get() || {};
+        $scope.host = host;
+        $scope.token = auth.token;
+        $scope.from = auth.email;
+
         PDF.init();
 
         $scope.referral = Referral.get({id: $stateParams.referral_id}, function (success) {
@@ -32,6 +37,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             PDF.prepare(data);
             Logger.debug('Filled in PDF data.');
         });
+
 
         var buildFileName = function (suffix) {
             return $scope.referral.patient.first_name + '-' + $scope.referral.patient.last_name + '-' + suffix + '.pdf';

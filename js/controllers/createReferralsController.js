@@ -1,10 +1,15 @@
 var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-createReferralModule.controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Alert', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger',
-    function ($scope, $state, $stateParams, Alert, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger) {
+createReferralModule.controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Alert', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger', 'Auth',
+    function ($scope, $state, $stateParams, Alert, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger, Auth) {
 
         $scope.alerts = [];
         $scope.attachment_alerts = [];
+
+        auth = Auth.get() || {};
+        $scope.host = host;
+        $scope.token = auth.token;
+        $scope.from = auth.email;
         
         if ($stateParams.referral_id) {
             Logger.debug('Referral id present, getting referral #' + $stateParams.referral_id + '...');

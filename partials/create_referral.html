@@ -137,9 +137,9 @@
             <ul>
                 <!-- Attachments on server -->
                 <li class="attachment-block" ng-repeat="attachment in attachments">
-                    <a href="{{attachment.filename}}">
-                        <div class="attachment-thumb" attachment-thumb="{{attachment.filename}}">
-                            <img ng-if="isImage(attachment)" access="admin, doctor" ng-src="{{attachment.filename}}" total-images="{{attachments.length}}" crossorigin="anonymous" alt="img">
+                    <a href="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filename | filename}}">
+                        <div class="attachment-thumb" attachment-thumb="{{attachment.filename | filename}}">
+                            <img ng-if="isImage(attachment)" access="admin, doctor" ng-src="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filename | filename}}" total-images="{{attachments.length}}" crossorigin="anonymous" alt="img">
                         </div>
                         <div class="attachment-details">
                             <span class="filename">{{attachment.filename | filename}}</span>

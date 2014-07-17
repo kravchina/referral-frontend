@@ -88,6 +88,8 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
     .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges) {
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+            console.log(toState);
+            console.log(fromState);
             if (!Auth.authorize(toState.access)) {
                 event.preventDefault();
                 $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
@@ -149,6 +151,7 @@ dentalLinks.factory('authInterceptor', ['$rootScope', '$q','AUTH_EVENTS', '$loca
             if (auth && auth.token) {
                 config.headers.Authorization = auth.token;
                 config.headers.From = auth.email;
+                console.log(auth.token);
             }
             return config;
         },
