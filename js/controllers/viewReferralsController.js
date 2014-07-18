@@ -12,12 +12,14 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         $scope.token = auth.token;
         $scope.from = auth.email;
 
+        $scope.s3UploadPath = "https://dev1-attachments.s3.amazonaws.com/uploads/";
+
         PDF.init();
 
         $scope.referral = Referral.get({id: $stateParams.referral_id}, function (success) {
                 angular.forEach(success.attachments, function(attachment, key){
-                    console.log(attachment);
                     $scope.total_size = $scope.total_size + attachment.size;
+                    attachment['filenameToDownload'] = attachment.filename.replace($scope.s3UploadPath, '');
                 });
 
                 console.log($scope.total_size);
@@ -195,6 +197,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 Logger.info('Success', xhr, item, response);
                 var attachment = {filename: item.url + '/' + bucket_path + item.file.name, size: item.file.size, notes: item.notes, referral_id: $scope.referral.id, created_at: Date.now()};
                 Attachment.save({attachment: attachment}, function (newAttachment) {
+                    newAttachment['filenameToDownload'] = newAttachment.filename.replace($scope.s3UploadPath, '');
                     $scope.referral.attachments.push(newAttachment);
                     Alert.success($scope.alerts, 'Attachment was added successfully!');
 

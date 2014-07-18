@@ -138,9 +138,9 @@
                     <!-- Attachment block -->
                     <li class="attachment-block" ng-repeat="attachment in referral.attachments">
 
-                        <a href="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filename | filename}}">
+                        <a href="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filenameToDownload}}">
                             <div class="attachment-thumb" attachment-thumb="{{attachment.filename | filename}}">
-                                <img ng-show="isImage(attachment)" pdf-photos access="admin, doctor" ng-src="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filename | filename}}" total-images="{{referral.attachments.length}}" crossorigin="anonymous" alt="img">
+                                <img ng-show="isImage(attachment.filename)" pdf-photos access="admin, doctor" ng-src="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filenameToDownload}}" total-images="{{referral.attachments.length}}" crossorigin="anonymous" alt="img">
 
                             </div>
                             <div class="attachment-details">
