@@ -10,7 +10,12 @@ loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location'
 
         $scope.result = {failure: false};
         $scope.login = function (user) {   /*{'user': {'email': user.email, 'password': user.password }}*/
-            
+
+            user.email = $("#email").val();
+            user.password = $("#password").val();
+
+            alert('user.email = ' + user.email + '\nuser.password = ' + user.password);
+
             Login.login({'user': {'email': user.email, 'password': user.password }},
                 function (success) {
                     Auth.set({token: success.token, email: user.email, roles: success.roles, id: success.id, practice_id: success.practice_id});

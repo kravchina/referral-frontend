@@ -8,14 +8,14 @@
         <div ng-class="{'has-error': form.email.$invalid && form.email.$dirty}">
             <label>
                 E-Mail:
-                <input type="email" name="email" ng-model="user.email" ng-required="true" class="form-control login"/>
+                <input type="email" id="email" ng-model="user.email" ng-required="true" class="form-control login"/>
             </label>
         </div>
 
         <div ng-class="{'has-error': form.password.$invalid && form.password.$dirty}">
             <label>
                 Password:
-                <input type="password" ng-model="user.password" name="password" ng-required="true" class="form-control login"/>
+                <input type="password" id="password" ng-model="user.password" ng-required="true" class="form-control login"/>
             </label>
         </div>
 
