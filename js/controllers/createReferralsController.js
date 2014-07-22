@@ -1,8 +1,8 @@
 var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
 
-createReferralModule.controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Alert', 'Auth', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger', 'ModalHandler', 'File',
-    function ($scope, $state, $stateParams, Alert, Auth, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger, ModalHandler, File) {
+createReferralModule.controller('CreateReferralsController', ['$scope', '$state', '$stateParams', '$timeout', 'Alert', 'Auth', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger', 'ModalHandler', 'File',
+    function ($scope, $state, $stateParams, $timeout, Alert, Auth, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger, ModalHandler, File) {
 
         $scope.alerts = [];
         $scope.attachment_alerts = [];
@@ -339,14 +339,16 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             UnsavedChanges.setUnsavedChanges(true);
         };
 
-        $scope.$watch('patient', processFormChange);
-        $scope.$watch('destinationPractice', processFormChange);
-        $scope.$watch('model.referral.dest_provider_id', processFormChange);
-        $scope.$watch('practiceType', processFormChange);
-        $scope.$watch('model.referral.procedure_id', processFormChange);
-        // teeth caught in $scope.toggleTooth
-        // attachments caught in afteraddingfile handler
-        // notes caught in $scope.noteDialog
+        $timeout(function() {
+            $scope.$watch('patient', processFormChange);
+            $scope.$watch('destinationPractice', processFormChange);
+            $scope.$watch('model.referral.dest_provider_id', processFormChange);
+            $scope.$watch('practiceType', processFormChange);
+            $scope.$watch('model.referral.procedure_id', processFormChange);
+            // teeth caught in $scope.toggleTooth
+            // attachments caught in afteraddingfile handler
+            // notes caught in $scope.noteDialog
+        });
 
     }]);
 
