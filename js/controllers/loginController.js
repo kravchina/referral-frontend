@@ -37,8 +37,14 @@ loginModule.controller('LoginController', ['$scope', '$http', 'Auth', 'User', '$
             //     console.log($scope.result);
             // })
 
-            $.post(host + '/sign_in', {'user': {'email': user.email, 'password': user.password }})
-            .success(function(success){
+            $.ajax({
+                type: "POST",
+                url: host + '/sign_in',
+                data: {'user': {'email': user.email, 'password': user.password }},
+                dataType: 'json',
+                crossDomain : true
+            })
+            .done(function(success){
                 Auth.set({token: success.token, email: user.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
 
                 user = User.get({id: success.id});
@@ -48,7 +54,7 @@ loginModule.controller('LoginController', ['$scope', '$http', 'Auth', 'User', '$
                 $location.path(redirect.path);
                 $scope.result = {success: true};
             })
-            .error(function(failure){
+            .fail(function(failure){
                 console.log(failure);
                 Auth.remove();
                 if(failure.status == 0){
