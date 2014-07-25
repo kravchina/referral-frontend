@@ -15,8 +15,30 @@ loginModule.controller('LoginController', ['$scope', '$http', 'Auth', 'User', '$
             user.email = $("#email").val();
             user.password = $("#password").val();
 
-            $http.post(host + '/sign_in', {'user': {'email': user.email, 'password': user.password }}).
-            success(function(success, status){
+            // $http.post(host + '/sign_in', {'user': {'email': user.email, 'password': user.password }}).
+            // success(function(success, status){
+            //     Auth.set({token: success.token, email: user.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
+
+            //     user = User.get({id: success.id});
+            //     Auth.current_user = user;
+
+            //     $scope.email = user.email;
+            //     $location.path(redirect.path);
+            //     $scope.result = {success: true};
+            // })
+            // .error(function(failure, status){
+            //     console.log(failure);
+            //     Auth.remove();
+            //     if(failure.status == 0){
+            //         $scope.result = {failure: true, statusText: 'Upstream server connectivity error. Administrator was informed. Please try again later'};
+            //     }else{
+            //         $scope.result = {failure: true, statusText: 'Unable to login with provided credentials'};
+            //     }
+            //     console.log($scope.result);
+            // })
+
+            $.post(host + '/sign_in', {'user': {'email': user.email, 'password': user.password }})
+            .success(function(success){
                 Auth.set({token: success.token, email: user.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
 
                 user = User.get({id: success.id});
@@ -26,7 +48,7 @@ loginModule.controller('LoginController', ['$scope', '$http', 'Auth', 'User', '$
                 $location.path(redirect.path);
                 $scope.result = {success: true};
             })
-            .error(function(failure, status){
+            .error(function(failure){
                 console.log(failure);
                 Auth.remove();
                 if(failure.status == 0){
@@ -35,7 +57,7 @@ loginModule.controller('LoginController', ['$scope', '$http', 'Auth', 'User', '$
                     $scope.result = {failure: true, statusText: 'Unable to login with provided credentials'};
                 }
                 console.log($scope.result);
-            })
+            });
 
         //     Login.login({'user': {'email': user.email, 'password': user.password }},
         //         function (success) {
