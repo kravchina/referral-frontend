@@ -12,6 +12,11 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         $scope.token = auth.token;
         $scope.from = auth.email;
 
+        $scope.total_size = 0;
+
+        $scope.s3UploadPath = "https://dev1-attachments.s3.amazonaws.com/uploads/";
+        $scope.s3HttpUploadPath = "http://dev1-attachments.s3.amazonaws.com/uploads/";
+
         if ($stateParams.referral_id) {
             Logger.debug('Referral id present, getting referral #' + $stateParams.referral_id + '...');
             Referral.get({id: $stateParams.referral_id}).$promise.then(function (referral) {
@@ -24,7 +29,11 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
                 Logger.debug('Setting $scope values from obtained referral...');
                 $scope.patient = referral.patient;
-                $scope.destinationPractice = referral.dest_provider.practice;
+                console.log(referral);
+                if(referral.dest_provider && referral.dest_provider.practice){
+                    $scope.destinationPractice = referral.dest_provider.practice;
+                }
+                
                 $scope.model.dest_provider = referral.dest_provider_id;
                 $scope.practiceType = referral.procedure.practice_type;
                 $scope.model.referral.id = referral.id;
@@ -36,6 +45,10 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                 });
                 $scope.model.referral.notes = referral.notes;
                 $scope.attachments = referral.attachments;
+                angular.forEach(referral.attachments, function(attachment, key){
+                    $scope.total_size = $scope.total_size + attachment.size;
+                    attachment['filenameToDownload'] = attachment.filename.replace($scope.s3UploadPath, '').replace($scope.s3HttpUploadPath, '');
+                });
                 teeth = $scope.teeth = referral.teeth.split('+');
                 Logger.debug('Set $scope values from obtained referral.');
             });
@@ -90,12 +103,16 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             model.referral.dest_practice_id = $scope.destinationPractice.id;
             model.referral.patient_id = $scope.patient.id;
             model.referral.teeth = teeth.join('+');
-            for (var i = 0; i < $scope.uploader.queue.length; i++) {
-                var item = $scope.uploader.queue[i];
-                item.upload();
-            }
 
         };
+
+        var uploadAttachments = function(referral_id){
+            for (var i = 0; i < $scope.uploader.queue.length; i++) {
+                var item = $scope.uploader.queue[i];
+                item.formData.push({referral_id: referral_id});
+                item.upload();
+            }
+        }
 
         $scope.saveTemplate = function (model) {
 
@@ -107,6 +124,9 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     $scope.model.referral.notes_attributes = [];
                     Alert.success($scope.alerts, 'Template was saved successfully!');
                     UnsavedChanges.setUnsavedChanges(false);
+
+                    uploadAttachments(success.id)
+                    $scope.is_create = false;
 
                 }, failure: function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during referral template creation...');
@@ -126,7 +146,9 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     Logger.debug('Sent referral #' + referral.id);
                     Alert.success($scope.alerts, 'Referral was sent successfully!');
                     UnsavedChanges.setUnsavedChanges(false);
-                    $state.go('viewReferral', {referral_id: referral.id});
+                    uploadAttachments(referral.id);
+                    $scope.is_create = true;
+                    // $state.go('viewReferral', {referral_id: referral.id});
                 },
                 failure: function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during referral creation...');
@@ -215,24 +237,16 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         $scope.model.attachments = [];
 
         S3Bucket.getCredentials(function (success) {
-            var bucket_path = 'uploads/';
             var uploader = $scope.uploader = $fileUploader.create({
                 scope: $scope,
-                url: 'https://dev1-attachments.s3.amazonaws.com/',
+                url: host + '/attachment/upload',
                 formData: [
-                    { key: bucket_path + '${filename}' },
-                    {AWSAccessKeyId: success.s3_access_key_id},
-                    {acl: 'public-read'},
-                    {success_action_status: '200'},
-                    {policy: success.s3_policy},
-                    {signature: success.s3_signature}
+                    {filename: 'test'},
                 ]
             });
 
             var each_file_size_limit = 50 * 1024 * 1024;
             var total_file_size_limit = 100 * 1024 * 1024;
-
-            var total_size = 0;
 
             $scope.attachment_error = false;
 
@@ -249,12 +263,12 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     return false;
                 }
 
-                if (total_size + item.size > total_file_size_limit) {
+                if ($scope.total_size + item.size > total_file_size_limit) {
                     Alert.error($scope.attachment_alerts, 'You can not upload files with more than 100 MB size.');
                     return false;
                 }
 
-                total_size = total_size + item.size;
+                $scope.total_size = $scope.total_size + item.size;
 
                 return true;
             });
@@ -264,8 +278,8 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             uploader.bind('afteraddingfile', function (event, item) {
                 Logger.info('After adding a file', item);
                 // marking an attachment for saving
-                $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes, size: item.file.size});
-                processFormChange(item);
+                // $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes, size: item.file.size});
+                // processFormChange(item);
 
             });
 
@@ -295,7 +309,8 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
             uploader.bind('success', function (event, xhr, item, response) {
                 Logger.info('Success', xhr, item, response);
-                item.downloadUrl = item.url + bucket_path + item.file.name;
+                item.downloadUrl = response.filename;
+                item['filenameToDownload'] = item.downloadUrl.replace($scope.s3UploadPath, '').replace($scope.s3HttpUploadPath, '');
             });
 
             uploader.bind('cancel', function (event, xhr, item) {
@@ -325,6 +340,11 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
                 // show the loading indicator
                 $scope.$parent.progressIndicatorEnd()
+
+                if($scope.is_create){
+                    $state.go('createReferral', {referral_id: $scope.model.referral.id});
+                }
+                
 
             });
 

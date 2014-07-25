@@ -138,10 +138,10 @@
                 <!-- Attachments on server -->
                 <li class="attachment-block" ng-repeat="attachment in attachments">
 
-                    <a href="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filename | filename}}">
+                    <a href="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filenameToDownload}}">
                         <div class="attachment-thumb" attachment-thumb="{{attachment.filename | filename}}">
 
-                            <img ng-if="isImage(attachment.filename)" access="admin, doctor" ng-src="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filename | filename}}&is_thumb=true" total-images="{{attachments.length}}" crossorigin="anonymous" alt="img">
+                            <img ng-if="isImage(attachment.filename)" access="admin, doctor" ng-src="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{attachment.filenameToDownload}}&is_thumb=true" total-images="{{attachments.length}}" crossorigin="anonymous" alt="img">
 
                         </div>
                         <div class="attachment-details">
@@ -153,7 +153,7 @@
 
                 <!-- Attachments in the queue, no links -->
                 <li class="attachment-block" ng-repeat="item in uploader.queue">
-                    <a ng-href="{{item.downloadUrl}}" target="_blank">
+                    <a ng-href="{{host}}/attachment/?authentication_token={{token}}&from={{from}}&file={{item.filenameToDownload}}" target="_blank">
                     <div class="attachment-thumb" ng-show="uploader.isHTML5"
                              ng-thumb="{ file: item.file, height: 80, width:80 }">
                             <!-- no img, canvas is automatically generated here -->
