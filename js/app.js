@@ -113,7 +113,7 @@ dentalLinks.config(['$locationProvider', function ($locationProvider) {
 
 dentalLinks.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.defaults.useXDomain = true;
-    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    // delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.interceptors.push('authInterceptor');
     $httpProvider.interceptors.push('spinnerInterceptor');
 }
