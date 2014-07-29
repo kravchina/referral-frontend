@@ -13,7 +13,7 @@ dentalLinks.controller('NavController', ['$scope', '$state', 'Auth', 'Logger', '
 
         $scope.progressIndicatorStart = function(){
             $scope.loadingProgress = true;
-            $scope.$apply()
+            // $scope.$apply()
         };
 
         $scope.progressIndicatorEnd = function(){

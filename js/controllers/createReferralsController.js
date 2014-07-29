@@ -12,6 +12,11 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         $scope.token = auth.token;
         $scope.from = auth.email;
 
+        $scope.total_size = 0;
+
+        $scope.s3UploadPath = "https://dev1-attachments.s3.amazonaws.com/uploads/";
+        $scope.s3HttpUploadPath = "http://dev1-attachments.s3.amazonaws.com/uploads/";
+
         if ($stateParams.referral_id) {
             Logger.debug('Referral id present, getting referral #' + $stateParams.referral_id + '...');
             Referral.get({id: $stateParams.referral_id}).$promise.then(function (referral) {
@@ -24,7 +29,11 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
                 Logger.debug('Setting $scope values from obtained referral...');
                 $scope.patient = referral.patient;
-                $scope.destinationPractice = referral.dest_provider.practice;
+                console.log(referral);
+                if(referral.dest_provider && referral.dest_provider.practice){
+                    $scope.destinationPractice = referral.dest_provider.practice;
+                }
+                
                 $scope.model.dest_provider = referral.dest_provider_id;
                 $scope.practiceType = referral.procedure.practice_type;
                 $scope.model.referral.id = referral.id;
@@ -36,6 +45,10 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                 });
                 $scope.model.referral.notes = referral.notes;
                 $scope.attachments = referral.attachments;
+                angular.forEach(referral.attachments, function(attachment, key){
+                    $scope.total_size = $scope.total_size + attachment.size;
+                    attachment['filenameToDownload'] = attachment.filename.replace($scope.s3UploadPath, '').replace($scope.s3HttpUploadPath, '');
+                });
                 teeth = $scope.teeth = referral.teeth.split('+');
                 Logger.debug('Set $scope values from obtained referral.');
             });
@@ -90,12 +103,16 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             model.referral.dest_practice_id = $scope.destinationPractice.id;
             model.referral.patient_id = $scope.patient.id;
             model.referral.teeth = teeth.join('+');
-            for (var i = 0; i < $scope.uploader.queue.length; i++) {
-                var item = $scope.uploader.queue[i];
-                item.upload();
-            }
 
         };
+
+        var uploadAttachments = function(referral_id){
+            for (var i = 0; i < $scope.uploader.queue.length; i++) {
+                var item = $scope.uploader.queue[i];
+                item.formData.push({referral_id: referral_id});
+                item.upload();
+            }
+        }
 
         $scope.saveTemplate = function (model) {
 
@@ -107,6 +124,9 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     $scope.model.referral.notes_attributes = [];
                     Alert.success($scope.alerts, 'Template was saved successfully!');
                     UnsavedChanges.setUnsavedChanges(false);
+
+                    uploadAttachments(success.id)
+                    $scope.is_create = false;
 
                 }, failure: function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during referral template creation...');
@@ -126,7 +146,9 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     Logger.debug('Sent referral #' + referral.id);
                     Alert.success($scope.alerts, 'Referral was sent successfully!');
                     UnsavedChanges.setUnsavedChanges(false);
-                    $state.go('viewReferral', {referral_id: referral.id});
+                    uploadAttachments(referral.id);
+                    $scope.is_create = true;
+                    // $state.go('viewReferral', {referral_id: referral.id});
                 },
                 failure: function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during referral creation...');
@@ -214,121 +236,120 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         // non-displayed list of attachments to be uploaded on Save or Send
         $scope.model.attachments = [];
 
-        S3Bucket.getCredentials(function (success) {
-            var bucket_path = 'uploads/';
-            var uploader = $scope.uploader = $fileUploader.create({
-                scope: $scope,
-                url: 'https://dev1-attachments.s3.amazonaws.com/',
-                formData: [
-                    { key: bucket_path + '${filename}' },
-                    {AWSAccessKeyId: success.s3_access_key_id},
-                    {acl: 'public-read'},
-                    {success_action_status: '200'},
-                    {policy: success.s3_policy},
-                    {signature: success.s3_signature}
-                ]
-            });
+        
+        var uploader = $scope.uploader = $fileUploader.create({
+            scope: $scope,
+            url: host + '/attachment/upload',
+            formData: [
+                {filename: 'test'},
+            ],
+            headers: {'Authorization' : $scope.token, 'From': $scope.from}
+        });
 
-            var each_file_size_limit = 50 * 1024 * 1024;
-            var total_file_size_limit = 100 * 1024 * 1024;
+        var each_file_size_limit = 50 * 1024 * 1024;
+        var total_file_size_limit = 100 * 1024 * 1024;
 
-            var total_size = 0;
+        $scope.attachment_error = false;
 
-            $scope.attachment_error = false;
+        // Filters
+        uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
+            //var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
+            //type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
+            //return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
 
-            // Filters
-            uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
-                //var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
-                //type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
-                //return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            console.log(item);
 
-                console.log(item);
+            if (item.size > each_file_size_limit) {
+                Alert.error($scope.attachment_alerts, 'You can not upload a file with more than 50 MB size.');
+                return false;
+            }
 
-                if (item.size > each_file_size_limit) {
-                    Alert.error($scope.attachment_alerts, 'You can not upload a file with more than 50 MB size.');
-                    return false;
-                }
+            if ($scope.total_size + item.size > total_file_size_limit) {
+                Alert.error($scope.attachment_alerts, 'You can not upload files with more than 100 MB size.');
+                return false;
+            }
 
-                if (total_size + item.size > total_file_size_limit) {
-                    Alert.error($scope.attachment_alerts, 'You can not upload files with more than 100 MB size.');
-                    return false;
-                }
+            $scope.total_size = $scope.total_size + item.size;
 
-                total_size = total_size + item.size;
+            return true;
+        });
 
-                return true;
-            });
+        // REGISTER HANDLERS
 
-            // REGISTER HANDLERS
-
-            uploader.bind('afteraddingfile', function (event, item) {
-                Logger.info('After adding a file', item);
-                // marking an attachment for saving
-                $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes, size: item.file.size});
-                processFormChange(item);
-
-            });
-
-            uploader.bind('whenaddingfilefailed', function (event, item) {
-                Logger.info('When adding a file failed', item);
-                Alert.error($scope.alerts, 'Adding file failed. Please try again later.')
-            });
-
-            uploader.bind('afteraddingall', function (event, items) {
-                Logger.info('After adding all files', items);
-            });
-
-            uploader.bind('beforeupload', function (event, item) {
-
-                Logger.debug('FORM DATA:', uploader.formData);
-                Logger.debug('SCOPE DATA:', $scope.s3Credentials);
-                Logger.info('Before upload', item);
-
-                // show the loading indicator
-                $scope.$parent.progressIndicatorStart()
-
-            });
-
-            uploader.bind('progress', function (event, item, progress) {
-                Logger.info('Progress: ' + progress, item);
-            });
-
-            uploader.bind('success', function (event, xhr, item, response) {
-                Logger.info('Success', xhr, item, response);
-                item.downloadUrl = item.url + bucket_path + item.file.name;
-            });
-
-            uploader.bind('cancel', function (event, xhr, item) {
-                Logger.info('Cancel', xhr, item);
-                Alert.info($scope.alerts, 'Attachment was cancelled.')
-            });
-
-            uploader.bind('error', function (event, xhr, item, response) {
-                Logger.error('Error', xhr, item, response);
-                Alert.error($scope.alerts, 'An error occured during attachment upload. Please try again later.')
-            });
-
-            uploader.bind('complete', function (event, xhr, item, response) {
-                Logger.info('Complete', xhr, item, response);
-            });
-
-            uploader.bind('progressall', function (event, progress) {
-
-                Logger.info('Total progress: ' + progress);
-
-                // show the loading indicator
-                $scope.$parent.setProgress(progress)
-            });
-
-            uploader.bind('completeall', function (event, items) {
-                Logger.info('Complete all', items);
-
-                // show the loading indicator
-                $scope.$parent.progressIndicatorEnd()
-
-            });
+        uploader.bind('afteraddingfile', function (event, item) {
+            Logger.info('After adding a file', item);
+            // marking an attachment for saving
+            // $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes, size: item.file.size});
+            // processFormChange(item);
 
         });
+
+        uploader.bind('whenaddingfilefailed', function (event, item) {
+            Logger.info('When adding a file failed', item);
+            Alert.error($scope.alerts, 'Adding file failed. Please try again later.')
+        });
+
+        uploader.bind('afteraddingall', function (event, items) {
+            Logger.info('After adding all files', items);
+        });
+
+        uploader.bind('beforeupload', function (event, item) {
+
+            Logger.debug('FORM DATA:', uploader.formData);
+            Logger.debug('SCOPE DATA:', $scope.s3Credentials);
+            Logger.info('Before upload', item);
+
+            // show the loading indicator
+            $scope.$parent.progressIndicatorStart()
+
+        });
+
+        uploader.bind('progress', function (event, item, progress) {
+            Logger.info('Progress: ' + progress, item);
+        });
+
+        uploader.bind('success', function (event, xhr, item, response) {
+            Logger.info('Success', xhr, item, response);
+            item.downloadUrl = response.filename;
+            item['filenameToDownload'] = item.downloadUrl.replace($scope.s3UploadPath, '').replace($scope.s3HttpUploadPath, '');
+        });
+
+        uploader.bind('cancel', function (event, xhr, item) {
+            Logger.info('Cancel', xhr, item);
+            Alert.info($scope.alerts, 'Attachment was cancelled.')
+        });
+
+        uploader.bind('error', function (event, xhr, item, response) {
+            Logger.error('Error', xhr, item, response);
+            Alert.error($scope.alerts, 'An error occured during attachment upload. Please try again later.')
+        });
+
+        uploader.bind('complete', function (event, xhr, item, response) {
+            Logger.info('Complete', xhr, item, response);
+        });
+
+        uploader.bind('progressall', function (event, progress) {
+
+            Logger.info('Total progress: ' + progress);
+
+            // show the loading indicator
+            $scope.$parent.setProgress(progress)
+        });
+
+        uploader.bind('completeall', function (event, items) {
+            Logger.info('Complete all', items);
+
+            // show the loading indicator
+            $scope.$parent.progressIndicatorEnd()
+
+            if($scope.is_create){
+                $state.go('createReferral', {referral_id: $scope.model.referral.id});
+            }
+            
+
+        });
+
+        
 
         // VERY ugly. But I needed a quick way of finding out when this particular form is changed, in order to warn for unsaved changes.
         // Property $dirty on this form isn't set up properly, i.e. it doesn't cover the teeth, notes, etc.
