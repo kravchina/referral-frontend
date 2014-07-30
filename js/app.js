@@ -157,16 +157,18 @@ dentalLinks.factory('authInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', '$loc
             return config;
         },
         responseError: function (response) {
+            console.log('error intercepted: status = ' + response.status);
+
             if (response.status === 401 || response.status === 403) {
                 // handle the case where the user is not authenticated
-                // if ($location.path() !== '/sign_in') { //TODO! [mezerny] consider more elegant implementation - now we need to check the location because consequent requests to server from previous view could be finished after redirect to 'sign_in', in that case we are loosing desired 'redirect' location (it is replaced with '/sign_in')
-                //     $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
-                // }else{
-                //     var auth = Auth.get();
-                //     if (auth && auth.token) {
-                //         $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: redirect.path});
-                //     }
-                // }
+                if ($location.path() !== '/sign_in') { //TODO! [mezerny] consider more elegant implementation - now we need to check the location because consequent requests to server from previous view could be finished after redirect to 'sign_in', in that case we are loosing desired 'redirect' location (it is replaced with '/sign_in')
+                     $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
+                }else{
+                     var auth = Auth.get();
+                     if (auth && auth.token) {
+                         $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: redirect.path});
+                     }
+                }
 
             }
 
