@@ -152,7 +152,7 @@ dentalLinks.factory('authInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', '$loc
             if (auth && auth.token) {
                 config.headers.Authorization = auth.token;
                 config.headers.From = auth.email;
-                console.log(auth.token);
+//                console.log(auth.token);
             }
             return config;
         },
