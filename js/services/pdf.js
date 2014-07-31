@@ -61,8 +61,8 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
         var n = $filter('filename')(filename) || '';
         return n.length > 15 ? n.substr(0, 10).concat('...') : n;
     };
-    var formatDate = function (date, format) {
-        return $filter('date')(date, format) || '';
+    var formatDate = function (date) { // TODO [ak] remove from here. Create a centralized place where dates from across the whole app get formatted
+        return $filter('date')(date, 'mediumDate') || '';
     };
     
     var addPage = function (pdf) {
@@ -198,7 +198,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
                 
                 pdf.addImage(image, 'JPEG', xCaret, caret, thumbWidth, thumbHeight);
                 pdf.text(xCaret + thumbnailSquareSize + thumbnailTextPaddingX, caret + fontSizeMm, extractFileName(metadata.filename));
-                pdf.text(xCaret + thumbnailSquareSize + thumbnailTextPaddingX, caret + 2 * fontSizeMm, formatDate(metadata.created_at, 'mediumDate'));
+                pdf.text(xCaret + thumbnailSquareSize + thumbnailTextPaddingX, caret + 2 * fontSizeMm, formatDate(metadata.created_at));
                 
                 if (j % 2 == 0) {
                     // switch to second column
@@ -257,7 +257,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
         pdf.setFontType('bold');
         pdf.text(pagePaddings.x, caret, patientData.name);
         caret += fontSizeMm;
-        pdf.text(pagePaddings.x, caret, patientData.birthday);
+        pdf.text(pagePaddings.x, caret, formatDate(patientData.birthday));
         return caret+blocksPadding;
     }
     
