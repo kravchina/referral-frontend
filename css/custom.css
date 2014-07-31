@@ -782,14 +782,15 @@ textarea.form-control {
 	border-right: 2px solid #eee;
 }
 td.cell-datetime > span, td.cell-from .practice, td.cell-to .practice {
-	color: #bdc3c7;
+	/*color: #bdc3c7;*/
 	font-size: 12px;
 	font-size: 1.2rem;
 	font-weight: 300;
 }
-.table-hover > tbody > tr:hover > td.cell-datetime > span, .table-hover > tbody > tr:hover > td.cell-from .practice, .table-hover > tbody > tr:hover > td.cell-to .practice {
-	color: #95a5a6;
-}
+/*.table-hover > tbody > tr:hover > td.cell-datetime > span, .table-hover > tbody > tr:hover > td.cell-from .practice, .table-hover > tbody > tr:hover > td.cell-to .practice {*/
+	/*color: #95a5a6;*/
+/*}*/
+
 td.cell-datetime > span {
 	display: inline-block;
 	text-transform: uppercase;
@@ -801,7 +802,7 @@ td.cell-from > span, td.cell-to > span {
 	display: block;
 }
 td.cell-from .practice, td.cell-to .practice {
-	color: #bdc3c7;
+	color: #e98b39;
 	font-size: 12px;
 	font-size: 1.2rem;
 	font-weight: 300;
