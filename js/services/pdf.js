@@ -1,35 +1,61 @@
 var dentalLinksPdf = angular.module('pdf', []);
 dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner) {
-    var pdf;
+    var pdf = new jsPDF(); // TODO [ak] refactor. Initialization of global vars requires this, but in fact PDF is created in buildPdf()
+    
     var patientData = {};
     var procedureData = {};
     var originalPracticeData = {};
     var destinationPracticeData = {};
     var images;
     var notes;
-    var fontSize = 10;
-    var headerFontSize = 16;
-    var bottomTextFontSize = 8;
-    var headerHeight = 20;
-    var sizeA4 = { // in millimeters
-        width: 210,
-        height: 297
-    };
-    var imageStart = {
-        x: 10
-    };
-    var paragraphStart = {
-        x: 10, y: 10
-    };
-    var printableArea = {
-        width: sizeA4.width - 2 * paragraphStart.x,
-        height: sizeA4.height - 2 * paragraphStart.y
-    };
-
-    printableArea.halfWidth = Math.floor((printableArea.width - paragraphStart.x)/2);
-    paragraphStart.x2 = Math.floor(printableArea.halfWidth+2*paragraphStart.x);
     
-    var addressPaddingX = 10;
+    var pageSizes = { // A4 in millimeters
+        width: pdf.internal.pageSize.width,
+        height: pdf.internal.pageSize.height
+    };
+    
+    var pagePaddings = {
+        x: 10, // left & right
+        y: 10 // top & bottom
+    };
+    
+    var headerHeight = 20;
+    var headerColor = {
+        r: 52, g: 73, b: 94
+    };
+    var headerFontColor = {
+        r: 255, g: 255, b: 255
+    };
+    var headerFontSize = 12;
+    
+    var fontSize = 10;
+    var fontColor = {
+        r: 0, g: 0, b: 0
+    };
+    
+    // small font gray texts: images available below, check more at the site, etc.
+    var auxiliaryFontSize = 8;
+    var auxiliaryFontColor = {
+        r: 150, g: 150, b: 150
+    };
+    
+    var colPadding = 10; // horizontal, between the two columns
+    
+    var blocksPadding = 3; // vertical, between info blocks; line separator is 2X this size
+    
+    var addressPaddingX = 5; // x-padding under 'Referred' titles
+    
+    var thumbnailSquareSize = 30; // width & height of the thumbnail square
+    var thumbnailTextPaddingX = 5; // from the thumbnail itself
+
+    var fullSizeColWidth = pageSizes.width - 2 * pagePaddings.x;
+    var halfSizeColWidth = (pageSizes.width - 2 * pagePaddings.x - colPadding) / 2;
+    
+    var secondColX = pagePaddings.x + halfSizeColWidth + colPadding; // where second column starts
+    
+    var headerFontSizeMm = headerFontSize / pdf.internal.scaleFactor;
+    var fontSizeMm = fontSize / pdf.internal.scaleFactor;
+    var auxiliaryFontSizeMm = auxiliaryFontSize / pdf.internal.scaleFactor;
     
     var extractFileName = function (filename) {
         var n = $filter('filename')(filename) || '';
@@ -38,71 +64,103 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
     var formatDate = function (date, format) {
         return $filter('date')(date, format) || '';
     };
-
+    
+    var addPage = function (pdf) {
+        pdf.addPage();
+        return appendHeader(pdf);
+    };
+    
     var addPageIfNeeded = function (pdf, caret, expectedHeight) {
-        if (caret + expectedHeight > paragraphStart.y + printableArea.height) {
-            pdf.addPage();
-            caret = appendHeader(pdf);
+        if (caret + expectedHeight > pageSizes.height - pagePaddings.y) {
+            caret = addPage(pdf);
         }
         return caret;
     };
 
     var appendHeader = function (pdf) {
-        pdf.setFillColor(52, 73, 94);
-        pdf.rect(0, 0, sizeA4.width, headerHeight, 'F');
+        pdf.setFillColor(headerColor.r, headerColor.g, headerColor.b);
+        pdf.rect(0, 0, pageSizes.width, headerHeight, 'F');
 
-        pdf.setDrawColor(0, 0, 0);
-//        pdf.rect(paragraphStart.x, paragraphStart.y, printableArea.width, printableArea.height);
+        var y = pagePaddings.y + headerFontSizeMm; // because jsPDF draws text "up" from the specified Y
         
-        pdf.setTextColor(255, 255, 255);
+        pdf.setTextColor(headerFontColor.r, headerFontColor.g, headerFontColor.b);
         pdf.setFontSize(headerFontSize);
         var strBold = 'Dental';
         pdf.setFontType('bold');
-        var width = pdf.getStringUnitWidth(strBold) * headerFontSize / pdf.internal.scaleFactor;
-        pdf.text(paragraphStart.x, paragraphStart.y + headerFontSize / pdf.internal.scaleFactor / 2, strBold);
+        var width = pdf.getStringUnitWidth(strBold) * headerFontSizeMm;
+        pdf.text(pagePaddings.x, y, strBold);
 
+        // pdf.setDrawColor(255, 255, 255);
+        // pdf.rect(pagePaddings.x, y - headerFontSizeMm, width, headerFontSizeMm);
+        
         var strNormal = 'Links';
         pdf.setFontType('normal');
-        pdf.text(paragraphStart.x + width, paragraphStart.y + headerFontSize / pdf.internal.scaleFactor / 2, strNormal);
+        pdf.text(pagePaddings.x + width, y, strNormal);
 
-        pdf.setTextColor(0, 0, 0);
-        pdf.setFillColor(255, 255, 255);
-
-        return headerHeight + paragraphStart.y + fontSize / pdf.internal.scaleFactor;
+        return headerHeight + blocksPadding;
     };
 
     var appendNotes = function (pdf, caret) {
-        if (notes && notes.length) for (var k = 0; k < notes.length; k++) {
-            var noteLines = pdf.splitTextToSize(notes[k].message, printableArea.width);
-            var noteHeight = noteLines.length * fontSize / pdf.internal.scaleFactor;
-            caret = addPageIfNeeded(pdf, caret, noteHeight);
-            pdf.text(paragraphStart.x, caret, noteLines);
-            caret += noteHeight;
+        if (notes && notes.length && notes.length > 0) {
+            pdf.setFontType('normal');
+            for (var k = 0; k < notes.length; k++) {
+                var noteLines = pdf.splitTextToSize(notes[k].message, fullSizeColWidth);
+                var noteHeight = noteLines.length * fontSizeMm;
+                caret = addPageIfNeeded(pdf, caret, noteHeight);
+                caret += fontSizeMm;
+                pdf.text(pagePaddings.x, caret, noteLines); // assuming that note can fit at least a blank page. If not, what kind of "note" is it?..
+                caret += noteHeight - fontSizeMm;
+            }
+            caret += blocksPadding;
+            caret = appendLineSeparator(pdf, caret);
+            return caret;
         }
-        return caret + paragraphStart.y;
+        
+        return caret;
     };
 
     var appendImages = function (pdf, caret) {
-        if (images) {
-
+        if (images && images.length && images.length > 0) {
+            
+            pdf.setFontSize(auxiliaryFontSize);
+            pdf.setTextColor(auxiliaryFontColor.r, auxiliaryFontColor.g, auxiliaryFontColor.b);
+            pdf.setFontType('italic');
+            caret += auxiliaryFontSizeMm; // assuming we're not at EOP yet and can output one line
+            pdf.text(pagePaddings.x, caret, 'See full-size attachments on subsequent pages');
+            
             for (var j = 0; j < images.length; j++) {
                 var image = images[j].image;
                 if (!image) {
                     continue;
                 }
+                
+                caret = addPage(pdf);
+                
+                pdf.setFontSize(fontSize);
+                pdf.setTextColor(fontColor.r, fontColor.g, fontColor.b);
+                pdf.setFontType('normal');
+                
+                caret += fontSizeMm;
+                pdf.text(pagePaddings.x, caret, extractFileName(images[j].metadata.filename));
+                
+                caret += blocksPadding;
+
                 var aspectRatio = image.width / image.height;
-                caret = addPageIfNeeded(pdf, caret, 190 / aspectRatio);
-                pdf.addImage(image, 'JPEG', imageStart.x, caret, 190, 190 / aspectRatio);
-                caret += 190 / aspectRatio;
-                caret += 10;
+                var imageHeight = fullSizeColWidth / aspectRatio;
+                pdf.addImage(image, 'JPEG', pagePaddings.x, caret, fullSizeColWidth, imageHeight); // assuming image's aspect ratio allows full-width positioning
+                caret += imageHeight + blocksPadding;
             }
         }
         return caret;
     };
 
     var appendThumbnails = function (pdf, caret) {
-        if (images) {
-            var xCaret = imageStart.x;
+        if (images && images.length && images.length > 0) {
+            pdf.setFontSize(fontSize);
+            pdf.setTextColor(fontColor.r, fontColor.g, fontColor.b);
+            pdf.setFontType('normal');
+            
+            var xCaret = pagePaddings.x;
             for (var j = 0; j < images.length; j++) {
                 if (!images[j].image) {
                     var type = images[j].metadata.filename.slice(images[j].metadata.filename.lastIndexOf('.') + 1);
@@ -124,24 +182,39 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
                 }
                 var image = images[j].image;
                 var metadata = images[j].metadata;
-                var thumbnailSize = 80 / pdf.internal.scaleFactor;
-
-
-                //add text about image similar to web page
-                var thumbnailCaptionsWidth = thumbnailSize + 155 / pdf.internal.scaleFactor;
-                if (xCaret + thumbnailCaptionsWidth > 200 /*can't append to current row*/) {
-                    xCaret = imageStart.x;
-                    caret += thumbnailSize + 10;
+                
+                var thumbWidth;
+                var thumbHeight;
+                
+                if (image.width > image.height) {
+                    // squeezing by width
+                    thumbWidth = thumbnailSquareSize;
+                    thumbHeight = thumbnailSquareSize * image.height / image.width;
+                } else {
+                    // squeezing by height
+                    thumbHeight = thumbnailSquareSize;
+                    thumbWidth = thumbnailSquareSize * image.width / image.height;
                 }
-
-                caret = addPageIfNeeded(pdf, caret, thumbnailSize);
-
-                pdf.addImage(image, 'JPEG', xCaret, caret, thumbnailSize, thumbnailSize);
-                pdf.text(xCaret + 100 / pdf.internal.scaleFactor, caret + 10, extractFileName(metadata.filename));
-                pdf.text(xCaret + 100 / pdf.internal.scaleFactor, caret + 20, formatDate(metadata.created_at, 'mediumDate'));
-
-                xCaret += thumbnailCaptionsWidth;
+                
+                pdf.addImage(image, 'JPEG', xCaret, caret, thumbWidth, thumbHeight);
+                pdf.text(xCaret + thumbnailSquareSize + thumbnailTextPaddingX, caret + fontSizeMm, extractFileName(metadata.filename));
+                pdf.text(xCaret + thumbnailSquareSize + thumbnailTextPaddingX, caret + 2 * fontSizeMm, formatDate(metadata.created_at, 'mediumDate'));
+                
+                if (j % 2 == 0) {
+                    // switch to second column
+                    xCaret = secondColX;
+                } else {
+                    // switch to first column and next row
+                    xCaret = pagePaddings.x;
+                    caret += thumbnailSquareSize + blocksPadding;
+                    caret = addPageIfNeeded(pdf, caret, thumbnailSquareSize);
+                }
             }
+            if (images.length % 2 != 0) {
+                // currently in second column, caret needs to be increased
+                caret += thumbnailSquareSize + blocksPadding;
+            }
+            caret = appendLineSeparator(pdf, caret);
         }
         return caret;
     };
@@ -150,97 +223,103 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
 //        pdf.rect(x, caret, printableArea.halfWidth, 10);
         pdf.setFontType('bold');
         pdf.text(x, caret, practiceData.blockTitle);
-        caret += fontSize / pdf.internal.scaleFactor;
+        caret += fontSizeMm;
         pdf.setFontType('normal');
-        pdf.text(x + addressPaddingX, caret, practiceData.doctorName);
-        caret += fontSize / pdf.internal.scaleFactor;
-        pdf.text(x + addressPaddingX, caret, practiceData.practiceName);
-        caret += fontSize / pdf.internal.scaleFactor;
-        pdf.text(x + addressPaddingX, caret, practiceData.phone);
-        caret += fontSize / pdf.internal.scaleFactor;
-        pdf.text(x + addressPaddingX, caret, practiceData.addressStreet);
-        caret += fontSize / pdf.internal.scaleFactor;
-        pdf.text(x + addressPaddingX, caret, practiceData.addressCity);
+        
+        var paddedX = x + addressPaddingX;
+        
+        pdf.text(paddedX, caret, practiceData.doctorName);
+        caret += fontSizeMm;
+        pdf.text(paddedX, caret, practiceData.practiceName);
+        caret += fontSizeMm;
+        pdf.text(paddedX, caret, practiceData.phone);
+        caret += fontSizeMm;
+        pdf.text(paddedX, caret, practiceData.addressStreet);
+        caret += fontSizeMm;
+        pdf.text(paddedX, caret, practiceData.addressCity);
         if (practiceData.website) {
-            caret += fontSize / pdf.internal.scaleFactor;
-            pdf.text(x + addressPaddingX, caret, practiceData.website);
+            caret += fontSizeMm;
+            pdf.text(paddedX, caret, practiceData.website);
         }
-        return caret+paragraphStart.y;
+        return caret;
     }
     
     var appendPractices = function(pdf, caret) {
-        var caretLeft = appendPractice(pdf, paragraphStart.x, caret, originalPracticeData);
-        var caretRight = appendPractice(pdf, paragraphStart.x2, caret, destinationPracticeData);
-        return Math.max(caretLeft, caretRight);
+        pdf.setFontSize(fontSize);
+        caret += fontSizeMm;
+        var caretLeft = appendPractice(pdf, pagePaddings.x, caret, originalPracticeData);
+        var caretRight = appendPractice(pdf, secondColX, caret, destinationPracticeData);
+        return Math.max(caretLeft, caretRight) + blocksPadding;
     }
     
     var appendPatientTextData = function(pdf, caret) {
+        caret += fontSizeMm;
         pdf.setFontType('bold');
-        pdf.text(paragraphStart.x, caret, patientData.name);
-        caret += fontSize / pdf.internal.scaleFactor;
-        pdf.text(paragraphStart.x, caret, patientData.birthday);
-        pdf.setFontType('normal');
-        return caret+paragraphStart.y;
+        pdf.text(pagePaddings.x, caret, patientData.name);
+        caret += fontSizeMm;
+        pdf.text(pagePaddings.x, caret, patientData.birthday);
+        return caret+blocksPadding;
     }
     
     var appendProcedureData = function(pdf, caret) {
+        caret += fontSizeMm;
         pdf.setFontType('bold');
-        pdf.text(paragraphStart.x, caret, procedureData.practiceType);
-        caret += fontSize / pdf.internal.scaleFactor;
-        pdf.text(paragraphStart.x, caret, procedureData.name);
+        pdf.text(pagePaddings.x, caret, procedureData.practiceType);
+        caret += fontSizeMm;
+        pdf.text(pagePaddings.x, caret, procedureData.name);
         if (procedureData.teeth) {
             var caption;
             var teethArray = procedureData.teeth.split('+');
             if (teethArray && teethArray.length > 0) {
+                caret += fontSizeMm;
                 if (teethArray.length == 1) {
                     caption = 'Tooth ';
                 } else {
                     caption = 'Teeth ';
                 }
-                caret += fontSize / pdf.internal.scaleFactor;
-                pdf.text(paragraphStart.x, caret, caption + teethArray.sort(function(a, b) { return a-b; }).join(', '));
+                pdf.text(pagePaddings.x, caret, caption + teethArray.sort(function(a, b) { return a-b; }).join(', '));
             }
         }
-        pdf.setFontType('normal');
-        return caret + paragraphStart.y;
+        return caret + blocksPadding;
     }
     
     var appendLineSeparator = function(pdf, caret) {
-        pdf.line(paragraphStart.x, caret, paragraphStart.x + printableArea.width, caret);
-        return caret + paragraphStart.y + fontSize / pdf.internal.scaleFactor;
+        pdf.line(pagePaddings.x, caret, pagePaddings.x + fullSizeColWidth, caret);
+        return caret + blocksPadding;
     }
     
     var appendBottomText = function(pdf, caret) {
-        pdf.setFontColor(150, 150, 150);
+        var str = 'Visit www.dentallinks.org to see referral documents';
+        pdf.setTextColor(auxiliaryFontColor.r, auxiliaryFontColor.g, auxiliaryFontColor.b);
         pdf.setFontType('italic');
-        pdf.setFontSize(bottomTextFontSize);
-        pdf.text(paragraphStart.x, caret, 'Visit www.dentallinks.org to see referral documents');
+        pdf.setFontSize(auxiliaryFontSize);
+        caret += auxiliaryFontSizeMm;
+        
+        var width = pdf.getStringUnitWidth(str) * auxiliaryFontSizeMm;
+        pdf.text(pageSizes.width - pagePaddings.x - width, caret, str);
     }
     
     var buildPdf = function (forPatient) {
-        var pdf = new jsPDF();
+        pdf = new jsPDF();
         var caret = appendHeader(pdf);
-        pdf.setFontSize(fontSize);
+        pdf.setTextColor(fontColor.r, fontColor.g, fontColor.b);
+        pdf.setFillColor(255, 255, 255);
         caret = appendPractices(pdf, caret);
         caret = appendLineSeparator(pdf, caret);
         caret = appendPatientTextData(pdf, caret);
         caret = appendProcedureData(pdf, caret);
         caret = appendLineSeparator(pdf, caret);
         caret = appendNotes(pdf, caret);
-        caret = appendLineSeparator(pdf, caret);
         if (forPatient) {
-            appendThumbnails(pdf, caret);
+            caret = appendThumbnails(pdf, caret);
+            caret = appendBottomText(pdf, caret);
         } else {
-            appendImages(pdf, caret);
+            caret = appendImages(pdf, caret);
         }
         return pdf;
 
     };
     return {
-        init: function () {
-            images = [];
-            notes = [];
-        },
         addImage: function (index, image, metadata) {
             while (index >= images.length) {
                 images[images.length] = null;
@@ -249,9 +328,6 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
         },
         addNotes: function (notesArray) {
             notes = notesArray;
-        },
-        getEmbeddableString: function () {
-            return buildPdf().output('datauristring');
         },
         createPracticeData: function (blockTitle, provider) {
             var practiceData = {};
@@ -268,6 +344,8 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
             return practiceData;
         },
         prepare: function (data) {
+            images = [];
+            notes = [];
             var patient = data.patient || {};
             patientData.name = (patient.first_name || '') + ' ' + (patient.last_name || '');
             patientData.birthday = (patient.birthday || '');
