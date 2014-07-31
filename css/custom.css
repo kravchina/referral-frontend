@@ -350,7 +350,7 @@ textarea.form-control {
 	text-align: center;
 }
 .page-subheader {
-	color: #95a5a6;
+	/*color: #95a5a6;*/
 	font-size: 14px;
 	font-size: 1.4rem;;
 	font-weight: 300;
@@ -437,16 +437,16 @@ textarea.form-control {
 	padding: 10px 0;
 }
 #toothchart .upper-chart ul {
-	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid #aaa;
 }
 #toothchart .upper-chart ul:last-child {
-	border-left: 1px solid #eee;
+	border-left: 1px solid #aaa;
 }
 #toothchart .lower-chart ul, #toothchart .lower-chart ul > li.tooth-button {
 	float: right;
 }
 #toothchart .lower-chart ul:first-child {
-	border-left: 1px solid #eee;
+	border-left: 1px solid #aaa;
 }
 .tooth-button {
 	height: 25px;
@@ -467,7 +467,7 @@ textarea.form-control {
 }
 .tooth-button label {
 	background-color: #fcfcfc;
-	border: 1px solid #f3f3f3;
+	border: 1px solid #aaa;
 	color: #34495e;
 	display: block;
 	font-size: 10px;
@@ -527,8 +527,8 @@ textarea.form-control {
 }
 .tooth-button input[disabled] + label, .tooth-button input[disabled]:hover + label {
 	background-color: #fcfcfc;
-	border: 1px solid #f3f3f3;
-	color: #aaa;
+	border: 1px solid #aaa;
+	color: #555;
 }
 .tooth-button input[type="checkbox"][disabled]:checked + label {
 	background-color: #fff;
@@ -635,7 +635,7 @@ textarea.form-control {
 	white-space: nowrap;
 }
 .attachment-details .datestamp {
-	color: #95a5a6;
+	/*color: #95a5a6;*/
 	font-size: 10px;
 	font-size: 1.0rem;
 	font-weight: 400;
@@ -650,7 +650,7 @@ textarea.form-control {
 	padding: 0;
 }
 .note-block {
-	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid #aaa;
 	cursor: pointer;
 	opacity: 0.8;
 		filter: alpha(opacity=80);
@@ -693,7 +693,7 @@ textarea.form-control {
 	white-space: normal;
 }
 .note-block .datestamp {
-	color: #bdc3c7;
+	/*color: #bdc3c7;*/
 	font-size: 10px;
 	font-size: 1rem;
 	font-weight: 300;
@@ -926,7 +926,7 @@ td.cell-from .practice, td.cell-to .practice {
 	width: 100%;
 }
 .input-block label, .input-block-inline label, .input-block-inline-left label, .input-block-inline-right label {
-	color: #95a5a6;
+	/*color: #95a5a6;*/
 	display: block;
 	font-size: 9px;
 	font-size: 0.9rem;

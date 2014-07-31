@@ -11,6 +11,8 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
     var headerFontSize = 16;
     var bottomTextFontSize = 8;
     var headerHeight = 20;
+
+    // todo: America's standard paper size is 'Letter' - slightly different dimensions
     var sizeA4 = { // in millimeters
         width: 210,
         height: 297
