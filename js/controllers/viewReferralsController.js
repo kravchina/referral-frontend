@@ -15,8 +15,6 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         $scope.s3UploadPath = "https://dev1-attachments.s3.amazonaws.com/uploads/";
         $scope.s3HttpUploadPath = "http://dev1-attachments.s3.amazonaws.com/uploads/";
 
-        PDF.init();
-
         $scope.referral = Referral.get({id: $stateParams.referral_id}, function (success) {
                 angular.forEach(success.attachments, function(attachment, key){
                     $scope.total_size = $scope.total_size + attachment.size;
