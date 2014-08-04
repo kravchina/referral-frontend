@@ -1246,10 +1246,14 @@ td.cell-from .practice, td.cell-to .practice {
 		vertical-align: top;
 	}
 	.note-block .note-content {
-		width: 70%;
+		width: 60%;
+	}
+	.note-block .note-user {
+		margin-left: 2%;
+		width: 15%;
 	}
 	.note-block .datestamp {
-		margin-left: 10%;
+		margin-left: 2%;
 		width: 19%;
 	}
 	.filter-controls-block {

@@ -44,6 +44,13 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     $scope.updatePracticeType(referral.procedure);
                 });
                 $scope.model.referral.notes = referral.notes;
+
+                angular.forEach($scope.model.referral.notes, function(note, key){
+                    if (note.user){
+                        note['user_first_name'] = note.user.first_name;
+                        note['user_last_name'] = note.user.last_name;
+                    }
+                });
                 $scope.attachments = referral.attachments;
                 angular.forEach(referral.attachments, function(attachment, key){
                     $scope.total_size = $scope.total_size + attachment.size;
@@ -216,8 +223,8 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (note) {
                 processFormChange(note);
-                $scope.model.referral.notes.push({message: note, created_at: Date.now()});
-                $scope.model.referral.notes_attributes.push({message: note, created_at: Date.now()});
+                $scope.model.referral.notes.push({message: note, created_at: Date.now(), user_id: auth.id, user_first_name: Auth.current_user.first_name, user_last_name: Auth.current_user.last_name});
+                $scope.model.referral.notes_attributes.push({message: note, created_at: Date.now(), user_id: auth.id, user_first_name: Auth.current_user.first_name, user_last_name: Auth.current_user.last_name});
             });
         };
 

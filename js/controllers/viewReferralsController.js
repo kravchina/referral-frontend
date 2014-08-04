@@ -23,6 +23,13 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                     attachment['filenameToDownload'] = attachment.filename.replace($scope.s3UploadPath, '').replace($scope.s3HttpUploadPath, '');
                 });
 
+                angular.forEach(success.notes, function(note, key){
+                    if (note.user){
+                        note['user_first_name'] = note.user.first_name;
+                        note['user_last_name'] = note.user.last_name;
+                    }
+                });
+
                 console.log($scope.total_size);
 
                 if (!success.dest_provider) {
@@ -195,8 +202,8 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         };
 
         var submitNote = function (note) {
-            Note.save({note: {message: note, referral_id: $scope.referral.id}}, function (success) {
-                $scope.referral.notes.push({message: note, created_at: Date.now()});
+            Note.save({note: {message: note, referral_id: $scope.referral.id, user_id: auth.id}}, function (success) {
+                $scope.referral.notes.push({message: note, created_at: Date.now(), user_first_name: Auth.current_user.first_name, user_last_name: Auth.current_user.last_name});
             }, function (failure) {
                 Alert.error($scope.alerts, 'Something went wrong, note was not saved.');
             });

@@ -183,6 +183,7 @@
                 <!-- Note block -->
                 <li class="note-block" expand-note ng-repeat="note in model.referral.notes">
                     <span class="note-content">{{note.message}}</span>
+                    <span class="note-user">{{note.user_first_name}} {{note.user_last_name}}</span>
                     <span class="datestamp">{{note.created_at | date: 'short' }}</span>
                 </li>
 
