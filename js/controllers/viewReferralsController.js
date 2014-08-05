@@ -28,6 +28,8 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                     }
                 });
 
+                success.teethChart = success.teeth.split('+');
+
                 console.log($scope.total_size);
 
                 if (!success.dest_provider) {
