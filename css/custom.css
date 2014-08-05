@@ -88,6 +88,8 @@ a:hover {
 	height: 40px;
 	margin-left: 10px;
 	width: 40px;
+    font-size: 250%;
+    vertical-align: middle;
 }
 #reportrange {
 	background-color: #f3f3f3;

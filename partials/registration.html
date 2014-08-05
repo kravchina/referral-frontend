@@ -54,7 +54,7 @@
                             </div>
 
                             <div class="input-block-inline" ng-class="{'has-error': form.practice.$dirty && form.practice.$invalid }">
-                                <input type="text" class="form-control" name="practice" placeholder="Select practice &hellip;"
+                                <input type="text" id="practice" name="practice" placeholder="Select practice &hellip;" class="form-control"
                                        ng-model="user.practice"
                                        typeahead-editable="false"
                                        typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue"
