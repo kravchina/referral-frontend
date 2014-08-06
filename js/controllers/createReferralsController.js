@@ -14,6 +14,8 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         $scope.total_size = 0;
 
+        $scope.hasNewAttachments = false;
+
         $scope.s3UploadPath = "https://dev1-attachments.s3.amazonaws.com/uploads/";
         $scope.s3HttpUploadPath = "http://dev1-attachments.s3.amazonaws.com/uploads/";
 
@@ -134,6 +136,10 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
                     uploadAttachments(success.id)
                     $scope.is_create = false;
+                    UnsavedChanges.setUnsavedChanges(false);
+                    if(!$scope.hasNewAttachments){
+                        $state.go('createReferral', {referral_id: referral.id}, {reload: true});
+                    }
 
                 }, failure: function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during referral template creation...');
@@ -155,7 +161,10 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     UnsavedChanges.setUnsavedChanges(false);
                     uploadAttachments(referral.id);
                     $scope.is_create = true;
-                    // $state.go('viewReferral', {referral_id: referral.id});
+                    UnsavedChanges.setUnsavedChanges(false);
+                    if(!$scope.hasNewAttachments){
+                        $state.go('viewReferral', {referral_id: referral.id});
+                    }
                 },
                 failure: function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during referral creation...');
@@ -288,6 +297,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             // marking an attachment for saving
             // $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes, size: item.file.size});
             // processFormChange(item);
+            $scope.hasNewAttachments = true;
 
         });
 
@@ -348,9 +358,12 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
             // show the loading indicator
             $scope.$parent.progressIndicatorEnd()
-
+            console.log($scope.model.referral.id)
+            UnsavedChanges.setUnsavedChanges(false);
             if($scope.is_create){
-                $state.go('createReferral', {referral_id: $scope.model.referral.id});
+                $state.go('viewReferral', {referral_id: $scope.model.referral.id}, {reload: true});
+            }else{
+                $state.go('createReferral', {referral_id: $scope.model.referral.id}, {reload: true});
             }
             
 

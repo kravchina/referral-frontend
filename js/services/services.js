@@ -29,10 +29,10 @@ dentalLinksServices.factory('Auth', ['$cookieStore', '$location', function ($coo
         getOrRedirect: function () {
             var result = $cookieStore.get('auth');
             if (result) {
-                return result;
+                return result;l
             }else{
                 $location.path('/sign_in');
-            }
+            }d
         },
         set: function (value) {
             $cookieStore.put('auth', value);
