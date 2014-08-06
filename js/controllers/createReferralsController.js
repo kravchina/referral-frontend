@@ -138,7 +138,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     $scope.is_create = false;
                     UnsavedChanges.setUnsavedChanges(false);
                     if(!$scope.hasNewAttachments){
-                        $state.go('createReferral', {referral_id: referral.id}, {reload: true});
+                        $state.go('createReferral', {referral_id: success.id}, {reload: true});
                     }
 
                 }, failure: function (failure) {
