@@ -20,7 +20,7 @@
             <h2>Patient</h2>
             <button type="button" class="btn btn-orange btn-toggle" ng-click="patientDialog()" data-toggle="tooltip" data-placement="top" title="Create a New Patient Record" data-target="#modalPatient"><span class="dlicons-user-add"></span></button>
         </div>
-        <input type="text" class="form-control" name="patient" placeholder="Enter patient's name &hellip;" ng-model="patient" typeahead-editable="false" typeahead="p as p.first_name +' ' +  p.last_name + (p.birthday ? ' (' + (p.birthday | date: 'shortDate') + ')' : '') for p in findPatient($viewValue) | filter:$viewValue" ng-required="true">
+        <input type="text" class="form-control" name="patient" placeholder="Enter existing patient or add new with button on the right &hellip;" ng-model="patient" typeahead-editable="false" typeahead="p as p.first_name +' ' +  p.last_name + (p.birthday ? ' (' + (p.birthday | date: 'shortDate') + ')' : '') for p in findPatient($viewValue) | filter:$viewValue" ng-required="true">
     </div>
 </div><!-- .row -->
 
@@ -30,7 +30,7 @@
         <div class="block-title">
             <h2>Practice</h2>
         </div>
-        <input type="text" class="form-control" name="practice" placeholder="Select practice &hellip;" ng-model="destinationPractice" typeahead-editable="false" typeahead-on-select="updatePracticeType($item, $model, $label)" typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue" ng-required="true">
+        <input type="text" class="form-control" name="practice" placeholder="Enter existing practice or add new with button on the right &hellip;" ng-model="destinationPractice" typeahead-editable="false" typeahead-on-select="updatePracticeType($item, $model, $label)" typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue" ng-required="true">
     </div>
 
     <div class="input-block-right col-xs-12 col-sm-6" ng-class="{'has-error': form.provider.$dirty && form.provider.$invalid }">
