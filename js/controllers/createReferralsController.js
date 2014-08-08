@@ -200,7 +200,12 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         $scope.patientDialog = function () {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/patient_form.html',
-                controller: 'PatientModalController'
+                controller: 'PatientModalController',
+                resolve: {
+                    fullname: function () {
+                        return $("input[name='patient'").val();
+                    }
+                }
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (patient) {

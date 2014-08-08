@@ -1,10 +1,25 @@
 var modalsModule = angular.module('modals', ['ui.bootstrap']);
 
-modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'Patient', function ($scope, $modalInstance, Auth, Patient) {
+modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'Patient', 'fullname', function ($scope, $modalInstance, Auth, Patient, fullname) {
 
     /*$scope.patient = patient;*/
 
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.', 'Engr.'];
+
+    space_pos = fullname.indexOf(' ');
+    var first_name = '';
+    var last_name = '';
+    if(fullname != '' && space_pos == -1){
+        var first_name = fullname.substr(0, Math.floor(fullname.length/2));
+        var last_name = fullname.substr(Math.floor(fullname.length/2));
+        
+    }else{
+        var first_name = fullname.substr(0, space_pos);
+        var last_name = fullname.substr(space_pos + 1);
+    }
+
+    $scope.patient = {'first_name': first_name, 'last_name': last_name};
+    
 
     $scope.ok = function (patient) {
         patient.practice_id = Auth.getOrRedirect().practice_id;

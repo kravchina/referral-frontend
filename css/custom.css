@@ -1735,3 +1735,8 @@ td.cell-from .practice, td.cell-to .practice {
 .clickable{
 	cursor: pointer;
 }
+
+.has-error .alert-warning{
+	border-color: red;
+	color: red;
+}
