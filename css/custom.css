@@ -953,9 +953,11 @@ td.cell-from .practice, td.cell-to .practice {
 .section-block .table-hover > tbody > tr:hover > td, .table-hover > tbody >tr:hover > th {
 	background-color: #f3f6f7;
 }
+/*
 .section-block .table tbody tr td {
 	color: #bdc3c7;
 }
+*/
 .section-block .table tbody tr td.cell-user, .section-block .table tbody tr td.cell-provider {
 	color: #34495e;
 }
