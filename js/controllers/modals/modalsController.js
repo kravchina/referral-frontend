@@ -90,12 +90,36 @@ modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 
     };
 }]);
 
-modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Auth', function ($scope, $modalInstance, ProviderInvitation, Auth) {
+modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Auth', 'Alert', function ($scope, $modalInstance, ProviderInvitation, Auth, Alert) {
     $scope.result = {};
+    $scope.alerts = [];
     $scope.ok = function (user) {
         user.practice_id = Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
         ProviderInvitation.save({provider_invitation: user}, function (success) {
+            $modalInstance.close(success);
+        },  function (failure) {
+            Alert.error($scope.alerts, 'Error: ' + failure.data.message);
+        });
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+
+modalsModule.controller('UserPasswordModalController', ['$scope', '$modalInstance', 'User', 'Auth', 'Alert', 'id', function ($scope, $modalInstance, User, Auth, Alert, id) {
+    $scope.result = {};
+    $scope.alerts = [];
+    console.log(id);
+    $scope.ok = function (user) {
+        
+        if(user.password != user.password_confirmation){
+            Alert.error($scope.alerts, 'Error: Password does not mactch');
+            return;
+        }
+
+        User.changePassword({id: id}, {new_password: user.password}, function (success) {
+            console.log(success);
             $modalInstance.close(success);
         },  function (failure) {
             Alert.error($scope.alerts, 'Error: ' + failure.data.message);

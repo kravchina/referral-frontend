@@ -153,7 +153,8 @@ dentalLinksServices.factory('Procedure', ['$resource', function ($resource) {
 dentalLinksServices.factory('User', ['$resource', function ($resource) {
     return $resource(host + '/users/:id', {}, {
         getInvitees: {method: 'GET', url: host + '/invitees/:user_id', isArray: true},
-        update: {method: 'PUT' }
+        update: {method: 'PUT' },
+        changePassword: {method: 'PUT', url: host + '/users/:id/change_password'}
     })
 }]);
 

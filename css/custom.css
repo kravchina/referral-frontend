@@ -968,10 +968,27 @@ td.cell-from .practice, td.cell-to .practice {
 .section-block .table tbody tr td.cell-created > .create-date, .section-block .table tbody tr td.cell-invited {
 	text-transform: uppercase;
 }
-.section-block .table tbody tr td.cell-created, .section-block .table tbody tr td.cell-status {
+.section-block .table tbody tr td.cell-created, .section-block .table tbody tr td.cell-action, .section-block .table tbody tr td.cell-status {
 	position: relative;
 }
+
 .section-block .table .btn-delete {
+	cursor: pointer;
+	font-size: 12px;
+	font-size: 1.2rem;
+	height: 20px;
+	overflow: hidden;
+	position: absolute;
+	right: 50px;
+	transition: all 0.3s ease;
+		-moz-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+		-webkit-transition: all 0.3s ease;
+	width: 20px;
+}
+
+.section-block .table .btn-change-password {
 	cursor: pointer;
 	font-size: 12px;
 	font-size: 1.2rem;
@@ -986,6 +1003,7 @@ td.cell-from .practice, td.cell-to .practice {
 		-webkit-transition: all 0.3s ease;
 	width: 20px;
 }
+
 .section-block .table .btn-delete:hover {
 	color: #7f8c8d;
 	transition: all 0.3s ease;
@@ -1004,6 +1022,12 @@ td.cell-from .practice, td.cell-to .practice {
 	width: auto;
 }
 .section-block .table .btn-delete [class^="dlicons-"], .section-block .table .btn-delete [class*=" dlicons-"] {
+	font-size: 18px;
+	font-size: 1.8rem;
+	vertical-align: middle;
+}
+
+.section-block .table .btn-change-password [class^="dlicons-"], .section-block .table .btn-change-password [class*=" dlicons-"] {
 	font-size: 18px;
 	font-size: 1.8rem;
 	vertical-align: middle;

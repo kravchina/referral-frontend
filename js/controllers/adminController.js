@@ -81,6 +81,22 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
             });
         };
 
+        $scope.passwordDialog = function (user_id) {
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/user_password_form.html',
+                controller: 'UserPasswordModalController',
+                resolve: {
+                    id: function () {
+                        return user_id;
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (user) {
+                //$scope.practice.users.push(user);
+            });
+        };
+
         $scope.inviteDialog = function () {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/provider_form.html',
