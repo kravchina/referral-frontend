@@ -152,7 +152,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
             pdf.setTextColor(auxiliaryFontColor.r, auxiliaryFontColor.g, auxiliaryFontColor.b);
             pdf.setFontType('italic');
             caret += auxiliaryFontSizeMm; // assuming we're not at EOP yet and can output one line
-            pdf.text(pagePaddings.x, caret, 'See full-size attachments on subsequent pages');
+            pdf.text(pagePaddings.x, caret, pdf.splitTextToSize('See full-size attachments on subsequent pages. Also, visit www.dentallinks.org for more information', fullSizeColWidth));
             
             for (var j = 0; j < images.length; j++) {
                 var image = images[j].image;
