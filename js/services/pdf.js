@@ -60,8 +60,33 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
     
     var extractFileName = function (filename) {
         var n = $filter('filename')(filename) || '';
-        return n.length > 15 ? n.substr(0, 10).concat('...') : n;
+        return n;
     };
+    
+    var fitString = function (str, fontSizeMm, expectedLenghtMm) {
+        var res = str;
+        var l = str.length;
+        var trail = '...';
+        do {
+            // current width
+            var width = pdf.getStringUnitWidth(res) * fontSizeMm;
+            
+            if (width <= expectedLenghtMm) {
+                // fits!
+                return res;
+            }
+            
+            if (res == trail) {
+                // we can't fit even the trail only
+                return '~';
+            }
+            
+            // cut one more off
+            l -= 1;
+            res = str.substring(0, l) + trail;
+        } while (true); // will either fit or run out
+    };
+    
     var formatDate = function (date) { // TODO [ak] remove from here. Create a centralized place where dates from across the whole app get formatted
         return $filter('date')(date, 'mediumDate') || '';
     };
@@ -127,7 +152,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
             pdf.setTextColor(auxiliaryFontColor.r, auxiliaryFontColor.g, auxiliaryFontColor.b);
             pdf.setFontType('italic');
             caret += auxiliaryFontSizeMm; // assuming we're not at EOP yet and can output one line
-            pdf.text(pagePaddings.x, caret, 'See full-size attachments on subsequent pages');
+            pdf.text(pagePaddings.x, caret, pdf.splitTextToSize('See full-size attachments on subsequent pages. Also, visit www.dentallinks.org for more information', fullSizeColWidth));
             
             for (var j = 0; j < images.length; j++) {
                 var image = images[j].image;
@@ -142,7 +167,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
                 pdf.setFontType('normal');
                 
                 caret += fontSizeMm;
-                pdf.text(pagePaddings.x, caret, extractFileName(images[j].metadata.filename));
+                pdf.text(pagePaddings.x, caret, extractFileName(images[j].metadata.filename)); // no fitString in here, assuming whole page width is always enough
                 
                 caret += blocksPadding;
 
@@ -162,6 +187,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
             pdf.setFontType('normal');
             
             var xCaret = pagePaddings.x;
+            var remainingWidth = halfSizeColWidth - thumbnailSquareSize - thumbnailTextPaddingX;
             for (var j = 0; j < images.length; j++) {
                 if (!images[j].image) {
                     var type = images[j].metadata.filename.slice(images[j].metadata.filename.lastIndexOf('.') + 1);
@@ -197,9 +223,10 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
                     thumbWidth = thumbnailSquareSize * image.width / image.height;
                 }
                 
+                var currentX = xCaret + thumbnailSquareSize + thumbnailTextPaddingX;
                 pdf.addImage(image, 'JPEG', xCaret, caret, thumbWidth, thumbHeight);
-                pdf.text(xCaret + thumbnailSquareSize + thumbnailTextPaddingX, caret + fontSizeMm, extractFileName(metadata.filename));
-                pdf.text(xCaret + thumbnailSquareSize + thumbnailTextPaddingX, caret + 2 * fontSizeMm, formatDate(metadata.created_at));
+                pdf.text(currentX, caret + fontSizeMm, fitString(extractFileName(metadata.filename), fontSizeMm, remainingWidth));
+                pdf.text(currentX, caret + 2 * fontSizeMm, formatDate(metadata.created_at));
                 
                 if (j % 2 == 0) {
                     // switch to second column
