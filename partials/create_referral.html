@@ -149,7 +149,8 @@
                         </div>
                         <div class="attachment-details">
                             <span class="filename">{{attachment.filename | filename}}</span>
-                            <span class="datestamp">{{attachment.created_at | date: 'mediumDate'}}</span>
+                            <span class="datestamp" title="Attachment Uploaded Date">{{attachment.created_at | date: 'mediumDate'}}</span>
+                            <span class="datestamp" title="Image Creation Date">{{attachment.exif_date_time | date: 'mediumDate'}}</span>
                         </div>
                     </a>
                 </li>
