@@ -107,6 +107,61 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Pro
     };
 }]);
 
+modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'practice_id', function ($scope, $modalInstance, ProviderInvitation, Auth, Alert, Practice, practice_id) {
+    $scope.result = {};
+    $scope.alerts = [];
+
+    var currentYear = moment().year();
+    $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4 ];
+
+    console.log(practice_id)
+    // set the stripe publishable key
+    Stripe.setPublishableKey('pk_test_TAdWKoNc4HgjFknjuuzsb99p');
+
+    $scope.ok = function (payment_info) {
+        Stripe.card.createToken({
+                    number: payment_info.card_number,
+                    cvc: payment_info.card_cvc,
+                    exp_month: payment_info.card_exp_month,
+                    exp_year: payment_info.card_exp_year
+                }, function(status, response){
+                    console.log(response);
+                    if(response.error) {
+                        // there was an error. Fix it.
+                        Alert.error($scope.alerts, 'An error occurred during account update...')
+                    } else {
+                        // got stripe token, now charge it or smt
+                        payment_info.stripe_token = response.id;
+                        console.log(payment_info)
+
+                        Practice.update({practiceId: practice_id}, {
+                                        practice: {
+
+                                            card_number: payment_info.card_number,
+                                            card_cvc: payment_info.card_cvc,
+                                            name_on_card: payment_info.name_on_card,
+                                            card_exp_month: payment_info.card_exp_month,
+                                            card_exp_year: payment_info.card_exp_year,
+                                            stripe_token: payment_info.stripe_token,
+                                            
+                                        }
+                                    },
+                                    function (success) {
+                                        console.log(success)
+                                        Alert.success($scope.alerts, 'Account was upgraded successfully!');
+                                        $modalInstance.close(success);
+                                    },
+                                    function (failure) {
+                                        Alert.error($scope.alerts, 'An error occurred during account update...')
+                                    });
+                    }
+                });
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+
 modalsModule.controller('UserPasswordModalController', ['$scope', '$modalInstance', 'User', 'Auth', 'Alert', 'id', function ($scope, $modalInstance, User, Auth, Alert, id) {
     $scope.result = {};
     $scope.alerts = [];

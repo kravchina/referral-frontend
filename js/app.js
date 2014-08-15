@@ -22,6 +22,8 @@ dentalLinks.constant('USER_ROLES', {
     aux: 'aux'
 });
 
+dentalLinks.constant('FREE_TRIAL_PERIOD', 45);
+
 dentalLinks.constant('AUTH_EVENTS', {
     notAuthenticated: 'auth-not-authenticated'
 });

@@ -19,6 +19,8 @@
                             </tab-heading>
                             <!-- Account Tab -->
                             <div id="admintabAccount" >
+                                <alert ng-hide="practice.stripe_customer_id" type="alert.type">It is always free to send referrals but you will need a premium membership to receive referrals after {{trial_end_date | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
+
                                 <form edit-form id="formAccountTab" name="accountForm">
                                     <div class="block-title">
                                         <h2>Account</h2>
@@ -61,7 +63,11 @@
                                             <label>Email</label>
                                         </div>
                                     </div><!-- .section-block -->
-                                    <div id="sectPayment" class="section-block">
+
+                                    <div ng-hide="practice.stripe_customer_id" id="sectUpgrade" class="section-block">
+                                        <button type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Upgrade to Premium Account</button>
+                                    </div>
+                                    <!-- <div id="sectPayment" class="section-block">
                                         <h3>Payment Information</h3>
 
                                         <div class="input-block-inline" ng-class="{'has-error': accountForm.name_on_card.$dirty && accountForm.name_on_card.$invalid }">
@@ -100,7 +106,7 @@
                                             </select>
                                             <label>Expiration Date</label>
                                         </div>
-                                    </div><!-- .section-block -->
+                                    </div> --><!-- .section-block -->
 
                                 </form>
 

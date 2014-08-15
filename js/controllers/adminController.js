@@ -1,9 +1,9 @@
 var adminModule = angular.module('admin', ['ui.bootstrap', 'angularPayments']);
 
-adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges',
-    function ($scope, $modal, Auth, Alert, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges) {
+adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD',
+    function ($scope, $modal, Auth, Alert, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD) {
         // set the stripe publishable key
-        Stripe.setPublishableKey('pk_test_TAdWKoNc4HgjFknjuuzsb99p');
+        // Stripe.setPublishableKey('pk_test_TAdWKoNc4HgjFknjuuzsb99p');
 
         $scope.alerts = [];
 
@@ -16,36 +16,29 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
 
         var auth = Auth.get();
         $scope.providers = User.getInvitees({user_id: auth.id });
-        $scope.practice = Practice.get({practiceId: auth.practice_id});       
+        $scope.practice = Practice.get({practiceId: auth.practice_id});
+
+        $scope.practice.$promise.then(function (data) {
+            console.log(FREE_TRIAL_PERIOD); 
+            $scope.trial_end_date = new Date($scope.practice.created_at);
+            $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD)
+        });    
 
         $scope.savePractice = function (form) {
             
             if (form.$dirty && !form.$invalid) {
                 console.log($scope.practice);
                 console.log($scope.practice.card_exp_month);
-                Stripe.card.createToken({
-                    number: $scope.practice.card_number,
-                    cvc: $scope.practice.card_cvc,
-                    exp_month: $scope.practice.card_exp_month,
-                    exp_year: $scope.practice.card_exp_year
-                }, function(status, response){
-                    console.log(response);
-                    if(response.error) {
-                        // there was an error. Fix it.
-                        Alert.error($scope.alerts, 'An error occurred during account update...')
-                    } else {
-                        // got stripe token, now charge it or smt
-                        $scope.practice.stripe_token = response.id;
 
-                        Practice.update({practiceId: $scope.practice.id}, {
+                Practice.update({practiceId: $scope.practice.id}, {
                             practice: {
                                 name: $scope.practice.name,
-                                card_number: $scope.practice.card_number,
-                                card_cvc: $scope.practice.card_cvc,
-                                name_on_card: $scope.practice.name_on_card,
-                                card_exp_month: $scope.practice.card_exp_month,
-                                card_exp_year: $scope.practice.card_exp_year,
-                                stripe_token: $scope.practice.stripe_token,
+                                // card_number: $scope.practice.card_number,
+                                // card_cvc: $scope.practice.card_cvc,
+                                // name_on_card: $scope.practice.name_on_card,
+                                // card_exp_month: $scope.practice.card_exp_month,
+                                // card_exp_year: $scope.practice.card_exp_year,
+                                // stripe_token: $scope.practice.stripe_token,
                                 salutation: $scope.practice.salutation,
                                 account_first_name: $scope.practice.account_first_name,
                                 account_middle_initial: $scope.practice.account_middle_initial,
@@ -61,14 +54,29 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                         function (failure) {
                             Alert.error($scope.alerts, 'An error occurred during account update...')
                         });
-                    }
-                });
+                
             } else {
                 // form is not dirty, we're just getting out of edit state
                 UnsavedChanges.setUnsavedChanges(false);
             }
         };
 
+        $scope.upgradeDialog = function () {
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/upgrade_form.html',
+                controller: 'UpgradeModalController',
+                resolve: {
+                    practice_id: function () {
+                        return $scope.practice.id;
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (practice) {
+                // $scope.practice.users.push(user);
+                $scope.practice = practice
+            });
+        };
 
         $scope.usersDialog = function () {
             var modalInstance = $modal.open({

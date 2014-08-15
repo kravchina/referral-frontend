@@ -12,6 +12,10 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         $scope.token = auth.token;
         $scope.from = auth.email;
 
+        Auth.current_user.$promise.then(function (data) {
+            $scope.stripe_customer_id = data.practice.stripe_customer_id;
+        });
+
         $scope.s3UploadPath = "https://dev1-attachments.s3.amazonaws.com/uploads/";
         $scope.s3HttpUploadPath = "http://dev1-attachments.s3.amazonaws.com/uploads/";
 
