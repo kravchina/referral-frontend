@@ -1,7 +1,7 @@
 var viewReferralModule = angular.module('viewReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File',
-    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File) {
+viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD',
+    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD) {
         $scope.alerts = [];
         $scope.attachment_alerts = [];
 
@@ -14,6 +14,9 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
         Auth.current_user.$promise.then(function (data) {
             $scope.stripe_customer_id = data.practice.stripe_customer_id;
+            console.log(FREE_TRIAL_PERIOD); 
+            $scope.trial_end_date = new Date(data.practice.created_at);
+            $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD)
         });
 
         $scope.s3UploadPath = "https://dev1-attachments.s3.amazonaws.com/uploads/";
