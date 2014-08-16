@@ -67,6 +67,11 @@
                                     <div ng-hide="practice.stripe_customer_id" id="sectUpgrade" class="section-block">
                                         <button type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Upgrade to Premium Account</button>
                                     </div>
+
+                                    <div ng-show="practice.stripe_customer_id" id="sectPayment" class="section-block">
+                                        <h3>Payment Information (Premium)</h3>
+                                        Your account number: ************{{practice.last_4_digits}}
+                                    </div>
                                     <!-- <div id="sectPayment" class="section-block">
                                         <h3>Payment Information</h3>
 
