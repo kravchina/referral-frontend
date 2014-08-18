@@ -177,7 +177,13 @@ modalsModule.controller('UserPasswordModalController', ['$scope', '$modalInstanc
             console.log(success);
             $modalInstance.close(success);
         },  function (failure) {
-            Alert.error($scope.alerts, 'Error: ' + failure.data.message);
+            console.log(failure);
+            if(failure.data.password){
+                Alert.error($scope.alerts, 'Error: Password ' + failure.data.password[0]);
+            }else{
+                Alert.error($scope.alerts, 'Error: ' + failure.data.message);
+            }
+            
         });
     };
     $scope.cancel = function () {
