@@ -203,7 +203,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                 controller: 'PatientModalController',
                 resolve: {
                     fullname: function () {
-                        return $("input[name='patient'").val();
+                        return $scope.form.patient.$invalid ? $("input[name='patient']").val() : '';
                     }
                 }
             });
