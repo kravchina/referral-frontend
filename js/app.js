@@ -23,7 +23,7 @@ dentalLinks.constant('USER_ROLES', {
 });
 
 dentalLinks.constant('FREE_TRIAL_PERIOD', 45);
-dentalLinks.constant('STRIPE_KEY', 'pk_test_TAdWKoNc4HgjFknjuuzsb99p');
+dentalLinks.constant('STRIPE_KEY', 'pk_test_XUhHfTuR70aPg0tIf1bCYXqI');
 
 dentalLinks.constant('AUTH_EVENTS', {
     notAuthenticated: 'auth-not-authenticated'
