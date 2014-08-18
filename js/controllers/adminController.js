@@ -2,8 +2,7 @@ var adminModule = angular.module('admin', ['ui.bootstrap', 'angularPayments']);
 
 adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD',
     function ($scope, $modal, Auth, Alert, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD) {
-        // set the stripe publishable key
-        // Stripe.setPublishableKey('pk_test_TAdWKoNc4HgjFknjuuzsb99p');
+
 
         $scope.alerts = [];
 

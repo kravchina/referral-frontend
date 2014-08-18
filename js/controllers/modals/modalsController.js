@@ -107,7 +107,7 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Pro
     };
 }]);
 
-modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'practice_id', function ($scope, $modalInstance, ProviderInvitation, Auth, Alert, Practice, practice_id) {
+modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'STRIPE_KEY', 'practice_id', function ($scope, $modalInstance, ProviderInvitation, Auth, Alert, Practice, STRIPE_KEY, practice_id) {
     $scope.result = {};
     $scope.alerts = [];
 
@@ -116,7 +116,7 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', '
 
     console.log(practice_id)
     // set the stripe publishable key
-    Stripe.setPublishableKey('pk_test_TAdWKoNc4HgjFknjuuzsb99p');
+    Stripe.setPublishableKey(STRIPE_KEY);
 
     $scope.ok = function (payment_info) {
         Stripe.card.createToken({
