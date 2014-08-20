@@ -93,6 +93,7 @@ modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 
 modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Auth', 'Alert', function ($scope, $modalInstance, ProviderInvitation, Auth, Alert) {
     $scope.result = {};
     $scope.alerts = [];
+    
     $scope.ok = function (user) {
         user.practice_id = Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
