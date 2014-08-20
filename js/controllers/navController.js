@@ -49,7 +49,12 @@ dentalLinks.controller('NavController', ['$scope', '$state', 'Auth', 'Logger', '
         $scope.logout = function(){
             if (UnsavedChanges.canLeaveSafely()) {
                 Logger.log('logout(): allowed');
-                Login.logout(function () {
+                Login.logout(function (failure) {
+                    Auth.remove();
+                    Auth.current_user = null;
+                    $state.go('signIn', {}, {reload: true});
+                },
+                function (failure) {
                     Auth.remove();
                     Auth.current_user = null;
                     $state.go('signIn', {}, {reload: true});
