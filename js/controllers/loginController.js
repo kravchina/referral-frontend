@@ -19,6 +19,8 @@ loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location'
                     Auth.set({token: success.token, email: user.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
 
                     user = User.get({id: success.id});
+                    console.log(user);
+                    console.log(success);
                     Auth.current_user = user;
 
                     $scope.email = user.email;

@@ -6,7 +6,7 @@ var dentalLinksServices = angular.module('dentalLinksServices', ['ngResource']);
 //var host = 'http://localhost:3000';
 var host = 'http://referral-server.herokuapp.com';
 
-dentalLinksServices.factory('Auth', ['$cookieStore', '$location', function ($cookieStore, $location) {
+dentalLinksServices.factory('Auth', ['$cookieStore', '$location', 'USER_ROLES', function ($cookieStore, $location, USER_ROLES) {
     return {
         authorize: function (roles) {
             if (roles === undefined) {
@@ -14,13 +14,27 @@ dentalLinksServices.factory('Auth', ['$cookieStore', '$location', function ($coo
             }
             var auth = $cookieStore.get('auth') || {};
 
-            if (auth.roles) {
-                for (var i = 0; i < roles.length; i++) {
-                    if (auth.roles.indexOf(roles[i]) >= 0) {
+            // if (auth.roles) {
+            //     for (var i = 0; i < roles.length; i++) {
+            //         if (auth.roles.indexOf(roles[i]) >= 0) {
+            //             return true;
+            //         }
+            //     }
+            // }
+
+            if(auth.email){
+                for(var i = 0; i < roles.length; i++){
+                    if(roles[i] == USER_ROLES.admin){
+                        if(auth.is_admin){
+                           return true; 
+                        }
+                    }else if (auth.roles.indexOf(roles[i]) >= 0) {
                         return true;
                     }
+
                 }
             }
+
             return false;
         },
         get: function () {
