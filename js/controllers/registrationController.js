@@ -34,7 +34,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             user.practice_id = user.practice.id;
             Registration.save({user: user, invitation_token: $stateParams.invitation_token},
                 function (success) {
-                    Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
+                    Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
                     Auth.current_user = success;
                     $scope.registrationSuccessful = true;
                 },

@@ -18,6 +18,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
         $scope.practice = Practice.get({practiceId: auth.practice_id});
 
         $scope.practice.$promise.then(function (data) {
+            console.log($scope.practice);
             console.log(FREE_TRIAL_PERIOD); 
             $scope.trial_end_date = new Date($scope.practice.created_at);
             $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD)
@@ -84,7 +85,8 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (user) {
-                $scope.practice.users.push(user);
+                // $scope.practice.users.push(user);
+                $scope.providers.push(user);
             });
         };
 
@@ -117,7 +119,12 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
 
         $scope.deleteUser = function (user) {
             User.delete({id: user.id}, function (success) {
-                    $scope.practice.users.splice($scope.practice.users.indexOf(user), 1);
+                    if(success.msg){
+                        Alert.error($scope.alerts, success.msg)
+                    }else{
+                        $scope.practice.users.splice($scope.practice.users.indexOf(user), 1);
+                    }
+                    
                 },
                 function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during user removal...')

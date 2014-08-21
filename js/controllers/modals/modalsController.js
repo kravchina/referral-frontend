@@ -100,7 +100,9 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Pro
         ProviderInvitation.save({provider_invitation: user}, function (success) {
             $modalInstance.close(success);
         },  function (failure) {
+            console.log(failure);
             Alert.error($scope.alerts, 'Error: ' + failure.data.message);
+            console.log($scope.alerts);
         });
     };
     $scope.cancel = function () {

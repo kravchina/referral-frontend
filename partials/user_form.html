@@ -4,6 +4,7 @@
         <h4 class="modal-title" id="myModalLabel">Add User</h4>
     </div>
     <div class="modal-body">
+        <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.message}}</alert>
         <div class="block-title">
             <h5>User Information</h5>
         </div>
@@ -22,6 +23,9 @@
                 <option value="2">Doctor</option>
                 <option value="4">Auxiliary</option>
             </select>
+        </div>
+        <div class="input-block" ng-class="">
+            &nbsp;<input type="checkbox" name="is_admin" ng-model="user.is_admin">&nbsp;Admin?
         </div>
     </div>
     <div class="modal-footer">
