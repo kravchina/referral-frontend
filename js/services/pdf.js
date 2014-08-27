@@ -1,6 +1,10 @@
 var dentalLinksPdf = angular.module('pdf', []);
 dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner) {
-    var pdf = new jsPDF(); // TODO [ak] refactor. Initialization of global vars requires this, but in fact PDF is created in buildPdf()
+    var jsPDFOrientation = 'p'; // portrait
+    var jsPDFUnit = 'mm';
+    var jsPDFFormat = 'letter';
+    
+    var pdf = new jsPDF(jsPDFOrientation, jsPDFUnit, jsPDFFormat); // TODO [ak] refactor. Initialization of global vars requires this, but in fact PDF is created in buildPdf()
     
     var patientData = {};
     var procedureData = {};
@@ -29,6 +33,8 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
     };
     var headerFontSize = 12;
     
+    // 'default' font styles, that are used in the majority of sections
+    // these styles are also used as best guess when 'restoring' styles (e.g. see appendHeader)
     var fontSize = 10;
     var fontColor = {
         r: 0, g: 0, b: 0
@@ -48,7 +54,11 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
     
     var thumbnailSquareSize = 30; // width & height of the thumbnail square
     var thumbnailTextPaddingX = 5; // from the thumbnail itself
-
+    
+    var defaultFillColor = {
+        r: 255, g: 255, b: 255
+    };
+    
     var fullSizeColWidth = pageSizes.width - 2 * pagePaddings.x;
     var halfSizeColWidth = (pageSizes.width - 2 * pagePaddings.x - colPadding) / 2;
     
@@ -104,6 +114,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
     };
 
     var appendHeader = function (pdf) {
+        // note: appendHeader() resets draw, fill and font styles! No way to "remember" arbitrary styles and restore them. Therefore, best guess restoration below
         pdf.setFillColor(headerColor.r, headerColor.g, headerColor.b);
         pdf.rect(0, 0, pageSizes.width, headerHeight, 'F');
 
@@ -116,13 +127,15 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
         var width = pdf.getStringUnitWidth(strBold) * headerFontSizeMm;
         pdf.text(pagePaddings.x, y, strBold);
 
-        // pdf.setDrawColor(255, 255, 255);
-        // pdf.rect(pagePaddings.x, y - headerFontSizeMm, width, headerFontSizeMm);
-        
         var strNormal = 'Links';
         pdf.setFontType('normal');
         pdf.text(pagePaddings.x + width, y, strNormal);
 
+        // best guess styles restoration :/
+        pdf.setFillColor(defaultFillColor.r, defaultFillColor.g, defaultFillColor.b);
+        pdf.setTextColor(fontColor.r, fontColor.g, fontColor.b);
+        pdf.setFontSize(fontSize);
+        
         return headerHeight + blocksPadding;
     };
 
@@ -132,7 +145,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
             for (var k = 0; k < notes.length; k++) {
                 var noteLines = pdf.splitTextToSize(notes[k].message, fullSizeColWidth);
                 var noteHeight = noteLines.length * fontSizeMm;
-                caret = addPageIfNeeded(pdf, caret, noteHeight);
+                caret = addPageIfNeeded(pdf, caret, noteHeight); // may include addHeader() resetting styles, but we have those default styles here anyway
                 caret += fontSizeMm;
                 pdf.text(pagePaddings.x, caret, noteLines); // assuming that note can fit at least a blank page. If not, what kind of "note" is it?..
                 caret += noteHeight - fontSizeMm;
@@ -160,7 +173,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
                     continue;
                 }
                 
-                caret = addPage(pdf);
+                caret = addPage(pdf); // includes addHeader() resetting styles
                 
                 pdf.setFontSize(fontSize);
                 pdf.setTextColor(fontColor.r, fontColor.g, fontColor.b);
@@ -185,6 +198,9 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
             pdf.setFontSize(fontSize);
             pdf.setTextColor(fontColor.r, fontColor.g, fontColor.b);
             pdf.setFontType('normal');
+            
+            // that's in case we're too close to page bottom already
+            caret = addPageIfNeeded(pdf, caret, thumbnailSquareSize); // may include addHeader() resetting styles, but we have those default styles here anyway
             
             var xCaret = pagePaddings.x;
             var remainingWidth = halfSizeColWidth - thumbnailSquareSize - thumbnailTextPaddingX;
@@ -235,7 +251,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
                     // switch to first column and next row
                     xCaret = pagePaddings.x;
                     caret += thumbnailSquareSize + blocksPadding;
-                    caret = addPageIfNeeded(pdf, caret, thumbnailSquareSize);
+                    caret = addPageIfNeeded(pdf, caret, thumbnailSquareSize); // may include addHeader() resetting styles, but we have those default styles here anyway
                 }
             }
             if (images.length % 2 != 0) {
@@ -328,10 +344,8 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
     }
     
     var buildPdf = function (forPatient) {
-        pdf = new jsPDF();
+        pdf = new jsPDF(jsPDFOrientation, jsPDFUnit, jsPDFFormat);
         var caret = appendHeader(pdf);
-        pdf.setTextColor(fontColor.r, fontColor.g, fontColor.b);
-        pdf.setFillColor(255, 255, 255);
         caret = appendPractices(pdf, caret);
         caret = appendLineSeparator(pdf, caret);
         caret = appendPatientTextData(pdf, caret);
