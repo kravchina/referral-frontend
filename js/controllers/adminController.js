@@ -141,4 +141,8 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                 });
         }
 
+        $scope.roleName = function(is_admin, roles_mask){
+            return is_admin ? "Admin" : (roles_mask == 2 ? "Doctor" : "Aux")
+        }
+
     }]);
