@@ -151,6 +151,9 @@ a:hover {
 	height: 30px;
 }
 
+.cancelBtn{
+    background-color: buttonface;
+}
 
 textarea.form-control {
 	resize: vertical;
