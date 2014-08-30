@@ -68,6 +68,9 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                 resolve: {
                     practice_id: function () {
                         return $scope.practice.id;
+                    },
+                    stripe_customer_id: function () {
+                        return $scope.practice.stripe_customer_id;
                     }
                 }
             });
@@ -77,6 +80,18 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                 $scope.practice = practice
             });
         };
+
+        $scope.cancelSubscription = function () {
+            Practice.cancelSubscription({practiceId: $scope.practice.id}, {},
+                function (success) {
+                    console.log(success)
+                    Alert.success($scope.alerts, 'Subscription was cancelled successfully!');
+                    $scope.practice = success
+                },
+                function (failure) {
+                    Alert.error($scope.alerts, 'An error occurred during cancelling subscription...')
+                });
+        }
 
         $scope.usersDialog = function () {
             var modalInstance = $modal.open({

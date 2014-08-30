@@ -92,6 +92,7 @@ dentalLinksServices.factory('Practice', ['$resource',
                 'Pragma': 'no-cache',
                 'Expires': '0'
             }},
+            cancelSubscription: {method: 'GET', url: host + '/practices/:practiceId/cancel_subscription'},
             update: {method: 'PUT'}
         });
     }]);

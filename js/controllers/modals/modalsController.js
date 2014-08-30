@@ -110,14 +110,15 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Pro
     };
 }]);
 
-modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'STRIPE_KEY', 'practice_id', function ($scope, $modalInstance, ProviderInvitation, Auth, Alert, Practice, STRIPE_KEY, practice_id) {
+modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'STRIPE_KEY', 'practice_id', 'stripe_customer_id', function ($scope, $modalInstance, ProviderInvitation, Auth, Alert, Practice, STRIPE_KEY, practice_id, stripe_customer_id) {
     $scope.result = {};
     $scope.alerts = [];
 
     var currentYear = moment().year();
     $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4 ];
 
-    console.log(practice_id)
+    $scope.stripe_customer_id = stripe_customer_id;
+    console.log($scope.stripe_customer_id)
     // set the stripe publishable key
     Stripe.setPublishableKey(STRIPE_KEY);
 
