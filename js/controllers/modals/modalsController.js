@@ -101,7 +101,10 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Pro
             $modalInstance.close(success);
         },  function (failure) {
             console.log(failure);
-            Alert.error($scope.alerts, 'Error: ' + failure.data.message);
+            $.each(failure.data, function(key, value){
+                Alert.error($scope.alerts, 'Error: ' + key + " " + value[0]);
+            });
+            
             console.log($scope.alerts);
         });
     };
