@@ -13,8 +13,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
     var images;
     var notes;
     
-    var pageSizes = { // A4 in millimeters
-        // TODO America's standard paper size is 'Letter' - slightly different dimensions. Need to find out if jsPDF finds that out automatically (and in what browsers) or we need to hardcode that
+    var pageSizes = {
         width: pdf.internal.pageSize.width,
         height: pdf.internal.pageSize.height
     };
