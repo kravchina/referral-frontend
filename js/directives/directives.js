@@ -31,19 +31,22 @@ dentalLinksDirectives.directive('expandNote', [function () {
 }]);
 
 
-dentalLinksDirectives.directive('pdfPhotos', ['Auth', 'PDF', 'File', function (Auth, PDF, File) {
+dentalLinksDirectives.directive('pdfPhotos', ['Auth', 'PDF', 'File', 'Logger', function (Auth, PDF, File, Logger) {
     return {
         scope: true,
         restrict: 'A',
         link: function (scope, $element, attrs) {
-            var img = $element[0];
             if (Auth.authorize(attrs.access.split(/[,\s]+/))) {
                 if(!File.isImage(scope.attachment.filename)){
                     PDF.addImage(scope.$index, null, scope.attachment);
                 }
+                var img = new Image();
+                img.crossOrigin = 'anonymous';
                 img.onload = function () {
                     PDF.addImage(scope.$index, img, scope.attachment);
                 };
+                img.src = scope.host + '/attachment/?file=' + scope.attachment.filenameToDownload;
+                Logger.log('Loading image ' + img.src);
             }
         }
     }
