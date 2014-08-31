@@ -275,7 +275,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
         caret += fontSizeMm;
         pdf.text(paddedX, caret, practiceData.practiceName);
         caret += fontSizeMm;
-        pdf.text(paddedX, caret, practiceData.phone);
+        pdf.text(paddedX, caret, $filter('phoneNumber')(practiceData.phone));
         caret += fontSizeMm;
         pdf.text(paddedX, caret, practiceData.addressStreet);
         caret += fontSizeMm;

@@ -12,7 +12,8 @@ var dentalLinks = angular.module('dentalLinks', [
     'registration',
     'unsavedChanges',
     'dentalLinksServices',
-    'dentalLinksDirectives'
+    'dentalLinksDirectives',
+    'ui.mask'
 ]);
 
 dentalLinks.constant('USER_ROLES', {
@@ -186,4 +187,6 @@ dentalLinks.filter('filename', function () {
     }
 });
 
-
+dentalLinks.filter('phoneNumber', ['PhoneFormatter', function(PhoneFormatter) {
+    return PhoneFormatter.format;
+}]);

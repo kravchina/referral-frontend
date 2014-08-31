@@ -166,7 +166,7 @@
                                         </div>
 
                                         <div class="input-block-inline-left">
-                                            <input type="tel" class="form-control data1" ng-model="practice.address.phone" placeholder="Enter phone number &hellip;" disabled="disabled">
+                                            <input type="tel" class="form-control data1" ng-model="practice.address.phone" placeholder="{{PhoneFormatter.UI_PLACEHOLDER}}" ui-mask="{{PhoneFormatter.MASK}}" disabled="disabled">
                                             <label>Phone number</label>
                                         </div>
 
