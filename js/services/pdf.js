@@ -378,7 +378,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
             var orig_address = ((provider || {}).practice || {}).address || {};
             practiceData.phone = orig_address.phone || '';
             practiceData.addressStreet = orig_address.street_line_1 || '';
-            practiceData.addressCity = (orig_address.city || '') + ' ' + (orig_address.state || '') + ' ' + (orig_address.zip || '');
+            practiceData.addressCity = (orig_address.city || '') + ', ' + (orig_address.state || '') + ' ' + (orig_address.zip || '');
             if (orig_address.website) {
                 practiceData.website = orig_address.website;
             }
