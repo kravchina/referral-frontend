@@ -370,6 +370,16 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
         addNotes: function (notesArray) {
             notes = notesArray;
         },
+        composeAddress: function(city, state, zip) {
+            var result = city;
+            if (result != '') {
+                if ((state + zip) != '') {
+                    result += ', ';
+                }
+            }
+            result += state + ' ' + zip;
+            return result;
+        },
         createPracticeData: function (blockTitle, provider) {
             var practiceData = {};
             practiceData.blockTitle = blockTitle;
@@ -378,7 +388,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
             var orig_address = ((provider || {}).practice || {}).address || {};
             practiceData.phone = orig_address.phone || '';
             practiceData.addressStreet = orig_address.street_line_1 || '';
-            practiceData.addressCity = (orig_address.city || '') + ', ' + (orig_address.state || '') + ' ' + (orig_address.zip || '');
+            practiceData.addressCity = this.composeAddress((orig_address.city || ''), (orig_address.state || ''), (orig_address.zip || ''));
             if (orig_address.website) {
                 practiceData.website = orig_address.website;
             }
