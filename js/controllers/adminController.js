@@ -53,7 +53,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                             form.$setPristine();
                             Alert.success($scope.alerts, 'Account was updated successfully!')
                             // only now we can say changes are saved
-                            dentalLinksUnsavedChangesService.setUnsavedChanges(false);
+                            UnsavedChanges.setUnsavedChanges(false);
                         },
                         function (failure) {
                             Alert.error($scope.alerts, 'An error occurred during account update...')
