@@ -121,7 +121,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                 item.formData.push({referral_id: referral_id});
                 item.upload();
             }
-        }
+        };
 
         $scope.saveTemplate = function (model) {
 
@@ -134,7 +134,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     Alert.success($scope.alerts, 'Template was saved successfully!');
                     UnsavedChanges.setUnsavedChanges(false);
 
-                    uploadAttachments(success.id)
+                    uploadAttachments(success.id);
                     $scope.is_create = false;
                     UnsavedChanges.setUnsavedChanges(false);
                     if(!$scope.hasNewAttachments){
@@ -262,7 +262,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             scope: $scope,
             url: host + '/attachment/upload',
             formData: [
-                {filename: 'test'},
+                {filename: 'test'}
             ],
             headers: {'Authorization' : $scope.token, 'From': $scope.from}
         });
