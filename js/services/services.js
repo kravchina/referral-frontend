@@ -3,8 +3,8 @@
  */
 var dentalLinksServices = angular.module('dentalLinksServices', ['ngResource']);
 
-//var host = 'http://localhost:3000';
-var host = 'http://referral-server.herokuapp.com';
+var host = 'http://localhost:3000';
+//var host = 'http://referral-server.herokuapp.com';
 
 dentalLinksServices.factory('Auth', ['$cookieStore', '$location', 'USER_ROLES', function ($cookieStore, $location, USER_ROLES) {
     return {
@@ -43,10 +43,10 @@ dentalLinksServices.factory('Auth', ['$cookieStore', '$location', 'USER_ROLES', 
         getOrRedirect: function () {
             var result = $cookieStore.get('auth');
             if (result) {
-                return result;l
+                return result;
             }else{
                 $location.path('/sign_in');
-            }d
+            }
         },
         set: function (value) {
             $cookieStore.put('auth', value);
@@ -213,4 +213,8 @@ dentalLinksServices.factory('ModalHandler', [function () {
             modalInstance = modal;
         }
     }
+}]);
+
+dentalLinksServices.factory('SecurityCode', ['$resource', function ($resource) {
+    return $resource(host + '/security_code/:id', {}, {})
 }]);

@@ -164,4 +164,14 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
             return (roles_mask == 2 ? "Doctor" : "Aux") + (is_admin ? ", Admin" : "")
         }
 
+        $scope.securityCodeDialog = function (user_id) {
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/security_code.html',
+                controller: 'SecurityCodeModalController'
+
+            });
+            ModalHandler.set(modalInstance);
+
+        };
+
     }]);

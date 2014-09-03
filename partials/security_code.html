@@ -1,0 +1,18 @@
+
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Security Code</h4>
+    </div>
+    <div class="modal-body">
+        <div class="block-title">
+            <h5>Please provide the new provider with code below</h5>
+        </div>
+        <div class="input-block" ng-class="{ 'has-error': providerForm.email.$dirty && providerForm.email.$invalid }">
+            <!--<input type="email" class="form-control" name="email" ng-model="provider.email" placeholder="Enter provider's email address &hellip;" ng-required="true">-->
+            {{securityCode.code}}
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Close</button>
+    </div>
+

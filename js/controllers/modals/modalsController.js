@@ -121,7 +121,7 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', '
     $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4 ];
 
     $scope.stripe_customer_id = stripe_customer_id;
-    console.log($scope.stripe_customer_id)
+    console.log($scope.stripe_customer_id);
     // set the stripe publishable key
     Stripe.setPublishableKey(STRIPE_KEY);
 
@@ -139,7 +139,7 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', '
                     } else {
                         // got stripe token, now charge it or smt
                         payment_info.stripe_token = response.id;
-                        console.log(payment_info)
+                        console.log(payment_info);
 
                         Practice.update({practiceId: practice_id}, {
                                         practice: {
@@ -149,12 +149,11 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', '
                                             name_on_card: payment_info.name_on_card,
                                             card_exp_month: payment_info.card_exp_month,
                                             card_exp_year: payment_info.card_exp_year,
-                                            stripe_token: payment_info.stripe_token,
-                                            
+                                            stripe_token: payment_info.stripe_token
                                         }
-                                    },
+                            },
                                     function (success) {
-                                        console.log(success)
+                                        console.log(success);
                                         Alert.success($scope.alerts, 'Account was upgraded successfully!');
                                         $modalInstance.close(success);
                                     },
@@ -193,6 +192,13 @@ modalsModule.controller('UserPasswordModalController', ['$scope', '$modalInstanc
             
         });
     };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+
+modalsModule.controller('SecurityCodeModalController', ['$scope', '$modalInstance', 'Auth', 'SecurityCode', function ($scope, $modalInstance, Auth, SecurityCode) {
+    $scope.securityCode = SecurityCode.get({practice_id: Auth.get().practice_id});
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
