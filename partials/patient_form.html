@@ -13,7 +13,7 @@
                         <strong>Oops!</strong> Please fix the highlighted errors below.
                     </div>-->
                     <div class="input-block-right" ng-class="{ 'has-error': patientForm.salutation.$dirty && patientForm.salutation.$invalid }">
-                        <select id="selectSalutation" name="salutation" ng-model="patient.salutation" ng-options="s for  s in salutations" class="form-control" ng-required="true">
+                        <select id="selectSalutation" name="salutation" ng-model="patient.salutation" ng-options="s for  s in salutations" class="form-control">
                             <option selected="selected" class="placeholder" value="">Select salutation</option>
                         </select>
                     </div>
