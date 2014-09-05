@@ -33,6 +33,7 @@
         <div class="block-title">
             <h2>Practice</h2>
         </div>
+        <alert type="'warning'" ng-show="form.practice.$dirty && form.practice.$invalid"> Please select existing practice!</alert>
         <input type="text" class="form-control" name="practice" placeholder="Enter existing practice or add new with button on the right &hellip;" ng-model="destinationPractice" typeahead-editable="false" typeahead-on-select="updatePracticeType($item, $model, $label)" typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue" ng-required="true">
     </div>
 
