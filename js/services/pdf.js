@@ -1,5 +1,5 @@
 var dentalLinksPdf = angular.module('pdf', []);
-dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner) {
+dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($filter, Spinner, ImageUtils) {
     var jsPDFOrientation = 'p'; // portrait
     var jsPDFUnit = 'mm';
     var jsPDFFormat = 'letter';
@@ -182,11 +182,14 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
                 pdf.text(pagePaddings.x, caret, extractFileName(images[j].metadata.filename)); // no fitString in here, assuming whole page width is always enough
                 
                 caret += blocksPadding;
-
-                var aspectRatio = image.width / image.height;
-                var imageHeight = fullSizeColWidth / aspectRatio;
-                pdf.addImage(image, 'JPEG', pagePaddings.x, caret, fullSizeColWidth, imageHeight); // assuming image's aspect ratio allows full-width positioning
-                caret += imageHeight + blocksPadding;
+                
+                var outputDimensions = ImageUtils.resizeImage(
+                    {width: image.width, height: image.height},
+                    {width: fullSizeColWidth, height: pageSizes.height - headerHeight - 2*blocksPadding - fontSizeMm - pagePaddings.y}
+                );
+                
+                pdf.addImage(image, 'JPEG', pagePaddings.x, caret, outputDimensions.width, outputDimensions.height);
+                caret += outputDimensions.height + blocksPadding;
             }
         }
         return caret;
@@ -225,21 +228,10 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner',  function ($filter, Spinner
                 var image = images[j].image;
                 var metadata = images[j].metadata;
                 
-                var thumbWidth;
-                var thumbHeight;
-                
-                if (image.width > image.height) {
-                    // squeezing by width
-                    thumbWidth = thumbnailSquareSize;
-                    thumbHeight = thumbnailSquareSize * image.height / image.width;
-                } else {
-                    // squeezing by height
-                    thumbHeight = thumbnailSquareSize;
-                    thumbWidth = thumbnailSquareSize * image.width / image.height;
-                }
+                var thumbDimensions = ImageUtils.resizeImage({width: image.width, height: image.height}, {width: thumbnailSquareSize, height: thumbnailSquareSize});
                 
                 var currentX = xCaret + thumbnailSquareSize + thumbnailTextPaddingX;
-                pdf.addImage(image, 'JPEG', xCaret, caret, thumbWidth, thumbHeight);
+                pdf.addImage(image, 'JPEG', xCaret, caret, thumbDimensions.width, thumbDimensions.height);
                 pdf.text(currentX, caret + fontSizeMm, fitString(extractFileName(metadata.filename), fontSizeMm, remainingWidth));
                 pdf.text(currentX, caret + 2 * fontSizeMm, formatDate(metadata.created_at));
                 
