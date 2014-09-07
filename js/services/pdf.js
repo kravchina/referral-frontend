@@ -174,6 +174,14 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
                 
                 caret = addPage(pdf); // includes addHeader() resetting styles
                 
+                var outputDimensions = ImageUtils.resizeImage(
+                    {width: image.width, height: image.height},
+                    {width: fullSizeColWidth, height: pageSizes.height - headerHeight - 2*blocksPadding - fontSizeMm - pagePaddings.y}
+                );
+                
+                pdf.addImage(image, 'JPEG', pagePaddings.x, caret, outputDimensions.width, outputDimensions.height);
+                caret += outputDimensions.height + blocksPadding;
+                
                 pdf.setFontSize(fontSize);
                 pdf.setTextColor(fontColor.r, fontColor.g, fontColor.b);
                 pdf.setFontType('normal');
@@ -182,14 +190,6 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
                 pdf.text(pagePaddings.x, caret, extractFileName(images[j].metadata.filename)); // no fitString in here, assuming whole page width is always enough
                 
                 caret += blocksPadding;
-                
-                var outputDimensions = ImageUtils.resizeImage(
-                    {width: image.width, height: image.height},
-                    {width: fullSizeColWidth, height: pageSizes.height - headerHeight - 2*blocksPadding - fontSizeMm - pagePaddings.y}
-                );
-                
-                pdf.addImage(image, 'JPEG', pagePaddings.x, caret, outputDimensions.width, outputDimensions.height);
-                caret += outputDimensions.height + blocksPadding;
             }
         }
         return caret;
