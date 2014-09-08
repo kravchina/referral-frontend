@@ -19,6 +19,10 @@ dentalLinks.service('ImageUtils', function() {
         
         return result;
     };
+
+    this.resizeImageKeepingAspectRatio = function(imageDimensions, expectedLongEdgeSize){
+        return this.resizeImage(imageDimensions, {width: expectedLongEdgeSize, height:expectedLongEdgeSize});
+    };
     
     this.resizeImageTest = function() {
         var t;

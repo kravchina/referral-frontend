@@ -89,7 +89,7 @@ dentalLinksDirectives.directive('attachmentThumb', [function () {
  * @author: nerv
  * @version: 0.1.2, 2014-01-09
  */
-dentalLinksDirectives.directive('ngThumb', ['$window', function ($window) {
+dentalLinksDirectives.directive('ngThumb', ['$window', 'ImageUtils', function ($window, ImageUtils) {
     var helper = {
         support: !!($window.FileReader && $window.CanvasRenderingContext2D),
         isFile: function (item) {
@@ -151,10 +151,9 @@ dentalLinksDirectives.directive('ngThumb', ['$window', function ($window) {
             }
 
             function onLoadImage() {
-                var width = params.width || this.width / this.height * params.height;
-                var height = params.height || this.height / this.width * params.width;
-                canvas.attr({ width: width, height: height });
-                canvas[0].getContext('2d').drawImage(this, 0, 0, width, height);
+                var canvasImgDimensions = ImageUtils.resizeImageKeepingAspectRatio({width: this.width, height: this.height}, params.longEdgeSize);
+                canvas.attr({ width: canvasImgDimensions.width, height: canvasImgDimensions.height });
+                canvas[0].getContext('2d').drawImage(this, 0, 0, canvasImgDimensions.width, canvasImgDimensions.height);
             }
         }
     };

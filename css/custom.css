@@ -601,7 +601,8 @@ textarea.form-control {
 	width: 40px;
 }
 .attachment-thumb > img {
-	width: 100%;
+	max-width: 100%;
+    max-height: 100%;
 }
 .attachment-thumb.attach-word, .attachment-thumb.attach-excel, .attachment-thumb.attach-pdf, .attachment-thumb.attach-file {
 	background-position: center;

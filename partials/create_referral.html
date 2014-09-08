@@ -160,7 +160,7 @@
                 <li class="attachment-block" ng-repeat="item in uploader.queue">
                     <a ng-href="{{host}}/attachment/?file={{item.filenameToDownload}}" target="_blank">
                     <div class="attachment-thumb" ng-show="uploader.isHTML5"
-                             ng-thumb="{ file: item.file, height: 80, width:80 }">
+                             ng-thumb="{ file: item.file, longEdgeSize:80 }">
                             <!-- no img, canvas is automatically generated here -->
                         </div>
                         <div class="attachment-details" >
