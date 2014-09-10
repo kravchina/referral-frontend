@@ -220,6 +220,10 @@ textarea.form-control {
 	top: 40px;
 }
 
+.space-nowrap{
+    white-space: nowrap;
+}
+
 /* Buttons */
 .btn {
 	border: none;
