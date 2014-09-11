@@ -143,9 +143,7 @@
                 <li class="attachment-block" ng-repeat="attachment in attachments">
 
                     <a href="{{host}}/attachment/?file={{attachment.filenameToDownload}}">
-                        <div class="attachment-thumb" attachment-thumb="{{attachment.filename | filename}}">
-
-                            <img ng-if="isImage(attachment.filename)" access="admin, doctor" ng-src="{{host}}/attachment/?file={{attachment.filenameToDownload}}&is_thumb=true" total-images="{{attachments.length}}" crossorigin="anonymous" alt="img">
+                        <div class="attachment-thumb" attachment-thumb="{{host}}/attachment/?file={{attachment.filenameToDownload}}">
 
                         </div>
                         <div class="attachment-details">

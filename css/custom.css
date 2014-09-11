@@ -603,6 +603,8 @@ textarea.form-control {
     background-color: #ffffff;
 	height: 40px;
 	width: 40px;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 .attachment-thumb > img {
 	max-width: 100%;

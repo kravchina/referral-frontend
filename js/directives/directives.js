@@ -73,6 +73,7 @@ dentalLinksDirectives.directive('attachmentThumb', [function () {
                 case 'jpeg':
                 case 'png':
                 case 'gif':
+                    element.attr( 'style',  "background-image: url('" + attributes.attachmentThumb + "&is_thumb=true')");
                     cssClass = '';
                     break;
                 default :

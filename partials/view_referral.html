@@ -141,8 +141,7 @@
                     <li class="attachment-block" ng-repeat="attachment in referral.attachments">
 
                         <a href="{{host}}/attachment/?file={{attachment.filenameToDownload}}" target="_blank">
-                            <div class="attachment-thumb" attachment-thumb="{{attachment.filename | filename}}">
-                                <img ng-show="isImage(attachment.filename)" pdf-photos access="admin, doctor" ng-src="{{host}}/attachment/?file={{attachment.filenameToDownload}}&is_thumb=true" total-images="{{referral.attachments.length}}" crossorigin="anonymous" alt="img">
+                            <div class="attachment-thumb" pdf-photos access="admin, doctor" attachment-thumb="{{host}}/attachment/?file={{attachment.filenameToDownload}}">
 
                             </div>
                             <div class="attachment-details">
