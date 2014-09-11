@@ -4,7 +4,7 @@
 var dentalLinksServices = angular.module('dentalLinksServices', ['ngResource']);
 
 //var host = 'http://localhost:3000';
-var host = 'http://referral-server.herokuapp.com';
+var host = 'https://referral-server.herokuapp.com';
 
 dentalLinksServices.factory('Auth', ['$cookieStore', '$location', 'USER_ROLES', function ($cookieStore, $location, USER_ROLES) {
     return {
