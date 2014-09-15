@@ -6,35 +6,46 @@ dentalLinksUnsavedChanges.service('UnsavedChanges', ['$rootScope', 'Logger', fun
     
     var self = this;
     
-    var unsavedChanges = false;
+    // contains a callback function that defines whether there are unsaved changes by returning true/false
+    // users of UnsavedChanges can re-assign this callback using setCbHaveUnsavedChanges, thus modifying the logic
+    var cbHaveUnsavedChanges;
     
-    this.hasUnsavedChanges = function() {
-        Logger.log('hasUnsavedChanges(): ' + unsavedChanges);
-        return unsavedChanges;
-    }
+    // resets the callback
+    // users of UnsavedChanges should use this to bring the default behavior back (e.g. to make a redirect
+    // without warning when having unsaved changes)
+    this.resetCbHaveUnsavedChanges = function() {
+        cbHaveUnsavedChanges = function() {
+            return false; // no unsaved changes
+        };
+        Logger.debug('Callback reset.');
+    };
     
-    this.setUnsavedChanges = function(newUnsavedChanges) {
-        Logger.log('setUnsavedChanges(' + newUnsavedChanges + ')');
-        unsavedChanges = newUnsavedChanges;
+    // immediately resetting the callback to define the default behavior
+    this.resetCbHaveUnsavedChanges();
+    
+    this.setCbHaveUnsavedChanges = function(newCb) {
+        Logger.debug('Setting callback to ', newCb);
+        cbHaveUnsavedChanges = newCb;
     }
     
     this.canLeaveSafely = function() {
         Logger.log('canLeaveSafely()...');
-        if (this.hasUnsavedChanges()) {
-            var discardChanges = confirm(strUnsavedQuestion);
-            if (discardChanges) {
-                this.setUnsavedChanges(false);
-            }
-            Logger.log('canLeaveSafely(): ' + discardChanges);
-            return discardChanges;
+        var result;
+        if (cbHaveUnsavedChanges()) {
+            result = confirm(strUnsavedQuestion);
+        } else {
+            result = true;
         }
-        Logger.log('canLeaveSafely(): true');
-        return true;
+        if (result) {
+            self.resetCbHaveUnsavedChanges(); // new page -- new UnsavedChanges user. Resetting callback
+        }
+        Logger.log('canLeaveSafely(): ', result);
+        return result;
     }
     
     this.init = function() {
         window.onbeforeunload = function() {
-            if (self.hasUnsavedChanges()) {
+            if (cbHaveUnsavedChanges()) {
                 Logger.log('Window close attempt with unsaved changes. Returning warning message');
                 return strUnsavedWarning;
             }

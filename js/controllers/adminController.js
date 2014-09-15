@@ -26,6 +26,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
             $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD)
         });    
 
+        // TODO [ak] refactor bad design: savePractice() does not in fact operate on a single form
         $scope.savePractice = function (form) {
             
             if (form.$dirty && !form.$invalid) {
@@ -51,17 +52,14 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                         },
                         function (success) {
                             form.$setPristine();
+                            // no UnsavedChanges operations here, we stay on page, callback stays the same, form is now pristine
+                            // note: the other tab form might not be pristine here. See #72581022
                             Alert.success($scope.alerts, 'Account was updated successfully!')
-                            // only now we can say changes are saved
-                            UnsavedChanges.setUnsavedChanges(false);
                         },
                         function (failure) {
                             Alert.error($scope.alerts, 'An error occurred during account update...')
                         });
                 
-            } else {
-                // form is not dirty, we're just getting out of edit state
-                UnsavedChanges.setUnsavedChanges(false);
             }
         };
 
@@ -174,4 +172,10 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
 
         };
 
+        // in Admin, unsaved changes should depend on forms from all tabs
+        UnsavedChanges.setCbHaveUnsavedChanges(function() {
+            var narrowedScope = $scope.$$childHead.$$nextSibling; // TODO [ak] dangerous and non-documented. Find something better
+            return narrowedScope.accountForm.$dirty || narrowedScope.practiceForm.$dirty;
+        });
+        
     }]);

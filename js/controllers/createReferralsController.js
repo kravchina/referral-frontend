@@ -132,11 +132,10 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     $scope.model.attachments = [];
                     $scope.model.referral.notes_attributes = [];
                     Alert.success($scope.alerts, 'Template was saved successfully!');
-                    UnsavedChanges.setUnsavedChanges(false);
 
                     uploadAttachments(success.id);
                     $scope.is_create = false;
-                    UnsavedChanges.setUnsavedChanges(false);
+                    UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
                     if(!$scope.hasNewAttachments){
                         $state.go('createReferral', {referral_id: success.id}, {reload: true});
                     }
@@ -158,10 +157,9 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                 success: function (referral) {
                     Logger.debug('Sent referral #' + referral.id);
                     Alert.success($scope.alerts, 'Referral was sent successfully!');
-                    UnsavedChanges.setUnsavedChanges(false);
                     uploadAttachments(referral.id);
                     $scope.is_create = true;
-                    UnsavedChanges.setUnsavedChanges(false);
+                    UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
                     if(!$scope.hasNewAttachments){
                         $state.go('viewReferral', {referral_id: referral.id});
                     }
@@ -236,7 +234,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (note) {
-                processFormChange(note);
+                $scope.form.$setDirty(); // for UnsavedChanges to notice notes being changed
                 $scope.model.referral.notes.push({message: note, created_at: Date.now(), user_id: auth.id, user_first_name: Auth.current_user.first_name, user_last_name: Auth.current_user.last_name});
                 $scope.model.referral.notes_attributes.push({message: note, created_at: Date.now(), user_id: auth.id, user_first_name: Auth.current_user.first_name, user_last_name: Auth.current_user.last_name});
             });
@@ -244,7 +242,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         var teeth = $scope.teeth = [];
         $scope.toggleTooth = function (toothNumber) {
-            processFormChange(toothNumber);
+            $scope.form.$setDirty(); // for UnsavedChanges to notice teeth being changed
             var index = teeth.indexOf(toothNumber);
             if (index == -1) {
                 teeth.push(toothNumber);
@@ -301,7 +299,6 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             Logger.info('After adding a file', item);
             // marking an attachment for saving
             // $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes, size: item.file.size});
-            // processFormChange(item);
             $scope.hasNewAttachments = true;
 
         });
@@ -313,6 +310,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         uploader.bind('afteraddingall', function (event, items) {
             Logger.info('After adding all files', items);
+            $scope.form.$setDirty(); // for UnsavedChanges to notice attachments being changed
         });
 
         uploader.bind('beforeupload', function (event, item) {
@@ -364,7 +362,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             // show the loading indicator
             $scope.$parent.progressIndicatorEnd()
             console.log($scope.model.referral.id)
-            UnsavedChanges.setUnsavedChanges(false);
+            UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
             if($scope.is_create){
                 $state.go('viewReferral', {referral_id: $scope.model.referral.id}, {reload: true});
             }else{
@@ -373,28 +371,12 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             
 
         });
-
         
-
-        // VERY ugly. But I needed a quick way of finding out when this particular form is changed, in order to warn for unsaved changes.
-        // Property $dirty on this form isn't set up properly, i.e. it doesn't cover the teeth, notes, etc.
-        // Even assuming that data are toggled changed when form is simply shown would not be a solution, because after saving it's possible to start over again on the same form by simply modifying its controls.
-
-        var processFormChange = function(newVal) {
-            Logger.log('Changed a field to "' + newVal + '"');
-            UnsavedChanges.setUnsavedChanges(true);
-        };
-
-        $timeout(function() {
-            $scope.$watch('patient', processFormChange);
-            $scope.$watch('destinationPractice', processFormChange);
-            $scope.$watch('model.referral.dest_provider_id', processFormChange);
-            $scope.$watch('practiceType', processFormChange);
-            $scope.$watch('model.referral.procedure_id', processFormChange);
-            // teeth caught in $scope.toggleTooth
-            // attachments caught in afteraddingfile handler
-            // notes caught in $scope.noteDialog
+        // on Create Referral, form dirtiness defines the presense of unsaved changes
+        // UI fields that are not technically form fields (teeth, attachments, notes) should have
+        // dedicated change handlers, setting form to dirty
+        UnsavedChanges.setCbHaveUnsavedChanges(function() {
+            return $scope.form.$dirty;
         });
 
     }]);
-

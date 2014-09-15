@@ -223,7 +223,7 @@ dentalLinksDirectives.directive('deleteButton', [function () {
 
 }]);
 
-dentalLinksDirectives.directive('toggleEdit', ['UnsavedChanges', function (UnsavedChanges) {
+dentalLinksDirectives.directive('toggleEdit', function () {
     return {
         scope: {},
         restrict: 'A',
@@ -238,7 +238,6 @@ dentalLinksDirectives.directive('toggleEdit', ['UnsavedChanges', function (Unsav
                 editButton.addClass('hide');
                 saveButton.removeClass('hide');
                 editFormCtrl.enableControls();
-                UnsavedChanges.setUnsavedChanges(true);
             });
 
             // save
@@ -246,13 +245,12 @@ dentalLinksDirectives.directive('toggleEdit', ['UnsavedChanges', function (Unsav
                 editButton.removeClass('hide');
                 saveButton.addClass('hide');
                 editFormCtrl.disableControls();
-                // not setting unsaved changes to false here. It's happening in adminController.savePractice()
             });
 
         }
     }
 
-}]);
+});
 
 dentalLinksDirectives.directive('ngFocusMe', ['$parse', '$timeout', function($parse, $timeout){
     return {
