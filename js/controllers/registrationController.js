@@ -26,13 +26,14 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (practice) {
+                $scope.user.newPracticeId = practice.id;
                 $scope.user.practice = practice;
             });
         };
 
         $scope.register = function (user) {
             user.practice_id = user.practice.id;
-            Registration.save({user: user, invitation_token: $stateParams.invitation_token, security_code: $scope.security_code},
+            Registration.save({user: user, invitation_token: $stateParams.invitation_token, security_code: $scope.security_code, skip_security_code: user.newPracticeId == user.practice_id},
                 function (success) {
                     Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
                     Auth.current_user = success;
