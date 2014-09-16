@@ -70,7 +70,7 @@
                         <div class="section-block">
                             <h3>Access details</h3>
 
-                            <alert type="'danger'" ng-show="form.password.$dirty && form.password.$invalid">Password is required and should have at least 8 symbols</alert>
+                            <alert type="'danger'" ng-show="form.password.$dirty && form.password.$invalid">Password is required and should have at least 8 characters</alert>
 
                             <div class="input-block-inline" ng-class="{'has-error': form.email.$dirty && form.email.$invalid }">
                                 <input type="email" name="email" class="form-control" ng-model="user.email" disabled="disabled" placeholder="Enter email &hellip;" ng-required="true">
