@@ -9,37 +9,37 @@ body {
 	padding-top: 60px;
 }
 ::-webkit-input-placeholder {
-   color: #95a5a6 !important;
+   color: #34495e !important;
    font-family: "Lato", sans-serif !important;
    font-style: italic;
    font-weight: 300;
 }
 :-moz-placeholder {
-   color: #95a5a6 !important;
+   color: #34495e !important;
    font-family: "Lato", sans-serif !important;
    font-style: italic;
    font-weight: 300;  
 }
 ::-moz-placeholder {
-   color: #95a5a6 !important;
+   color: #34495e !important;
    font-family: "Lato", sans-serif !important;
    font-style: italic;
    font-weight: 300;  
 }
 :-ms-input-placeholder {  
-   color: #95a5a6 !important;
+   color: #34495e !important;
    font-family: "Lato", sans-serif !important;
    font-style: italic;
    font-weight: 300;  
 }
 .placeholder {  
-   color: #95a5a6 !important;
+   color: #34495e !important;
    font-family: "Lato", sans-serif !important;
    font-style: italic;
    font-weight: 300; 
 }
 option:disabled {  
-   color: #95a5a6 !important;
+   color: #34495e !important;
    font-family: "Lato", sans-serif !important;
    font-style: italic;
    font-weight: 300; 
@@ -359,7 +359,7 @@ textarea.form-control {
 	text-align: center;
 }
 .page-subheader {
-	/*color: #95a5a6;*/
+	color: #34495e;
 	font-size: 14px;
 	font-size: 1.4rem;;
 	font-weight: 300;
@@ -412,7 +412,7 @@ textarea.form-control {
 .form-control.data2 {
 	background-color: transparent;
 	border: none;
-	color: #95a5a6;
+	color: #34495e;
 	font-size: 12px;
 	font-size: 1.2rem;
 	height: auto;
@@ -647,7 +647,7 @@ textarea.form-control {
 	white-space: nowrap;
 }
 .attachment-details .datestamp {
-	/*color: #95a5a6;*/
+	color: #34495e;
 	font-size: 10px;
 	font-size: 1.0rem;
 	font-weight: 400;
@@ -729,7 +729,7 @@ textarea.form-control {
 .filter-controls-block .results-block {
 	background-color: #ecf0f1;
 	border-radius: 5px;
-	color: #95a5a6;
+	color: #34495e;
 	float: left;
 	font-size: 12px;
 	font-size: 1.2rem;
@@ -799,9 +799,9 @@ td.cell-datetime > span, td.cell-from .practice, td.cell-to .practice {
 	font-size: 1.2rem;
 	font-weight: 300;
 }
-/*.table-hover > tbody > tr:hover > td.cell-datetime > span, .table-hover > tbody > tr:hover > td.cell-from .practice, .table-hover > tbody > tr:hover > td.cell-to .practice {*/
-	/*color: #95a5a6;*/
-/*}*/
+.table-hover > tbody > tr:hover > td.cell-datetime > span, .table-hover > tbody > tr:hover > td.cell-from .practice, .table-hover > tbody > tr:hover > td.cell-to .practice {
+	color: #34495e;
+}
 
 td.cell-datetime > span {
 	display: inline-block;
@@ -939,7 +939,7 @@ td.cell-from .practice, td.cell-to .practice {
 	width: 100%;
 }
 .input-block label, .input-block-inline label, .input-block-inline-left label, .input-block-inline-right label {
-	/*color: #95a5a6;*/
+	color: #34495e;
 	display: block;
 	font-size: 9px;
 	font-size: 0.9rem;
