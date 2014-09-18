@@ -93,7 +93,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
 
-            ModalHandler.close();  //close dialog if open.
+            ModalHandler.dismissIfOpen();  //close dialog if open.
 
             if (!Auth.authorize(toState.access)) {
                 event.preventDefault();

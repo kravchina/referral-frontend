@@ -202,16 +202,28 @@ dentalLinksServices.factory('Spinner', [function () {
 }]);
 
 dentalLinksServices.factory('ModalHandler', [function () {
-    var modalInstance = {};
+    var modalInstance;
     return {
-        close: function () {
+        dismissIfOpen: function () {
             if (modalInstance && modalInstance.dismiss) {
                 modalInstance.dismiss('cancel');
+                modalInstance = undefined;  //remove when Angular UI will get update at least to 0.12.0 - workaround for https://www.pivotaltracker.com/story/show/77935988
             }
         },
         set: function (modal) {
             modalInstance = modal;
+        },
+        dismiss: function(modal){
+            modal.dismiss('cancel');
+            modalInstance = undefined;  //remove when Angular UI will get update at least to 0.12.0 - workaround for https://www.pivotaltracker.com/story/show/77935988
+        },
+        close: function(modal, result){
+            modal.close(result);
+            modalInstance = undefined; //remove when Angular UI will get update at least to 0.12.0 - workaround for https://www.pivotaltracker.com/story/show/77935988
         }
+
+
+
     }
 }]);
 

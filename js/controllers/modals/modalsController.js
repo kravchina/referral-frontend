@@ -1,6 +1,6 @@
 var modalsModule = angular.module('modals', ['ui.bootstrap']);
 
-modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'Patient', 'fullname', function ($scope, $modalInstance, Auth, Patient, fullname) {
+modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname) {
 
     /*$scope.patient = patient;*/
 
@@ -25,7 +25,7 @@ modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 
         patient.practice_id = Auth.getOrRedirect().practice_id;
         Patient.save({patient: patient},
             function (success) {
-                $modalInstance.close(success);
+                ModalHandler.close($modalInstance, success);
             },
             function (failure) {
                 $scope.success = false;
@@ -34,32 +34,33 @@ modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 
     };
 
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+        ModalHandler.dismiss($modalInstance);
+
     };
 }]);
 
-modalsModule.controller('NoteModalController', ['$scope', '$modalInstance', 'Note', function ($scope, $modalInstance, Note) {
+modalsModule.controller('NoteModalController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
     $scope.ok = function (note) {
         //nothing to do, we cant save note right here because at this stage referral doesn't exist. We can only add new note to the list on the parent page (create referral) and save simultaneously with referral.
         if (note == undefined){
-            $modalInstance.dismiss('cancel');
+            ModalHandler.dismiss($modalInstance);
         }else{
-            $modalInstance.close(note);
+            ModalHandler.close($modalInstance,note);
         }
         
     };
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+        ModalHandler.dismiss($modalInstance);
     };
 
 }]);
 
-modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Alert', 'Auth', function ($scope, $modalInstance, ProviderInvitation, Alert, Auth) {
+modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth) {
     $scope.alerts = [];
     $scope.ok = function (provider) {
         provider.inviter_id = Auth.getOrRedirect().id;
         ProviderInvitation.save({provider_invitation: provider}, function (success) {
-            $modalInstance.close(success);
+            ModalHandler.close($modalInstance,success);
         }, function (failure) {
             Alert.error($scope.alerts, 'Error: ' + failure.data.message);
         });
@@ -68,17 +69,17 @@ modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 
         Alert.close($scope.alerts, index);
     };
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+        ModalHandler.dismiss($modalInstance);
     };
 }]);
 
-modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 'Alert', 'Practice', 'Procedure', function ($scope, $modalInstance, Alert, Practice, Procedure) {
+modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 'ModalHandler','Alert', 'Practice', 'Procedure', function ($scope, $modalInstance, ModalHandler, Alert, Practice, Procedure) {
     $scope.alerts = [];
     $scope.practiceTypes = Procedure.practiceTypes();
     $scope.ok = function (practice) {
         Practice.save({practice: practice},
             function (success) {
-                $modalInstance.close(success);
+                ModalHandler.close($modalInstance,success);
             },
             function (failure) {
                 Alert.error($scope.alerts, 'Can\'t create practice.');
@@ -86,11 +87,11 @@ modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 
     };
 
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+        ModalHandler.dismiss($modalInstance);
     };
 }]);
 
-modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Auth', 'Alert', function ($scope, $modalInstance, ProviderInvitation, Auth, Alert) {
+modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Auth, Alert) {
     $scope.result = {};
     $scope.alerts = [];
     
@@ -98,7 +99,7 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Pro
         user.practice_id = Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
         ProviderInvitation.save({provider_invitation: user}, function (success) {
-            $modalInstance.close(success);
+            ModalHandler.close($modalInstance,success);
         },  function (failure) {
             console.log(failure);
             $.each(failure.data, function(key, value){
@@ -109,11 +110,11 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Pro
         });
     };
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+        ModalHandler.dismiss($modalInstance);
     };
 }]);
 
-modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'STRIPE_KEY', 'practice_id', 'stripe_customer_id', function ($scope, $modalInstance, ProviderInvitation, Auth, Alert, Practice, STRIPE_KEY, practice_id, stripe_customer_id) {
+modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'STRIPE_KEY', 'practice_id', 'stripe_customer_id', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Auth, Alert, Practice, STRIPE_KEY, practice_id, stripe_customer_id) {
     $scope.result = {};
     $scope.alerts = [];
 
@@ -155,7 +156,7 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', '
                                     function (success) {
                                         console.log(success);
                                         Alert.success($scope.alerts, 'Account was upgraded successfully!');
-                                        $modalInstance.close(success);
+                                        ModalHandler.close($modalInstance,success);
                                     },
                                     function (failure) {
                                         Alert.error($scope.alerts, 'An error occurred during account update...')
@@ -164,11 +165,11 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', '
                 });
     };
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+        ModalHandler.dismiss($modalInstance);
     };
 }]);
 
-modalsModule.controller('UserPasswordModalController', ['$scope', '$modalInstance', 'User', 'Auth', 'Alert', 'id', function ($scope, $modalInstance, User, Auth, Alert, id) {
+modalsModule.controller('UserPasswordModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'id', function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, id) {
     $scope.result = {};
     $scope.alerts = [];
     console.log(id);
@@ -181,7 +182,7 @@ modalsModule.controller('UserPasswordModalController', ['$scope', '$modalInstanc
 
         User.changePassword({id: id}, {new_password: user.password}, function (success) {
             console.log(success);
-            $modalInstance.close(success);
+            ModalHandler.close($modalInstance,success);
         },  function (failure) {
             console.log(failure);
             if(failure.data.password){
@@ -193,14 +194,14 @@ modalsModule.controller('UserPasswordModalController', ['$scope', '$modalInstanc
         });
     };
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+        ModalHandler.dismiss($modalInstance);
     };
 }]);
 
-modalsModule.controller('SecurityCodeModalController', ['$scope', '$modalInstance', 'Auth', 'SecurityCode', function ($scope, $modalInstance, Auth, SecurityCode) {
+modalsModule.controller('SecurityCodeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'Auth', 'SecurityCode', function ($scope, $modalInstance, ModalHandler, Auth, SecurityCode) {
     $scope.securityCode = SecurityCode.get({practice_id: Auth.get().practice_id});
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+        ModalHandler.dismiss($modalInstance);
     };
 }]);
 
