@@ -277,7 +277,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
             pdf.text(paddedX, caret, practiceData.website);
         }
         return caret;
-    }
+    };
     
     var appendPractices = function(pdf, caret) {
         pdf.setFontSize(fontSize);
@@ -285,7 +285,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
         var caretLeft = appendPractice(pdf, pagePaddings.x, caret, originalPracticeData);
         var caretRight = appendPractice(pdf, secondColX, caret, destinationPracticeData);
         return Math.max(caretLeft, caretRight) + blocksPadding;
-    }
+    };
     
     var appendPatientTextData = function(pdf, caret) {
         caret += fontSizeMm;
@@ -294,7 +294,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
         caret += fontSizeMm;
         pdf.text(pagePaddings.x, caret, formatDate(patientData.birthday));
         return caret+blocksPadding;
-    }
+    };
     
     var appendProcedureData = function(pdf, caret) {
         caret += fontSizeMm;
@@ -316,12 +316,12 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
             }
         }
         return caret + blocksPadding;
-    }
+    };
     
     var appendLineSeparator = function(pdf, caret) {
         pdf.line(pagePaddings.x, caret, pagePaddings.x + fullSizeColWidth, caret);
         return caret + blocksPadding;
-    }
+    };
     
     var appendBottomText = function(pdf, caret) {
         var str = 'Visit www.dentallinks.org to see referral documents';
@@ -332,7 +332,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
         
         var width = pdf.getStringUnitWidth(str) * auxiliaryFontSizeMm;
         pdf.text(pageSizes.width - pagePaddings.x - width, caret, str);
-    }
+    };
     
     var buildPdf = function (forPatient) {
         pdf = new jsPDF(jsPDFOrientation, jsPDFUnit, jsPDFFormat);
@@ -412,5 +412,5 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
         saveForPatient: function (filename) {
             buildPdf(true).save(filename);
         }
-    }
+    };
 }]);

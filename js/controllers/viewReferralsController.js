@@ -22,28 +22,28 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         $scope.s3UploadPath = "https://dev1-attachments.s3.amazonaws.com/uploads/";
         $scope.s3HttpUploadPath = "http://dev1-attachments.s3.amazonaws.com/uploads/";
 
-        $scope.referral = Referral.get({id: $stateParams.referral_id}, function (success) {
-                angular.forEach(success.attachments, function(attachment, key){
+        $scope.referral = Referral.get({id: $stateParams.referral_id}, function (data) {
+                angular.forEach(data.attachments, function(attachment, key){
                     $scope.total_size = $scope.total_size + attachment.size;
                     attachment['filenameToDownload'] = attachment.filename.replace($scope.s3UploadPath, '').replace($scope.s3HttpUploadPath, '');
                 });
 
-                angular.forEach(success.notes, function(note, key){
+                angular.forEach(data.notes, function(note, key){
                     if (note.user){
                         note['user_first_name'] = note.user.first_name;
                         note['user_last_name'] = note.user.last_name;
                     }
                 });
 
-                success.teethChart = success.teeth.split('+');
+                data.teethChart = data.teeth.split('+');
 
                 console.log($scope.total_size);
 
-                if (!success.dest_provider) {
-                    success.dest_provider = success.dest_provider_invited;
+                if (!data.dest_provider) {
+                    data.dest_provider = data.dest_provider_invited;
                 }
 
-                console.log(success);
+                console.log(data);
 
             },
             function (failure) {
