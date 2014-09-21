@@ -78,9 +78,10 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         $scope.practiceTypes = Procedure.practiceTypes();
 
+        // todo: I don't see where this list is used. Please indicate in a comment or remove
         $scope.providers = User.query(function (success) {
         }, function (failure) {
-            Alert.error($scope.alerts, 'Server doesn\'t respond. Please try again later');
+            Alert.error($scope.alerts, "Server doesn't respond. Please try again later");
         });
 
         $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};

@@ -16,8 +16,22 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
         };
 
         var auth = Auth.get();
-        $scope.providers = User.getInvitees({user_id: auth.id });
-        $scope.practice = Practice.get({practiceId: auth.practice_id});
+        $scope.invitedColleagues = [];
+        $scope.invitedUsers = [];
+        User.getInvitees({user_id: auth.id}, function(allInvitees) {
+            allInvitees.map(function(invitation) {
+                if (invitation.roles_mask) {  // criteria to tell user invitations apart from colleague invitations
+                    $scope.invitedUsers.push(invitation);
+                } else {
+                    $scope.invitedColleagues.push(invitation);
+                }
+            });
+            console.log('invitedUsers = ' + JSON.stringify($scope.invitedUsers));
+        });
+
+        $scope.practice = Practice.get({practiceId: auth.practice_id}, function(practice) {
+            console.log('existing users = ' + JSON.stringify(practice.users));
+        });
 
         $scope.practice.$promise.then(function (data) {
             console.log($scope.practice);
@@ -86,14 +100,14 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
         $scope.cancelSubscription = function () {
             Practice.cancelSubscription({practiceId: $scope.practice.id}, {},
                 function (success) {
-                    console.log(success)
+                    console.log(success);
                     Alert.success($scope.alerts, 'Subscription was cancelled successfully!');
                     $scope.practice = success
                 },
                 function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during cancelling subscription...')
                 });
-        }
+        };
 
         $scope.usersDialog = function () {
             var modalInstance = $modal.open({
@@ -102,8 +116,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (user) {
-                // $scope.practice.users.push(user);
-                $scope.providers.push(user);
+                $scope.invitedUsers.push(user);
             });
         };
 
@@ -130,37 +143,53 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (provider) {
-                $scope.providers.push(provider);
+                $scope.invitedColleagues.push(provider);
             });
         };
 
         $scope.deleteUser = function (user) {
-            User.delete({id: user.id}, function (success) {
-                    if(success.msg){
-                        Alert.error($scope.alerts, success.msg)
-                    }else{
-                        $scope.practice.users.splice($scope.practice.users.indexOf(user), 1);
-                    }
-                    
-                },
-                function (failure) {
-                    Alert.error($scope.alerts, 'An error occurred during user removal...')
-                });
+            if (user.status) {
+                ProviderInvitation.delete({id: user.id}, function (success) {
+                        if(success.msg){
+                            Alert.error($scope.alerts, success.msg)
+                        }else{
+                            $scope.invitedUsers.splice($scope.invitedUsers.indexOf(user), 1);
+                        }
+
+                    },
+                    function (failure) {
+                        Alert.error($scope.alerts, 'An error occurred during invitation removal...')
+                    });
+
+            } else {
+                User.delete({id: user.id}, function (success) {
+                        if(success.msg){
+                            Alert.error($scope.alerts, success.msg)
+                        }else{
+                            $scope.practice.users.splice($scope.practice.users.indexOf(user), 1);
+                        }
+
+                    },
+                    function (failure) {
+                        Alert.error($scope.alerts, 'An error occurred during user removal...')
+                    });
+            }
+
         };
 
         $scope.deleteProviderInvitation = function (provider) {
             ProviderInvitation.delete({id: provider.id},
                 function (success) {
-                    $scope.providers.splice($scope.providers.indexOf(provider), 1);
+                    $scope.invitedColleagues.splice($scope.invitedColleagues.indexOf(provider), 1);
                 },
                 function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during provider removal...')
                 });
-        }
+        };
 
         $scope.roleName = function(is_admin, roles_mask){
             return (roles_mask == 2 ? "Doctor" : "Aux") + (is_admin ? ", Admin" : "")
-        }
+        };
 
         $scope.securityCodeDialog = function (user_id) {
             var modalInstance = $modal.open({
