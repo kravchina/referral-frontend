@@ -53,7 +53,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
                 Procedure.practiceTypes().$promise.then(function (types) {
                     $scope.practiceTypes = types;
-                    $scope.updatePracticeType(referral.procedure);
+                    $scope.onPracticeSelected(referral.procedure);
                 });
                 $scope.model.referral.notes = referral.notes;
 
@@ -90,9 +90,13 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
 
-        $scope.updatePracticeType = function (item) {
+        $scope.onPracticeSelected = function (selectedPractice) {
+            // todo: refresh items in provider dropdown
+            $scope.destinationPractice = selectedPractice;
+
+            // select default referral type from practice type
             for (var i = 0; i < $scope.practiceTypes.length; i++) {
-                if ($scope.practiceTypes[i].id == item.practice_type_id) {
+                if ($scope.practiceTypes[i].id == selectedPractice.practice_type_id) {
                     $scope.practiceType = $scope.practiceTypes[i];
                     break;
                 }
