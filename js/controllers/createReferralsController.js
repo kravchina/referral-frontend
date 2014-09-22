@@ -34,9 +34,19 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                 console.log(referral);
                 if(referral.dest_provider && referral.dest_provider.practice){
                     $scope.destinationPractice = referral.dest_provider.practice;
+                }else{
+                    $scope.destinationPractice = {users: [referral.dest_provider_invited], name: 'No practice selected'};
+
                 }
-                
-                $scope.model.dest_provider = referral.dest_provider_id;
+
+                if (referral.dest_provider_id) {
+                    $scope.model.dest_provider = referral.dest_provider_id;
+                    $scope.model.provider_invited = false;
+
+                } else {
+                    $scope.model.dest_provider = referral.dest_provider_invited_id;
+                    $scope.model.provider_invited = true;
+                }
                 $scope.practiceType = referral.procedure.practice_type;
                 $scope.model.referral.id = referral.id;
                 $scope.model.referral.procedure_id = referral.procedure.id;
@@ -78,12 +88,6 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         $scope.practiceTypes = Procedure.practiceTypes();
 
-        // todo: I don't see where this list is used. Please indicate in a comment or remove
-        $scope.providers = User.query(function (success) {
-        }, function (failure) {
-            Alert.error($scope.alerts, "Server doesn't respond. Please try again later");
-        });
-
         $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
 
         $scope.updatePracticeType = function (item) {
@@ -100,8 +104,9 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         };
 
         var prepareSubmit = function (model) {
-            if (!model.referral.dest_provider_invited_id) {
-                //if provider was not invited, but existing one was selected.
+            if (model.provider_invited || model.referral.dest_provider_invited_id) {
+                model.referral.dest_provider_invited_id = model.dest_provider;
+            } else { //if provider was not invited, but existing one was selected.
                 /*We have two different situations
                  1)when provider was invited (but not registered)
                  in that case we save dest_provider_invited_id that is a foreign key from provider_invitations table
