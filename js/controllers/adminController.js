@@ -15,7 +15,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
             Alert.close($scope.alerts, index);
         };
 
-        var auth = Auth.get();
+        var auth = $scope.auth = Auth.get();
         $scope.invitedColleagues = [];
         $scope.invitedUsers = [];
         User.getInvitees({user_id: auth.id}, function(allInvitees) {
