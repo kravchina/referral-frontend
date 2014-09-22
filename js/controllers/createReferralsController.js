@@ -94,6 +94,15 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             // refresh items in provider dropdown
             $scope.destinationPractice = selectedPractice;
 
+            // remove currently logged in user from available providers list
+            if ($scope.destinationPractice.id == auth.practice_id) {
+                angular.forEach($scope.destinationPractice.users, function(user, index, users) {
+                    if (user.id == auth.id) {
+                        users.splice(index, 1);
+                    }
+                });
+            }
+
             // select provider, if only one is available
             if ($scope.destinationPractice.users.length == 1) {
                 $scope.model.dest_provider = $scope.destinationPractice.users[0].id;
@@ -196,7 +205,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         $scope.findPatient = function (searchValue) {
             Spinner.hide(); //workaround that disables spinner to avoid flicker.
-            return Patient.searchPatient({practice_id: Auth.get().practice_id, search: searchValue}).$promise.then(function (res) {
+            return Patient.searchPatient({practice_id: auth.practice_id, search: searchValue}).$promise.then(function (res) {
                 Spinner.show();
                 return res;
             });
