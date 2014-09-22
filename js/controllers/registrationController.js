@@ -4,7 +4,8 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
     function ($scope, $location, $stateParams, $modal, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Spinner) {
         $scope.alerts = [];
 
-        $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token}, function (success) {
+        $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token}, function (user) {
+                user.newPracticeId = user.practice_id; // in case of user invitation - needs this in order to hide security code field
             },
             function (failure) {
                 Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.')
