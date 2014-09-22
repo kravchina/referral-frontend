@@ -91,8 +91,13 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
 
         $scope.onPracticeSelected = function (selectedPractice) {
-            // todo: refresh items in provider dropdown
+            // refresh items in provider dropdown
             $scope.destinationPractice = selectedPractice;
+
+            // select provider, if only one is available
+            if ($scope.destinationPractice.users.length == 1) {
+                $scope.model.dest_provider = $scope.destinationPractice.users[0].id;
+            }
 
             // select default referral type from practice type
             for (var i = 0; i < $scope.practiceTypes.length; i++) {
