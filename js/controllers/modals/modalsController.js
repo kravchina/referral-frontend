@@ -144,12 +144,7 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', '
 
                         Practice.update({practiceId: practice_id}, {
                                         practice: {
-
-                                            card_number: payment_info.card_number,
-                                            card_cvc: payment_info.card_cvc,
                                             name_on_card: payment_info.name_on_card,
-                                            card_exp_month: payment_info.card_exp_month,
-                                            card_exp_year: payment_info.card_exp_year,
                                             stripe_token: payment_info.stripe_token
                                         }
                             },
