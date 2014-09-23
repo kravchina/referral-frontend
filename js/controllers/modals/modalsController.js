@@ -6,16 +6,14 @@ modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 
 
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.', 'Engr.'];
 
-    space_pos = fullname.indexOf(' ');
+    var spacePosition = fullname.lastIndexOf(' '); //lastIndexOf is needed for names with several words, like Jean Francois Moullin, where Jean Francois is a name and Moullin is a surname
     var first_name = '';
     var last_name = '';
-    if(fullname != '' && space_pos == -1){
-        var first_name = fullname.substr(0, Math.ceil(fullname.length/2));
-        var last_name = fullname.substr(Math.ceil(fullname.length/2));
-        
+    if(fullname != '' && spacePosition == -1){
+        first_name = fullname;
     }else{
-        var first_name = fullname.substr(0, space_pos);
-        var last_name = fullname.substr(space_pos + 1);
+        first_name = fullname.substr(0, spacePosition);
+        last_name = fullname.substr(spacePosition + 1);
     }
 
     $scope.patient = {'first_name': first_name, 'last_name': last_name};
