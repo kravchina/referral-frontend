@@ -57,7 +57,7 @@ dentalLinksDirectives.directive('attachmentThumb', [function () {
         link: function (scope, element, attributes) {
             var type = attributes.attachmentThumb.slice(attributes.attachmentThumb.lastIndexOf('.') + 1);
             var cssClass;
-            switch (type) {
+            switch (type.toLowerCase()) {
                 case 'doc':
                 case 'docx':
                     cssClass = 'attach-word';
@@ -116,7 +116,7 @@ dentalLinksDirectives.directive('ngThumb', ['$window', 'ImageUtils', function ($
             if (!helper.isImage(params.file)) {
                 var type = params.file.name.slice(params.file.name.lastIndexOf('.') + 1);
                 var cssClass = '';
-                switch (type) {
+                switch (type.toLowerCase()) {
                     case 'docx':
                     case 'doc':
                         cssClass = 'attach-word';
