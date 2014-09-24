@@ -971,6 +971,11 @@ td.cell-from .practice, td.cell-to .practice {
 .section-block .table tbody tr td.cell-user, .section-block .table tbody tr td.cell-provider {
 	color: #34495e;
 }
+
+.section-block .table td.cell-created{
+    min-width: 130px;
+}
+
 .section-block .table tbody tr td.cell-created, .section-block .table tbody tr td.cell-invited {
 	font-size: 10px;
 	font-size: 1rem;
@@ -1054,7 +1059,7 @@ td.cell-from .practice, td.cell-to .practice {
         -o-transition: all 0.3s ease;
 		-webkit-transition: all 0.3s ease;
 }
-.section-block td.cell-created .btn-delete.active + .create-date, .section-block td.cell-status .btn-delete.active + .label {
+.section-block td.cell-created .btn-delete.active ~ .create-date, .section-block td.cell-status .btn-delete.active + .label {
 	opacity: 0;
 		filter: alpha(opacity=0);
 	transition: all 0.3s ease;
