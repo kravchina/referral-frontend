@@ -156,7 +156,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     $scope.model.attachments = [];
                     $scope.model.referral.notes_attributes = [];
                     Alert.success($scope.alerts, 'Template was saved successfully!');
-
+                    $scope.model.referral.id = success.id;//todo!!! quickfix for #74094550. Should be redesigned and refactored including all image upload approach.
                     uploadAttachments(success.id);
                     $scope.is_create = false;
                     UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
@@ -181,6 +181,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                 success: function (referral) {
                     Logger.debug('Sent referral #' + referral.id);
                     Alert.success($scope.alerts, 'Referral was sent successfully!');
+                    $scope.model.referral.id = referral.id; //todo!!! quickfix for #74094550. Should be redesigned and refactored including all image upload approach.
                     uploadAttachments(referral.id);
                     $scope.is_create = true;
                     UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
