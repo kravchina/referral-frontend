@@ -46,13 +46,13 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             url: '/create_referral/:referral_id',
             templateUrl: 'partials/create_referral.html',
             controller: 'CreateReferralsController',
-            access: [USER_ROLES.doctor, USER_ROLES.admin]
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('reviewReferral', {
             url: '/create_referral/:referral_id',
             templateUrl: 'partials/create_referral.html',
             controller: 'CreateReferralsController',
-            access: [USER_ROLES.doctor, USER_ROLES.admin]
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('logout', {
             url: '/logout',
@@ -73,19 +73,19 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             url: '/view_referral/:referral_id',
             templateUrl: 'partials/view_referral.html',
             controller: 'ViewReferralsController',
-            access: [USER_ROLES.doctor, USER_ROLES.admin]
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('history', {
             url: '/history',
             templateUrl: 'partials/history.html',
             controller: 'HistoryController',
-            access: [USER_ROLES.doctor, USER_ROLES.admin]
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('admin', {
             url: '/admin',
             templateUrl: 'partials/admin.html',
             controller: 'AdminController',
-            access: [USER_ROLES.doctor, USER_ROLES.admin]
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         });
     $urlRouterProvider.otherwise('/sign_in');
 }])
