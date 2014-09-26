@@ -86,6 +86,10 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             templateUrl: 'partials/admin.html',
             controller: 'AdminController',
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
+        state('faq', {
+            url: '/faq',
+            templateUrl: 'partials/faq.html'
         });
     $urlRouterProvider.otherwise('/sign_in');
 }])
