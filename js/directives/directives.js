@@ -227,9 +227,11 @@ dentalLinksDirectives.directive('toggleEdit', function () {
     return {
         scope: {},
         restrict: 'A',
-        require: '^editForm',
-        link: function (scope, $element, attrs, editFormCtrl) {
+        require: ['^editForm', '^form'],
+        link: function (scope, $element, attrs, formCtrls) {
 
+            var editFormCtrl = formCtrls[0];
+            var formCtrl = formCtrls[1];
             var editButton = $element;
             var saveButton = $element.next();
 
@@ -242,9 +244,11 @@ dentalLinksDirectives.directive('toggleEdit', function () {
 
             // save
             saveButton.on('click', function (e) {
-                editButton.removeClass('hide');
-                saveButton.addClass('hide');
-                editFormCtrl.disableControls();
+                if (formCtrl.$valid) {
+                    editButton.removeClass('hide');
+                    saveButton.addClass('hide');
+                    editFormCtrl.disableControls();
+                }
             });
 
         }

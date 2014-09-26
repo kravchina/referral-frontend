@@ -43,7 +43,7 @@
                                             <label for="selectSalutation">Salutation</label>
                                         </div>
 
-                                        <div class="input-block-inline" ng-class="{'has-error': accountForm.account_first_name.$dirty && accountForm.account_first_name.$invalid }">
+                                        <div class="input-block-inline" ng-class="{'has-error': accountForm.account_first_name.$invalid }">
                                             <input type="text" name="account_first_name" class="form-control data1" ng-model="practice.account_first_name" disabled="disabled" placeholder="Enter first name &hellip;" ng-required="true">
                                             <label>First Name</label>
                                         </div>
@@ -53,12 +53,12 @@
                                             <label>Middle Initial</label>
                                         </div>
 
-                                        <div class="input-block-inline" ng-class="{'has-error': accountForm.account_last_name.$dirty && accountForm.account_last_name.$invalid }">
+                                        <div class="input-block-inline" ng-class="{'has-error': accountForm.account_last_name.$invalid }">
                                             <input type="text" name="account_last_name" class="form-control data1" ng-model="practice.account_last_name"  disabled="disabled" placeholder="Enter last name &hellip;" ng-required="true">
                                             <label>Last Name</label>
                                         </div>
 
-                                        <div class="input-block-inline-right" ng-class="{'has-error': accountForm.account_email.$dirty && accountForm.account_email.$invalid }">
+                                        <div class="input-block-inline-right" ng-class="{'has-error':  accountForm.account_email.$invalid }">
                                             <input type="email" name="account_email" class="form-control data1" ng-model="practice.account_email"  disabled="disabled" placeholder="Enter email &hellip;" ng-required="true">
                                             <label>Email</label>
                                         </div>
