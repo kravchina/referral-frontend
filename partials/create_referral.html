@@ -42,7 +42,7 @@
         <alert type="'warning'" ng-show="form.practice.$dirty && form.practice.$invalid">Please select existing practice or create new provider</alert>
         <input type="text" class="form-control" name="practice" placeholder="Enter existing practice or add new with button on the right &hellip;"
                ng-model="practiceSearchText" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
-               typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue">
+               typeahead="practice as practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '') for practice in findPractice($viewValue) | filter:$viewValue">
     </div>
 
     <div class="input-block-right col-xs-12 col-sm-6" ng-class="{'has-error': form.provider.$dirty && form.provider.$invalid }">
