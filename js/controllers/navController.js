@@ -31,6 +31,10 @@ dentalLinks.controller('NavController', ['$scope', '$state', 'Auth', 'Logger', '
             }
             
         };
+        $scope.title = function() {
+            var current_user = Auth.current_user;
+            return (current_user || {}).title;
+        };
 
         $scope.first_name = function() {
             var current_user = Auth.current_user;
