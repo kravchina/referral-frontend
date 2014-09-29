@@ -101,7 +101,15 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                         users.splice(index, 1);
                     }
                 });
+
             }
+
+            // remove auxiliary users from available providers list
+            angular.forEach($scope.destinationPractice.users, function(user, index, users) {
+                if ((user.roles_mask & 2) == 0) {
+                    users.splice(index, 1);
+                }
+            });
 
             // select provider, if only one is available
             if ($scope.destinationPractice.users.length == 1) {
