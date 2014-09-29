@@ -8,7 +8,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                 user.newPracticeId = user.practice_id; // in case of user invitation - needs this in order to hide security code field
             },
             function (failure) {
-                Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.')
+                Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.', true);
             }
         );
 
@@ -41,7 +41,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                     $scope.registrationSuccessful = true;
                 },
                 function (failure) {
-                    Alert.error($scope.alerts, 'Error during registration.')
+                    Alert.error($scope.alerts, 'Error during registration.', true);
                 }
             )
         }
