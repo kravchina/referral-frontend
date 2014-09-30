@@ -217,7 +217,7 @@
                                                         <div ng-if="user.email != auth.email" access="admin,doctor" delete-button class="button-block btn-delete">
                                                             <span class="dlicons-remove"></span> Delete this user? <a ng-click="deleteUser(user)" class="link-green">Yes</a> | <a  class="link-orange">No</a>
                                                         </div>
-                                                        <div access="admin,doctor" ng-click="passwordDialog(user.id)" ng-hide="user.status" class="button-block btn-change-password">
+                                                        <div ng-click="passwordDialog(user.id)" ng-hide="user.status || (!auth.is_admin && auth.email != user.email)" class="button-block btn-change-password">
                                                             <span class="dlicons-pencil" title="Change Password"></span>
                                                         </div>
                                                         <span class="create-date">{{user.created_at | date: 'mediumDate'}}&nbsp;</span>
