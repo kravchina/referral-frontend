@@ -53,7 +53,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
                 Procedure.practiceTypes().$promise.then(function (types) {
                     $scope.practiceTypes = types;
-                    $scope.onPracticeSelected(referral.procedure);
+                    $scope.updatePracticeType(referral.procedure);
                 });
                 $scope.model.referral.notes = referral.notes;
 
@@ -90,10 +90,21 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
 
+        $scope.updatePracticeType = function (procedure) {
+            for (var i = 0; i < $scope.practiceTypes.length; i++) {
+                if ($scope.practiceTypes[i].id == procedure.practice_type_id) {
+                    $scope.practiceType = $scope.practiceTypes[i];
+                    break;
+                }
+            }
+        };
+
         $scope.onPracticeSelected = function (selectedPractice) {
             // refresh items in provider dropdown
             $scope.destinationPractice = selectedPractice;
 
+
+            //todo!!! move to server-side query
             // remove currently logged in user from available providers list
             if ($scope.destinationPractice.id == auth.practice_id) {
                 angular.forEach($scope.destinationPractice.users, function(user, index, users) {
@@ -104,6 +115,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
             }
 
+            //todo!!! move to server-side query
             // remove auxiliary users from available providers list
             angular.forEach($scope.destinationPractice.users, function(user, index, users) {
                 if ((user.roles_mask & 2) == 0) {
@@ -112,7 +124,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             });
 
             // select provider, if only one is available
-            if ($scope.destinationPractice.users.length == 1) {
+            if ($scope.destinationPractice.users && $scope.destinationPractice.users.length == 1) {
                 $scope.model.dest_provider = $scope.destinationPractice.users[0].id;
             }
 
