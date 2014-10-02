@@ -36,8 +36,9 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     $scope.destinationPractice = referral.dest_provider.practice;
                 }else{
                     $scope.destinationPractice = {users: [referral.dest_provider_invited], name: 'No practice selected'};
-
                 }
+
+                $scope.practiceSearchText = $scope.destinationPractice.name;
 
                 if (referral.dest_provider_id) {
                     $scope.model.dest_provider = referral.dest_provider_id;
