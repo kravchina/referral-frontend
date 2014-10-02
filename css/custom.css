@@ -797,7 +797,7 @@ td.cell-datetime > span, td.cell-from .practice, td.cell-to .practice {
 	/*color: #bdc3c7;*/
 	font-size: 12px;
 	font-size: 1.2rem;
-	font-weight: 300;
+	font-weight: 500;
 }
 .table-hover > tbody > tr:hover > td.cell-datetime > span, .table-hover > tbody > tr:hover > td.cell-from .practice, .table-hover > tbody > tr:hover > td.cell-to .practice {
 	color: #34495e;
