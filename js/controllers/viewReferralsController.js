@@ -61,7 +61,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 url: host + '/attachment/upload',
                 formData: [
                     {referral_id: $scope.referral.id},
-                    {filename: 'test'},
+                    {filename: 'test'}
                 ],
                 headers: {'Authorization' : $scope.token, 'From': $scope.from}
             });
@@ -105,7 +105,8 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 Logger.info('After adding a file', item);
 
                 // show the loading indicator
-                $scope.$parent.progressIndicatorStart()
+                $scope.$parent.progressIndicatorStart();
+                item.formData.push({last_modified: item.file.lastModifiedDate});
                 item.upload();
 
             });

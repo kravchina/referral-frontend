@@ -150,30 +150,29 @@
                 <!-- Attachments on server -->
                 <li class="attachment-block" ng-repeat="attachment in attachments">
 
-                    <a href="{{host}}/attachment/?file={{attachment.filenameToDownload}}">
+                    <a href="{{host}}/attachment/?file={{attachment.filenameToDownload}}" target="_blank">
                         <div class="attachment-thumb" attachment-thumb="{{host}}/attachment/?file={{attachment.filenameToDownload}}">
 
                         </div>
                         <div class="attachment-details">
-                            <span class="filename">{{attachment.filename | filename}}</span>
-                            <span class="datestamp" title="Attachment Uploaded Date">{{attachment.created_at | date: 'mediumDate'}}</span>
-                            <span class="datestamp" title="Image Creation Date">{{attachment.exif_date_time | date: 'mediumDate'}}</span>
+                            <span class="filename" title="{{attachment.filename | filename}}">{{attachment.filename | filename}}</span>
+                            <span class="datestamp" title="File Creation Date">{{attachment.last_modified | date: 'mediumDate'}}</span>
+                            <span class="filename" title="Added{{attachment.author.first_name? ' by ' : '' }}{{ attachment.author.first_name}}{{attachment.author.last_name? ' ': ''}}{{attachment.author.last_name}} on {{attachment.created_at | date: 'mediumDate'}}">Added {{attachment.author.first_name? 'by' : '' }} {{attachment.author.first_name}} {{attachment.author.last_name}} on {{attachment.created_at | date: 'mediumDate'}} </span>
                         </div>
                     </a>
                 </li>
 
                 <!-- Attachments in the queue, no links -->
                 <li class="attachment-block" ng-repeat="item in uploader.queue">
-                    <a ng-href="{{host}}/attachment/?file={{item.filenameToDownload}}" target="_blank">
                     <div class="attachment-thumb" ng-show="uploader.isHTML5"
                              ng-thumb="{ file: item.file, longEdgeSize:80 }">
                             <!-- no img, canvas is automatically generated here -->
                         </div>
                         <div class="attachment-details" >
-                            <span class="filename">{{ item.file.name }}</span>
-                            <span class="datestamp">{{ now() | date: 'mediumDate'}}</span>
+                            <span class="filename" title="{{item.file.name}}">{{ item.file.name }}</span>
+                            <span class="datestamp" title="Image Creation Date">{{item.file.lastModifiedDate | date: 'mediumDate'}}</span>
+                            <span class="filename" title="Added{{current_user.first_name? ' by ' : '' }}{{current_user.first_name}}{{current_user.last_name? ' ': ''}}{{current_user.last_name}} on {{ now() | date: 'mediumDate'}}">Added {{current_user.first_name? 'by' : '' }} {{current_user.first_name}} {{current_user.last_name}} on {{ now() | date: 'mediumDate'}}</span>
                         </div>
-                    </a>
                 </li>
             </ul>
             </div>

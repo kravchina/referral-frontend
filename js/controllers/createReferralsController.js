@@ -7,7 +7,9 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         $scope.alerts = [];
         $scope.attachment_alerts = [];
 
-        auth = Auth.get() || {};
+        var auth = Auth.get() || {};
+        $scope.current_user = Auth.current_user;
+
         $scope.host = host;
         $scope.token = auth.token;
         $scope.from = auth.email;
@@ -345,6 +347,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             Logger.info('After adding a file', item);
             // marking an attachment for saving
             // $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes, size: item.file.size});
+            item.formData.push({last_modified: item.file.lastModifiedDate});
             $scope.hasNewAttachments = true;
 
         });
@@ -387,7 +390,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         uploader.bind('error', function (event, xhr, item, response) {
             Logger.error('Error', xhr, item, response);
-            Alert.error($scope.alerts, 'An error occured during attachment upload. Please try again later.')
+            Alert.error($scope.alerts, 'An error occurred during attachment upload. Please try again later.')
         });
 
         uploader.bind('complete', function (event, xhr, item, response) {
@@ -406,8 +409,8 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             Logger.info('Complete all', items);
 
             // show the loading indicator
-            $scope.$parent.progressIndicatorEnd()
-            console.log($scope.model.referral.id)
+            $scope.$parent.progressIndicatorEnd();
+            console.log($scope.model.referral.id);
             UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
             if($scope.is_create){
                 $state.go('viewReferral', {referral_id: $scope.model.referral.id}, {reload: true});
