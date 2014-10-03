@@ -193,17 +193,20 @@ dentalLinksDirectives.directive('editForm', [function () {
         controller: function ($scope, $element) {
             var inputs = $element.find('input');
             var selects = $element.find('select');
+            var labels = $element.find('label');
             this.enableControls = function () {
                 inputs.removeClass('data1');
                 inputs.removeAttr('disabled');
                 selects.removeClass('data1');
                 selects.removeAttr('disabled');
+                labels.removeClass('hidden');
             };
             this.disableControls = function () {
                 inputs.addClass('data1');
                 inputs.attr('disabled', 'disabled');
                 selects.addClass('data1');
                 selects.attr('disabled', 'disabled');
+                labels.addClass('hidden');
             };
         }
     }

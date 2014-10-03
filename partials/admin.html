@@ -40,27 +40,27 @@
                                                 <option value="Dr.">Dr.</option>
                                                 <option value="Engr.">Engr.</option>
                                             </select>
-                                            <label for="selectSalutation">Salutation</label>
+                                            <label class="hidden" for="selectSalutation">Salutation</label>
                                         </div>
 
                                         <div class="input-block-inline" ng-class="{'has-error': accountForm.account_first_name.$invalid }">
                                             <input type="text" name="account_first_name" class="form-control data1" ng-model="practice.account_first_name" disabled="disabled" placeholder="Enter first name &hellip;" ng-required="true">
-                                            <label>First Name</label>
+                                            <label class="hidden">First Name</label>
                                         </div>
 
                                         <div class="input-block-inline">
                                             <input type="text" name="account_middle_initial" class="form-control data1" ng-model="practice.account_middle_initial" disabled="disabled" maxlength="1" placeholder="Enter middle initial &hellip;">
-                                            <label>Middle Initial</label>
+                                            <label class="hidden">Middle Initial</label>
                                         </div>
 
                                         <div class="input-block-inline" ng-class="{'has-error': accountForm.account_last_name.$invalid }">
                                             <input type="text" name="account_last_name" class="form-control data1" ng-model="practice.account_last_name"  disabled="disabled" placeholder="Enter last name &hellip;" ng-required="true">
-                                            <label>Last Name</label>
+                                            <label class="hidden">Last Name</label>
                                         </div>
 
                                         <div class="input-block-inline-right" ng-class="{'has-error':  accountForm.account_email.$invalid }">
                                             <input type="email" name="account_email" class="form-control data1" ng-model="practice.account_email"  disabled="disabled" placeholder="Enter email &hellip;" ng-required="true">
-                                            <label>Email</label>
+                                            <label class="hidden">Email</label>
                                         </div>
                                     </div><!-- .section-block -->
 
@@ -142,37 +142,37 @@
 
                                         <div class="input-block">
                                             <input type="text" class="form-control data1" ng-model="practice.name" placeholder="Enter practice name &hellip;" value="Tooth Care Dental Clinic" disabled="disabled">
-                                            <label>Practice name</label>
+                                            <label class="hidden">Practice name</label>
                                         </div>
 
                                         <div class="input-block-inline-left">
                                             <input type="text" class="form-control data1" ng-model="practice.address.street_line_1" placeholder="Enter street address &hellip;" disabled="disabled">
-                                            <label>Street address</label>
+                                            <label class="hidden">Street address</label>
                                         </div>
 
                                         <div class="input-block-inline">
                                             <input type="text" class="form-control data1" ng-model="practice.address.city" placeholder="Enter town / city &hellip;"  disabled="disabled">
-                                            <label>Town / City</label>
+                                            <label class="hidden">Town / City</label>
                                         </div>
 
                                         <div class="input-block-inline">
                                             <input type="text" class="form-control data1" ng-model="practice.address.state" placeholder="Enter state &hellip;"  disabled="disabled">
-                                            <label>State</label>
+                                            <label class="hidden">State</label>
                                         </div>
 
                                         <div class="input-block-inline-right">
                                             <input type="text" class="form-control data1" ng-model="practice.address.zip" placeholder="Enter ZIP code &hellip;" disabled="disabled">
-                                            <label>ZIP code</label>
+                                            <label class="hidden">ZIP code</label>
                                         </div>
 
                                         <div class="input-block-inline-left">
                                             <input type="tel" class="form-control data1" ng-model="practice.address.phone" placeholder="{{PhoneFormatter.UI_PLACEHOLDER}}" ui-mask="{{PhoneFormatter.MASK}}" disabled="disabled">
-                                            <label>Phone number</label>
+                                            <label class="hidden">Phone number</label>
                                         </div>
 
                                         <div class="input-block-inline website-block">
                                             <input type="text" class="form-control data1" ng-model="practice.address.website" placeholder="Enter website address &hellip;"  disabled="disabled">
-                                            <label>Website</label>
+                                            <label class="hidden">Website</label>
                                         </div>
                                     </div>
 
