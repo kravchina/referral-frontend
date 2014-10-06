@@ -34,10 +34,10 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                 Logger.debug('Setting $scope values from obtained referral...');
                 $scope.patient = referral.patient;
                 console.log(referral);
-                if(referral.dest_provider && referral.dest_provider.practice){
+                if (referral.dest_provider && referral.dest_provider.practice) {
                     $scope.destinationPractice = referral.dest_provider.practice;
-                }else{
-                    $scope.destinationPractice = {users: [referral.dest_provider_invited], name: 'No practice selected'};
+                } else {
+                    $scope.destinationPractice = {users: [referral.dest_provider_invited], name: '-- not yet available --'};
                 }
 
                 $scope.practiceSearchText = $scope.destinationPractice.name;
@@ -267,11 +267,9 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (provider) {
-                $scope.destinationPractice = $scope.destinationPractice || {users: [], name: ''};
-                $scope.destinationPractice.users.push(provider);
+                $scope.destinationPractice = $scope.destinationPractice || {users: [provider], name: '-- not yet available --'};
                 $scope.model.dest_provider = provider.id;
                 $scope.model.referral.dest_provider_invited_id = provider.id;
-                //$scope.provider = provider;
             });
         };
 

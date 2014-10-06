@@ -62,9 +62,12 @@
                                             <span class="provider">{{referral.orig_provider.first_name}} {{referral.orig_provider.middle_initial}} {{referral.orig_provider.last_name}}</span>
                                             <span class="practice">{{referral.orig_practice.name}}</span>
                                         </td>
-                                        <td class="cell-to">
+                                        <td class="cell-to" ng-show="referral.dest_provider">
                                             <span class="provider">{{referral.dest_provider.first_name}} {{referral.dest_provider.middle_initial}} {{referral.dest_provider.last_name}}</span>
                                             <span class="practice">{{referral.dest_practice.name}}</span>
+                                        </td>
+                                        <td class="cell-to" ng-hide="referral.dest_provider">
+                                            <span class="provider">{{referral.dest_provider_invited.first_name}} {{referral.dest_provider_invited.last_name}}</span>
                                         </td>
                                         <td class="cell-status">
                                             <span class="label" ng-class="{'label-success': referral.status == 'completed', 'label-warning': referral.status == 'active', 'label-info' : referral.status == 'new', 'label-danger' : referral.status == 'draft'}">{{referral.status}}</span>
