@@ -639,18 +639,18 @@ textarea.form-control {
 }
 .attachment-details .filename {
 	color: #333;
-	font-size: 14px;
-	font-size: 1.4rem;
-	font-weight: 700;
+	/*font-size: 14px;*/
+	/*font-size: 1.4rem;*/
+	/*font-weight: 700;*/
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 .attachment-details .datestamp {
-	color: #34495e;
-	font-size: 10px;
-	font-size: 1.0rem;
-	font-weight: 400;
+    color: #333;
+	/*font-size: 12px;*/
+	/*font-size: 1.2rem;*/
+	font-weight: 600;
 	text-transform: uppercase;
 }
 .notes-wrapper {
@@ -1534,14 +1534,6 @@ td.cell-from .practice, td.cell-to .practice {
 		height: 80px;
 		margin-left: 80px;
 		padding: 10px 20px;
-	}
-	.attachment-details .filename {
-		font-size: 16px;
-		font-size: 1.6rem;
-	}
-	.attachment-details .datestamp {
-		font-size: 12px;
-		font-size: 1.2rem;
 	}
 	.note-block {
 		padding: 10px 20px;

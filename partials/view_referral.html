@@ -138,17 +138,19 @@
                 <ul>
 
                     <!-- Attachment block -->
-                    <li class="attachment-block" ng-repeat="attachment in referral.attachments">
+                    <li class="attachment-block" ng-repeat="attachment in referral.attachments"
+                        title="Added{{attachment.author.first_name? ' by ' : '' }}{{ attachment.author.first_name}}{{attachment.author.last_name? ' ': ''}}{{attachment.author.last_name}} on {{attachment.created_at | date: 'mediumDate'}}">
 
                         <a href="{{host}}/attachment/?file={{attachment.filenameToDownload}}" target="_blank">
                             <div class="attachment-thumb" pdf-photos access="admin, doctor, aux" attachment-thumb="{{host}}/attachment/?file={{attachment.filenameToDownload}}">
 
                             </div>
                             <div class="attachment-details">
-                                <span class="filename">{{attachment.filename | filename}}</span>
+                                <!--<span class="filename">{{attachment.filename | filename}}</span>-->
                                 <!--<span class="datestamp" title="Attachment Uploaded Date">{{attachment.created_at | date: 'mediumDate'}}</span>-->
-                                <span class="datestamp" title="File Creation Date">{{attachment.last_modified | date: 'mediumDate'}}</span>
-                                <span class="filename" title="Added{{attachment.author.first_name? ' by ' : '' }}{{ attachment.author.first_name}}{{attachment.author.last_name? ' ': ''}}{{attachment.author.last_name}} on {{attachment.created_at | date: 'mediumDate'}}">Added {{attachment.author.first_name? 'by' : '' }} {{attachment.author.first_name}} {{attachment.author.last_name}} on {{attachment.created_at | date: 'mediumDate'}} </span>
+                                <span class="datestamp">{{attachment.last_modified | date: 'mediumDate'}}</span>
+                                <span class="filename">Added {{attachment.author.first_name? 'by' : '' }}:<br/> {{attachment.author.first_name}} {{attachment.author.last_name}}</span>
+                                <!--on {{attachment.created_at | date: 'mediumDate'}}-->
                             </div>
                         </a>
                     </li>
