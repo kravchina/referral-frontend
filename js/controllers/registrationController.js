@@ -1,11 +1,14 @@
 var registrationModule = angular.module('registration', []);
 
+
+// Just for invited providers to some existing practice or to a new practice
 registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Spinner',
     function ($scope, $location, $stateParams, $modal, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Spinner) {
         $scope.alerts = [];
 
-        $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token}, function (user) {
-                user.newPracticeId = user.practice_id; // in case of user invitation - needs this in order to hide security code field
+        $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
+            function (user) {
+//                user.newPracticeId = user.practice_id; // in case of user invitation - needs this in order to hide security code field
             },
             function (failure) {
                 Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.', true);
@@ -31,6 +34,42 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                 $scope.user.practice = practice;
             });
         };
+
+        $scope.register = function (user) {
+            user.practice_id = user.practice.id;
+            Registration.save({user: user, invitation_token: $stateParams.invitation_token, security_code: $scope.security_code, skip_security_code: user.newPracticeId == user.practice_id},
+                function (success) {
+                    Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
+                    Auth.current_user = success;
+                    $scope.registrationSuccessful = true;
+                },
+                function (failure) {
+                    Alert.error($scope.alerts, 'Error during registration.', true);
+                }
+            )
+        }
+    }]);
+
+
+// Only for users invited to the same practice
+registrationModule.controller('NewUserController', ['$scope', '$location', '$stateParams', '$modal', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Spinner',
+    function ($scope, $location, $stateParams, $modal, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Spinner) {
+        $scope.alerts = [];
+
+        $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
+            function (user) {
+                user.newPracticeId = user.practice_id; // in case of user invitation - needs this in order to hide security code field
+
+                console.log('user.newPracticeId = ' + user.newPracticeId);
+
+                $scope.practice = Practice.get({practiceId: user.newPracticeId}, function(practice) {
+                    console.log('received practice info: ' + JSON.stringify($scope.practice));
+                });
+            },
+            function (failure) {
+                Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.', true);
+            }
+        );
 
         $scope.register = function (user) {
             user.practice_id = user.practice.id;
