@@ -90,6 +90,10 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         state('faq', {
             url: '/faq',
             templateUrl: 'partials/faq.html'
+        }).
+        state('license', {
+            url: '/license',
+            templateUrl: 'partials/license.html'
         });
     $urlRouterProvider.otherwise('/sign_in');
 }])
