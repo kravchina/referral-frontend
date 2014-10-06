@@ -64,14 +64,14 @@
                                         </div>
                                     </div><!-- .section-block -->
 
-                                    <div ng-hide="practice.stripe_customer_id" id="sectUpgrade" class="section-block">
-                                        <button type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Upgrade to Premium Account</button>
+                                    <div access="admin" ng-hide="practice.stripe_customer_id" id="sectUpgrade" class="section-block">
+                                        <button access="admin" type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Upgrade to Premium Account</button>
                                     </div>
 
                                     <div ng-show="practice.stripe_customer_id" id="sectEditPayment" class="section-block">
                                         <button type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Edit Payment Information</button>
 
-                                        <button type="button" class="btn btn-primary" ng-click="cancelSubscription()"> Cancel Subscription</button>
+                                        <button access="admin" type="button" class="btn btn-primary" ng-click="cancelSubscription()"> Cancel Subscription</button>
                                     </div>
 
                                     <div ng-show="practice.stripe_customer_id" id="sectPayment" class="section-block">
@@ -146,22 +146,22 @@
                                         </div>
 
                                         <div class="input-block-inline-left">
-                                            <input type="text" class="form-control data1" ng-model="practice.address.street_line_1" placeholder="Enter street address &hellip;" disabled="disabled">
+                                            <input type="text" access-enable="admin" class="form-control data1" ng-model="practice.address.street_line_1" placeholder="Enter street address &hellip;" disabled="disabled">
                                             <label class="hidden">Street address</label>
                                         </div>
 
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" ng-model="practice.address.city" placeholder="Enter town / city &hellip;"  disabled="disabled">
+                                            <input type="text" access-enable="admin" class="form-control data1" ng-model="practice.address.city" placeholder="Enter town / city &hellip;"  disabled="disabled">
                                             <label class="hidden">Town / City</label>
                                         </div>
 
                                         <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" ng-model="practice.address.state" placeholder="Enter state &hellip;"  disabled="disabled">
+                                            <input type="text" access-enable="admin" class="form-control data1" ng-model="practice.address.state" placeholder="Enter state &hellip;"  disabled="disabled">
                                             <label class="hidden">State</label>
                                         </div>
 
                                         <div class="input-block-inline-right">
-                                            <input type="text" class="form-control data1" ng-model="practice.address.zip" placeholder="Enter ZIP code &hellip;" disabled="disabled">
+                                            <input type="text" access-enable="admin" class="form-control data1" ng-model="practice.address.zip" placeholder="Enter ZIP code &hellip;" disabled="disabled">
                                             <label class="hidden">ZIP code</label>
                                         </div>
 
@@ -190,7 +190,7 @@
                             <div id="admintabUsers">
                                 <div class="block-title">
                                     <h2>Users</h2>
-                                    <button type="button" ng-click="usersDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-user" data-toggle="tooltip" data-placement="top" title="Add a New User" data-target="#modalUser"><span class="dlicons-user-add"></span></button>
+                                    <button access="admin" type="button" ng-click="usersDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-user" data-toggle="tooltip" data-placement="top" title="Add a New User" data-target="#modalUser"><span class="dlicons-user-add"></span></button>
                                 </div>
 
                                 <div id="sectUsers" class="section-block">
@@ -214,7 +214,7 @@
                                                         
                                                     </td>
                                                     <td class="cell-created">
-                                                        <div ng-if="user.email != auth.email" access="admin,doctor" delete-button class="button-block btn-delete">
+                                                        <div ng-if="user.email != auth.email" access="admin" delete-button class="button-block btn-delete">
                                                             <span class="dlicons-remove"></span> Delete this user? <a ng-click="deleteUser(user)" class="link-green">Yes</a> | <a  class="link-orange">No</a>
                                                         </div>
                                                         <div ng-click="passwordDialog(user.id)" ng-hide="user.status || (!auth.is_admin && auth.email != user.email)" class="button-block btn-change-password">
@@ -263,7 +263,7 @@
                                                     <td class="cell-practice">{{provider.registered_user.practice.name}}</td>
                                                     <td class="cell-invited">{{provider.created_at | date: 'mediumDate'}}</td>
                                                     <td class="cell-status">
-                                                        <div access="admin, doctor" delete-button class="button-block btn-delete" ng-hide="provider.status === 'registered'">
+                                                        <div access="admin" delete-button class="button-block btn-delete" ng-hide="provider.status === 'registered'">
                                                             <span class="dlicons-remove"></span> Delete this user? <a ng-click="deleteProviderInvitation(provider)" class="link-green">Yes</a> | <a class="link-orange">No</a>
                                                         </div>
                                                         <span class="label" ng-class="{'label-success': provider.status == 'registered', 'label-info' : provider.status == 'invited'}">{{provider.status}}</span>

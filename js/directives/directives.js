@@ -16,6 +16,20 @@ dentalLinksDirectives.directive('access', [ 'Auth', function (Auth) {
     }
 }]);
 
+dentalLinksDirectives.directive('accessEnable', [ 'Auth', function (Auth) {
+    return {
+        scope: true,
+        restrict: 'A',
+        link: function (scope, $element, attrs) {
+            var prevDisabled = $element.prop('disabled');
+            if (!Auth.authorize(attrs.accessEnable.split(/[,\s]+/)))
+                $element.prop('disabled', true);
+            else
+                $element.prop('disabled', prevDisabled);
+        }
+    }
+}]);
+
 dentalLinksDirectives.directive('expandNote', [function () {
     return {
         scope: true,
@@ -186,7 +200,7 @@ dentalLinksDirectives.directive('dateRangePicker', ['$parse', function($parse){
     }
 }]);
 
-dentalLinksDirectives.directive('editForm', [function () {
+dentalLinksDirectives.directive('editForm', ['Auth', function (Auth) {
     return {
         restrict: 'A',
         scope: {},
@@ -195,8 +209,16 @@ dentalLinksDirectives.directive('editForm', [function () {
             var selects = $element.find('select');
             var labels = $element.find('label');
             this.enableControls = function () {
-                inputs.removeClass('data1');
-                inputs.removeAttr('disabled');
+                inputs.each(function(index){
+                    $(this).removeClass('data1');
+
+                    var prevDisabled = $element.prop('disabled');
+                    if ($(this).attr('access-enable') && !Auth.authorize($(this).attr('access-enable').split(/[,\s]+/)))
+                        $(this).prop('disabled', true);
+                    else
+                        $(this).prop('disabled', false);
+
+                });
                 selects.removeClass('data1');
                 selects.removeAttr('disabled');
                 labels.removeClass('hidden');
