@@ -200,7 +200,7 @@ dentalLinksDirectives.directive('dateRangePicker', ['$parse', function($parse){
     }
 }]);
 
-dentalLinksDirectives.directive('editForm', ['Auth', function (Auth) {
+dentalLinksDirectives.directive('editForm', [function () {
     return {
         restrict: 'A',
         scope: {},
@@ -209,16 +209,8 @@ dentalLinksDirectives.directive('editForm', ['Auth', function (Auth) {
             var selects = $element.find('select');
             var labels = $element.find('label');
             this.enableControls = function () {
-                inputs.each(function(index){
-                    $(this).removeClass('data1');
-
-                    var prevDisabled = $element.prop('disabled');
-                    if ($(this).attr('access-enable') && !Auth.authorize($(this).attr('access-enable').split(/[,\s]+/)))
-                        $(this).prop('disabled', true);
-                    else
-                        $(this).prop('disabled', false);
-
-                });
+                inputs.removeClass('data1');
+                inputs.removeAttr('disabled');
                 selects.removeClass('data1');
                 selects.removeAttr('disabled');
                 labels.removeClass('hidden');

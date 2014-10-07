@@ -134,7 +134,7 @@
                                 <form edit-form id="formPracticeTab" name="practiceForm">
                                     <div class="block-title">
                                         <h2>Practice</h2>
-                                        <button type="button" toggle-edit class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
+                                        <button type="button" access="admin" toggle-edit class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
                                         <button type="button" ng-click='savePractice(practiceForm)' class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
                                     </div>
 
@@ -146,22 +146,22 @@
                                         </div>
 
                                         <div class="input-block-inline-left">
-                                            <input type="text" access-enable="admin" class="form-control data1" ng-model="practice.address.street_line_1" placeholder="Enter street address &hellip;" disabled="disabled">
+                                            <input type="text" class="form-control data1" ng-model="practice.address.street_line_1" placeholder="Enter street address &hellip;" disabled="disabled">
                                             <label class="hidden">Street address</label>
                                         </div>
 
                                         <div class="input-block-inline">
-                                            <input type="text" access-enable="admin" class="form-control data1" ng-model="practice.address.city" placeholder="Enter town / city &hellip;"  disabled="disabled">
+                                            <input type="text" class="form-control data1" ng-model="practice.address.city" placeholder="Enter town / city &hellip;"  disabled="disabled">
                                             <label class="hidden">Town / City</label>
                                         </div>
 
                                         <div class="input-block-inline">
-                                            <input type="text" access-enable="admin" class="form-control data1" ng-model="practice.address.state" placeholder="Enter state &hellip;"  disabled="disabled">
+                                            <input type="text" class="form-control data1" ng-model="practice.address.state" placeholder="Enter state &hellip;"  disabled="disabled">
                                             <label class="hidden">State</label>
                                         </div>
 
                                         <div class="input-block-inline-right">
-                                            <input type="text" access-enable="admin" class="form-control data1" ng-model="practice.address.zip" placeholder="Enter ZIP code &hellip;" disabled="disabled">
+                                            <input type="text" class="form-control data1" ng-model="practice.address.zip" placeholder="Enter ZIP code &hellip;" disabled="disabled">
                                             <label class="hidden">ZIP code</label>
                                         </div>
 
