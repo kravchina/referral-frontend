@@ -68,8 +68,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
     var auxiliaryFontSizeMm = auxiliaryFontSize / pdf.internal.scaleFactor;
     
     var extractFileName = function (filename) {
-        var n = $filter('filename')(filename) || '';
-        return n;
+        return $filter('filename')(filename) || '';
     };
     
     var fitString = function (str, fontSizeMm, expectedLenghtMm) {
@@ -188,7 +187,8 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
                 pdf.setFontType('normal');
                 
                 caret += fontSizeMm;
-                pdf.text(pagePaddings.x, caret, extractFileName(images[j].metadata.filename)); // no fitString in here, assuming whole page width is always enough
+                var metadata = images[j].metadata;
+                pdf.text(pagePaddings.x, caret, extractFileName(metadata.filename) + (metadata.last_modified ?  ' - '+ formatDate(metadata.last_modified) : '') + (metadata.author ? ' -  Added by: ' + metadata.author.first_name + ' ' + metadata.author.last_name : '')); // no fitString in here, assuming whole page width is always enough
                 
                 caret += blocksPadding;
             }
@@ -233,10 +233,20 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
                     var thumbDimensions = ImageUtils.resizeImage({width: image.width ? image.width : thumbnailSquareSize, height: image.height ? image.height : thumbnailSquareSize}, {width: thumbnailSquareSize, height: thumbnailSquareSize});
 
                     var currentX = xCaret + thumbnailSquareSize + thumbnailTextPaddingX;
-                    pdf.addImage(image, 'JPEG', xCaret, caret, thumbDimensions.width, thumbDimensions.height);
-                    pdf.text(currentX, caret + fontSizeMm, fitString(extractFileName(metadata.filename), fontSizeMm, remainingWidth));
-                    pdf.text(currentX, caret + 2 * fontSizeMm, formatDate(metadata.created_at));
-
+                    var currentY = caret;
+                    pdf.addImage(image, 'JPEG', xCaret, currentY, thumbDimensions.width, thumbDimensions.height);
+                    currentY += fontSizeMm;
+                    pdf.text(currentX, currentY, fitString(extractFileName(metadata.filename), fontSizeMm, remainingWidth));
+                    if(metadata.last_modified){
+                        currentY += fontSizeMm;
+                        pdf.text(currentX, currentY, formatDate(metadata.last_modified));
+                    }
+                    if(metadata.author){
+                        currentY += fontSizeMm;
+                        pdf.text(currentX, currentY, 'Added by:');
+                        currentY += fontSizeMm;
+                        pdf.text(currentX, currentY, fitString(metadata.author.first_name + ' ' + metadata.author.last_name, fontSizeMm, remainingWidth));
+                    }
 
 
                     /*if (j % 2 == 0) {*/   /*this code doesn't work as expected in case when some image was null (for example, some error during uploading or downloading from S3)
