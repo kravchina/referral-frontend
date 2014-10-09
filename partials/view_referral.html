@@ -188,7 +188,7 @@
                                 <!--<span class="filename">{{attachment.filename | filename}}</span>-->
                                 <!--<span class="datestamp" title="Attachment Uploaded Date">{{attachment.created_at | date: 'mediumDate'}}</span>-->
                                 <span class="datestamp">{{attachment.last_modified | date: 'mediumDate'}}</span>
-                                <span class="filename">Added {{attachment.author.first_name? 'by' : '' }}:<br/> {{attachment.author.first_name}} {{attachment.author.last_name}}</span>
+                                <span class="filename">{{attachment.author.first_name? 'Added by:' : '' }}<br/> {{attachment.author.first_name}} {{attachment.author.last_name}}</span>
                                 <!--on {{attachment.created_at | date: 'mediumDate'}}-->
                             </div>
                         </a>
