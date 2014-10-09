@@ -445,13 +445,15 @@ textarea.form-control {
 #toothchart .upper-chart ul, #toothchart .lower-chart ul {
 	padding: 10px 0;
 }
-#toothchart .upper-chart ul {
+#toothchart .horizontal-chart-line ul {
 	border-bottom: 1px solid #aaa;
 }
 #toothchart .upper-chart ul:last-child {
 	border-left: 1px solid #aaa;
 }
-#toothchart .lower-chart ul, #toothchart .lower-chart ul > li.tooth-button {
+#toothchart .lower-chart ul,
+#toothchart .upper-chart ul:first-child > li.tooth-button,
+#toothchart .lower-chart ul:last-child > li.tooth-button {
 	float: right;
 }
 #toothchart .lower-chart ul:first-child {
@@ -468,11 +470,11 @@ textarea.form-control {
 .lower-chart .tooth-button {
 	margin-right: 2px;
 }
-.upper-chart li.tooth-button:first-child {
-	margin-left: 5px;
+.upper-chart ul:last-child > li.tooth-button:first-child {
+	margin-left: 0;
 }
-.lower-chart li.tooth-button:first-child {
-	margin-right: 5px;
+.lower-chart ul:last-child > li.tooth-button:first-child {
+	margin-right: 0;
 }
 .tooth-button label {
 	background-color: #fcfcfc;
@@ -1266,12 +1268,14 @@ td.cell-from .practice, td.cell-to .practice {
 	.lower-chart li.tooth-button {
 		margin-right: 10px;
 	}
+/*
 	.upper-chart li.tooth-button:first-child {
 		margin-left: 12px;
 	}
 	.lower-chart li.tooth-button:first-child {
 		margin-right: 12px;
 	}
+*/
 	#toothchart {
 		width: 100%;
 	}

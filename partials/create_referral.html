@@ -88,9 +88,28 @@
             <div id="toothchart">
                 <div class="upper-chart">
 
+                    <!-- Baby tooth A-E -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['A','B','C','D','E'].reverse()">
+                            <input type="checkbox" ng-click="toggleTooth(item)" ng-checked="teeth && teeth.indexOf(item)!= -1">
+                            <label class="tooth-label">{{item}}</label>
+                        </li>
+                    </ul>
+
+                    <!-- Baby tooth F-J -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['F','G','H','I','J']">
+                            <input type="checkbox" ng-click="toggleTooth(item)" ng-checked="teeth && teeth.indexOf(item)!= -1">
+                            <label class="tooth-label">{{item}}</label>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="upper-chart horizontal-chart-line">
+
                     <!-- Tooth 1-8 -->
                     <ul>
-                        <li class="tooth-button" ng-repeat="item in ['1','2','3','4','5','6','7','8']">
+                        <li class="tooth-button" ng-repeat="item in ['1','2','3','4','5','6','7','8'].reverse()">
                             <input type="checkbox" ng-click="toggleTooth(item)" ng-checked="teeth && teeth.indexOf(item)!= -1">
                             <label class="tooth-label">{{item}}</label>
                         </li>
@@ -109,7 +128,7 @@
 
                     <!-- Tooth 17-24 -->
                     <ul>
-                        <li class="tooth-button" ng-repeat="item in ['17','18','19','20','21','22','23','24']">
+                        <li class="tooth-button" ng-repeat="item in ['17','18','19','20','21','22','23','24'].reverse()">
                             <input type="checkbox" ng-click="toggleTooth(item)" ng-checked="teeth && teeth.indexOf(item)!= -1">
                             <label  class="tooth-label">{{item}}</label>
                         </li>
@@ -118,6 +137,25 @@
                     <!-- Tooth 25-32 -->
                     <ul>
                         <li class="tooth-button" ng-repeat="item in ['25','26','27','28','29','30','31','32']">
+                            <input type="checkbox" ng-click="toggleTooth(item)" ng-checked="teeth && teeth.indexOf(item)!= -1">
+                            <label class="tooth-label">{{item}}</label>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="lower-chart">
+
+                    <!-- Baby tooth O-K -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['K','L','M','N','O'].reverse()">
+                            <input type="checkbox" ng-click="toggleTooth(item)" ng-checked="teeth && teeth.indexOf(item)!= -1">
+                            <label class="tooth-label">{{item}}</label>
+                        </li>
+                    </ul>
+
+                    <!-- Baby tooth T-P -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['P','Q','R','S','T']">
                             <input type="checkbox" ng-click="toggleTooth(item)" ng-checked="teeth && teeth.indexOf(item)!= -1">
                             <label class="tooth-label">{{item}}</label>
                         </li>
