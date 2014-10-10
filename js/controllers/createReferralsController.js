@@ -227,6 +227,16 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             }
         };
 
+
+        $scope.discardTemplate = function (referral) {
+            Referral.remove(referral,
+                function (success) {
+                    $state.go('history');
+                }, function (failure) {
+                    Alert.error($scope.alerts, 'An error occurred during template removal. Please try again later.');
+                });
+        };
+
         $scope.findPatient = function (searchValue) {
             Spinner.hide(); //workaround that disables spinner to avoid flicker.
             return Patient.searchPatient({practice_id: auth.practice_id, search: searchValue}).$promise.then(function (res) {
