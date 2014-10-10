@@ -20,7 +20,7 @@
 
                         <p>Welcome to Dental Links!</p>
                         <p>Since we haven't seen your email address before you'll need to create an account associated with {{user.email}}.
-                        It will only take a second, and it's free.</p>
+                        It will only take a minute, and it's free.</p>
 
 
                         <div id="sectPersonal" class="section-block">
@@ -61,9 +61,10 @@
                                        ng-required="true">
                                 <label>Practice</label>
                             </div>
-                            <button class="btn btn-green btn-lg" ng-click="practiceDialog()">New Practice</button>
+                            <button class="btn btn-green btn-lg" ng-click="practiceDialog()" ng-show="showPracticeButtons">New Practice</button>
+                            <button class="btn btn-green btn-lg" ng-click="joinPracticeDialog()" ng-show="showPracticeButtons">Join Existing Practice</button>
 
-
+                            <p ng-show="!showPracticeButtons && user.practice">You selected practice - <b>{{ user.practice.name }}</b></p>
 
 
                         </div>
@@ -95,6 +96,7 @@
 
                             <div class="button-block">
                                 <button class="btn btn-green btn-lg" ng-click="register(user)" ng-disabled="form.$invalid || user.password_confirmation !== user.password">Register</button>
+                                <button class="btn btn-green btn-lg" ng-click="discard()">Discard</button>
                             </div>
 
                         </div>

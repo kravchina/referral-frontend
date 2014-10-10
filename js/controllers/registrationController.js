@@ -5,6 +5,7 @@ var registrationModule = angular.module('registration', []);
 registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Spinner',
     function ($scope, $location, $stateParams, $modal, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Spinner) {
         $scope.alerts = [];
+        $scope.showPracticeButtons = true;
 
         $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
             function (user) {
@@ -35,6 +36,28 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             });
         };
 
+        $scope.joinPracticeDialog = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/join_practice_form.html',
+                controller: 'JoinPracticeModalController'
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (res) {
+                $scope.user.practice_id = res.practice.id;
+                Registration.save({user: $scope.user, invitation_token: $stateParams.invitation_token, security_code: res.securitycode, skip_security_code: false},
+                    function (success) {
+                        Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
+                        Auth.current_user = success;
+                        $scope.registrationSuccessful = true;
+                        $scope.showPracticeButtons = false;
+                    },
+                    function (failure) {
+                        Alert.error($scope.alerts, 'Error during registration with existing practice and security code.', true);
+                    }
+                )
+            });
+        };
+
         $scope.register = function (user) {
             user.practice_id = user.practice.id;
             Registration.save({user: user, invitation_token: $stateParams.invitation_token, security_code: $scope.security_code, skip_security_code: user.newPracticeId == user.practice_id},
@@ -48,6 +71,18 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                 }
             )
         }
+
+        $scope.discard = function() {
+            $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
+                function (user) {
+//                user.newPracticeId = user.practice_id; // in case of user invitation - needs this in order to hide security code field
+                },
+                function (failure) {
+                    Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.', true);
+                }
+            );
+        }
+
     }]);
 
 

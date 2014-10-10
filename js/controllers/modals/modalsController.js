@@ -89,6 +89,25 @@ modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 
     };
 }]);
 
+modalsModule.controller('JoinPracticeModalController', ['$scope', '$modalInstance', 'ModalHandler','Alert', 'Practice', 'Spinner', function ($scope, $modalInstance, ModalHandler, Alert, Practice, Spinner) {
+    $scope.alerts = [];
+    $scope.findPractice = function (searchValue) {
+        Spinner.hide(); //workaround that disables spinner to avoid flicker.
+        return Practice.searchPractice({search: searchValue }).$promise.then(function (res) {
+            Spinner.show();  //workaround that disables spinner to avoid flicker.
+            return res;
+        });
+    };
+
+    $scope.ok = function (practice, securitycode) {
+        $modalInstance.close({'practice': practice, 'securitycode': securitycode});
+    };
+
+    $scope.cancel = function () {
+        ModalHandler.dismiss($modalInstance);
+    };
+}]);
+
 modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Auth, Alert) {
     $scope.result = {};
     $scope.alerts = [];
