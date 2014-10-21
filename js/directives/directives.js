@@ -59,7 +59,7 @@ dentalLinksDirectives.directive('pdfPhotos', ['Auth', 'PDF', 'File', 'Logger', f
                 img.onload = function () {
                     PDF.addImage(scope.$index, img, scope.attachment);
                 };
-                img.src = scope.host + '/attachment/?file=' + scope.attachment.filenameToDownload;
+                img.src = scope.host + '/attachment/?file=' + scope.attachment.id + '/' + scope.attachment.filename;
                 Logger.log('Loading image ' + img.src);
             }
         }
@@ -303,3 +303,44 @@ dentalLinksDirectives.directive('ngCtrlEnter', ['$parse', '$timeout', function($
         }
     }
 }]);
+
+dentalLinksDirectives.directive('attachments', [function () {
+    return {
+        restrict: 'E',
+        transclude: true,
+        templateUrl: 'partials/attachments.html',
+        controller: 'AttachmentsController'
+    }
+
+}]);
+
+dentalLinksDirectives.directive('teethChart', [function () {
+    return {
+        restrict: 'E',
+        transclude: true,
+        templateUrl: 'partials/teeth_chart.html',
+        controller: 'TeethController'
+    }
+
+}]);
+
+dentalLinksDirectives.directive('notes', [function () {
+    return {
+        restrict: 'E',
+        transclude: true,
+        templateUrl: 'partials/notes.html',
+        controller: 'NotesController'
+    }
+}]);
+
+dentalLinksDirectives.directive('alerts', [function () {
+    return {
+        restrict: 'E',
+        transclude: true,
+        templateUrl: 'partials/notes.html',
+        controller: 'NotesController'
+    }
+}]);
+
+
+

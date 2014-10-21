@@ -1,7 +1,5 @@
-var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
-
-createReferralModule.controller('CreateReferralsController', ['$scope', '$state', '$stateParams', '$timeout', 'Alert', 'Auth', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger', 'ModalHandler', 'File',
-    function ($scope, $state, $stateParams, $timeout, Alert, Auth, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger, ModalHandler, File) {
+createReferralModule.controller('ReviewReferralsController', ['$scope', '$state', '$timeout', 'currentReferral', 'Alert', 'Auth', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger', 'ModalHandler', 'File',
+    function ($scope, $state, $timeout, currentReferral, Alert, Auth, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger, ModalHandler, File) {
 
         $scope.alerts = [];
         $scope.attachment_alerts = [];
@@ -15,12 +13,40 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         $scope.total_size = 0;
 
         $scope.hasNewAttachments = false;
-
-        $scope.procedures = Procedure.query();
-
-        $scope.practiceTypes = Procedure.practiceTypes();
-
+        $scope.currentReferral = currentReferral;
         $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
+
+        if (currentReferral.dest_provider && currentReferral.dest_provider.practice) {
+            $scope.destinationPractice = currentReferral.dest_provider.practice;
+        } else {
+            $scope.destinationPractice = {users: [currentReferral.dest_provider_invited], name: '-- not yet available --'};
+        }
+
+        if (currentReferral.dest_provider_id) {
+            $scope.model.dest_provider = currentReferral.dest_provider_id;
+            $scope.model.provider_invited = false;
+
+        } else {
+            $scope.model.dest_provider = currentReferral.dest_provider_invited_id;
+            $scope.model.provider_invited = true;
+        }
+        $scope.practiceType = currentReferral.procedure.practice_type;
+        $scope.model.referral.id = currentReferral.id;
+        $scope.model.referral.procedure_id = currentReferral.procedure.id;
+
+        Procedure.practiceTypes().$promise.then(function (types) {
+            $scope.practiceTypes = types;
+            $scope.updatePracticeType(currentReferral.procedure);
+        });
+        $scope.model.referral.notes = currentReferral.notes;
+
+        $scope.attachments = currentReferral.attachments;
+        angular.forEach(currentReferral.attachments, function (attachment, key) {
+            $scope.total_size = $scope.total_size + attachment.size;
+        });
+        $scope.teeth = currentReferral.teeth.split('+');
+        Logger.debug('Set $scope values from obtained currentReferral.');
+
 
         $scope.closeAlert = function (index) {
             Alert.close($scope.alerts, index);
@@ -29,6 +55,11 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         $scope.closeAttachmentAlert = function (index) {
             Alert.close($scope.attachment_alerts, index);
         };
+
+        $scope.procedures = Procedure.query();
+
+        $scope.practiceTypes = Procedure.practiceTypes();
+
 
         $scope.updatePracticeType = function (procedure) {
             for (var i = 0; i < $scope.practiceTypes.length; i++) {
@@ -47,7 +78,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             //todo!!! move to server-side query
             // remove currently logged in user from available providers list
             if ($scope.destinationPractice.id == auth.practice_id) {
-                angular.forEach($scope.destinationPractice.users, function(user, index, users) {
+                angular.forEach($scope.destinationPractice.users, function (user, index, users) {
                     if (user.id == auth.id) {
                         users.splice(index, 1);
                     }
@@ -57,7 +88,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
             //todo!!! move to server-side query
             // remove auxiliary users from available providers list
-            angular.forEach($scope.destinationPractice.users, function(user, index, users) {
+            angular.forEach($scope.destinationPractice.users, function (user, index, users) {
                 if ((user.roles_mask & 2) == 0) {
                     users.splice(index, 1);
                 }
@@ -90,11 +121,11 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                 model.referral.dest_provider_id = model.dest_provider;
             }
             model.referral.dest_practice_id = $scope.destinationPractice.id;
-            model.referral.patient_id = $scope.patient.id;
             model.referral.teeth = $scope.teeth.join('+');
+
         };
 
-        var uploadAttachments = function(referral_id){
+        var uploadAttachments = function (referral_id) {
             for (var i = 0; i < $scope.uploader.queue.length; i++) {
                 var item = $scope.uploader.queue[i];
                 item.formData.push({referral_id: referral_id});
@@ -107,16 +138,13 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
             prepareSubmit(model);
             var resultHandlers = {
                 success: function (success) {
-                    $scope.model.referral.id = success.id;
                     $scope.model.attachments = [];
                     $scope.model.referral.notes_attributes = [];
                     Alert.success($scope.alerts, 'Template was saved successfully!');
-                    $scope.model.referral.id = success.id;//todo!!! quickfix for #74094550. Should be redesigned and refactored including all image upload approach.
                     uploadAttachments(success.id);
-                    $scope.is_create = false;
                     UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-                    if(!$scope.hasNewAttachments){
-                        $state.go('createReferral', {referral_id: success.id}, {reload: true});
+                    if (!$scope.hasNewAttachments) {
+                        $state.go('reviewReferral', {referral_id: success.id}, {reload: true});
                     }
 
                 }, failure: function (failure) {
@@ -138,9 +166,8 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     Alert.success($scope.alerts, 'Referral was sent successfully!');
                     $scope.model.referral.id = referral.id; //todo!!! quickfix for #74094550. Should be redesigned and refactored including all image upload approach.
                     uploadAttachments(referral.id);
-                    $scope.is_create = true;
                     UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-                    if(!$scope.hasNewAttachments){
+                    if (!$scope.hasNewAttachments) {
                         $state.go('viewReferral', {referral_id: referral.id});
                     }
                 },
@@ -148,15 +175,19 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     Alert.error($scope.alerts, 'An error occurred during referral creation...');
                 }
             };
-
-
             prepareSubmit(model);
-            if (model.referral.id) {
-                model.referral.status = 'new';
-                Referral.update({id: model.referral.id}, model, resultHandlers.success, resultHandlers.failure);
-            } else {
-                Referral.save(model, resultHandlers.success, resultHandlers.failure);
-            }
+            model.referral.status = 'new';
+            Referral.update({id: model.referral.id}, model, resultHandlers.success, resultHandlers.failure);
+
+        };
+
+        $scope.discardTemplate = function (referral) {
+            Referral.remove(referral,
+                function (success) {
+                    $state.go('history');
+                }, function (failure) {
+                    Alert.error($scope.alerts, 'An error occurred during template removal. Please try again later.');
+                });
         };
 
         $scope.findPatient = function (searchValue) {
@@ -181,13 +212,13 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                 controller: 'PatientModalController',
                 resolve: {
                     fullname: function () {
-                        return $scope.form.patient.$invalid ? $("input[name='patient']").val() : ''; //TODO: bad design. Controllers should not have any DOM manipulation. See first chapter of https://docs.angularjs.org/guide/controller for more details
+                        return $scope.form.patient.$invalid ? $("input[name='patient']").val() : '';
                     }
                 }
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (patient) {
-                $scope.patient = patient;
+                $scope.currentReferral.patient = patient;
                 $scope.form.patient.$setValidity('editable', true);
             });
         };
@@ -208,8 +239,9 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         // on Create Referral, form dirtiness defines the presense of unsaved changes
         // UI fields that are not technically form fields (teeth, attachments, notes) should have
         // dedicated change handlers, setting form to dirty
-        UnsavedChanges.setCbHaveUnsavedChanges(function() {
+        UnsavedChanges.setCbHaveUnsavedChanges(function () {
             return $scope.form.$dirty;
         });
 
     }]);
+

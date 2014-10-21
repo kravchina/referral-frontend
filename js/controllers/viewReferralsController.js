@@ -8,7 +8,6 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         $scope.total_size = 0;
 
         auth = Auth.get() || {};
-        $scope.host = host;
         $scope.token = auth.token;
         $scope.from = auth.email;
 
@@ -19,13 +18,9 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD)
         });
 
-        $scope.s3UploadPath = "https://dev1-attachments.s3.amazonaws.com/uploads/";
-        $scope.s3HttpUploadPath = "http://dev1-attachments.s3.amazonaws.com/uploads/";
-
         $scope.referral = Referral.get({id: $stateParams.referral_id}, function (data) {
                 angular.forEach(data.attachments, function(attachment, key){
                     $scope.total_size = $scope.total_size + attachment.size;
-                    attachment['filenameToDownload'] = attachment.filename.replace($scope.s3UploadPath, '').replace($scope.s3HttpUploadPath, '');
                 });
 
                 angular.forEach(data.notes, function(note, key){
@@ -135,11 +130,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
             uploader.bind('success', function (event, xhr, item, response) {
                 Logger.info('Success', xhr, item, response);
-
-                response['filenameToDownload'] = response.filename.replace($scope.s3UploadPath, '').replace($scope.s3HttpUploadPath, '');
                 $scope.referral.attachments.push(response);
-
-
             });
 
             uploader.bind('cancel', function (event, xhr, item) {
@@ -239,8 +230,6 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 });
 
         };
-
-        $scope.isImage = File.isImage;
 
         $scope.userBelongsToDestPractice = function () {
             return Auth.get().practice_id == $scope.referral.dest_practice_id;

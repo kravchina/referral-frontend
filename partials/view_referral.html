@@ -180,8 +180,8 @@
                     <li class="attachment-block" ng-repeat="attachment in referral.attachments"
                         title="Added{{attachment.author.first_name? ' by ' : '' }}{{ attachment.author.first_name}}{{attachment.author.last_name? ' ': ''}}{{attachment.author.last_name}} on {{attachment.created_at | date: 'mediumDate'}}">
 
-                        <a href="{{host}}/attachment/?file={{attachment.filenameToDownload}}" target="_blank">
-                            <div class="attachment-thumb" pdf-photos access="admin, doctor, aux" attachment-thumb="{{host}}/attachment/?file={{attachment.filenameToDownload}}">
+                        <a href="{{attachment | attachmentDownloadUrl}}" target="_blank">
+                            <div class="attachment-thumb" pdf-photos access="admin, doctor, aux" attachment-thumb="{{attachment | attachmentDownloadUrl}}">
 
                             </div>
                             <div class="attachment-details">

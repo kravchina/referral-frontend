@@ -48,15 +48,29 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             controller: 'NewUserController'
         }).
         state('createReferral', {
-            url: '/create_referral/:referral_id',
+            url: '/create_referral',
             templateUrl: 'partials/create_referral.html',
             controller: 'CreateReferralsController',
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('reviewReferral', {
             url: '/create_referral/:referral_id',
-            templateUrl: 'partials/create_referral.html',
-            controller: 'CreateReferralsController',
+            templateUrl: 'partials/review_referral.html',
+            controller: 'ReviewReferralsController',
+            resolve: {
+                currentReferral: ['$q', '$stateParams', 'Referral', function ($q, $stateParams, Referral) {
+                    var d = $q.defer();
+                    Referral.get({id: $stateParams.referral_id}).$promise.then(function (referral) {
+                        if ('draft' == referral.status) {
+                            d.resolve(referral); //allow controller instantiation and passing currentReferral to controller as a parameter
+                        } else {
+                            d.reject('redirect_to_viewReferral'); //prevent controller instantiation and emit $stateChangeError event for redirecting to viewReferral state
+                        }
+
+                    });
+                    return d.promise;
+                }
+                ]},
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('logout', {
@@ -105,19 +119,24 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
     .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler) {
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
-
             ModalHandler.dismissIfOpen();  //close dialog if open.
-
             if (!Auth.authorize(toState.access)) {
                 event.preventDefault();
                 $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
             }
         });
+
         $rootScope.$on(AUTH_EVENTS.notAuthenticated, function (event, args) {
             console.log('notAuthenticated');
             Auth.remove();
             redirect.path = args.redirect;
             $state.go('signIn', {}, {reload: true});
+        });
+
+        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+            if(error == 'redirect_to_viewReferral'){
+                $state.go('viewReferral', toParams);
+            }
         });
         UnsavedChanges.init();
     }]);
@@ -203,3 +222,9 @@ dentalLinks.filter('filename', function () {
 dentalLinks.filter('phoneNumber', ['PhoneFormatter', function(PhoneFormatter) {
     return PhoneFormatter.format;
 }]);
+
+dentalLinks.filter('attachmentDownloadUrl', function(){
+   return function(attachment){
+       return host + '/attachment/?file=' + attachment.id + '/' + attachment.filename;
+   }
+});

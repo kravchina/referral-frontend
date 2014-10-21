@@ -26,7 +26,7 @@
 
         <alert type="alert.type" ng-show="form.patient.$dirty && form.patient.$invalid">Please select existing or create a new patient record</alert>
         <input type="text" class="form-control" name="patient" placeholder="Enter existing patient or add new with button on the right &hellip;"
-               ng-model="patient" typeahead-editable="false"
+               ng-model="currentReferral.patient" typeahead-editable="false"
                typeahead="p as p.first_name +' ' +  p.last_name + (p.birthday ? ' (' + (p.birthday | date: 'shortDate') + ')' : '') for p in findPatient($viewValue) | filter:$viewValue"
                ng-required="true">
 
@@ -41,7 +41,7 @@
         </div>
         <alert type="'warning'" ng-show="form.practice.$dirty && form.practice.$invalid">Please select existing practice or invite new provider</alert>
         <input type="text" class="form-control" name="practice" placeholder="Enter existing practice or invite new provider with button on the right &hellip;"
-               ng-model="practiceSearchText" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
+               ng-model="destinationPractice.name" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
                typeahead="practice as practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '') for practice in findPractice($viewValue) | filter:$viewValue">
     </div>
 
@@ -78,9 +78,10 @@
 </div><!-- .row -->
 
 <teeth-chart></teeth-chart>
-<attachments></attachments>
-<notes></notes>
 
+<attachments></attachments>
+
+<notes></notes>
 </div><!-- .box-white -->
 
 <div class="button-block">
