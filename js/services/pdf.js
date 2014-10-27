@@ -71,6 +71,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
         return $filter('filename')(filename) || '';
     };
     
+    // TODO [ak] refactor into binary search for better performance
     var fitString = function (str, fontSizeMm, expectedLenghtMm) {
         var res = str;
         var l = str.length;
@@ -274,7 +275,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
     };
     
     var appendPractice = function(pdf, x, caret, practiceData) {
-//        pdf.rect(x, caret, printableArea.halfWidth, 10);
+//        pdf.rect(x, caret, halfSizeColWidth, 10);
         pdf.setFontType('bold');
         pdf.text(x, caret, practiceData.blockTitle);
         caret += fontSizeMm;
@@ -282,18 +283,18 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
         
         var paddedX = x + addressPaddingX;
         
-        pdf.text(paddedX, caret, practiceData.doctorName);
+        pdf.text(paddedX, caret, fitString(practiceData.doctorName, fontSizeMm, halfSizeColWidth - addressPaddingX));
         caret += fontSizeMm;
-        pdf.text(paddedX, caret, practiceData.practiceName);
+        pdf.text(paddedX, caret, fitString(practiceData.practiceName, fontSizeMm, halfSizeColWidth - addressPaddingX));
         caret += fontSizeMm;
-        pdf.text(paddedX, caret, $filter('phoneNumber')(practiceData.phone));
+        pdf.text(paddedX, caret, fitString($filter('phoneNumber')(practiceData.phone), fontSizeMm, halfSizeColWidth - addressPaddingX));
         caret += fontSizeMm;
-        pdf.text(paddedX, caret, practiceData.addressStreet);
+        pdf.text(paddedX, caret, fitString(practiceData.addressStreet, fontSizeMm, halfSizeColWidth - addressPaddingX));
         caret += fontSizeMm;
-        pdf.text(paddedX, caret, practiceData.addressCity);
+        pdf.text(paddedX, caret, fitString(practiceData.addressCity, fontSizeMm, halfSizeColWidth - addressPaddingX));
         if (practiceData.website) {
             caret += fontSizeMm;
-            pdf.text(paddedX, caret, practiceData.website);
+            pdf.text(paddedX, caret, fitString(practiceData.website, fontSizeMm, halfSizeColWidth - addressPaddingX));
         }
         return caret;
     };
@@ -309,7 +310,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
     var appendPatientTextData = function(pdf, caret) {
         caret += fontSizeMm;
         pdf.setFontType('bold');
-        pdf.text(pagePaddings.x, caret, patientData.name);
+        pdf.text(pagePaddings.x, caret, fitString(patientData.name, fontSizeMm, fullSizeColWidth));
         caret += fontSizeMm;
         pdf.text(pagePaddings.x, caret, formatDate(patientData.birthday));
         return caret+blocksPadding;
