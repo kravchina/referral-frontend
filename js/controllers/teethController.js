@@ -1,5 +1,5 @@
-dentalLinks.controller('TeethController', ['$scope', '$state', '$stateParams', '$timeout', 'Alert', 'Auth', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger', 'ModalHandler', 'File',
-    function ($scope, $state, $stateParams, $timeout, Alert, Auth, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger, ModalHandler, File) {
+dentalLinks.controller('TeethController', ['$scope',
+    function ($scope) {
         $scope.teeth = $scope.teeth || [];
         $scope.toggleTooth = function (toothNumber) {
             $scope.form.$setDirty(); // for UnsavedChanges to notice teeth being changed

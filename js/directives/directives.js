@@ -338,7 +338,12 @@ dentalLinksDirectives.directive('alerts', [function () {
         restrict: 'E',
         transclude: true,
         templateUrl: 'partials/notes.html',
-        controller: 'NotesController'
+        controller: 'NotesController',
+        resolve: {
+            currentReferral: function () {
+                return ;
+            }
+        }
     }
 }]);
 

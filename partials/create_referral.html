@@ -41,7 +41,7 @@
         </div>
         <alert type="'warning'" ng-show="form.practice.$dirty && form.practice.$invalid">Please select existing practice or invite new provider</alert>
         <input type="text" class="form-control" name="practice" placeholder="Enter existing practice or invite new provider with button on the right &hellip;"
-               ng-model="practiceSearchText" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
+               ng-model="destinationPractice" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
                typeahead="practice as practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '') for practice in findPractice($viewValue) | filter:$viewValue">
     </div>
 
@@ -50,8 +50,10 @@
             <h2>Provider</h2>
             <button type="button" class="btn btn-orange btn-toggle" ng-click="providerDialog()" data-toggle="tooltip" data-placement="top" title="Invite a New Provider" data-target="#modalProvider"><span class="dlicons-user-add"></span></button>
         </div>
-        <select id="selectProvider" name="provider" class="form-control" ng-disabled="!destinationPractice" ng-model="model.dest_provider" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in destinationPractice.users" ng-required="true">
+        <select id="selectProvider" ng-if="!model.referral.dest_provider_invited_id" name="provider" class="form-control" ng-disabled="!destinationPractice" ng-model="model.referral.dest_provider_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in destinationPractice.users" ng-required="true">
             <option selected="selected" class="placeholder" value="">Choose a provider &hellip;</option>
+        </select>
+        <select id="selectInvitedProvider" ng-if="model.referral.dest_provider_invited_id" name="provider_invited" class="form-control" ng-disabled="!destinationPractice" ng-model="model.referral.dest_provider_invited_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in destinationPractice.users" ng-required="true">
         </select>
     </div>
 </div><!-- .row -->

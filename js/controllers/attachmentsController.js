@@ -1,13 +1,18 @@
-dentalLinks.controller('AttachmentsController', ['$scope', '$state', '$stateParams', '$timeout', 'Alert', 'Auth', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger', 'ModalHandler', 'File',
-    function ($scope, $state, $stateParams, $timeout, Alert, Auth, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger, ModalHandler, File) {
+dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fileUploader', 'Logger',
+    function ($scope, Alert, Auth, $fileUploader, Logger) {
 
         $scope.now = function () {
             return Date.now();
         };
 
+        $scope.current_user = Auth.current_user;
+
+        $scope.token = Auth.get().token;
+        $scope.from = Auth.get().email;
+
         // non-displayed list of attachments to be uploaded on Save or Send
         $scope.model.attachments = [];
-
+        $scope.total_size = 0;
 
         var uploader = $scope.uploader = $fileUploader.create({
             scope: $scope,
@@ -53,8 +58,6 @@ dentalLinks.controller('AttachmentsController', ['$scope', '$state', '$statePara
             // marking an attachment for saving
             // $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes, size: item.file.size});
             item.formData.push({last_modified: item.file.lastModifiedDate});
-            $scope.hasNewAttachments = true;
-
         });
 
         uploader.bind('whenaddingfilefailed', function (event, item) {
@@ -109,19 +112,13 @@ dentalLinks.controller('AttachmentsController', ['$scope', '$state', '$statePara
             $scope.$parent.setProgress(progress)
         });
 
-        uploader.bind('completeall', function (event, items) {
-            Logger.info('Complete all', items);
+        uploader.bind('completeall', function (event, queue) {
+            Logger.info('Complete all', queue);
 
             // show the loading indicator
             $scope.$parent.progressIndicatorEnd();
             console.log($scope.model.referral.id);
-            UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-            /*if ($scope.is_create) {
-                $state.go('viewReferral', {referral_id: $scope.model.referral.id}, {reload: true});
-            } else {
-                $state.go('reviewReferral', {referral_id: $scope.model.referral.id}, {reload: true});
-            }
-*/
+            queue.redirectCallback();
 
         });
     }]

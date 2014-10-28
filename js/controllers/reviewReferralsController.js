@@ -1,20 +1,21 @@
 createReferralModule.controller('ReviewReferralsController', ['$scope', '$state', '$timeout', 'currentReferral', 'Alert', 'Auth', 'Practice', 'Patient', 'Procedure', 'User', 'Referral', 'S3Bucket', 'Spinner', '$modal', '$fileUploader', 'UnsavedChanges', 'Logger', 'ModalHandler', 'File',
     function ($scope, $state, $timeout, currentReferral, Alert, Auth, Practice, Patient, Procedure, User, Referral, S3Bucket, Spinner, $modal, $fileUploader, UnsavedChanges, Logger, ModalHandler, File) {
 
+        var auth = Auth.get() || {};
+
         $scope.alerts = [];
         $scope.attachment_alerts = [];
 
-        var auth = Auth.get() || {};
-        $scope.current_user = Auth.current_user;
+        $scope.model = {referral: currentReferral};
+        $scope.patient = currentReferral.patient;
+        $scope.attachments = currentReferral.attachments;
+        $scope.teeth = currentReferral.teeth.split('+');
+        $scope.procedures = Procedure.query();
 
-        $scope.token = auth.token;
-        $scope.from = auth.email;
-
-        $scope.total_size = 0;
-
-        $scope.hasNewAttachments = false;
-        $scope.currentReferral = currentReferral;
-        $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
+        Procedure.practiceTypes().$promise.then(function (types) {
+            $scope.practiceTypes = types;
+            $scope.updatePracticeType(currentReferral.procedure.practice_type_id);
+        });
 
         if (currentReferral.dest_provider && currentReferral.dest_provider.practice) {
             $scope.destinationPractice = currentReferral.dest_provider.practice;
@@ -22,30 +23,18 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
             $scope.destinationPractice = {users: [currentReferral.dest_provider_invited], name: '-- not yet available --'};
         }
 
-        if (currentReferral.dest_provider_id) {
-            $scope.model.dest_provider = currentReferral.dest_provider_id;
-            $scope.model.provider_invited = false;
-
-        } else {
-            $scope.model.dest_provider = currentReferral.dest_provider_invited_id;
-            $scope.model.provider_invited = true;
-        }
-        $scope.practiceType = currentReferral.procedure.practice_type;
-        $scope.model.referral.id = currentReferral.id;
-        $scope.model.referral.procedure_id = currentReferral.procedure.id;
-
-        Procedure.practiceTypes().$promise.then(function (types) {
-            $scope.practiceTypes = types;
-            $scope.updatePracticeType(currentReferral.procedure);
-        });
-        $scope.model.referral.notes = currentReferral.notes;
-
-        $scope.attachments = currentReferral.attachments;
         angular.forEach(currentReferral.attachments, function (attachment, key) {
             $scope.total_size = $scope.total_size + attachment.size;
         });
-        $scope.teeth = currentReferral.teeth.split('+');
-        Logger.debug('Set $scope values from obtained currentReferral.');
+
+        $scope.updatePracticeType = function (practice_type_id) {
+            for (var i = 0; i < $scope.practiceTypes.length; i++) {
+                if ($scope.practiceTypes[i].id == practice_type_id) {
+                    $scope.practiceType = $scope.practiceTypes[i];
+                    break;
+                }
+            }
+        };
 
 
         $scope.closeAlert = function (index) {
@@ -56,24 +45,9 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
             Alert.close($scope.attachment_alerts, index);
         };
 
-        $scope.procedures = Procedure.query();
-
-        $scope.practiceTypes = Procedure.practiceTypes();
-
-
-        $scope.updatePracticeType = function (procedure) {
-            for (var i = 0; i < $scope.practiceTypes.length; i++) {
-                if ($scope.practiceTypes[i].id == procedure.practice_type_id) {
-                    $scope.practiceType = $scope.practiceTypes[i];
-                    break;
-                }
-            }
-        };
-
         $scope.onPracticeSelected = function (selectedPractice) {
             // refresh items in provider dropdown
             $scope.destinationPractice = selectedPractice;
-
 
             //todo!!! move to server-side query
             // remove currently logged in user from available providers list
@@ -83,7 +57,6 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
                         users.splice(index, 1);
                     }
                 });
-
             }
 
             //todo!!! move to server-side query
@@ -94,38 +67,47 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
                 }
             });
 
+            $scope.model.referral.dest_provider_invited_id = null;  //remove if present, because will anyway select provider from selected practice users
+
             // select provider, if only one is available
             if ($scope.destinationPractice.users && $scope.destinationPractice.users.length == 1) {
-                $scope.model.dest_provider = $scope.destinationPractice.users[0].id;
+                $scope.model.referral.dest_provider_id = $scope.destinationPractice.users[0].id;
             }
 
             // select default referral type from practice type
-            for (var i = 0; i < $scope.practiceTypes.length; i++) {
-                if ($scope.practiceTypes[i].id == selectedPractice.practice_type_id) {
-                    $scope.practiceType = $scope.practiceTypes[i];
-                    break;
+            $scope.updatePracticeType(selectedPractice.practice_type_id);
+        };
+
+        $scope.$watch( //observing changes of the dest_provider_invited_id field
+            function () {
+                return $scope.model.referral.dest_provider_invited_id; //we are watching exactly this 'dest_provider_invited_id' property, not the whole 'model' object
+            }, function (newVal, oldVal, scope) {
+                if (newVal) {
+                    $scope.model.referral.dest_provider_id = null; //if dest_provider_invited_id is set (user added new provider invitation to the referral), we need to remove 'dest_provider_id'
                 }
-            }
+            });
+        $scope.$watch( //observing changes of the dest_provider_id field
+            function () {
+                return $scope.model.referral.dest_provider_id; //we are watching exactly this 'dest_provider_id' property, not the whole 'model' object
+            },
+            function (newVal, oldVal, scope) {
+                if (newVal) {
+                    $scope.model.referral.dest_provider_invited_id = null; //if dest_provider_id is set (user selected existing referral from the dropdown), we need to remove 'dest_provider_invited_id'
+                }
+            });
+
+        var prepareSubmit = function (referral) {
+            referral.dest_practice_id = $scope.destinationPractice.id;
+            referral.patient_id = $scope.patient.id;
+            referral.teeth = $scope.teeth.join('+');
         };
 
-        var prepareSubmit = function (model) {
-            if (model.provider_invited || model.referral.dest_provider_invited_id) {
-                model.referral.dest_provider_invited_id = model.dest_provider;
-            } else { //if provider was not invited, but existing one was selected.
-                /*We have two different situations
-                 1)when provider was invited (but not registered)
-                 in that case we save dest_provider_invited_id that is a foreign key from provider_invitations table
-                 2)provider is registered and selected from dropdown
-                 in that case we save dest_provider_id that is a foreign key from users table
-                 * */
-                model.referral.dest_provider_id = model.dest_provider;
+         var uploadAttachments = function(referral_id, redirectCallback){
+            if($scope.uploader.queue.length > 0){
+                $scope.uploader.queue.redirectCallback = redirectCallback;
+            }else{
+                redirectCallback();
             }
-            model.referral.dest_practice_id = $scope.destinationPractice.id;
-            model.referral.teeth = $scope.teeth.join('+');
-
-        };
-
-        var uploadAttachments = function (referral_id) {
             for (var i = 0; i < $scope.uploader.queue.length; i++) {
                 var item = $scope.uploader.queue[i];
                 item.formData.push({referral_id: referral_id});
@@ -134,48 +116,36 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
         };
 
         $scope.saveTemplate = function (model) {
-
-            prepareSubmit(model);
             var resultHandlers = {
                 success: function (success) {
-                    $scope.model.attachments = [];
-                    $scope.model.referral.notes_attributes = [];
                     Alert.success($scope.alerts, 'Template was saved successfully!');
-                    uploadAttachments(success.id);
-                    UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-                    if (!$scope.hasNewAttachments) {
+                    uploadAttachments(success.id, function(){
+                        UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
                         $state.go('reviewReferral', {referral_id: success.id}, {reload: true});
-                    }
+                    });
 
                 }, failure: function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during referral template creation...');
 
                 }};
-            if ($scope.model.referral.id) {
-                //edit existing referral
-                Referral.update({id: $scope.model.referral.id}, model, resultHandlers.success, resultHandlers.failure);
-            } else {
-                Referral.saveTemplate(model, resultHandlers.success, resultHandlers.failure);
-            }
+            prepareSubmit(model.referral);
+            Referral.update({id: $scope.model.referral.id}, model, resultHandlers.success, resultHandlers.failure);
         };
 
         $scope.createReferral = function (model) {
             var resultHandlers = {
                 success: function (referral) {
-                    Logger.debug('Sent referral #' + referral.id);
                     Alert.success($scope.alerts, 'Referral was sent successfully!');
-                    $scope.model.referral.id = referral.id; //todo!!! quickfix for #74094550. Should be redesigned and refactored including all image upload approach.
-                    uploadAttachments(referral.id);
-                    UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-                    if (!$scope.hasNewAttachments) {
+                    uploadAttachments(referral.id, function(){
+                        UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
                         $state.go('viewReferral', {referral_id: referral.id});
-                    }
+                    });
                 },
                 failure: function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during referral creation...');
                 }
             };
-            prepareSubmit(model);
+            prepareSubmit(model.referral);
             model.referral.status = 'new';
             Referral.update({id: model.referral.id}, model, resultHandlers.success, resultHandlers.failure);
 
@@ -212,13 +182,13 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
                 controller: 'PatientModalController',
                 resolve: {
                     fullname: function () {
-                        return $scope.form.patient.$invalid ? $("input[name='patient']").val() : '';
+                        return $scope.form.patient.$invalid ? $scope.form.patient.$viewValue : '';
                     }
                 }
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (patient) {
-                $scope.currentReferral.patient = patient;
+                $scope.patient = patient;
                 $scope.form.patient.$setValidity('editable', true);
             });
         };
@@ -230,8 +200,7 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (provider) {
-                $scope.destinationPractice = $scope.destinationPractice || {users: [provider], name: '-- not yet available --'};
-                $scope.model.dest_provider = provider.id;
+                $scope.destinationPractice = {users: [provider], name: '-- not yet available --'};
                 $scope.model.referral.dest_provider_invited_id = provider.id;
             });
         };
@@ -244,4 +213,3 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
         });
 
     }]);
-
