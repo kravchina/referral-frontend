@@ -55,7 +55,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         }).
         state('reviewReferral', {
             url: '/create_referral/:referral_id',
-            templateUrl: 'partials/review_referral.html',
+            templateUrl: 'partials/create_referral.html',
             controller: 'ReviewReferralsController',
             resolve: {
                 currentReferral: ['$q', '$stateParams', 'Referral', function ($q, $stateParams, Referral) {

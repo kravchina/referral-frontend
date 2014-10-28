@@ -8,6 +8,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         $scope.total_size = 0;
 
         auth = Auth.get() || {};
+        $scope.host = host; //needed for directive pdfPhotos, where image upload URL is composed with this value
         $scope.token = auth.token;
         $scope.from = auth.email;
 
