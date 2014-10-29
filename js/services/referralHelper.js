@@ -1,5 +1,5 @@
-createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patient', 'Practice', 'Spinner',
-    function ($modal, ModalHandler, Patient, Practice, Spinner) {
+createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patient', 'Practice', 'Spinner', 'UnsavedChanges',
+    function ($modal, ModalHandler, Patient, Practice, Spinner, UnsavedChanges) {
         return {
 
             prepareSubmit: function (scope, referral) {
@@ -134,6 +134,14 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
                     // select default referral type from practice type
                     self.updatePracticeType(scope, selectedPractice.practice_type_id);
                 }
+            },
+            trackUnsavedChanges: function(scope){
+                // on Create Referral, form dirtiness defines the presense of unsaved changes
+                // UI fields that are not technically form fields (teeth, attachments, notes) should have
+                // dedicated change handlers, setting form to dirty
+                UnsavedChanges.setCbHaveUnsavedChanges(function() {
+                    return scope.form.$dirty;
+                });
             }
         }
     }])

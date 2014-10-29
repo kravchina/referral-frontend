@@ -71,11 +71,6 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         $scope.providerDialog = ReferralHelper.providerDialog($scope);
 
-        // on Create Referral, form dirtiness defines the presense of unsaved changes
-        // UI fields that are not technically form fields (teeth, attachments, notes) should have
-        // dedicated change handlers, setting form to dirty
-        UnsavedChanges.setCbHaveUnsavedChanges(function() {
-            return $scope.form.$dirty;
-        });
+        ReferralHelper.trackUnsavedChanges($scope);
 
     }]);
