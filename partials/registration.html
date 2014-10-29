@@ -53,19 +53,12 @@
                                 <label>Last Name</label>
                             </div>
 
-                            <div class="input-block-inline" ng-class="{'has-error': form.practice.$dirty && form.practice.$invalid }">
-                                <input type="text" id="practice" name="practice" placeholder="Select practice &hellip;" class="form-control"
-                                       ng-model="user.practice"
-                                       typeahead-editable="false"
-                                       typeahead="practice as practice.name for practice in findPractice($viewValue) | filter:$viewValue"
-                                       ng-required="true">
-                                <label>Practice</label>
+                            <div class="button-block">
+                                <button class="btn btn-green btn-lg" ng-click="joinPracticeDialog()" ng-show="showPracticeButtons">Join Existing Practice</button>
+                                <button class="btn btn-green btn-lg" ng-click="practiceDialog()" ng-show="showPracticeButtons">New Practice</button>
                             </div>
-                            <button class="btn btn-green btn-lg" ng-click="practiceDialog()" ng-show="showPracticeButtons">New Practice</button>
-                            <button class="btn btn-green btn-lg" ng-click="joinPracticeDialog()" ng-show="showPracticeButtons">Join Existing Practice</button>
 
                             <p ng-show="!showPracticeButtons && user.practice">You selected practice - <b>{{ user.practice.name }}</b></p>
-
 
                         </div>
                         <div class="section-block">
@@ -87,11 +80,6 @@
                                 <input type="password" name="confirmation" class="form-control" ng-model="user.password_confirmation" placeholder="Enter password confirmation &hellip;"
                                        ng-minlength="8" ng-required="true">
                                 <label>Password confirmation</label>
-                            </div>
-
-                            <div class="input-block-inline" ng-hide="user.newPracticeId == user.practice.id"  ng-class="{'has-error': form.security.$dirty && form.security.$invalid }">
-                                <input type="text" name="security" class="form-control" ng-disabled="user.newPracticeId == user.practice.id" ng-model="security_code"  placeholder="Enter security code &hellip;" ng-required="user.newPracticeId != user.practice.id">
-                                <label>Security Code</label>
                             </div>
 
                             <div class="button-block">
