@@ -18,8 +18,8 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         $scope.hasNewAttachments = false;
 
-        $scope.s3UploadPath = "https://dev1-attachments.s3.amazonaws.com/uploads/";
-        $scope.s3HttpUploadPath = "http://dev1-attachments.s3.amazonaws.com/uploads/";
+        $scope.s3UploadPath = "https://prod1-attachments.s3.amazonaws.com/uploads/";
+        $scope.s3HttpUploadPath = "http://prod1-attachments.s3.amazonaws.com/uploads/";
 
         if ($stateParams.referral_id) {
             Logger.debug('Referral id present, getting referral #' + $stateParams.referral_id + '...');

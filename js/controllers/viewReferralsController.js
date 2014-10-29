@@ -19,8 +19,8 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD)
         });
 
-        $scope.s3UploadPath = "https://dev1-attachments.s3.amazonaws.com/uploads/";
-        $scope.s3HttpUploadPath = "http://dev1-attachments.s3.amazonaws.com/uploads/";
+        $scope.s3UploadPath = "https://prod1-attachments.s3.amazonaws.com/uploads/";
+        $scope.s3HttpUploadPath = "http://prod1-attachments.s3.amazonaws.com/uploads/";
 
         $scope.referral = Referral.get({id: $stateParams.referral_id}, function (data) {
                 angular.forEach(data.attachments, function(attachment, key){
