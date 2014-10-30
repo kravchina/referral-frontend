@@ -13,6 +13,22 @@
 <form id="formCreateReferral" name="form" novalidate="novalidate">
 <div class="box-white">
 
+<!-- On behalf of block -->
+<div class="row" ng-if="userIsAux" >
+    <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.onbehalf.$dirty && form.onbehalf.$invalid }">
+        <div class="block-title">
+            <h2>On behalf of</h2>
+        </div>
+
+        <alert type="alert.type" ng-show="form.onbehalf.$dirty && form.behalf.$invalid">Please select provider</alert>
+        <select id="behalfProvider" name="onbehalf" class="form-control" ng-model="model.referral.orig_provider_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in currentPracticeProviders" ng-required="true">
+            <option selected="selected" class="placeholder" value="">Choose a provider &hellip;</option>
+        </select>
+
+    </div>
+</div>
+<!-- .row -->
+
 <!-- Patient block -->
 <div class="row">
     <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.patient.$dirty && form.patient.$invalid }">

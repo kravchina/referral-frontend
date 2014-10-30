@@ -1,5 +1,5 @@
-createReferralModule.controller('ReviewReferralsController', ['$scope', '$state', 'currentReferral', 'Alert', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'ReferralHelper',
-    function ($scope, $state, currentReferral, Alert, Auth, Procedure, Referral, UnsavedChanges, ReferralHelper) {
+createReferralModule.controller('ReviewReferralsController', ['$scope', '$state', 'currentReferral', 'Alert', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'ReferralHelper', 'User',
+    function ($scope, $state, currentReferral, Alert, Auth, Procedure, Referral, UnsavedChanges, ReferralHelper, User) {
 
         var auth = Auth.get() || {};
 
@@ -11,6 +11,8 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
         $scope.attachments = currentReferral.attachments;
         $scope.teeth = currentReferral.teeth.split('+');
         $scope.procedures = Procedure.query();
+        $scope.currentPracticeProviders = User.getProviders({practice_id: auth.practice_id});
+        $scope.userIsAux = auth.roles.indexOf('aux') >= 0;
 
         Procedure.practiceTypes().$promise.then(function (types) {
             $scope.practiceTypes = types;

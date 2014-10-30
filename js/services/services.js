@@ -168,6 +168,7 @@ dentalLinksServices.factory('Procedure', ['$resource', function ($resource) {
 dentalLinksServices.factory('User', ['$resource', function ($resource) {
     return $resource(host + '/users/:id', {}, {
         getInvitees: {method: 'GET', url: host + '/invitees/:user_id', isArray: true},
+        getProviders: {method: 'GET', url: host + '/providers', isArray: true},
         update: {method: 'PUT' },
         changePassword: {method: 'PUT', url: host + '/users/:id/change_password'}
     })
@@ -207,7 +208,6 @@ dentalLinksServices.factory('ModalHandler', [function () {
         dismissIfOpen: function () {
             if (modalInstance && modalInstance.dismiss) {
                 modalInstance.dismiss('cancel');
-                modalInstance = undefined;  //remove when Angular UI will get update at least to 0.12.0 - workaround for https://www.pivotaltracker.com/story/show/77935988
             }
         },
         set: function (modal) {
@@ -215,15 +215,10 @@ dentalLinksServices.factory('ModalHandler', [function () {
         },
         dismiss: function(modal){
             modal.dismiss('cancel');
-            modalInstance = undefined;  //remove when Angular UI will get update at least to 0.12.0 - workaround for https://www.pivotaltracker.com/story/show/77935988
         },
         close: function(modal, result){
             modal.close(result);
-            modalInstance = undefined; //remove when Angular UI will get update at least to 0.12.0 - workaround for https://www.pivotaltracker.com/story/show/77935988
         }
-
-
-
     }
 }]);
 

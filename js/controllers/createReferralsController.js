@@ -1,7 +1,7 @@
 var createReferralModule = angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-createReferralModule.controller('CreateReferralsController', ['$scope', '$state','Alert', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper',
-    function ($scope, $state, Alert, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper) {
+createReferralModule.controller('CreateReferralsController', ['$scope', '$state','Alert', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper', 'User',
+    function ($scope, $state, Alert, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User) {
 
         $scope.alerts = [];
         $scope.attachment_alerts = [];
@@ -9,10 +9,11 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         var auth = Auth.get() || {};
 
         $scope.procedures = Procedure.query();
-
         $scope.practiceTypes = Procedure.practiceTypes();
-
+        $scope.currentPracticeProviders = User.getProviders({practice_id: auth.practice_id});
         $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
+
+        $scope.userIsAux = auth.roles.indexOf('aux') >= 0;
 
         $scope.closeAlert = function (index) {
             Alert.close($scope.alerts, index);
