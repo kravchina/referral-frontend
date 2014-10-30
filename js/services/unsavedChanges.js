@@ -26,7 +26,7 @@ dentalLinksUnsavedChanges.service('UnsavedChanges', ['$rootScope', 'Logger', fun
     this.setCbHaveUnsavedChanges = function(newCb) {
         Logger.debug('Setting callback to ', newCb);
         cbHaveUnsavedChanges = newCb;
-    }
+    };
     
     this.canLeaveSafely = function() {
         Logger.log('canLeaveSafely()...');
@@ -41,7 +41,7 @@ dentalLinksUnsavedChanges.service('UnsavedChanges', ['$rootScope', 'Logger', fun
         }
         Logger.log('canLeaveSafely(): ', result);
         return result;
-    }
+    };
     
     this.init = function() {
         window.onbeforeunload = function() {
@@ -49,16 +49,16 @@ dentalLinksUnsavedChanges.service('UnsavedChanges', ['$rootScope', 'Logger', fun
                 Logger.log('Window close attempt with unsaved changes. Returning warning message');
                 return strUnsavedWarning;
             }
-        }
+        };
         Logger.log('Assigned window.onbeforeunload');
-        $rootScope.$on('$locationChangeStart', function(e, newUrl) {
-            Logger.log('Changing location to ' + newUrl + '...');
+        $rootScope.$on('$stateChangeStart', function(e, newUrl) {
+            Logger.log('Changing location to ' + newUrl.url + '...');
             if (!self.canLeaveSafely()) {
-                Logger.log('Changing location to ' + newUrl + ': cancelled');
+                Logger.log('Changing location to ' + newUrl.url + ': cancelled');
                 e.preventDefault();
                 return;
             }
-            Logger.log('Changing location to ' + newUrl + ': allowed');
+            Logger.log('Changing location to ' + newUrl.url + ': allowed');
         });
     }
     
