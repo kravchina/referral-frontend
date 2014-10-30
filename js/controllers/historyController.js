@@ -1,6 +1,6 @@
 var historyModule = angular.module('history', ['ui.bootstrap']);
 
-historyModule.controller('HistoryController', ['$scope', '$state', 'Auth', 'Referral', function ($scope, $state, Auth, Referral) {
+historyModule.controller('HistoryController', ['$scope', 'Auth', 'Referral', function ($scope, Auth, Referral) {
 
 	$scope.limitTo = 20;
 
@@ -13,9 +13,7 @@ historyModule.controller('HistoryController', ['$scope', '$state', 'Auth', 'Refe
 				console.log(data);
 				$scope.referrals = data.referrals;
 				$scope.referrals_total_count = data.referrals_total_count;
-    
-			});
-
+            });
     };
 
     $scope.findReferralsByTerm = function () {
@@ -26,11 +24,7 @@ historyModule.controller('HistoryController', ['$scope', '$state', 'Auth', 'Refe
 				$scope.referrals = data.referrals;
 				$scope.referrals_total_count = data.referrals_total_count;
 			});
-        
-
     };
 
-
     $scope.findReferralsByDateRange( moment().subtract('days', 29), moment());
-
 }]);
