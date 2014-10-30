@@ -14,6 +14,10 @@ dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fi
         $scope.model.attachments = [];
         $scope.total_size = 0;
 
+        angular.forEach($scope.attachments, function (attachment, key) {
+            $scope.total_size += $scope.total_size + attachment.size;
+        });
+
         var uploader = $scope.uploader = $fileUploader.create({
             scope: $scope,
             url: host + '/attachment/upload',

@@ -25,11 +25,6 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
             $scope.destinationPractice = {users: [currentReferral.dest_provider_invited], name: '-- not yet available --'};
         }
 
-        angular.forEach(currentReferral.attachments, function (attachment, key) {
-            $scope.total_size = $scope.total_size + attachment.size;
-        });
-
-
         $scope.closeAlert = function (index) {
             Alert.close($scope.alerts, index);
         };
