@@ -1,82 +1,88 @@
-            <header class="page-header">
-                <div class="row">
-                    <div class="input-block-left col-xs-12 col-sm-4">
-                        <h1>History</h1>
+<header class="page-header">
+    <div class="row">
+        <div class="input-block-left col-xs-12 col-sm-4">
+            <h1>History</h1>
 
-                        <p class="page-subheader">View your sent and received referrals.</p>
-                    </div>
-                    <div class="col-xs-12 col-sm-4">
-                    </div>
-                    <div class="input-block-right col-xs-12 col-sm-4 text-right">
-                        <button type="button" ui-sref="createReferral" class="btn btn-orange btn-lg">New Referral</button>
-                    </div>
+            <p class="page-subheader">View your sent and received referrals.</p>
+        </div>
+        <div class="col-xs-12 col-sm-4">
+        </div>
+        <div class="input-block-right col-xs-12 col-sm-4 text-right">
+            <a ng-href="#/create_referral" class="btn btn-orange btn-lg">New Referral</a>
+        </div>
+    </div>
+</header><!-- .page-header -->
+
+<div class="box-white">
+
+    <!-- Filter Controls block -->
+    <div class="row">
+        <div class="filter-controls-block">
+
+            <div class="date-range-picker col-xs-12 col-sm-4">
+                <div id="reportrange" date-range-picker="findReferralsByDateRange(start, end)" style="">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                    <span></span> <b class="caret"></b>
                 </div>
-            </header><!-- .page-header -->
-            
-            <div class="box-white">
-            
-                <!-- Filter Controls block -->
-                <div class="row">
-                	<div class="filter-controls-block">
-                    
-                        <div class="date-range-picker col-xs-12 col-sm-4">
-                            <div id="reportrange" date-range-picker="findReferralsByDateRange(start, end)" style="">
-                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                <span></span> <b class="caret"></b>
-                            </div>
-                        </div>
-                        
-                        <div class="input-block col-xs-12 col-sm-4 col-sm-offset-4">
-                        		<input type="search" ng-model="query" placeholder="Search &hellip;" class="form-control placeholder search-no-button" ng-change="findReferralsByTerm()">
-                        </div>
-                        
-                        <div class="results-block">Showing <span class="count">{{referrals.length}} of {{referrals_total_count}}</span></div>
-                        
-                    </div><!-- .filter-controls-block -->
-                </div><!-- .row -->
-                
-                <!-- Referral Table block -->
-                <div class="row">
-                	<div class="table-wrapper">
-                    	<div class="table-container">
-                            <table class="table table-hover table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="cell-datetime">Date / Time</th>
-                                        <th class="cell-patient">Patient Name</th>
-                                        <th class="cell-from">From</th>
-                                        <th class="cell-to">To</th>
-                                        <th class="cell-status">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+            </div>
 
-                                    <tr ng-repeat="referral in referrals | limitTo: 20" class="clickable" ui-sref="{{referral.status == 'draft' ? 'reviewReferral({referral_id: referral.id})' : 'viewReferral({referral_id: referral.id})' }}">
+            <div class="input-block col-xs-12 col-sm-4 col-sm-offset-4">
+                <input type="search" ng-model="query" placeholder="Search &hellip;" class="form-control placeholder search-no-button" ng-change="findReferralsByTerm()">
+            </div>
 
-                                        <td class="cell-datetime">
-                                            <span class="ref-date">{{referral.created_at | date: 'mediumDate'}}</span>
-                                            <span class="ref-time">{{referral.created_at | date: 'shortTime'}}</span>
-                                        </td>
-                                        <td class="cell-patient">{{referral.patient.first_name}} {{referral.patient.last_name}}</td>
-                                        <td class="cell-from">
-                                            <span class="provider">{{referral.orig_provider.first_name}} {{referral.orig_provider.middle_initial}} {{referral.orig_provider.last_name}}</span>
-                                            <span class="practice">{{referral.orig_practice.name}}</span>
-                                        </td>
-                                        <td class="cell-to" ng-show="referral.dest_provider">
-                                            <span class="provider">{{referral.dest_provider.first_name}} {{referral.dest_provider.middle_initial}} {{referral.dest_provider.last_name}}</span>
-                                            <span class="practice">{{referral.dest_practice.name}}</span>
-                                        </td>
-                                        <td class="cell-to" ng-hide="referral.dest_provider">
-                                            <span class="provider">{{referral.dest_provider_invited.first_name}} {{referral.dest_provider_invited.last_name}}</span>
-                                        </td>
-                                        <td class="cell-status">
-                                            <span class="label" ng-class="{'label-success': referral.status == 'completed', 'label-warning': referral.status == 'active', 'label-info' : referral.status == 'new', 'label-danger' : referral.status == 'draft'}">{{referral.status}}</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div><!-- .table-container" -->
-                    </div><!-- .table-wrapper -->
-                </div><!-- .row -->
-                
-            </div><!-- .box-white -->
+            <div class="results-block">Showing <span class="count">{{referrals.length}} of {{referrals_total_count}}</span></div>
+
+        </div>
+        <!-- .filter-controls-block -->
+    </div>
+    <!-- .row -->
+
+    <!-- Referral Table block -->
+    <div class="row">
+        <div class="table-wrapper">
+            <div class="table-container">
+                <table class="table table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th class="cell-datetime">Date / Time</th>
+                        <th class="cell-patient">Patient Name</th>
+                        <th class="cell-from">From</th>
+                        <th class="cell-to">To</th>
+                        <th class="cell-status">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr ng-repeat="referral in referrals | limitTo: 20" class="clickable"
+                        ui-sref="{{referral.status == 'draft' ? 'reviewReferral({referral_id: referral.id})' : 'viewReferral({referral_id: referral.id})' }}">
+
+                        <td class="cell-datetime">
+                            <span class="ref-date">{{referral.created_at | date: 'mediumDate'}}</span>
+                            <span class="ref-time">{{referral.created_at | date: 'shortTime'}}</span>
+                        </td>
+                        <td class="cell-patient">{{referral.patient.first_name}} {{referral.patient.last_name}}</td>
+                        <td class="cell-from">
+                            <span class="provider">{{referral.orig_provider.first_name}} {{referral.orig_provider.middle_initial}} {{referral.orig_provider.last_name}}</span>
+                            <span class="practice">{{referral.orig_practice.name}}</span>
+                        </td>
+                        <td class="cell-to" ng-show="referral.dest_provider">
+                            <span class="provider">{{referral.dest_provider.first_name}} {{referral.dest_provider.middle_initial}} {{referral.dest_provider.last_name}}</span>
+                            <span class="practice">{{referral.dest_practice.name}}</span>
+                        </td>
+                        <td class="cell-to" ng-hide="referral.dest_provider">
+                            <span class="provider">{{referral.dest_provider_invited.first_name}} {{referral.dest_provider_invited.last_name}}</span>
+                        </td>
+                        <td class="cell-status">
+                            <span class="label" ng-class="{'label-success': referral.status == 'completed', 'label-warning': referral.status == 'active', 'label-info' : referral.status == 'new', 'label-danger' : referral.status == 'draft'}">{{referral.status}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- .table-container" -->
+        </div>
+        <!-- .table-wrapper -->
+    </div>
+    <!-- .row -->
+
+</div><!-- .box-white -->
