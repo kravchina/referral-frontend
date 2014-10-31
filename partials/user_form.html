@@ -4,7 +4,7 @@
         <h4 class="modal-title" id="myModalLabel">Add User</h4>
     </div>
     <div class="modal-body">
-        <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.message}}</alert>
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
         <div class="block-title">
             <h5>User Information</h5>
         </div>

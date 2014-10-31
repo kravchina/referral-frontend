@@ -3,7 +3,7 @@
                 <p class="page-subheader">Manage your account details.</p>
             </header><!-- .page-header -->
 
-            <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.message}}</alert>
+            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
 
             <div class="box-white">
             
@@ -19,7 +19,7 @@
                             </tab-heading>
                             <!-- Account Tab -->
                             <div id="admintabAccount" >
-                                <alert ng-hide="practice.stripe_customer_id" type="alert.type">It is always free to send referrals but you will need a premium membership to receive referrals after {{trial_end_date | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
+                                <alert ng-hide="practice.stripe_customer_id" type="{{alert.type}}">It is always free to send referrals but you will need a premium membership to receive referrals after {{trial_end_date | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
 
                                 <form edit-form id="formAccountTab" name="accountForm">
                                     <div class="block-title">
