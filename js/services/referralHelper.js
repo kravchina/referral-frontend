@@ -71,12 +71,18 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
                 return function () {
                     var modalInstance = $modal.open({
                         templateUrl: 'partials/provider_form.html',
-                        controller: 'ProviderModalController'
+                        controller: 'ProviderModalController',
+                        resolve: {
+                            searchAndEdit: function(){
+                                return true; //allow searching and edition existing invitation
+                            }
+                        }
                     });
                     ModalHandler.set(modalInstance);
                     modalInstance.result.then(function (provider) {
                         scope.destinationPractice = {users: [provider], name: '-- not yet available --'};
                         scope.model.referral.dest_provider_invited_id = provider.id;
+                        scope.form.$setDirty();
                     });
                 }
             },

@@ -139,7 +139,12 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
         $scope.inviteDialog = function () {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/provider_form.html',
-                controller: 'ProviderModalController'
+                controller: 'ProviderModalController',
+                resolve: {
+                    searchAndEdit: function () {
+                        return false; // forbid search and edit of existing invitation
+                    }
+                }
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (provider) {

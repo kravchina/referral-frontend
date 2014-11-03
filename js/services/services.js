@@ -98,11 +98,6 @@ dentalLinksServices.factory('Practice', ['$resource',
     }]);
 
 
-dentalLinksServices.factory('PracticeInvitation', ['$resource',
-    function ($resource) {
-        return $resource(host + '/practice_invitations/:id');
-    }]);
-
 dentalLinksServices.factory('Patient', ['$resource', function ($resource) {
     return $resource(host + '/patients/:id', {}, {
         searchPatient: {method: 'GET', url: host + '/patients/search', isArray: true, headers: {
@@ -130,7 +125,13 @@ dentalLinksServices.factory('Login', ['$resource', function ($resource) {
 }]);
 dentalLinksServices.factory('ProviderInvitation', ['$resource', function ($resource) {
     return $resource(host + '/invitations/:invitation_token', {}, {
-        delete: {method: 'DELETE', url: host + '/invitations/:id'}
+        searchProviderInvitation: {method: 'GET', url: host + '/invitations/search', isArray: true, headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        }},
+        delete: {method: 'DELETE', url: host + '/invitations/:id'},
+        update: {method: 'PUT', url: host + '/invitations/:id'}
     });
 }]);
 

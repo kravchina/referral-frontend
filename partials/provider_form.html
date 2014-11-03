@@ -4,25 +4,36 @@
         <h4 class="modal-title" id="myModalLabel">Invite a New Provider</h4>
     </div>
     <div class="modal-body">
+        <div ng-if="searchAndEdit">
+            <div class="block-title">
+                <h5>Find Provider</h5>
+            </div>
+            <div class="input-block" ng-class="{ 'has-error': providerForm.invitee.$dirty && providerForm.invitee.$invalid }">
+                <input type="text" name="invitee" class="form-control" ng-model="model.existingProvider" placeholder="Enter invitee's name, surname or email &hellip;"
+                       typeahead="p as p.first_name +' ' +  p.last_name + ' (' + p.email + ')'  for p in findProviderInvitation($viewValue) | filter:$viewValue"
+                       typeahead-editable="false">
+            </div>
+        </div>
+
         <div class="block-title">
             <h5>Provider Information</h5>
         </div>
         <!--<div ng-show="providerForm.$invalid" class="alert alert-danger">
             <strong>Oops!</strong> Please fix the highlighted errors below.
         </div>-->
-        <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.message}}</alert>
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
         <div class="input-block" ng-class="{ 'has-error': providerForm.firstName.$dirty && providerForm.firstName.$invalid }">
-            <input type="text" name="firstName" class="form-control" ng-model="provider.first_name" placeholder="Enter first name &hellip;" ng-required="true">
+            <input type="text" name="firstName" class="form-control" ng-model="model.provider.first_name" placeholder="Enter first name &hellip;" ng-required="true">
         </div>
         <div class="input-block"  ng-class="{ 'has-error': providerForm.lastName.$dirty && providerForm.lastName.$invalid }" >
-            <input type="text" name="lastName" class="form-control" ng-model="provider.last_name" placeholder="Enter last name &hellip;" ng-required="true">
+            <input type="text" name="lastName" class="form-control" ng-model="model.provider.last_name" placeholder="Enter last name &hellip;" ng-required="true">
         </div>
         <div class="input-block" ng-class="{ 'has-error': providerForm.email.$dirty && providerForm.email.$invalid }">
-            <input type="email" class="form-control" name="email" ng-model="provider.email" placeholder="Enter provider's email address &hellip;" ng-required="true">
+            <input type="email" class="form-control" name="email" ng-model="model.provider.email" placeholder="Enter provider's email address &hellip;" ng-required="true">
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-orange" ng-click="ok(provider)" ng-disabled="providerForm.$invalid">Send</button>
+        <button type="submit" class="btn btn-orange" ng-click="ok(model.provider)" ng-disabled="providerForm.$invalid">Send</button>
         <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Discard</button>
     </div>
 </form>

@@ -53,14 +53,36 @@ modalsModule.controller('NoteModalController', ['$scope', '$modalInstance', 'Mod
 
 }]);
 
-modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth) {
+modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', 'Spinner', 'searchAndEdit', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth, Spinner, searchAndEdit) {
     $scope.alerts = [];
+    $scope.searchAndEdit = searchAndEdit;
+    $scope.model = {};
+    $scope.$watch( //we need only one-way updates from typeahead, otherwise typeahead works incorrectly
+        function () {
+            return $scope.model.existingProvider;
+        }, function (newVal, oldVal, scope) {
+            if (newVal) {
+                $scope.model.provider = {id: newVal.id, first_name: newVal.first_name, email: newVal.email, last_name: newVal.last_name};
+            }
+        });
     $scope.ok = function (provider) {
         provider.inviter_id = Auth.getOrRedirect().id;
-        ProviderInvitation.save({provider_invitation: provider}, function (success) {
-            ModalHandler.close($modalInstance,success);
-        }, function (failure) {
+        var resultHandlers = {success: function (success) {
+            ModalHandler.close($modalInstance, success);
+        }, failure: function (failure) {
             Alert.error($scope.alerts, 'Error: ' + failure.data.message);
+        }};
+        if (provider.id) {
+            ProviderInvitation.update({id: provider.id}, {provider_invitation: provider}, resultHandlers.success, resultHandlers.failure);
+        } else {
+            ProviderInvitation.save({provider_invitation: provider}, resultHandlers.success, resultHandlers.failure);
+        }
+    };
+    $scope.findProviderInvitation = function (searchValue) {
+        Spinner.hide(); //workaround that disables spinner to avoid flicker.
+        return ProviderInvitation.searchProviderInvitation({search: searchValue }).$promise.then(function (res) {
+            Spinner.show();
+            return res;
         });
     };
     $scope.closeAlert = function (index) {
