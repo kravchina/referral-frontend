@@ -333,19 +333,4 @@ dentalLinksDirectives.directive('notes', [function () {
     }
 }]);
 
-dentalLinksDirectives.directive('alerts', [function () {
-    return {
-        restrict: 'E',
-        transclude: true,
-        templateUrl: 'partials/notes.html',
-        controller: 'NotesController',
-        resolve: {
-            currentReferral: function () {
-                return ;
-            }
-        }
-    }
-}]);
-
-
 
