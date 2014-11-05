@@ -82,7 +82,8 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
                     modalInstance.result.then(function (provider) {
                         scope.destinationPractice = {users: [provider], name: '-- not yet available --'};
                         scope.model.referral.dest_provider_invited_id = provider.id;
-                        scope.form.$setDirty();
+                        scope.form.$setDirty();  //need for unsaved changes
+                        scope.form.practice.$setValidity('editable', true);//fix for the case, when practice has invalid value and then provider is invited (removes practice's validation error and sets state to valid to enable saving)
                     });
                 }
             },
