@@ -116,7 +116,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         });
     $urlRouterProvider.otherwise('/sign_in');
 }])
-    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler) {
+    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', 'Logger', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, Logger) {
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
             ModalHandler.dismissIfOpen();  //close dialog if open.
@@ -127,7 +127,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         });
 
         $rootScope.$on(AUTH_EVENTS.notAuthenticated, function (event, args) {
-            console.log('notAuthenticated');
+            Logger.log('notAuthenticated');
             Auth.remove();
             redirect.path = args.redirect;
             $state.go('signIn', {}, {reload: true});
@@ -180,7 +180,7 @@ dentalLinks.factory('spinnerInterceptor', ['$q', 'Spinner', function ($q, Spinne
     };
 }]);
 
-dentalLinks.factory('authInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', '$location', 'redirect', 'Auth', function ($rootScope, $q, AUTH_EVENTS, $location, redirect, Auth) {
+dentalLinks.factory('authInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', '$location', 'redirect', 'Auth', 'Logger', function ($rootScope, $q, AUTH_EVENTS, $location, redirect, Auth, Logger) {
     return {
         request: function (config) {
             config.headers = config.headers || {};
@@ -188,12 +188,11 @@ dentalLinks.factory('authInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', '$loc
             if (auth && auth.token) {
                 config.headers.Authorization = auth.token;
                 config.headers.From = auth.email;
-//                console.log(auth.token);
             }
             return config;
         },
         responseError: function (response) {
-            console.log('error intercepted: status = ' + response.status);
+            Logger.log('error intercepted: status = ' + response.status);
 
             if (response.status === 401 || response.status === 403) {
                 // handle the case where the user is not authenticated

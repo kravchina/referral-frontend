@@ -1,7 +1,7 @@
 var loginModule = angular.module('login', []);
 
-loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location', 'Login', 'redirect',
-    function ($scope, Auth, User, $location, Login, redirect) {
+loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location', 'Login', 'redirect', 'Logger',
+    function ($scope, Auth, User, $location, Login, redirect, Logger) {
         var auth = Auth.get();
         if(auth){// user is authenticated by tries to open login window
             $location.path('/history');
@@ -19,8 +19,7 @@ loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location'
                     Auth.set({token: success.token, email: user.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
 
                     user = User.get({id: success.id});
-                    console.log(user);
-                    console.log(success);
+                    Logger.log(success);
                     Auth.current_user = user;
 
                     $scope.email = user.email;
@@ -29,14 +28,14 @@ loginModule.controller('LoginController', ['$scope', 'Auth', 'User', '$location'
 
                 },
                 function (failure) {
-                    console.log(failure);
+                    Logger.log(failure);
                     Auth.remove();
                     if(failure.status == 0){
                         $scope.result = {failure: true, statusText: 'Upstream server connectivity error. Administrator was informed. Please try again later'};
                     }else{
                         $scope.result = {failure: true, statusText: 'Unable to login with provided credentials'};
                     }
-                    console.log($scope.result);
+                    Logger.log($scope.result);
                 });
         };
     }]);

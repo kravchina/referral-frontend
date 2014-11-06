@@ -1,6 +1,6 @@
 var historyModule = angular.module('history', ['ui.bootstrap']);
 
-historyModule.controller('HistoryController', ['$scope', 'Auth', 'Referral', function ($scope, Auth, Referral) {
+historyModule.controller('HistoryController', ['$scope', 'Auth', 'Referral', 'Logger', function ($scope, Auth, Referral, Logger) {
 
 	$scope.limitTo = 20;
 
@@ -10,17 +10,17 @@ historyModule.controller('HistoryController', ['$scope', 'Auth', 'Referral', fun
 
         Referral.findByPractice({id: Auth.get().practice_id, start_date: start.toISOString(), end_date: end.toISOString(), term: $scope.query, limit: $scope.limitTo}, 
 			function(data){
-				console.log(data);
+				Logger.log(data);
 				$scope.referrals = data.referrals;
 				$scope.referrals_total_count = data.referrals_total_count;
             });
     };
 
     $scope.findReferralsByTerm = function () {
-    	console.log($scope.query);
+    	Logger.log($scope.query);
         Referral.findByPractice({id: Auth.get().practice_id, start_date: $scope.start_date.toISOString(), end_date: $scope.end_date.toISOString(), term: $scope.query, limit: $scope.limitTo}, 
 			function(data){
-				console.log(data);
+				Logger.log(data);
 				$scope.referrals = data.referrals;
 				$scope.referrals_total_count = data.referrals_total_count;
 			});

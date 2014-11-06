@@ -1,7 +1,7 @@
 var adminModule = angular.module('admin', ['ui.bootstrap', 'angularPayments']);
 
-adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'PhoneFormatter',
-    function ($scope, $modal, Auth, Alert, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, PhoneFormatter) {
+adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'PhoneFormatter', 'Logger',
+    function ($scope, $modal, Auth, Alert, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, PhoneFormatter, Logger) {
 
 
         $scope.alerts = [];
@@ -26,16 +26,16 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                     $scope.invitedColleagues.push(invitation);
                 }
             });
-            console.log('invitedUsers = ' + JSON.stringify($scope.invitedUsers));
+            Logger.log('invitedUsers = ' + JSON.stringify($scope.invitedUsers));
         });
 
         $scope.practice = Practice.get({practiceId: auth.practice_id}, function(practice) {
-            console.log('existing users = ' + JSON.stringify(practice.users));
+            Logger.log('existing users = ' + JSON.stringify(practice.users));
         });
 
         $scope.practice.$promise.then(function (data) {
-            console.log($scope.practice);
-            console.log(FREE_TRIAL_PERIOD); 
+            Logger.log($scope.practice);
+            Logger.log(FREE_TRIAL_PERIOD);
             $scope.trial_end_date = new Date($scope.practice.created_at);
             $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD)
         });    
@@ -44,8 +44,8 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
         $scope.savePractice = function (form) {
             
             if (form.$dirty && !form.$invalid) {
-                console.log($scope.practice);
-                console.log($scope.practice.card_exp_month);
+                Logger.log($scope.practice);
+                Logger.log($scope.practice.card_exp_month);
 
                 Practice.update({practiceId: $scope.practice.id}, {
                             practice: {
@@ -100,7 +100,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
         $scope.cancelSubscription = function () {
             Practice.cancelSubscription({practiceId: $scope.practice.id}, {},
                 function (success) {
-                    console.log(success);
+                    Logger.log(success);
                     Alert.success($scope.alerts, 'Subscription was cancelled successfully!');
                     $scope.practice = success
                 },

@@ -87,18 +87,18 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
 
 
 // Only for users invited to the same practice
-registrationModule.controller('NewUserController', ['$scope', '$location', '$stateParams', '$modal', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Spinner',
-    function ($scope, $location, $stateParams, $modal, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Spinner) {
+registrationModule.controller('NewUserController', ['$scope', '$location', '$stateParams', '$modal', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Logger',
+    function ($scope, $location, $stateParams, $modal, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Logger) {
         $scope.alerts = [];
 
         $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
             function (user) {
                 user.newPracticeId = user.practice_id; // in case of user invitation - needs this in order to hide security code field
 
-                console.log('user.newPracticeId = ' + user.newPracticeId);
+                Logger.log('user.newPracticeId = ' + user.newPracticeId);
 
                 $scope.practice = Practice.get({practiceId: user.newPracticeId}, function(practice) {
-                    console.log('received practice info: ' + JSON.stringify($scope.practice));
+                    Logger.log('received practice info: ' + JSON.stringify($scope.practice));
                 });
             },
             function (failure) {

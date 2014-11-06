@@ -11,8 +11,6 @@ dentalLinks.controller('NavController', ['$scope', '$state', 'Auth', 'Logger', '
             Auth.current_user = null;
         }
 
-        console.log(Auth.current_user)
-
         $scope.progressIndicatorStart = function(){
             $scope.loadingProgress = true;
             // $scope.$apply()

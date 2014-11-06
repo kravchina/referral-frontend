@@ -130,7 +130,7 @@ modalsModule.controller('JoinPracticeModalController', ['$scope', '$modalInstanc
     };
 }]);
 
-modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Auth, Alert) {
+modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Logger', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Auth, Alert, Logger) {
     $scope.result = {};
     $scope.alerts = [];
     
@@ -140,12 +140,12 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
         ProviderInvitation.save({provider_invitation: user}, function (success) {
             ModalHandler.close($modalInstance,success);
         },  function (failure) {
-            console.log(failure);
+            Logger.log(failure);
             $.each(failure.data, function(key, value){
                 Alert.error($scope.alerts, 'Error: ' + key + " " + value[0]);
             });
             
-            console.log($scope.alerts);
+            Logger.log($scope.alerts);
         });
     };
     $scope.cancel = function () {
@@ -153,7 +153,7 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
     };
 }]);
 
-modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'STRIPE_KEY', 'practice_id', 'stripe_customer_id', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Auth, Alert, Practice, STRIPE_KEY, practice_id, stripe_customer_id) {
+modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'STRIPE_KEY', 'practice_id', 'stripe_customer_id', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, STRIPE_KEY, practice_id, stripe_customer_id) {
     $scope.result = {};
     $scope.alerts = [];
 
@@ -161,7 +161,7 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', '
     $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4 ];
 
     $scope.stripe_customer_id = stripe_customer_id;
-    console.log($scope.stripe_customer_id);
+    Logger.log($scope.stripe_customer_id);
     // set the stripe publishable key
     Stripe.setPublishableKey(STRIPE_KEY);
 
@@ -172,14 +172,14 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', '
                     exp_month: payment_info.card_exp_month,
                     exp_year: payment_info.card_exp_year
                 }, function(status, response){
-                    console.log(response);
+                    Logger.log(response);
                     if(response.error) {
                         // there was an error. Fix it.
                         Alert.error($scope.alerts, 'An error occurred during account update...')
                     } else {
                         // got stripe token, now charge it or smt
                         payment_info.stripe_token = response.id;
-                        console.log(payment_info);
+                        Logger.log(payment_info);
 
                         Practice.update({practiceId: practice_id}, {
                                         practice: {
@@ -188,7 +188,7 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', '
                                         }
                             },
                                     function (success) {
-                                        console.log(success);
+                                        Logger.log(success);
                                         Alert.success($scope.alerts, 'Account was upgraded successfully!');
                                         ModalHandler.close($modalInstance,success);
                                     },
@@ -203,10 +203,10 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', '
     };
 }]);
 
-modalsModule.controller('UserPasswordModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'id', function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, id) {
+modalsModule.controller('UserPasswordModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'id', function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, id) {
     $scope.result = {};
     $scope.alerts = [];
-    console.log(id);
+    Logger.log(id);
     $scope.ok = function (user) {
         
         if(user.password != user.password_confirmation){
@@ -215,10 +215,10 @@ modalsModule.controller('UserPasswordModalController', ['$scope', '$modalInstanc
         }
 
         User.changePassword({id: id}, {new_password: user.password}, function (success) {
-            console.log(success);
+            Logger.log(success);
             ModalHandler.close($modalInstance,success);
         },  function (failure) {
-            console.log(failure);
+            Logger.log(failure);
             if(failure.data.password){
                 Alert.error($scope.alerts, 'Error: Password ' + failure.data.password[0]);
             }else{

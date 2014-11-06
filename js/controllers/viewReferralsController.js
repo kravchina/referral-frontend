@@ -13,7 +13,6 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
         Auth.current_user.$promise.then(function (data) {
             $scope.stripe_customer_id = data.practice.stripe_customer_id;
-            console.log(FREE_TRIAL_PERIOD); 
             $scope.trial_end_date = new Date(data.practice.created_at);
             $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD)
         });
@@ -32,14 +31,9 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
                 data.teethChart = data.teeth.split('+');
 
-                console.log($scope.total_size);
-
                 if (!data.dest_provider) {
                     data.dest_provider = data.dest_provider_invited;
                 }
-
-                console.log(data);
-
             },
             function (failure) {
                 Alert.error($scope.alerts, 'Something happened... Data was not retrieved from server.')
@@ -71,11 +65,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
             // Filters
             uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
-                //var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
-                //type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
-                //return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-
-                console.log(item);
+                Logger.log(item);
 
                 if (item.size > each_file_size_limit) {
                     Alert.error($scope.attachment_alerts, 'You can not upload a file with more than 50 MB size.');

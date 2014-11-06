@@ -268,10 +268,8 @@ dentalLinksDirectives.directive('ngFocusMe', ['$parse', '$timeout', function($pa
     return {
         restrict: 'AC',
         link: function(scope, element, attrs){
-            
             $timeout(function() {
-                console.log(element[0]);
-                element[0].focus(); 
+                element[0].focus();
             }, 100);
         }
     }

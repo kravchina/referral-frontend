@@ -34,11 +34,6 @@ dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fi
 
 // Filters
         uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
-            //var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
-            //type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
-            //return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-
-            console.log(item);
 
             if (item.size > each_file_size_limit) {
                 Alert.error($scope.attachment_alerts, 'You can not upload a file with more than 50 MB size.');
@@ -121,7 +116,6 @@ dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fi
 
             // show the loading indicator
             $scope.$parent.progressIndicatorEnd();
-            console.log($scope.model.referral.id);
             queue.redirectCallback();
 
         });
