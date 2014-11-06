@@ -9,7 +9,7 @@ dentalLinks.service('Logger', function() {
     };
     
     this.debug = function() {
-        if (loggingEnabled) console.debug.apply(console, arguments);
+        if (loggingEnabled) console.log.apply(console, arguments);//changed to .log() because debug() doesn't exist in IE10
     };
     
     this.info = function() {
