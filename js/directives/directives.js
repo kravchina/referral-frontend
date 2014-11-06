@@ -51,16 +51,7 @@ dentalLinksDirectives.directive('pdfPhotos', ['Auth', 'PDF', 'File', 'Logger', f
         restrict: 'A',
         link: function (scope, $element, attrs) {
             if (Auth.authorize(attrs.access.split(/[,\s]+/))) {
-                if(!File.isImage(scope.attachment.filename)){
-                    PDF.addImage(scope.$index, null, scope.attachment);
-                }
-                var img = new Image();
-                img.crossOrigin = 'anonymous';
-                img.onload = function () {
-                    PDF.addImage(scope.$index, img, scope.attachment);
-                };
-                img.src = scope.host + '/attachment/?file=' + scope.attachment.id + '/' + scope.attachment.filename;
-                Logger.log('Loading image ' + img.src);
+                PDF.addImage(scope.$index, scope.attachment);
             }
         }
     }
@@ -87,7 +78,7 @@ dentalLinksDirectives.directive('attachmentThumb', [function () {
                 case 'jpeg':
                 case 'png':
                 case 'gif':
-                    element.attr( 'style',  "background-image: url('" + attributes.attachmentThumb + "&is_thumb=true')");
+                    element.attr( 'style',  "background: url(" + attributes.attachmentThumb + "&is_thumb=true) no-repeat top/contain, url('img/loader.gif') no-repeat top");
                     cssClass = '';
                     break;
                 default :

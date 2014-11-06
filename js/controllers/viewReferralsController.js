@@ -1,14 +1,13 @@
 var viewReferralModule = angular.module('viewReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD',
-    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD) {
+viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT',
+    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT) {
         $scope.alerts = [];
         $scope.attachment_alerts = [];
 
         $scope.total_size = 0;
 
         auth = Auth.get() || {};
-        $scope.host = host; //needed for directive pdfPhotos, where image upload URL is composed with this value
         $scope.token = auth.token;
         $scope.from = auth.email;
 
@@ -54,7 +53,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
             var uploader = $scope.uploader = $fileUploader.create({
                 scope: $scope,
-                url: host + '/attachment/upload',
+                url: API_ENDPOINT + '/attachment/upload',
                 formData: [
                     {referral_id: $scope.referral.id},
                     {filename: 'test'}
@@ -173,20 +172,11 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         };
 
         $scope.savePdf = function () {
-            Spinner.show();
-            $timeout(function () {
-                PDF.save(buildFileName('referral'));
-                Spinner.hide();
-            }, 50);
-
+            PDF.save(buildFileName('referral'));
         };
 
         $scope.savePatientPdf = function () {
-            Spinner.show();
-            $timeout(function () {
-                PDF.saveForPatient(buildFileName('patient'));
-                Spinner.hide();
-            }, 50);
+            PDF.saveForPatient(buildFileName('patient'));
         };
 
         $scope.noteDialog = function () {

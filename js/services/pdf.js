@@ -1,5 +1,5 @@
 var dentalLinksPdf = angular.module('pdf', []);
-dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($filter, Spinner, ImageUtils) {
+dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$rootScope', 'API_ENDPOINT', function ($filter, Spinner, ImageUtils, File, $rootScope, API_ENDPOINT) {
     var jsPDFOrientation = 'p'; // portrait
     var jsPDFUnit = 'mm';
     var jsPDFFormat = 'letter';
@@ -353,7 +353,39 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
         var width = pdf.getStringUnitWidth(str) * auxiliaryFontSizeMm;
         pdf.text(pageSizes.width - pagePaddings.x - width, caret, str);
     };
-    
+
+    function prepareImages(callback) {
+        var imagesProcessed = 0;
+
+        function runCallbackIfReady() {
+            imagesProcessed++;
+            if (imagesProcessed == images.length) {
+                callback();
+            }
+        }
+
+        function downloadImage(index) {
+            var img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function () {
+                images[index].image = img;
+                runCallbackIfReady();
+            };
+            img.src = API_ENDPOINT + '/attachment/?file=' + images[j].metadata.id + '/' + images[j].metadata.filename;
+            return img;
+        }
+
+        for (var j = 0; j < images.length; j++) {
+            if (images[j]) {
+                if (!File.isImage(images[j].metadata.filename)) {
+                    runCallbackIfReady();
+                } else {
+                    downloadImage(j);
+                }
+            }
+        }
+    }
+
     var buildPdf = function (forPatient) {
         pdf = new jsPDF(jsPDFOrientation, jsPDFUnit, jsPDFFormat);
         var caret = appendHeader(pdf);
@@ -373,11 +405,11 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
 
     };
     return {
-        addImage: function (index, image, metadata) {
+        addImage: function (index, attachment) {
             while (index >= images.length) {
                 images[images.length] = null;
             }
-            images.splice(index, 1, {image: image, metadata: metadata});
+            images.splice(index, 1, {metadata: attachment});
         },
         addNotes: function (notesArray) {
             notes = notesArray;
@@ -427,10 +459,22 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', function ($fi
 
         },
         save: function (filename) {
-            buildPdf(false).save(filename);
+            Spinner.show();
+            prepareImages(function(){
+                buildPdf(false).save(filename);
+                $rootScope.$apply(function(){  //need this $apply() to notify Angular's two-way binding about updates from custom callback function.
+                    Spinner.hide();
+                });
+            });
         },
         saveForPatient: function (filename) {
-            buildPdf(true).save(filename);
+            Spinner.show();
+            prepareImages(function(){
+                buildPdf(true).save(filename);
+                $rootScope.$apply(function(){  //need this $apply() to notify Angular's two-way binding about updates from custom callback function.
+                    Spinner.hide();
+                });
+            });
         }
     };
 }]);
