@@ -25,7 +25,7 @@ dentalLinks.constant('USER_ROLES', {
 
 dentalLinks.constant('FREE_TRIAL_PERIOD', 45);
 dentalLinks.constant('STRIPE_KEY', 'pk_test_XUhHfTuR70aPg0tIf1bCYXqI');
-
+dentalLinks.constant('API_ENDPOINT', 'https://referral-server.herokuapp.com');
 dentalLinks.constant('AUTH_EVENTS', {
     notAuthenticated: 'auth-not-authenticated'
 });
@@ -223,8 +223,8 @@ dentalLinks.filter('phoneNumber', ['PhoneFormatter', function(PhoneFormatter) {
     return PhoneFormatter.format;
 }]);
 
-dentalLinks.filter('attachmentDownloadUrl', function(){
+dentalLinks.filter('attachmentDownloadUrl', ['API_ENDPOINT', function(API_ENDPOINT){
    return function(attachment){
-       return host + '/attachment/?file=' + attachment.id + '/' + attachment.filename;
+       return API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.filename;
    }
-});
+}]);

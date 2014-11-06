@@ -1,5 +1,5 @@
-dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fileUploader', 'Logger',
-    function ($scope, Alert, Auth, $fileUploader, Logger) {
+dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fileUploader', 'Logger', 'API_ENDPOINT',
+    function ($scope, Alert, Auth, $fileUploader, Logger, API_ENDPOINT) {
 
         $scope.now = function () {
             return Date.now();
@@ -20,7 +20,7 @@ dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fi
 
         var uploader = $scope.uploader = $fileUploader.create({
             scope: $scope,
-            url: host + '/attachment/upload',
+            url: API_ENDPOINT + '/attachment/upload',
             formData: [
                 {filename: ''}
             ],

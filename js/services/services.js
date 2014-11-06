@@ -3,9 +3,6 @@
  */
 var dentalLinksServices = angular.module('dentalLinksServices', ['ngResource']);
 
-//var host = 'http://localhost:3000';
-var host = 'https://referral-server.herokuapp.com';
-
 dentalLinksServices.factory('Auth', ['$cookieStore', '$location', 'USER_ROLES', function ($cookieStore, $location, USER_ROLES) {
     return {
         authorize: function (roles) {
@@ -84,23 +81,23 @@ dentalLinksServices.factory('Alert', ['$timeout', function ($timeout) {
     }
 }]);
 
-dentalLinksServices.factory('Practice', ['$resource',
-    function ($resource) {
-        return $resource(host + '/practices/:practiceId', {}, {
-            searchPractice: {method: 'GET', url: host + '/practices/search', isArray: true, headers: {
+dentalLinksServices.factory('Practice', ['$resource', 'API_ENDPOINT',
+    function ($resource, API_ENDPOINT) {
+        return $resource(API_ENDPOINT + '/practices/:practiceId', {}, {
+            searchPractice: {method: 'GET', url: API_ENDPOINT + '/practices/search', isArray: true, headers: {
                 'Cache-Control': 'no-cache, no-store, must-revalidate',
                 'Pragma': 'no-cache',
                 'Expires': '0'
             }},
-            cancelSubscription: {method: 'GET', url: host + '/practices/:practiceId/cancel_subscription'},
+            cancelSubscription: {method: 'GET', url: API_ENDPOINT + '/practices/:practiceId/cancel_subscription'},
             update: {method: 'PUT'}
         });
     }]);
 
 
-dentalLinksServices.factory('Patient', ['$resource', function ($resource) {
-    return $resource(host + '/patients/:id', {}, {
-        searchPatient: {method: 'GET', url: host + '/patients/search', isArray: true, headers: {
+dentalLinksServices.factory('Patient', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/patients/:id', {}, {
+        searchPatient: {method: 'GET', url: API_ENDPOINT + '/patients/search', isArray: true, headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',
             'Expires': '0'
@@ -108,70 +105,70 @@ dentalLinksServices.factory('Patient', ['$resource', function ($resource) {
     });
 }]);
 
-dentalLinksServices.factory('Referral', ['$resource', function ($resource) {
-    return $resource(host + '/referrals/:id', {id: '@id'}, {
-        saveTemplate: {method: 'POST', url: host + '/referrals/new/template'},
+dentalLinksServices.factory('Referral', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/referrals/:id', {id: '@id'}, {
+        saveTemplate: {method: 'POST', url: API_ENDPOINT + '/referrals/new/template'},
         update: {method: 'PUT'},
-        updateStatus: {method: 'PUT', url: host + '/referrals/:id/status'},
-        findByPractice: {method: 'GET', url: host + '/referrals/practice/:id', isArray: false}
+        updateStatus: {method: 'PUT', url: API_ENDPOINT + '/referrals/:id/status'},
+        findByPractice: {method: 'GET', url: API_ENDPOINT + '/referrals/practice/:id', isArray: false}
     });
 }]);
 
-dentalLinksServices.factory('Login', ['$resource', function ($resource) {
-    return $resource(host + '/sign_in', {}, {
+dentalLinksServices.factory('Login', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/sign_in', {}, {
         login: { method: 'POST'},
-        logout: {method: 'DELETE', url: host + '/sign_out'}
+        logout: {method: 'DELETE', url: API_ENDPOINT + '/sign_out'}
     });
 }]);
-dentalLinksServices.factory('ProviderInvitation', ['$resource', function ($resource) {
-    return $resource(host + '/invitations/:invitation_token', {}, {
-        searchProviderInvitation: {method: 'GET', url: host + '/invitations/search', isArray: true, headers: {
+dentalLinksServices.factory('ProviderInvitation', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/invitations/:invitation_token', {}, {
+        searchProviderInvitation: {method: 'GET', url: API_ENDPOINT + '/invitations/search', isArray: true, headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',
             'Expires': '0'
         }},
-        delete: {method: 'DELETE', url: host + '/invitations/:id'},
-        update: {method: 'PUT', url: host + '/invitations/:id'}
+        delete: {method: 'DELETE', url: API_ENDPOINT + '/invitations/:id'},
+        update: {method: 'PUT', url: API_ENDPOINT + '/invitations/:id'}
     });
 }]);
 
-dentalLinksServices.factory('Registration', ['$resource', function ($resource) {
-    return $resource(host + '/sign_up')
+dentalLinksServices.factory('Registration', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/sign_up')
 }]);
 
-dentalLinksServices.factory('Password', ['$resource', function ($resource) {
-    return $resource(host + '/password', {}, {
+dentalLinksServices.factory('Password', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/password', {}, {
         reset: {method: 'POST'},
         change: {method: 'PUT'}
     })
 }]);
 
-dentalLinksServices.factory('S3Bucket', ['$resource', function ($resource) {
-    return $resource(host + '/s3', {}, {
+dentalLinksServices.factory('S3Bucket', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/s3', {}, {
         getCredentials: {method: 'GET'}
     });
 }]);
 
-dentalLinksServices.factory('Note', ['$resource', function ($resource) {
-    return $resource(host + '/notes');
+dentalLinksServices.factory('Note', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/notes');
 }]);
 
-dentalLinksServices.factory('Attachment', ['$resource', function ($resource) {
-    return $resource(host + '/attachments');
+dentalLinksServices.factory('Attachment', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/attachments');
 }]);
 
-dentalLinksServices.factory('Procedure', ['$resource', function ($resource) {
-    return $resource(host + '/procedures', {}, {
-        practiceTypes: {method: 'GET', url: host + '/practice_types', isArray: true}
+dentalLinksServices.factory('Procedure', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/procedures', {}, {
+        practiceTypes: {method: 'GET', url: API_ENDPOINT + '/practice_types', isArray: true}
     })
 }]);
 
-dentalLinksServices.factory('User', ['$resource', function ($resource) {
-    return $resource(host + '/users/:id', {}, {
-        getInvitees: {method: 'GET', url: host + '/invitees/:user_id', isArray: true},
-        getProviders: {method: 'GET', url: host + '/providers', isArray: true},
+dentalLinksServices.factory('User', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/users/:id', {}, {
+        getInvitees: {method: 'GET', url: API_ENDPOINT + '/invitees/:user_id', isArray: true},
+        getProviders: {method: 'GET', url: API_ENDPOINT + '/providers', isArray: true},
         update: {method: 'PUT' },
-        changePassword: {method: 'PUT', url: host + '/users/:id/change_password'}
+        changePassword: {method: 'PUT', url: API_ENDPOINT + '/users/:id/change_password'}
     })
 }]);
 
@@ -223,6 +220,6 @@ dentalLinksServices.factory('ModalHandler', [function () {
     }
 }]);
 
-dentalLinksServices.factory('SecurityCode', ['$resource', function ($resource) {
-    return $resource(host + '/security_code/:id', {}, {})
+dentalLinksServices.factory('SecurityCode', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/security_code/:id', {}, {})
 }]);
