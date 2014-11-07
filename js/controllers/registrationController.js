@@ -33,6 +33,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             modalInstance.result.then(function (practice) {
                 $scope.user.newPracticeId = practice.id;
                 $scope.user.practice = practice;
+                $scope.showPracticeButtons = false;
             });
         };
 
@@ -44,17 +45,9 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (res) {
                 $scope.user.practice_id = res.practice.id;
-                Registration.save({user: $scope.user, invitation_token: $stateParams.invitation_token, security_code: res.securitycode, skip_security_code: false},
-                    function (success) {
-                        Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
-                        Auth.current_user = success;
-                        $scope.registrationSuccessful = true;
-                        $scope.showPracticeButtons = false;
-                    },
-                    function (failure) {
-                        Alert.error($scope.alerts, 'Error during registration with existing practice and security code.', true);
-                    }
-                )
+                $scope.user.practice = res.practice;
+                $scope.security_code = res.securitycode;
+                $scope.showPracticeButtons = false;
             });
         };
 
@@ -81,6 +74,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                     Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.', true);
                 }
             );
+            $scope.showPracticeButtons = true;
         }
 
     }]);
