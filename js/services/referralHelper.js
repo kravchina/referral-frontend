@@ -1,5 +1,5 @@
-createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patient', 'Practice', 'Spinner', 'UnsavedChanges',
-    function ($modal, ModalHandler, Patient, Practice, Spinner, UnsavedChanges) {
+createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patient', 'Practice', 'ProviderInvitation', 'Spinner', 'UnsavedChanges',
+    function ($modal, ModalHandler, Patient, Practice, ProviderInvitation, Spinner, UnsavedChanges) {
         return {
 
             prepareSubmit: function (scope, referral) {
@@ -71,16 +71,12 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
                 return function () {
                     var modalInstance = $modal.open({
                         templateUrl: 'partials/provider_form.html',
-                        controller: 'ProviderModalController',
-                        resolve: {
-                            searchAndEdit: function(){
-                                return true; //allow searching and edition existing invitation
-                            }
-                        }
+                        controller: 'ProviderModalController'
                     });
                     ModalHandler.set(modalInstance);
                     modalInstance.result.then(function (provider) {
                         scope.destinationPractice = {users: [provider], name: '-- not yet available --'};
+                        scope.practiceSearchText = scope.destinationPractice.name;
                         scope.model.referral.dest_provider_invited_id = provider.id;
                         scope.form.$setDirty();  //need for unsaved changes
                         scope.form.practice.$setValidity('editable', true);//fix for the case, when practice has invalid value and then provider is invited (removes practice's validation error and sets state to valid to enable saving)
@@ -99,18 +95,30 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
 
             findPractice: function () {
                 return function (searchValue) {
+                    // todo: see if can run both search requests in parallel
+
                     Spinner.hide(); //workaround that disables spinner to avoid flicker.
-                    return Practice.searchPractice({search: searchValue }).$promise.then(function (res) {
-                        Spinner.show();
-                        return res;
+                    return Practice.searchPractice({search: searchValue }).$promise.then(function (practices) {
+                        return ProviderInvitation.searchProviderInvitation({search: searchValue }).$promise.then(function (invitations) {
+                            Spinner.show();
+
+                            invitations = invitations.map(function (invitation) {
+                                invitation.roles_mask = 2;
+                                return {users: [invitation], name: '-- not yet available --'};
+                            });
+
+                            return practices.concat(invitations);
+                        });
                     });
                 }
             },
             onPracticeSelected: function (scope, auth) {
                 var self = this;
                 return function (selectedPractice) {
-                    // refresh items in provider dropdown
+                    // this triggers refresh of items in provider dropdown
                     scope.destinationPractice = selectedPractice;
+
+                    scope.practiceSearchText = scope.destinationPractice.name;
 
                     //todo!!! move to server-side query
                     // remove currently logged in user from available providers list
@@ -131,11 +139,20 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
                         }
                     });
 
-                    scope.model.referral.dest_provider_invited_id = null;  //remove if present, because will anyway select provider from selected practice users
+                    // todo: detect if invitation, assign id appropriately
+                    var users = scope.destinationPractice.users;
+                    var onlyUser = (users && users.length == 1) ? users[0] : null;
 
-                    // select provider, if only one is available
-                    if (scope.destinationPractice.users && scope.destinationPractice.users.length == 1) {
-                        scope.model.referral.dest_provider_id = scope.destinationPractice.users[0].id;
+                    if (onlyUser && onlyUser.status == 'invited') {
+                        scope.model.referral.dest_provider_invited_id = users[0].id;
+                        scope.model.referral.dest_provider_id = null;
+                    } else {
+                        scope.model.referral.dest_provider_invited_id = null;
+
+                        // select provider, if only one is available
+                        if (onlyUser) {
+                            scope.model.referral.dest_provider_id = onlyUser.id;
+                        }
                     }
 
                     // select default referral type from practice type
@@ -143,7 +160,7 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
                 }
             },
             trackUnsavedChanges: function(scope){
-                // on Create Referral, form dirtiness defines the presense of unsaved changes
+                // on Create Referral, form dirtiness defines the presence of unsaved changes
                 // UI fields that are not technically form fields (teeth, attachments, notes) should have
                 // dedicated change handlers, setting form to dirty
                 UnsavedChanges.setCbHaveUnsavedChanges(function() {
