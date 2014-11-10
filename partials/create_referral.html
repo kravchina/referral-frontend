@@ -57,8 +57,8 @@
         </div>
         <alert type="warning" ng-show="form.practice.$dirty && form.practice.$invalid">Please select existing practice or invite new provider</alert>
         <input type="text" class="form-control" name="practice" placeholder="Enter existing practice or invite new provider with button on the right ..."
-               ng-model="destinationPractice" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
-               typeahead="practice as practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '') for practice in findPractice($viewValue) | filter:$viewValue">
+               ng-model="practiceSearchText" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
+               typeahead="practice as (practice.name == '-- not yet available --') ? (practice.users[0].first_name + ' ' + practice.users[0].last_name) : (practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '')) for practice in findPractice($viewValue) | filter:$viewValue">
     </div>
 
     <div class="input-block-right col-xs-12 col-sm-6" ng-class="{'has-error': form.provider.$dirty && form.provider.$invalid }">

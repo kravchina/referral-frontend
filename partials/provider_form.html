@@ -4,17 +4,6 @@
         <h4 class="modal-title" id="myModalLabel">Invite a New Provider</h4>
     </div>
     <div class="modal-body">
-        <div ng-if="searchAndEdit">
-            <div class="block-title">
-                <h5>Find Provider</h5>
-            </div>
-            <div class="input-block" ng-class="{ 'has-error': providerForm.invitee.$dirty && providerForm.invitee.$invalid }">
-                <input type="text" name="invitee" class="form-control" ng-model="model.existingProvider" placeholder="Enter invitee's name, surname or email &hellip;"
-                       typeahead="p as p.first_name +' ' +  p.last_name + ' (' + p.email + ')'  for p in findProviderInvitation($viewValue) | filter:$viewValue"
-                       typeahead-editable="false">
-            </div>
-        </div>
-
         <div class="block-title">
             <h5>Provider Information</h5>
         </div>

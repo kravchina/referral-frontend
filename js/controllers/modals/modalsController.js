@@ -53,9 +53,8 @@ modalsModule.controller('NoteModalController', ['$scope', '$modalInstance', 'Mod
 
 }]);
 
-modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', 'Spinner', 'searchAndEdit', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth, Spinner, searchAndEdit) {
+modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', 'Spinner', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth, Spinner) {
     $scope.alerts = [];
-    $scope.searchAndEdit = searchAndEdit;
     $scope.model = {};
     $scope.$watch( //we need only one-way updates from typeahead, otherwise typeahead works incorrectly
         function () {
@@ -72,18 +71,8 @@ modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 
         }, failure: function (failure) {
             Alert.error($scope.alerts, 'Error: ' + failure.data.message);
         }};
-        if (provider.id) {
-            ProviderInvitation.update({id: provider.id}, {provider_invitation: provider}, resultHandlers.success, resultHandlers.failure);
-        } else {
-            ProviderInvitation.save({provider_invitation: provider}, resultHandlers.success, resultHandlers.failure);
-        }
-    };
-    $scope.findProviderInvitation = function (searchValue) {
-        Spinner.hide(); //workaround that disables spinner to avoid flicker.
-        return ProviderInvitation.searchProviderInvitation({search: searchValue }).$promise.then(function (res) {
-            Spinner.show();
-            return res;
-        });
+
+        ProviderInvitation.save({provider_invitation: provider}, resultHandlers.success, resultHandlers.failure);
     };
     $scope.closeAlert = function (index) {
         Alert.close($scope.alerts, index);
