@@ -1,5 +1,5 @@
 var dentalLinksPdf = angular.module('pdf', []);
-dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$rootScope', 'API_ENDPOINT', function ($filter, Spinner, ImageUtils, File, $rootScope, API_ENDPOINT) {
+dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$timeout', 'API_ENDPOINT', function ($filter, Spinner, ImageUtils, File, $timeout, API_ENDPOINT) {
     var jsPDFOrientation = 'p'; // portrait
     var jsPDFUnit = 'mm';
     var jsPDFFormat = 'letter';
@@ -371,18 +371,25 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$roo
                 images[index].image = img;
                 runCallbackIfReady();
             };
+            img.onerror = function(){
+                runCallbackIfReady();
+            };
             img.src = API_ENDPOINT + '/attachment/?file=' + images[j].metadata.id + '/' + images[j].metadata.filename;
             return img;
         }
 
-        for (var j = 0; j < images.length; j++) {
-            if (images[j]) {
-                if (!File.isImage(images[j].metadata.filename)) {
-                    runCallbackIfReady();
-                } else {
-                    downloadImage(j);
+        if (images && images.length > 0) {
+            for (var j = 0; j < images.length; j++) {
+                if (images[j]) {
+                    if (!File.isImage(images[j].metadata.filename)) {
+                        runCallbackIfReady();
+                    } else {
+                        downloadImage(j);
+                    }
                 }
             }
+        } else {
+            callback();
         }
     }
 
@@ -462,7 +469,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$roo
             Spinner.show();
             prepareImages(function(){
                 buildPdf(false).save(filename);
-                $rootScope.$apply(function(){  //need this $apply() to notify Angular's two-way binding about updates from custom callback function.
+                $timeout(function(){  //need this $timeout() to notify Angular's two-way binding about updates from custom callback function. (It runs $apply() in a next digest cycle - prevents 'apply already in progress' error)
                     Spinner.hide();
                 });
             });
@@ -471,10 +478,10 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$roo
             Spinner.show();
             prepareImages(function(){
                 buildPdf(true).save(filename);
-                $rootScope.$apply(function(){  //need this $apply() to notify Angular's two-way binding about updates from custom callback function.
-                    Spinner.hide();
+                $timeout(function(){  //need this $timeout() to notify Angular's two-way binding about updates from custom callback function. (It runs $apply() in a next digest cycle - prevents 'apply already in progress' error)
+                        Spinner.hide();
+                    });
                 });
-            });
         }
     };
 }]);
