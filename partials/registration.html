@@ -82,6 +82,12 @@
                                 <label>Password confirmation</label>
                             </div>
 
+
+                            <div class="input-block" style="padding: 20px;">
+                                <input type="checkbox" name="tnc" class="form-control" ng-model="user.tnc" ng-required="true" style="height:20px; display: inline; width: 20px;">
+                                <span style="margin: 10px">Agree to EULA: <a href="/#/license" target="_blank">terms & conditions</a></span>
+                            </div>
+
                             <div class="button-block">
                                 <button class="btn btn-green btn-lg" ng-click="register(user)" ng-disabled="form.$invalid || user.password_confirmation !== user.password">Register</button>
                                 <button class="btn btn-green btn-lg" ng-click="discard()">Discard</button>
