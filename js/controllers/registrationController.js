@@ -63,7 +63,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                     Alert.error($scope.alerts, 'Error during registration.', true);
                 }
             )
-        }
+        };
 
         $scope.discard = function() {
             $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
