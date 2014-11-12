@@ -53,13 +53,13 @@
                                 <label>Last Name</label>
                             </div>
 
+                            <alert type="danger" ng-show="!user.practice.id && !user.newPracticeId">Please join existing practice or create a new one.</alert>
                             <div class="button-block">
                                 <button class="btn btn-green btn-lg" ng-click="joinPracticeDialog()" ng-show="showPracticeButtons">Join Existing Practice</button>
                                 <button class="btn btn-green btn-lg" ng-click="practiceDialog()" ng-show="showPracticeButtons">New Practice</button>
                             </div>
 
                             <p ng-show="!showPracticeButtons && user.practice">You selected practice - <b>{{ user.practice.name }}</b></p>
-
                         </div>
                         <div class="section-block">
                             <h3>Access details</h3>
@@ -89,7 +89,7 @@
                             </div>
 
                             <div class="button-block">
-                                <button class="btn btn-green btn-lg" ng-click="register(user)" ng-disabled="form.$invalid || user.password_confirmation !== user.password">Register</button>
+                                <button class="btn btn-green btn-lg" ng-click="register(user)" ng-disabled="form.$invalid || user.password_confirmation !== user.password || (!user.practice.id && !user.newPracticeId)">Register</button>
                                 <button class="btn btn-green btn-lg" ng-click="discard()">Discard</button>
                             </div>
 
