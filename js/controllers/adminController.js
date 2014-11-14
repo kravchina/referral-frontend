@@ -120,19 +120,19 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
             });
         };
 
-        $scope.passwordDialog = function (user_id) {
+        $scope.editDialog = function (currentUser) {
             var modalInstance = $modal.open({
-                templateUrl: 'partials/user_password_form.html',
-                controller: 'UserPasswordModalController',
+                templateUrl: 'partials/edit_user_form.html',
+                controller: 'EditUserModalController',
                 resolve: {
-                    id: function () {
-                        return user_id;
+                    user: function () {
+                        return currentUser;
                     }
                 }
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (user) {
-                //$scope.practice.users.push(user);
+                currentUser.is_admin = user.is_admin; //update user's role after editing
             });
         };
 

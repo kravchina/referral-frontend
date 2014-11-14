@@ -192,10 +192,11 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', '
     };
 }]);
 
-modalsModule.controller('UserPasswordModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'id', function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, id) {
+modalsModule.controller('EditUserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'user', function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, currentUser) {
     $scope.result = {};
     $scope.alerts = [];
-    Logger.log(id);
+    Logger.log(currentUser.id);
+    $scope.user = {is_admin: currentUser.is_admin};//for now we need only is_admin property to be set
     $scope.ok = function (user) {
         
         if(user.password != user.password_confirmation){
@@ -203,7 +204,7 @@ modalsModule.controller('UserPasswordModalController', ['$scope', '$modalInstanc
             return;
         }
 
-        User.changePassword({id: id}, {new_password: user.password}, function (success) {
+        User.update({id: currentUser.id}, {user: user}, function (success) {
             Logger.log(success);
             ModalHandler.close($modalInstance,success);
         },  function (failure) {

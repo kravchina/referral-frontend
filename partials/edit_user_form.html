@@ -1,0 +1,26 @@
+<form id="formNewuser" name="userForm">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Change Password</h4>
+    </div>
+    <div class="modal-body">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
+        <div class="input-block" ng-class="{ 'has-error': userForm.password.$dirty && userForm.password.$invalid }">
+            <input type="password" name="password" class="form-control" ng-model="user.password" placeholder="Enter Password &hellip;" ng-minlength="8"  ng-required="userForm.password.$dirty">
+        </div>
+        <div class="input-block" ng-class="{ 'has-error': userForm.password_confirmation.$dirty && (userForm.password_confirmation.$invalid  || user.password_confirmation !== user.password) }">
+            <input type="password" name="password_confirmation" class="form-control" ng-model="user.password_confirmation" placeholder="Enter Password Again &hellip;" ng-minlength="8" ng-required="userForm.password.$dirty">
+        </div>
+        <div class="input-block" ng-class="{'has-error': userForm.is_admin.$dirty && userForm.is_admin.$invalid }">
+            <label>
+                <input type="checkbox" name="is_admin" ng-model="user.is_admin">
+                Admin?
+            </label>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-orange" ng-click="ok(user)" ng-disabled="userForm.$invalid || user.password_confirmation !== user.password">Save</button>
+        <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Discard</button>
+    </div>
+</form>
