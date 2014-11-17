@@ -72,7 +72,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
     };
     
     // TODO [ak] refactor into binary search for better performance
-    var fitString = function (str, fontSizeMm, expectedLenghtMm) {
+    var fitString = function (str, fontSizeMm, expectedLengthMm) {
         var res = str;
         var l = str.length;
         var trail = '...';
@@ -80,7 +80,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
             // current width
             var width = pdf.getStringUnitWidth(res) * fontSizeMm;
             
-            if (width <= expectedLenghtMm) {
+            if (width <= expectedLengthMm) {
                 // fits!
                 return res;
             }
@@ -310,9 +310,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
     var appendPatientTextData = function(pdf, caret) {
         caret += fontSizeMm;
         pdf.setFontType('bold');
-        pdf.text(pagePaddings.x, caret, fitString(patientData.name, fontSizeMm, fullSizeColWidth));
-        caret += fontSizeMm;
-        pdf.text(pagePaddings.x, caret, formatDate(patientData.birthday));
+        pdf.text(pagePaddings.x, caret, fitString(patientData.name + ' (' + formatDate(patientData.birthday) + ')', fontSizeMm, fullSizeColWidth));
         return caret+blocksPadding;
     };
     
