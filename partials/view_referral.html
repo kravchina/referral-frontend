@@ -18,6 +18,9 @@
     <div class="input-block col-xs-12 col-sm-12">
         <div class="block-title">
             <h2>Patient</h2>
+            <button ng-if="auth.is_admin || (auth.id == referral.orig_provider.id && referral.status == 'new')" type="button" ng-click="editPatientDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-note" data-toggle="tooltip"
+                    data-placement="top" title="Edit Patient" ><span
+                    class="dlicons-pencil"></span></button>
         </div>
         <input type="text" class="form-control data1" value="{{referral.patient.first_name}} {{referral.patient.last_name}} ({{referral.patient.birthday | date: 'shortDate'}})" disabled="disabled">
     </div>
@@ -217,7 +220,7 @@
 
                 <!-- Note block -->
                 <li class="note-block" expand-note ng-repeat="note in referral.notes">
-                    <span class="note-user">{{note.user_first_name}} {{note.user_last_name}}</span>
+                    <span class="note-user">{{note.user.first_name}} {{note.user_last_name}}</span>
                     <span class="note-content">{{note.message}}</span>
                     <span class="datestamp">{{note.created_at | date: 'short' }}</span>
                 </li>

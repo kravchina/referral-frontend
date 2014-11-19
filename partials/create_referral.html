@@ -34,6 +34,10 @@
     <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.patient.$dirty && form.patient.$invalid }">
         <div class="block-title">
             <h2>Patient</h2>
+            <button ng-if="patient.id" type="button" ng-click="editPatientDialog()" class="btn btn-orange btn-toggle-shifted btn-toggle-modal-note" data-toggle="tooltip"
+                    data-placement="top" title="Edit Patient" >
+                <span class="dlicons-pencil"></span>
+            </button>
             <button type="button" class="btn btn-orange btn-toggle" ng-click="patientDialog()" data-toggle="tooltip" data-placement="top"
                     title="Create a New Patient Record" data-target="#modalPatient">
                 <span class="dlicons-user-add"></span>

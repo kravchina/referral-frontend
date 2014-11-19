@@ -70,6 +70,8 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         $scope.patientDialog = ReferralHelper.patientDialog($scope);
 
+        $scope.editPatientDialog = ReferralHelper.editPatientDialog($scope);
+
         $scope.providerDialog = ReferralHelper.providerDialog($scope);
 
         ReferralHelper.trackUnsavedChanges($scope);

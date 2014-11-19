@@ -97,6 +97,7 @@ dentalLinksServices.factory('Practice', ['$resource', 'API_ENDPOINT',
 
 dentalLinksServices.factory('Patient', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/patients/:id', {}, {
+        update: {method: 'PUT'},
         searchPatient: {method: 'GET', url: API_ENDPOINT + '/patients/search', isArray: true, headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',

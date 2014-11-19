@@ -7,9 +7,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
         $scope.total_size = 0;
 
-        auth = Auth.get() || {};
-        $scope.token = auth.token;
-        $scope.from = auth.email;
+        $scope.auth = Auth.get();
 
         Auth.current_user.$promise.then(function (data) {
             $scope.stripe_customer_id = data.practice.stripe_customer_id;
@@ -20,13 +18,6 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         $scope.referral = Referral.get({id: $stateParams.referral_id}, function (data) {
                 angular.forEach(data.attachments, function(attachment, key){
                     $scope.total_size = $scope.total_size + attachment.size;
-                });
-
-                angular.forEach(data.notes, function(note, key){
-                    if (note.user){
-                        note['user_first_name'] = note.user.first_name;
-                        note['user_last_name'] = note.user.last_name;
-                    }
                 });
 
                 data.teethChart = data.teeth.split('+');
@@ -52,7 +43,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                     {referral_id: $scope.referral.id},
                     {filename: 'test'}
                 ],
-                headers: {'Authorization' : $scope.token, 'From': $scope.from}
+                headers: {'Authorization' : $scope.auth.token, 'From': $scope.auth.from}
             });
 
             $scope.now = function () {
@@ -169,6 +160,22 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             PDF.saveForPatient(buildFileName('patient'));
         };
 
+        $scope.editPatientDialog = function(){
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/patient_form.html',
+                controller: 'EditPatientModalController',
+                resolve: {
+                    patientForEdit: function(){
+                        return $scope.referral.patient;
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (patient) {
+                $scope.referral.patient = patient;
+            });
+        };
+
         $scope.noteDialog = function () {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/note_form.html',
@@ -182,8 +189,8 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         };
 
         var submitNote = function (note) {
-            Note.save({note: {message: note, referral_id: $scope.referral.id, user_id: auth.id}}, function (success) {
-                $scope.referral.notes.push({message: note, created_at: Date.now(), user_first_name: Auth.current_user.first_name, user_last_name: Auth.current_user.last_name});
+            Note.save({note: {message: note, referral_id: $scope.referral.id, user_id: $scope.auth.id}}, function (success) {
+                $scope.referral.notes.push({message: note, created_at: Date.now(), user: {first_name: Auth.current_user.first_name, last_name: Auth.current_user.last_name}});
             }, function (failure) {
                 Alert.error($scope.alerts, 'Something went wrong, note was not saved.');
             });

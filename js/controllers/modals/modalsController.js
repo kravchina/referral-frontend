@@ -37,6 +37,24 @@ modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 
     };
 }]);
 
+modalsModule.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit) {
+    $scope.alerts = [];
+    $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.', 'Engr.'];
+    $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: patientForEdit.birthday};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
+    $scope.ok = function (patient) {
+        Patient.update({id: patientForEdit.id}, {patient: patient},
+            function (success) {
+                ModalHandler.close($modalInstance, success);
+            },
+            function (failure) {
+                Alert.error($scope.alerts, 'Error occurred during patient update.');
+            });
+    };
+    $scope.cancel = function () {
+        ModalHandler.dismiss($modalInstance);
+    };
+}]);
+
 modalsModule.controller('NoteModalController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
     $scope.ok = function (note) {
         //nothing to do, we cant save note right here because at this stage referral doesn't exist. We can only add new note to the list on the parent page (create referral) and save simultaneously with referral.

@@ -67,6 +67,25 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
                     });
                 }
             },
+
+            editPatientDialog: function(scope){
+                return function(){
+                    var modalInstance = $modal.open({
+                        templateUrl: 'partials/patient_form.html',
+                        controller: 'EditPatientModalController',
+                        resolve: {
+                            patientForEdit: function(){
+                                return scope.patient;
+                            }
+                        }
+                    });
+                    ModalHandler.set(modalInstance);
+                    modalInstance.result.then(function (patient) {
+                        scope.patient = patient;
+                    });
+                }
+            },
+
             providerDialog: function (scope) {
                 return function () {
                     var modalInstance = $modal.open({
