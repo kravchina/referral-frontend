@@ -142,17 +142,16 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
                     //todo!!! move to server-side query
                     // remove currently logged in user from available providers list
                     if (scope.destinationPractice.id == auth.practice_id) {
-                        angular.forEach(scope.destinationPractice.users, function (user, index, users) {
+                        scope.destinationPractice.users.forEach( function (user, index, users) {
                             if (user.id == auth.id) {
                                 users.splice(index, 1);
                             }
                         });
-
                     }
 
                     //todo!!! move to server-side query
                     // remove auxiliary users from available providers list
-                    angular.forEach(scope.destinationPractice.users, function (user, index, users) {
+                    scope.destinationPractice.users.forEach(function (user, index, users) {
                         if ((user.roles_mask & 2) == 0) {
                             users.splice(index, 1);
                         }
