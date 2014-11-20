@@ -18,7 +18,7 @@
     <div class="input-block col-xs-12 col-sm-12">
         <div class="block-title">
             <h2>Patient</h2>
-            <button ng-if="auth.is_admin || (auth.id == referral.orig_provider.id && referral.status == 'new')" type="button" ng-click="editPatientDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-note" data-toggle="tooltip"
+            <button ng-if="(auth.is_admin && auth.practice_id == referral.orig_provider.practice.id) || (auth.id == referral.orig_provider.id && referral.status == 'new')" type="button" ng-click="editPatientDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-note" data-toggle="tooltip"
                     data-placement="top" title="Edit Patient" ><span
                     class="dlicons-pencil"></span></button>
         </div>
