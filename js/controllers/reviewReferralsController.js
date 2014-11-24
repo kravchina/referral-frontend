@@ -22,7 +22,7 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
         if (currentReferral.dest_provider && currentReferral.dest_provider.practice) {
             $scope.destinationPractice = currentReferral.dest_provider.practice;
         } else {
-            $scope.destinationPractice = {users: [currentReferral.dest_provider_invited], name: '-- not yet available --'};
+            $scope.destinationPractice = {users: [currentReferral.dest_provider_invited], name: '-- pending registration --'};
         }
 
         $scope.closeAlert = function (index) {

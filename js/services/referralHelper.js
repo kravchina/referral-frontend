@@ -94,7 +94,7 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
                     });
                     ModalHandler.set(modalInstance);
                     modalInstance.result.then(function (provider) {
-                        scope.destinationPractice = {users: [provider], name: '-- not yet available --'};
+                        scope.destinationPractice = {users: [provider], name: '-- pending registration --'};
                         scope.practiceSearchText = scope.destinationPractice.name;
                         scope.model.referral.dest_provider_invited_id = provider.id;
                         scope.form.$setDirty();  //need for unsaved changes
@@ -123,7 +123,7 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
 
                             invitations = invitations.map(function (invitation) {
                                 invitation.roles_mask = 2;
-                                return {users: [invitation], name: '-- not yet available --'};
+                                return {users: [invitation], name: '-- pending registration --'};
                             });
 
                             return practices.concat(invitations);
