@@ -22,21 +22,62 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
             },
 
             watchProviders: function (scope) {
+                var findProvider = function (id) {
+                    var users = scope.destinationPractice.users;
+                    var usersLength = users.length;
+                    for (var i = 0; i < usersLength; i++) {
+                        if (id == users[i].id) {
+                            return users[i];
+                        }
+                    }
+                    return {};
+                };
+                //initial check if current referral has valid (not removed) dest provider
+                scope.$watch(function(){
+                    return scope.form.provider;
+                },function(newVal, oldVal, currentScope){
+                    if (newVal){
+                        if(findProvider(currentScope.model.referral.dest_provider_id).removed_at){
+                            currentScope.form.provider.$setValidity('userActive', false);
+                        }
+                    }
+
+                });
+
+                //initial check if current referral has valid (not removed) dest provider
+                scope.$watch(function(){
+                    return scope.form.provider_invited;
+                },function(newVal, oldVal, currentScope){
+                    if (newVal){
+                        if(findProvider(currentScope.model.referral.dest_provider_invited_id).removed_at){
+                            currentScope.form.provider_invited.$setValidity('userActive', false);
+                        }
+                    }
+
+                });
+
+
                 scope.$watch( //observing changes of the dest_provider_invited_id field
                     function () {
                         return scope.model.referral.dest_provider_invited_id; //we are watching exactly this 'dest_provider_invited_id' property, not the whole 'model' object
-                    }, function (newVal, oldVal, scope) {
+                    }, function (newVal, oldVal, currentScope) {
                         if (newVal) {
-                            scope.model.referral.dest_provider_id = null; //if dest_provider_invited_id is set (user added new provider invitation to the referral), we need to remove 'dest_provider_id'
+                            if(currentScope.form.provider_invited){
+                                currentScope.form.provider_invited.$setValidity('userActive', findProvider(newVal).removed_at? false : true);
+                            }
+                            currentScope.model.referral.dest_provider_id = null; //if dest_provider_invited_id is set (user added new provider invitation to the referral), we need to remove 'dest_provider_id'
                         }
                     });
                 scope.$watch( //observing changes of the dest_provider_id field
                     function () {
                         return scope.model.referral.dest_provider_id; //we are watching exactly this 'dest_provider_id' property, not the whole 'model' object
                     },
-                    function (newVal, oldVal, scope) {
+                    function (newVal, oldVal, currentScope) {
                         if (newVal) {
-                            scope.model.referral.dest_provider_invited_id = null; //if dest_provider_id is set (user selected existing referral from the dropdown), we need to remove 'dest_provider_invited_id'
+                            if(currentScope.form.provider){
+                                currentScope.form.provider.$setValidity('userActive', findProvider(newVal).removed_at ? false : true );
+                            }
+                            currentScope.model.referral.dest_provider_invited_id = null; //if dest_provider_id is set (user selected existing referral from the dropdown), we need to remove 'dest_provider_invited_id'
                         }
                     });
             },

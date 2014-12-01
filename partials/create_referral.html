@@ -65,7 +65,7 @@
                typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].first_name + ' ' + practice.users[0].last_name) : (practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '')) for practice in findPractice($viewValue) | filter:$viewValue">
     </div>
 
-    <div class="input-block-right col-xs-12 col-sm-6" ng-class="{'has-error': form.provider.$dirty && form.provider.$invalid }">
+    <div class="input-block-right col-xs-12 col-sm-6" ng-class="{'has-error': (form.provider.$dirty && form.provider.$invalid) || form.provider.$error.userActive || form.provider_invited.$error.userActive }">
         <div class="block-title">
             <h2>Provider</h2>
             <button type="button" class="btn btn-orange btn-toggle" ng-click="providerDialog()" data-toggle="tooltip" data-placement="top" title="Invite a New Provider" data-target="#modalProvider"><span class="dlicons-user-add"></span></button>
