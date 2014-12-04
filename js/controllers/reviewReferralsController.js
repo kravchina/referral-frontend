@@ -24,6 +24,7 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
         } else {
             $scope.destinationPractice = {users: [currentReferral.dest_provider_invited], name: '-- pending registration --'};
         }
+        $scope.practiceSearchText = $scope.destinationPractice.name;
 
         $scope.closeAlert = function (index) {
             Alert.close($scope.alerts, index);
