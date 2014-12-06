@@ -117,8 +117,8 @@ dentalLinksServices.factory('Referral', ['$resource', 'API_ENDPOINT', function (
 
 dentalLinksServices.factory('Login', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/sign_in', {}, {
-        login: { method: 'POST'},
-        logout: {method: 'DELETE', url: API_ENDPOINT + '/sign_out'}
+        login: { method: 'POST', withCredentials: true},
+        logout: {method: 'DELETE', url: API_ENDPOINT + '/sign_out', withCredentials: true}
     });
 }]);
 dentalLinksServices.factory('ProviderInvitation', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
