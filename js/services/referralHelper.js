@@ -23,6 +23,9 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
 
             watchProviders: function (scope) {
                 var findProvider = function (id) {
+                    if (!scope.destinationPractice || !scope.destinationPractice.users){
+                        return {};
+                    }
                     var users = scope.destinationPractice.users;
                     var usersLength = users.length;
                     for (var i = 0; i < usersLength; i++) {
