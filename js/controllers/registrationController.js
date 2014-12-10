@@ -76,7 +76,11 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                 }
             );
             $scope.showPracticeButtons = true;
-        }
+        };
+
+        $scope.closeAlert = function (index) {
+            Alert.close($scope.alerts, index);
+        };
 
     }]);
 
@@ -113,5 +117,9 @@ registrationModule.controller('NewUserController', ['$scope', '$location', '$sta
                     Alert.error($scope.alerts, 'Error during registration.', true);
                 }
             )
-        }
+        };
+
+        $scope.closeAlert = function (index) {
+            Alert.close($scope.alerts, index);
+        };
     }]);
