@@ -60,6 +60,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                     $scope.registrationSuccessful = true;
                 },
                 function (failure) {
+                    $scope.alerts = [];//reset alerst array, because we need only one error message at a time. Pivotal's ticket #82268450.
                     Alert.error($scope.alerts, 'Error during registration.', true);
                 }
             )
