@@ -1,5 +1,5 @@
-createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patient', 'Practice', 'ProviderInvitation', 'Spinner', 'UnsavedChanges',
-    function ($modal, ModalHandler, Patient, Practice, ProviderInvitation, Spinner, UnsavedChanges) {
+createReferralModule.service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 'Patient', 'Practice', 'ProviderInvitation', 'Spinner', 'UnsavedChanges', 'User',
+    function ($modal, $q, ModalHandler, Patient, Practice, ProviderInvitation, Spinner, UnsavedChanges, User) {
         return {
 
             prepareSubmit: function (scope, referral) {
@@ -148,77 +148,42 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
             },
             findPatient: function (auth) {
                 return function (searchValue) {
-                    Spinner.hide(); //workaround that disables spinner to avoid flicker.
-                    return Patient.searchPatient({practice_id: auth.practice_id, search: searchValue}).$promise.then(function (res) {
-                        Spinner.show();
-                        return res;
-                    });
+                    return Patient.searchPatient({practice_id: auth.practice_id, search: searchValue}).$promise;
                 }
             },
 
             findPractice: function () {
                 return function (searchValue) {
-                    // todo: see if can run both search requests in parallel
-
-                    Spinner.hide(); //workaround that disables spinner to avoid flicker.
-                    return Practice.searchPractice({search: searchValue }).$promise.then(function (practices) {
-                        return ProviderInvitation.searchProviderInvitation({search: searchValue }).$promise.then(function (invitations) {
-                            Spinner.show();
-
-                            invitations = invitations.map(function (invitation) {
-                                invitation.roles_mask = 2;
-                                return {users: [invitation], name: '-- pending registration --'};
-                            });
-
-                            return practices.concat(invitations);
-                        });
+                    return $q.all([Practice.searchPractice({search: searchValue}).$promise, ProviderInvitation.searchProviderInvitation({search: searchValue}).$promise]).then(function (results) {
+                        return results[0].concat(results[1].map(function (invitation) {
+                            invitation.roles_mask = 2;
+                            return {users: [invitation], name: '-- pending registration --', isInvitation: true};
+                        }));
                     });
                 }
             },
             onPracticeSelected: function (scope, auth) {
                 var self = this;
-                return function (selectedPractice) {
+                return function (selectedItem) {
                     // this triggers refresh of items in provider dropdown
-                    scope.destinationPractice = selectedPractice;
+                    scope.destinationPractice = selectedItem;
 
                     scope.practiceSearchText = scope.destinationPractice.name;
 
-                    //todo!!! move to server-side query
-                    // remove currently logged in user from available providers list
-                    if (scope.destinationPractice.id == auth.practice_id) {
-                        scope.destinationPractice.users.forEach( function (user, index, users) {
-                            if (user.id == auth.id) {
-                                users.splice(index, 1);
-                            }
-                        });
-                    }
-
-                    //todo!!! move to server-side query
-                    // remove auxiliary users from available providers list
-                    scope.destinationPractice.users.forEach(function (user, index, users) {
-                        if ((user.roles_mask & 2) == 0) {
-                            users.splice(index, 1);
-                        }
-                    });
-
-                    // todo: detect if invitation, assign id appropriately
-                    var users = scope.destinationPractice.users;
-                    var onlyUser = (users && users.length == 1) ? users[0] : null;
-
-                    if (onlyUser && onlyUser.status == 'invited') {
-                        scope.model.referral.dest_provider_invited_id = users[0].id;
+                    if (selectedItem.isInvitation) {
+                        scope.model.referral.dest_provider_invited_id = selectedItem.users[0].id;
                         scope.model.referral.dest_provider_id = null;
                     } else {
-                        scope.model.referral.dest_provider_invited_id = null;
+                        scope.destinationPractice.users = User.getProviders({practice_id: selectedItem.id}, function(users){
+                            scope.model.referral.dest_provider_invited_id = null;
+                            if (users.length == 1) {
+                                scope.model.referral.dest_provider_id = users[0].id;
+                            }
 
-                        // select provider, if only one is available
-                        if (onlyUser) {
-                            scope.model.referral.dest_provider_id = onlyUser.id;
-                        }
+                        });
                     }
-
                     // select default referral type from practice type
-                    self.updatePracticeType(scope, selectedPractice.practice_type_id);
+                    self.updatePracticeType(scope, selectedItem.practice_type_id);
                 }
             },
             trackUnsavedChanges: function(scope){
@@ -230,5 +195,4 @@ createReferralModule.service('ReferralHelper', ['$modal', 'ModalHandler', 'Patie
                 });
             }
         }
-    }])
-;
+    }]);

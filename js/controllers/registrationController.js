@@ -16,14 +16,6 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             }
         );
 
-        $scope.findPractice = function (searchValue) {
-            Spinner.hide(); //workaround that disables spinner to avoid flicker.
-            return Practice.searchPractice({search: searchValue }).$promise.then(function (res) {
-                Spinner.show();  //workaround that disables spinner to avoid flicker.
-                return res;
-            });
-        };
-
         $scope.practiceDialog = function () {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/practice_form.html',

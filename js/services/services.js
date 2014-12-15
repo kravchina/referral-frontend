@@ -88,7 +88,7 @@ dentalLinksServices.factory('Practice', ['$resource', 'API_ENDPOINT',
                 'Cache-Control': 'no-cache, no-store, must-revalidate',
                 'Pragma': 'no-cache',
                 'Expires': '0'
-            }},
+            }, skipSpinner: true},
             cancelSubscription: {method: 'GET', url: API_ENDPOINT + '/practices/:practiceId/cancel_subscription'},
             update: {method: 'PUT'}
         });
@@ -102,7 +102,7 @@ dentalLinksServices.factory('Patient', ['$resource', 'API_ENDPOINT', function ($
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',
             'Expires': '0'
-        }}
+        }, skipSpinner: true}
     });
 }]);
 
@@ -127,7 +127,7 @@ dentalLinksServices.factory('ProviderInvitation', ['$resource', 'API_ENDPOINT', 
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',
             'Expires': '0'
-        }},
+        }, skipSpinner: true},
         delete: {method: 'DELETE', url: API_ENDPOINT + '/invitations/:id'},
         update: {method: 'PUT', url: API_ENDPOINT + '/invitations/:id'}
     });

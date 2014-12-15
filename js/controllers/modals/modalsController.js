@@ -121,11 +121,7 @@ modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 
 modalsModule.controller('JoinPracticeModalController', ['$scope', '$modalInstance', 'ModalHandler','Alert', 'Practice', 'Spinner', function ($scope, $modalInstance, ModalHandler, Alert, Practice, Spinner) {
     $scope.alerts = [];
     $scope.findPractice = function (searchValue) {
-        Spinner.hide(); //workaround that disables spinner to avoid flicker.
-        return Practice.searchPractice({search: searchValue }).$promise.then(function (res) {
-            Spinner.show();  //workaround that disables spinner to avoid flicker.
-            return res;
-        });
+        return Practice.searchPractice({search: searchValue }).$promise;
     };
 
     $scope.ok = function (practice, securitycode) {

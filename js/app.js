@@ -159,22 +159,30 @@ dentalLinks.factory('spinnerInterceptor', ['$q', 'Spinner', function ($q, Spinne
     return {
         request: function (config) {
             // do something on success
-            Spinner.show();
+            if(!config.skipSpinner){
+                Spinner.show();
+            }
             return config;
         },
 
         requestError: function (rejection) {
-            Spinner.hide();
+            if(!rejection.config.skipSpinner){
+                Spinner.hide();
+            }
             return $q.reject(rejection);
         },
 
         response: function (response) {
-            Spinner.hide();
+            if(!response.config.skipSpinner){
+                Spinner.hide();
+            }
             return response;
         },
 
         responseError: function (rejection) {
-            Spinner.hide();
+            if(!rejection.config.skipSpinner){
+                Spinner.hide();
+            }
             return $q.reject(rejection);
         }
     };
