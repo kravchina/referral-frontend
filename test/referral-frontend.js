@@ -1,35 +1,54 @@
-//var baseUrl = 'http://localhost:4000';
-var baseUrl = 'http://dev1.dentallinks.org';
+var expectNavigationHappened = function(pageUrlPart) {
+    expect(browser.getCurrentUrl()).toContain(pageUrlPart); // navigation happened
+    expect(element(by.css('div#resultLoading.ng-hide')).isPresent()).toBe(true); // loading div is hidden
+};
+
+var expectLoggedIn = function() {
+    expect(element(by.css('ul.nav.navbar-nav.navbar-right')).isPresent()).toBe(true); // top-right menu is shown
+};
+
+var expectLoggedOut = function() {
+    expect(element(by.css('ul.nav.navbar-nav.navbar-right.ng-hide')).isPresent()).toBe(true); // account menu has .ng-hide, i.e. user is logged out
+    expect(element(by.buttonText('Login')).isPresent()).toBe(true);
+};
+
+var clickLogo = function() {
+    element(by.css('a.navbar-brand')).click();
+};
+
+var openMenu = function() {
+    element(by.css('ul.nav.navbar-nav.navbar-right a.dropdown-toggle')).click();
+};
 
 describe('when user logs in', function() {
     
-    browser.get(baseUrl + '/#/sign_in');
+    browser.get('/#/sign_in');
+    browser.driver.manage().window().maximize(); // TODO [ak] convert into two sets of tests when #84550008 is fixed -- wide-width and narrow-width
     
     beforeEach(function() {
-//        browser.get(baseUrl + '/#/sign_in');
+        // not performing explicit sign_in navigation. We should already be there, either after first opening or after a logout
         
-        // check that account menu has class ng-hide, i.e. user is logged out
-        expect(element(by.css('ul.nav.navbar-nav.navbar-right.ng-hide')).isPresent()).toBe(true);
+        expectNavigationHappened('/sign_in');
+        expectLoggedOut();
         
         // log in
-        element(by.model('user.email')).sendKeys('alexei@vidmich.com');
-        element(by.model('user.password')).sendKeys('12345678');
+        element(by.model('user.email')).sendKeys(browser.params.login.user);
+        element(by.model('user.password')).sendKeys(browser.params.login.pass);
         element(by.buttonText('Login')).click();
-    });
-    
-    it('lands on History page and shows the top-right menu', function() {
-        expect(browser.getCurrentUrl()).toContain('/history');
-        expect(element(by.css('ul.nav.navbar-nav.navbar-right')).isPresent()).toBe(true);
+        
+        // check correct login redirect
+        expectNavigationHappened('/history');
+        expectLoggedIn();
     });
     
     describe('when user navigates to Admin', function() {
         beforeEach(function() {
-            expect(browser.getCurrentUrl()).toContain('/history'); // TODO [ak] experiment. Remove this
-            expect(element(by.css('ul.nav.navbar-nav.navbar-right')).isPresent()).toBe(true);
-            browser.get(baseUrl + '/#/admin');
+            openMenu();
+            element(by.linkText('Account Settings')).click();
+            expectNavigationHappened('/admin');
         });
         
-        it('navigates to admin', function() {
+        it('shows Admin page', function() {
             expect(element(by.model('practice.account_first_name')).isPresent()).toBe(true); // find better (=more) criteria of recognizing Admin page
         });
         
@@ -38,33 +57,70 @@ describe('when user logs in', function() {
     describe('when user navigates to Create Referral', function() {
         
         beforeEach(function() {
-            expect(browser.getCurrentUrl()).toContain('/history'); // TODO [ak] experiment. Remove this
-            expect(element(by.css('ul.nav.navbar-nav.navbar-right')).isPresent()).toBe(true);
-            browser.get(baseUrl + '/#/create_referral');
+            element(by.css('header.page-header div.input-block-right a.btn.btn-orange.btn-lg')).click();
+            expectNavigationHappened('/create_referral');
         });
         
         it('shows Create Referral page', function() {
             expect(element(by.model('patient')).isPresent()).toBe(true); // find better (=more) criteria of recognizing Create Referral page
         });
             
-        // describe('when user just navigates away', function() {
-            // beforeEach(function() {
-                // browser.get(baseUrl + '/#/history');
-            // });
+        it('allows immediate navigation away', function() {
+            clickLogo();
+            expectNavigationHappened('/history');
+        });
+        
+        describe('when user changes data and tries to leave', function() {
+            var dataStr = 'asdf';
             
-            // it('shows no warning and navigates away', function() {
-                // expect(browser.getCurrentUrl()).toContain('/history');
-            // });
-        // });
+            beforeEach(function() {
+                element(by.model('patient')).sendKeys(dataStr);
+                expect(element(by.model('patient')).getAttribute('value')).toEqual(dataStr);
+                
+                clickLogo();
+            });
+            
+            var alertDialog;
+            
+            it('allows navigation away through the unsaved changes alert', function() {
+                alertDialog = browser.switchTo().alert();
+                expect(alertDialog.getText()).toContain('unsaved');
+                expect(alertDialog.accept).toBeDefined();
+                alertDialog.accept();
+                expectNavigationHappened('/history');
+            });
+            
+            describe('when user dismisses the alert', function() {
+                beforeEach(function() {
+                    alertDialog = browser.switchTo().alert();
+                    expect(alertDialog.getText()).toContain('unsaved');
+                    expect(alertDialog.dismiss).toBeDefined();
+                    alertDialog.dismiss();
+                });
+                
+                it('stays on the Create Referral page with data kept', function() {
+                    expect(browser.getCurrentUrl()).toContain('/create_referral');
+                    expect(element(by.model('patient')).getAttribute('value')).toEqual(dataStr);
+                
+                });                
+                
+                afterEach(function() {
+                    // manually getting out of the page and accepting the alert to allow log out and other flows
+                    clickLogo();
+                    alertDialog = browser.switchTo().alert();
+                    alertDialog.accept();
+                    expectNavigationHappened('/history');
+                });
+            });
+            
+        });
         
     });
     
     afterEach(function() {
         // log out
-        element(by.css('ul.nav.navbar-nav.navbar-right a.dropdown-toggle')).click();
+        openMenu();
         element(by.css('a[ng-click="logout()"]')).click();
-        expect(browser.getCurrentUrl()).toContain('/sign_in');
-        expect(element(by.buttonText('Login')).isPresent()).toBe(true);
     });
     
 });
