@@ -13,117 +13,6 @@
                     
                     	<!-- Nav Tabs -->
                         <tabset id="adminTabContent" justified="true">
-                        <tab>
-                            <tab-heading class="space-nowrap">
-                                <span class="dlicons-user"></span> Account
-                            </tab-heading>
-                            <!-- Account Tab -->
-                            <div id="admintabAccount" >
-                                <alert ng-hide="practice.stripe_customer_id" type="{{alert.type}}">It is always free to send referrals but you will need a premium membership to receive referrals after {{trial_end_date | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
-
-                                <form edit-form id="formAccountTab" name="accountForm">
-                                    <div class="block-title">
-                                        <h2>Account</h2>
-                                        <button type="button" toggle-edit class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
-                                        <button type="button" ng-click="savePractice(accountForm)" class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
-                                    </div>
-
-                                    <div id="sectPersonal" class="section-block">
-                                        <h3>Personal Information</h3>
-
-                                        <div class="input-block-inline">
-                                            <select id="selectSalutation" name="salutation" ng-model="practice.salutation" class="form-control data1" disabled="disabled">
-                                                <option selected="selected" disabled="disabled" class="placeholder" value="default">Select salutation</option>
-                                                <option value="Mr.">Mr.</option>
-                                                <option value="Ms.">Ms.</option>
-                                                <option value="Mrs.">Mrs.</option>
-                                                <option value="Dr.">Dr.</option>
-                                                <option value="Engr.">Engr.</option>
-                                            </select>
-                                            <label class="hidden" for="selectSalutation">Salutation</label>
-                                        </div>
-
-                                        <div class="input-block-inline" ng-class="{'has-error': accountForm.account_first_name.$invalid }">
-                                            <input type="text" name="account_first_name" class="form-control data1" ng-model="practice.account_first_name" disabled="disabled" placeholder="Enter first name &hellip;" ng-required="true">
-                                            <label class="hidden">First Name</label>
-                                        </div>
-
-                                        <div class="input-block-inline">
-                                            <input type="text" name="account_middle_initial" class="form-control data1" ng-model="practice.account_middle_initial" disabled="disabled" maxlength="1" placeholder="Enter middle initial &hellip;">
-                                            <label class="hidden">Middle Initial</label>
-                                        </div>
-
-                                        <div class="input-block-inline" ng-class="{'has-error': accountForm.account_last_name.$invalid }">
-                                            <input type="text" name="account_last_name" class="form-control data1" ng-model="practice.account_last_name"  disabled="disabled" placeholder="Enter last name &hellip;" ng-required="true">
-                                            <label class="hidden">Last Name</label>
-                                        </div>
-
-                                        <div class="input-block-inline-right" ng-class="{'has-error':  accountForm.account_email.$invalid }">
-                                            <input type="email" name="account_email" class="form-control data1" ng-model="practice.account_email"  disabled="disabled" placeholder="Enter email &hellip;" ng-required="true">
-                                            <label class="hidden">Email</label>
-                                        </div>
-                                    </div><!-- .section-block -->
-
-                                    <div access="admin" ng-hide="practice.stripe_customer_id" id="sectUpgrade" class="section-block">
-                                        <button access="admin" type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Upgrade to Premium Account</button>
-                                    </div>
-
-                                    <div ng-show="practice.stripe_customer_id" id="sectEditPayment" class="section-block">
-                                        <button type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Edit Payment Information</button>
-
-                                        <button access="admin" type="button" class="btn btn-primary" ng-click="cancelSubscription()"> Cancel Subscription</button>
-                                    </div>
-
-                                    <div ng-show="practice.stripe_customer_id" id="sectPayment" class="section-block">
-                                        <h3>Payment Information (Premium)</h3>
-                                        Your account number: ************{{practice.last_4_digits}}
-                                    </div>
-                                    <!-- <div id="sectPayment" class="section-block">
-                                        <h3>Payment Information</h3>
-
-                                        <div class="input-block-inline" ng-class="{'has-error': accountForm.name_on_card.$dirty && accountForm.name_on_card.$invalid }">
-                                            <input type="text" name="name_on_card" class="form-control data1" ng-model="practice.name_on_card"  disabled="disabled" placeholder="Enter name on card &hellip;">
-                                            <label>Name on Card</label>
-                                        </div>
-
-                                        <div class="input-block-inline" ng-class="{'has-error': accountForm.card_number.$dirty && accountForm.card_number.$invalid }">
-                                            <input type="text" name="card_number" class="form-control data1" ng-model="practice.card_number" disabled="disabled" placeholder="Enter card number &hellip;" payments-validate="card">
-                                            <label>Card Number</label>
-                                        </div>
-
-                                        <div class="input-block-inline">
-                                            <input type="text" class="form-control data1" ng-model="practice.card_cvc" disabled="disabled" placeholder="Enter cvc     &hellip;" payments-validate="cvc">
-                                            <label>CVC</label>
-                                        </div>
-
-                                        <div class="input-block-inline-right">
-                                            <select id="selectExpMM" ng-model="practice.card_exp_month" class="form-control data1" disabled="disabled">
-                                                <option selected="selected" disabled="disabled" class="placeholder" value="default">Select month</option>
-                                                <option value="1">01</option>
-                                                <option value="2">02</option>
-                                                <option value="3">03</option>
-                                                <option value="4">04</option>
-                                                <option value="5">05</option>
-                                                <option value="6">06</option>
-                                                <option value="7">07</option>
-                                                <option value="8">08</option>
-                                                <option value="9">09</option>
-                                                <option value="10">10</option>
-                                                <option value="11">11</option>
-                                                <option value="12">12</option>
-                                            </select>
-                                            <select id="selectExpYYYY" ng-model="practice.card_exp_year" ng-options="year as year for year in years" class="form-control data1" disabled="disabled">
-                                                <option disabled="disabled" class="placeholder" value="">Select year</option>
-                                            </select>
-                                            <label>Expiration Date</label>
-                                        </div>
-                                    </div> --><!-- .section-block -->
-
-                                </form>
-
-                            </div>
-
-                        </tab>
 
                         <tab>
                             <tab-heading class="space-nowrap">
@@ -281,6 +170,40 @@
 
                             </div>
                         </tab>
+
+                            <tab>
+                                <tab-heading class="space-nowrap">
+                                    <span class="dlicons-user"></span> Subscription
+                                </tab-heading>
+                                <!-- Subscription Tab -->
+                                <div id="admintabAccount" >
+                                    <alert ng-hide="practice.stripe_customer_id" type="{{alert.type}}">It is always free to send referrals but you will need a premium membership to receive referrals after {{trial_end_date | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
+
+                                    <form edit-form id="formAccountTab" name="accountForm">
+                                        <div class="block-title">
+                                            <h2>Subscription</h2>
+                                        </div>
+
+                                        <div access="admin" ng-hide="practice.stripe_customer_id" id="sectUpgrade" class="section-block">
+                                            <button access="admin" type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Upgrade to Premium Account</button>
+                                        </div>
+
+                                        <div ng-show="practice.stripe_customer_id" id="sectEditPayment" class="section-block">
+                                            <button type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Edit Payment Information</button>
+
+                                            <button access="admin" type="button" class="btn btn-primary" ng-click="cancelSubscription()"> Cancel Subscription</button>
+                                        </div>
+
+                                        <div ng-show="practice.stripe_customer_id" id="sectPayment" class="section-block">
+                                            <h3>Payment Information (Premium)</h3>
+                                            Your account number: ************{{practice.last_4_digits}}
+                                        </div>
+
+                                    </form>
+
+                                </div>
+
+                            </tab>
 
                     </tabset>
 
