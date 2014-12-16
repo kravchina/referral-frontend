@@ -206,19 +206,19 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', '
     };
 }]);
 
-modalsModule.controller('EditUserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'user', function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, currentUser) {
+modalsModule.controller('EditUserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser) {
     $scope.result = {};
     $scope.alerts = [];
-    Logger.log(currentUser.id);
-    $scope.user = {is_admin: currentUser.is_admin};//for now we need only is_admin property to be set
+    Logger.log(editUser.id);
+    $scope.user = {is_admin: editUser.is_admin};//for now we need only is_admin property to be set
+    $scope.auth = Auth.get();
     $scope.ok = function (user) {
-        
         if(user.password != user.password_confirmation){
             Alert.error($scope.alerts, 'Error: Password does not mactch');
             return;
         }
 
-        User.update({id: currentUser.id}, {user: user}, function (success) {
+        User.update({id: editUser.id}, {user: user}, function (success) {
             Logger.log(success);
             ModalHandler.close($modalInstance,success);
         },  function (failure) {
