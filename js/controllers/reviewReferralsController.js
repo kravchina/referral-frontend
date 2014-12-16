@@ -75,7 +75,7 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
         };
 
         $scope.discardTemplate = function (referral) {
-            Referral.remove(referral,
+            Referral.remove({id: referral.id},
                 function (success) {
                     $state.go('history');
                 }, function (failure) {
