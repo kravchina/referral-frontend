@@ -1,15 +1,14 @@
 var passwordsModule = angular.module('passwords', []);
 
-passwordsModule.controller('PasswordsController', ['$scope', '$stateParams', 'Password', function ($scope, $stateParams, Password) {
+passwordsModule.controller('PasswordsController', ['$scope', '$state', '$stateParams', 'Alert', 'Password', function ($scope, $state, $stateParams, Alert, Password) {
+    $scope.alerts = [];
     $scope.requestPasswordReset = function (user) {
         Password.reset({'user': user},
             function (result) {
-                $scope.success = true;
-                $scope.failure = false;
+                Alert.success($scope.alerts, 'Success! Please check your email for password reset instructions.');
             },
-            function (result) {
-                $scope.failure = true;
-                $scope.success = false;
+            function (failure) {
+                Alert.error($scope.alerts, 'Error: can\'t change your password. Please try again later.', true);
             })
     };
     $scope.initial = true;
@@ -18,12 +17,11 @@ passwordsModule.controller('PasswordsController', ['$scope', '$stateParams', 'Pa
         model.reset_password_token = $stateParams.reset_password_token;
         Password.change({'user': model, 'format': 'json'},
             function (success_result) {
-                $scope.success = true;
-                $scope.failure = false;
+                $state.go('signIn');
             },
             function (error_result) {
-                $scope.success = false;
-                $scope.failure = true;
+                Alert.error($scope.alerts, 'Error: can\'t change your password. Please try again later.', true);
+
             });
     };
 }]);

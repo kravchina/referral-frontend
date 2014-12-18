@@ -85,7 +85,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         }).
         state('resetPasswordToken', {
             url: '/edit_password/:reset_password_token',
-            templateUrl: 'partials/registration.html',
+            templateUrl: 'partials/edit_password.html',
             controller: 'PasswordsController'
         }).
         state('viewReferral', {
