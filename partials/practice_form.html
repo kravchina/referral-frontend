@@ -94,34 +94,6 @@
         <div class="input-block" ng-class="{ 'has-error': practiceForm.website.$dirty && practiceForm.website.$invalid }">
             <input type="text" name="website" class="form-control" ng-model="practice.address_attributes.website" placeholder="Website &hellip;">
         </div>
-
-        <div class="block-title">
-            <h5>Contact Information</h5>
-        </div>
-
-        <div class="input-block-right" ng-class="{ 'has-error': practiceForm.salutation.$dirty && practiceForm.salutation.$invalid }">
-            <select id="selectSalutation" name="salutation" ng-model="practice.salutation" class="form-control">
-                <option selected="selected" disabled="disabled" class="placeholder" value="default">Select salutation</option>
-                <option value="Mr.">Mr.</option>
-                <option value="Ms.">Ms.</option>
-                <option value="Mrs.">Mrs.</option>
-                <option value="Dr.">Dr.</option>
-                <option value="Engr.">Engr.</option>
-            </select>
-        </div>
-
-        <div class="input-block" ng-class="{ 'has-error': practiceForm.firstName.$dirty && practiceForm.firstName.$invalid }">
-            <input type="text" name="firstName" class="form-control" ng-model="practice.account_first_name" placeholder="Contact first name &hellip;" ng-required="true">
-        </div>
-
-        <div class="input-block" ng-class="{ 'has-error': practiceForm.lastName.$dirty && practiceForm.lastName.$invalid }">
-            <input type="text" name="lastName" class="form-control" ng-model="practice.account_last_name" placeholder="Contact last name &hellip;" ng-required="true">
-        </div>
-
-        <div class="input-block" ng-class="{ 'has-error': practiceForm.email.$dirty && practiceForm.email.$invalid }">
-            <input type="email" name="email" class="form-control" ng-model="practice.account_email" placeholder="Account email &hellip;" ng-required="true">
-        </div>
-
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-orange" ng-disabled="practiceForm.$invalid" ng-click="ok(practice)">Save</button>
