@@ -82,15 +82,20 @@ describe('when user logs in', function() {
             
             var alertDialog;
             
-            it('allows navigation away through the unsaved changes alert', function() {
-                alertDialog = browser.switchTo().alert();
-                expect(alertDialog.getText()).toContain('unsaved');
-                expect(alertDialog.accept).toBeDefined();
-                alertDialog.accept();
-                expectNavigationHappened('/history');
+            describe('when user accepts the unsaved changes alert', function() {
+                beforeEach(function() {
+                    alertDialog = browser.switchTo().alert();
+                    expect(alertDialog.getText()).toContain('unsaved');
+                    expect(alertDialog.accept).toBeDefined();
+                    alertDialog.accept();
+                });
+                
+                it('navigates away', function() {
+                    expectNavigationHappened('/history');
+                });
             });
             
-            describe('when user dismisses the alert', function() {
+            describe('when user dismisses the unsaved changes alert', function() {
                 beforeEach(function() {
                     alertDialog = browser.switchTo().alert();
                     expect(alertDialog.getText()).toContain('unsaved');
