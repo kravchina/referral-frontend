@@ -177,34 +177,44 @@
                                 </tab-heading>
                                 <!-- Subscription Tab -->
                                 <div id="admintabAccount" >
-                                    <alert ng-hide="practice.stripe_customer_id" type="{{alert.type}}">It is always free to send referrals but you will need a premium membership to receive referrals after {{trial_end_date | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
+                                    <p>
+                                        <alert ng-hide="practice.stripe_customer_id" type="{{alert.type}}">It is always free to send referrals but you will need a premium membership to receive referrals after {{trial_end_date | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
 
-                                    <form edit-form id="formAccountTab" name="accountForm">
-                                        <div class="block-title">
-                                            <h2>Subscription</h2>
-                                        </div>
+                                        <form edit-form id="formAccountTab" name="accountForm">
+                                            <div class="block-title">
+                                                <h2>Subscription</h2>
+                                            </div>
 
-                                        <div id="descriptionText" class="section-block">
-                                            Premium accounts are $49.95 per month.
-                                        </div>
+                                            <div id="descriptionText" class="section-block">
+                                                Premium accounts are $49.95 per month.
+                                            </div>
 
 
-                                        <div access="admin" ng-hide="practice.stripe_customer_id" id="sectUpgrade" class="section-block">
-                                            <button access="admin" type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Upgrade to Premium Account</button>
-                                        </div>
+                                            <div access="admin" ng-hide="practice.stripe_customer_id" id="sectUpgrade" class="section-block">
+                                                <button access="admin" type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Upgrade to Premium Account</button>
+                                            </div>
 
-                                        <div ng-show="practice.stripe_customer_id" id="sectEditPayment" class="section-block">
-                                            <button type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Edit Payment Information</button>
+                                            <div ng-show="practice.stripe_customer_id" id="sectEditPayment" class="section-block">
+                                                <button type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Edit Payment Information</button>
 
-                                            <button access="admin" type="button" class="btn btn-primary" ng-click="cancelSubscription()"> Cancel Subscription</button>
-                                        </div>
+                                                <button access="admin" type="button" class="btn btn-primary" ng-click="cancelSubscription()"> Cancel Subscription</button>
+                                            </div>
 
-                                        <div ng-show="practice.stripe_customer_id" id="sectPayment" class="section-block">
-                                            <h3>Payment Information (Premium)</h3>
-                                            Your account number: ************{{practice.last_4_digits}}
-                                        </div>
+                                            <div ng-show="practice.stripe_customer_id" id="sectPayment" class="section-block">
+                                                <h3>Payment Information (Premium)</h3>
+                                                Your account number: ************{{practice.last_4_digits}}
+                                            </div>
 
-                                    </form>
+                                        </form>
+                                    </p>
+
+                                    <p class="col-sm-6" style="font-size: 150%;">Help all your referring doctors become HIPAA compliant when they refer patients to you electronically.</p>
+                                    <p class="col-sm-6" style="font-size: 150%;">It is always free to send referrals. To received referrals, you need to upgrade to a premium account.</p>
+
+                                    <p>
+                                        <img src="/img/upgrade-reasons-visual.png" alt="Dental Links - reasons for upgrade" style="width: 100%; padding: 2em;"/>
+                                    </p>
+
 
                                 </div>
 
