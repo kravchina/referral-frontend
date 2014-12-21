@@ -49,7 +49,7 @@ describe('when user logs in', function() {
         });
         
         it('shows Admin page', function() {
-            expect(element(by.model('practice.account_first_name')).isPresent()).toBe(true); // find better (=more) criteria of recognizing Admin page
+            expect(element(by.css('#adminTabContent')).isPresent()).toBe(true); // find better (=more) criteria of recognizing Admin page
         });
         
     });
