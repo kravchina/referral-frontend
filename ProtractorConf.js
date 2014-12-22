@@ -8,7 +8,7 @@ exports.config = {
             pass: '12345678'
         }
     },
-    specs: ['test/referral-frontend.js'],
+    specs: ['test/e2e/MainSpec.js'],
     maxSessions: 1, // this is in order to make multiple browsers run sequentially
     multiCapabilities: [
         {browserName: 'firefox'},
