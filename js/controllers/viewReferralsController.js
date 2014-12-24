@@ -43,7 +43,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                     {referral_id: $scope.referral.id},
                     {filename: 'test'}
                 ],
-                headers: {'Authorization' : $scope.auth.token, 'From': $scope.auth.from}
+                headers: {'Authorization' : $scope.auth.token, 'From': $scope.auth.email}
             });
 
             $scope.now = function () {
