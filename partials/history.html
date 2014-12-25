@@ -72,7 +72,7 @@
                             <span class="provider">{{referral.dest_provider_invited.first_name}} {{referral.dest_provider_invited.last_name}}</span>
                         </td>
                         <td class="cell-status">
-                            <span class="label" ng-class="{'label-success': referral.status == 'completed', 'label-warning': referral.status == 'active', 'label-info' : referral.status == 'new', 'label-danger' : referral.status == 'draft'}">{{referral.status}}</span>
+                            <span class="label" ng-class="{'label-success': referral.status == 'completed', 'label-warning': referral.status == 'active', 'label-info' : referral.status == 'new', 'label-danger' : referral.status == 'draft'}">{{referral.status}} {{referral.has_updates? '*':''}}</span>
                         </td>
                     </tr>
                     </tbody>
