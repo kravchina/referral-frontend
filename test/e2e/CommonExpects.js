@@ -13,7 +13,7 @@ var CommonExpects = function() {
     };
     
     this.expectCurrentUrlToBe = function(pageUrl) {
-        expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + pageUrl);
+        expect(browser.getLocationAbsUrl()).toEqual(browser.baseUrl + pageUrl);
     };
     
 };
