@@ -364,7 +364,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
 
         function downloadImage(index) {
             var img = new Image();
-            img.crossOrigin = 'anonymous';
+            img.crossOrigin = 'use-credentials';
             img.onload = function () {
                 images[index].image = img;
                 runCallbackIfReady();
