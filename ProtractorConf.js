@@ -13,6 +13,6 @@ exports.config = {
     multiCapabilities: [
         {browserName: 'firefox'},
         {browserName: 'chrome'},
-        // {browserName: 'internet explorer'} // make sure to set the same Protected Mode settings for all four zones in your Internet Options
+        {browserName: 'internet explorer'} // make sure to set the same Protected Mode settings for all zones in your Internet Options
     ]
 };
