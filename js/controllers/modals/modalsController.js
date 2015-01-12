@@ -2,7 +2,7 @@ var modalsModule = angular.module('modals', ['ui.bootstrap']);
 
 modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname) {
 
-    /*$scope.patient = patient;*/
+    $scope.title = 'Create a New Patient Record';
 
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
 
@@ -38,6 +38,8 @@ modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 
 }]);
 
 modalsModule.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit) {
+    $scope.title = 'Edit Patient Record';
+
     $scope.alerts = [];
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
     $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: patientForEdit.birthday};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
