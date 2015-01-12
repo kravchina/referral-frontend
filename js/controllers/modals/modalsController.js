@@ -4,7 +4,7 @@ modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 
 
     /*$scope.patient = patient;*/
 
-    $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.', 'Engr.'];
+    $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
 
     if (fullname) {
         var spacePosition = fullname.lastIndexOf(' '); //lastIndexOf is needed for names with several words, like Jean Francois Moullin, where Jean Francois is a name and Moullin is a surname
@@ -39,7 +39,7 @@ modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 
 
 modalsModule.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit) {
     $scope.alerts = [];
-    $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.', 'Engr.'];
+    $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
     $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: patientForEdit.birthday};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
     $scope.ok = function (patient) {
         Patient.update({id: patientForEdit.id}, {patient: patient},
