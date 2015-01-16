@@ -89,7 +89,7 @@ modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 
         var resultHandlers = {success: function (success) {
             ModalHandler.close($modalInstance, success);
         }, failure: function (failure) {
-            Alert.error($scope.alerts, 'Error: ' + failure.data.message);
+            Alert.error($scope.alerts, failure.data);
         }};
 
         ProviderInvitation.save({provider_invitation: provider}, resultHandlers.success, resultHandlers.failure);
@@ -146,10 +146,7 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
             ModalHandler.close($modalInstance,success);
         },  function (failure) {
             Logger.log(failure);
-            $.each(failure.data, function(key, value){
-                Alert.error($scope.alerts, 'Error: ' + key + " " + value[0]);
-            });
-            
+            Alert.error($scope.alerts, failure.data);
             Logger.log($scope.alerts);
         });
     };

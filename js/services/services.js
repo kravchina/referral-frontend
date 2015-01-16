@@ -58,7 +58,7 @@ dentalLinksServices.factory('Alert', ['$timeout', function ($timeout) {
     var push = function (alerts, type, message, disableAutoHide) {
         var alert = { type: type, message: message, promise: disableAutoHide ? undefined : $timeout(function () {
             alerts.splice(alerts.indexOf(alert), 1);
-        }, 5000)};
+        }, 10000)};
         alerts.push(alert);
     };
     return {
