@@ -4,6 +4,7 @@ var AdminPage = function() {
     this.url = "/#/admin";
     
     this.open = function() {
+        // TODO [ak] refactor both these things into a special menu-related component
         commonActions.openMenu();
         element(by.linkText('Account Settings')).click();
     };

@@ -16,6 +16,10 @@ var CommonExpects = function() {
         expect(browser.getLocationAbsUrl()).toEqual(browser.baseUrl + pageUrl);
     };
     
+    this.expectCurrentUrlToContain = function(pageUrl) {
+        expect(browser.getLocationAbsUrl()).toContain(browser.baseUrl + pageUrl);
+    };
+    
 };
 
 module.exports = new CommonExpects();

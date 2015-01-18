@@ -5,6 +5,7 @@ var historyPage = require('./History/HistoryPage');
 
 var adminSpec = require('./Admin/AdminSpec');
 var createReferralSpec = require('./CreateReferral/CreateReferralSpec');
+var viewReferralSpec = require('./ViewReferral/ViewReferralSpec');
 
 describe('when user navigates to Sign In page', function() {
     commonActions.maximizeBrowser();
@@ -54,6 +55,7 @@ describe('when user navigates to Sign In page', function() {
         
         adminSpec.run();
         createReferralSpec.run();
+        viewReferralSpec.run();
         
         afterEach(function() {
             commonActions.signOut();
