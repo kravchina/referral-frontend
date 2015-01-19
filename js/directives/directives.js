@@ -275,6 +275,18 @@ dentalLinksDirectives.directive('ngFocusMe', ['$parse', '$timeout', function($pa
     }
 }]);
 
+dentalLinksDirectives.directive('focusPassword', [function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            scope.$on("focusPassword", function() {
+                    element[0].focus();
+
+            });
+        }
+    }
+}]);
+
 dentalLinksDirectives.directive('ngCtrlEnter', ['$parse', '$timeout', function($parse, $timeout){
     return {
         restrict: 'AC',

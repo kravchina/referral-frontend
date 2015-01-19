@@ -1,9 +1,7 @@
 <div>
     <form name="form" novalidate class="simple-form" name="loginForm">
         <br />
-        <div  ng-show="result.failure" class="alert alert-danger">
-            {{result.statusText}}
-        </div>
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
 
         <div ng-class="{'has-error': form.email.$invalid && form.email.$dirty}">
             <label>
@@ -15,7 +13,7 @@
         <div ng-class="{'has-error': form.password.$invalid && form.password.$dirty}">
             <label>
                 Password:
-                <input type="password" id="password" ng-model="user.password" ng-required="true" class="form-control login"/>
+                <input type="password" id="password" focus-password ng-model="user.password" ng-required="true" class="form-control login"/>
             </label>
         </div>
 
