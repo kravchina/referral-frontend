@@ -224,3 +224,9 @@ dentalLinksServices.factory('ModalHandler', [function () {
 dentalLinksServices.factory('SecurityCode', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/security_code/:id', {}, {})
 }]);
+
+dentalLinksServices.factory('ServerSettings', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + 'settings', {}, {
+        getStripeApiPublicKey: {method: 'GET', url: API_ENDPOINT + '/settings/stripe_public_key'}
+    })
+}]);

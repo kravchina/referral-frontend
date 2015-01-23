@@ -157,20 +157,23 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
     };
 }]);
 
-modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'STRIPE_KEY', 'practice_id', 'stripe_customer_id', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, STRIPE_KEY, practice_id, stripe_customer_id) {
+modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_customer_id', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_customer_id) {
     $scope.result = {};
     $scope.alerts = [];
-
     var currentYear = moment().year();
-    $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4 ];
+    $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4, currentYear + 5 ];
 
     $scope.stripe_customer_id = stripe_customer_id;
     Logger.log($scope.stripe_customer_id);
-    // set the stripe publishable key
-    Stripe.setPublishableKey(STRIPE_KEY);
+    ServerSettings.getStripeApiPublicKey(function(success){
+        $window.Stripe.setPublishableKey(success.key);
+    }, function(failure){
+        Alert.error($scope.alerts, 'Error: can\'t access to payment system. Please try again later.');
+        $scope.disableForm = true;
+    });
 
     $scope.ok = function (payment_info) {
-        Stripe.card.createToken({
+        $window.Stripe.card.createToken({
                     number: payment_info.card_number,
                     cvc: payment_info.card_cvc,
                     exp_month: payment_info.card_exp_month,

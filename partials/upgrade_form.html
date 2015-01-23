@@ -1,13 +1,15 @@
 <form id="formUpgrade" name="upgradeForm">
     <div class="modal-header">
         <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel" ng-hide="stripe_customer_id">Upgrade to Premium Account</h4>
-        <h4 class="modal-title" id="myModalLabel" ng-show="stripe_customer_id">Edit Payment Information</h4>
+        <h4 class="modal-title" ng-hide="stripe_customer_id">Upgrade to Premium Account</h4>
+        <h4 class="modal-title" ng-show="stripe_customer_id">Edit Payment Information</h4>
     </div>
+    <fieldset ng-disabled="disableForm">
     <div class="modal-body">
         <div class="block-title">
             <h5>Payment Information</h5>
         </div>
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.message}}</alert>
         <div class="input-block" ng-class="{ 'has-error': upgradeForm.name_on_card.$dirty && upgradeForm.name_on_card.$invalid }">
             <input type="text" name="name_on_card" class="form-control" ng-model="payment_info.name_on_card" placeholder="Enter name on card &hellip;" ng-required="true">
         </div>
@@ -40,16 +42,12 @@
             
             <select id="selectExpYYYY" ng-model="payment_info.card_exp_year" class="form-control" ng-required="true">
                 <option disabled="disabled" selected="selected" class="placeholder" value="">Select year</option>
-                <option value="2014">2014</option>
-                <option value="2015">2015</option>
-                <option value="2016">2016</option>
-                <option value="2017">2017</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
+                <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
             </select>
         </div>
     </div>
+    </fieldset>
+
     <div class="modal-footer">
         <button ng-hide="stripe_customer_id" type="submit" class="btn btn-orange" ng-click="ok(payment_info)" ng-disabled="upgradeForm.$invalid">Upgrade</button>
         <button ng-show="stripe_customer_id" type="submit" class="btn btn-orange" ng-click="ok(payment_info)" ng-disabled="upgradeForm.$invalid">Save</button>
