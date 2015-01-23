@@ -165,12 +165,18 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$
 
     $scope.stripe_customer_id = stripe_customer_id;
     Logger.log($scope.stripe_customer_id);
-    ServerSettings.getStripeApiPublicKey(function(success){
-        $window.Stripe.setPublishableKey(success.key);
-    }, function(failure){
+    var handleError = function(failure){
         Alert.error($scope.alerts, 'Error: can\'t access to payment system. Please try again later.');
         $scope.disableForm = true;
-    });
+    };
+    ServerSettings.getStripeApiPublicKey(function(success){
+        if(success.key){
+            //key could be null if it was not set in server's environment variables
+            $window.Stripe.setPublishableKey(success.key);
+        }else{
+            handleError();
+        }
+    }, handleError);
 
     $scope.ok = function (payment_info) {
         $window.Stripe.card.createToken({
