@@ -86,12 +86,15 @@ modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 
         });
     $scope.ok = function (provider) {
         provider.inviter_id = Auth.getOrRedirect().id;
-        var resultHandlers = {success: function (success) {
-            ModalHandler.close($modalInstance, success);
-        }, failure: function (failure) {
-            $scope.alerts = []; //reset alerts list because we need only one alert at a time.
-            Alert.error($scope.alerts, failure.data);
-        }};
+        var resultHandlers = {
+            success: function (success) {
+                ModalHandler.close($modalInstance, success);
+            },
+            failure: function (failure) {
+                $scope.alerts = []; //reset alerts list because we need only one alert at a time.
+                Alert.error($scope.alerts, failure.data);
+            }
+        };
 
         ProviderInvitation.save({provider_invitation: provider}, resultHandlers.success, resultHandlers.failure);
     };
