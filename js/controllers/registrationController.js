@@ -7,9 +7,8 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
         $scope.alerts = [];
         $scope.showPracticeButtons = true;
 
-        $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
-            function (user) {
-//                user.newPracticeId = user.practice_id; // in case of user invitation - needs this in order to hide security code field
+        $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
+            function (success) {
             },
             function (failure) {
                 Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.', true);
@@ -23,8 +22,8 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (practice) {
-                $scope.user.newPracticeId = practice.id;
-                $scope.user.practice = practice;
+                $scope.invitation.newPracticeId = practice.id;
+                $scope.invitation.practice = practice;
                 $scope.showPracticeButtons = false;
             });
         };
@@ -36,8 +35,8 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (res) {
-                $scope.user.practice_id = res.practice.id;
-                $scope.user.practice = res.practice;
+                $scope.invitation.practice_id = res.practice.id;
+                $scope.invitation.practice = res.practice;
                 $scope.security_code = res.securitycode;
                 $scope.showPracticeButtons = false;
             });
@@ -52,16 +51,15 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                     $scope.registrationSuccessful = true;
                 },
                 function (failure) {
-                    $scope.alerts = [];//reset alerst array, because we need only one error message at a time. Pivotal's ticket #82268450.
+                    $scope.alerts = [];//reset alerts array, because we need only one error message at a time. Pivotal's ticket #82268450.
                     Alert.error($scope.alerts, 'Error during registration.', true);
                 }
             )
         };
 
         $scope.discard = function() {
-            $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
-                function (user) {
-//                user.newPracticeId = user.practice_id; // in case of user invitation - needs this in order to hide security code field
+            $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
+                function (success) {
                 },
                 function (failure) {
                     Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.', true);
@@ -82,13 +80,13 @@ registrationModule.controller('NewUserController', ['$scope', '$location', '$sta
     function ($scope, $location, $stateParams, $modal, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Logger) {
         $scope.alerts = [];
 
-        $scope.user = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
-            function (user) {
-                user.newPracticeId = user.practice_id; // in case of user invitation - needs this in order to hide security code field
+        $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
+            function (invitation) {
+                invitation.newPracticeId = invitation.practice_id; // in case of user invitation - needs this in order to hide security code field
 
-                Logger.log('user.newPracticeId = ' + user.newPracticeId);
+                Logger.log('invitation.newPracticeId = ' + invitation.newPracticeId);
 
-                $scope.practice = Practice.get({practiceId: user.newPracticeId}, function(practice) {
+                $scope.practice = Practice.get({practiceId: invitation.newPracticeId}, function(practice) {
                     Logger.log('received practice info: ' + JSON.stringify($scope.practice));
                 });
             },

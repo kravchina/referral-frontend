@@ -19,7 +19,7 @@
                     <div class="tab-content">
 
                         <p>Welcome to Dental Links!</p>
-                        <p>Since we haven't seen your email address before you'll need to create an account associated with {{user.email}}.
+                        <p>Since we haven't seen your email address before you'll need to create an account associated with {{invitation.email}}.
                         It will only take a minute, and it's free.</p>
 
 
@@ -27,7 +27,7 @@
                             <h3>Personal Information</h3>
 
                             <div class="input-block-inline">
-                                <select id="selectSalutation" name="salutation" ng-model="user.title" class="form-control">
+                                <select id="selectSalutation" name="salutation" ng-model="invitation.title" class="form-control">
                                     <option selected="selected" disabled="disabled" class="placeholder" value="">Select salutation</option>
                                     <option value="Mr.">Mr.</option>
                                     <option value="Ms.">Ms.</option>
@@ -38,27 +38,27 @@
                             </div>
 
                             <div class="input-block-inline" ng-class="{'has-error': form.first_name.$dirty && form.first_name.$invalid }">
-                                <input type="text" name="first_name" class="form-control" ng-model="user.first_name" placeholder="Enter first name &hellip;" ng-required="true">
+                                <input type="text" name="first_name" class="form-control" ng-model="invitation.first_name" placeholder="Enter first name &hellip;" ng-required="true">
                                 <label>First Name</label>
                             </div>
 
                             <div class="input-block-inline">
-                                <input type="text" name="middle_initial" class="form-control" ng-model="user.middle_initial" maxlength="1" placeholder="Enter middle initial &hellip;">
+                                <input type="text" name="middle_initial" class="form-control" ng-model="invitation.middle_initial" maxlength="1" placeholder="Enter middle initial &hellip;">
                                 <label>Middle Initial</label>
                             </div>
 
                             <div class="input-block-inline" ng-class="{'has-error': form.last_name.$dirty && form.last_name.$invalid }">
-                                <input type="text" name="last_name" class="form-control" ng-model="user.last_name" placeholder="Enter last name &hellip;" ng-required="true">
+                                <input type="text" name="last_name" class="form-control" ng-model="invitation.last_name" placeholder="Enter last name &hellip;" ng-required="true">
                                 <label>Last Name</label>
                             </div>
 
-                            <alert type="danger" ng-show="!user.practice.id && !user.newPracticeId">Please join existing practice or create a new one.</alert>
+                            <alert type="danger" ng-show="!invitation.practice.id && !invitation.newPracticeId">Please join existing practice or create a new one.</alert>
                             <div class="button-block">
                                 <button class="btn btn-green btn-lg" ng-click="joinPracticeDialog()" ng-show="showPracticeButtons">Join Existing Practice</button>
                                 <button class="btn btn-green btn-lg" ng-click="practiceDialog()" ng-show="showPracticeButtons">New Practice</button>
                             </div>
 
-                            <p ng-show="!showPracticeButtons && user.practice">You selected practice - <b>{{ user.practice.name }}</b></p>
+                            <p ng-show="!showPracticeButtons && invitation.practice">You selected practice - <b>{{ invitation.practice.name }}</b></p>
                         </div>
                         <div class="section-block">
                             <h3>Access details</h3>
@@ -66,29 +66,29 @@
                             <alert type="danger" ng-show="form.password.$dirty && form.password.$invalid">Password is required and should have at least 8 characters</alert>
 
                             <div class="input-block-inline" ng-class="{'has-error': form.email.$dirty && form.email.$invalid }">
-                                <input type="email" name="email" class="form-control" ng-model="user.email" disabled="disabled" placeholder="Enter email &hellip;" ng-required="true">
+                                <input type="email" name="email" class="form-control" ng-model="invitation.email" disabled="disabled" placeholder="Enter email &hellip;" ng-required="true">
                                 <label>Email</label>
                             </div>
 
                             <div class="input-block-inline" ng-class="{'has-error': form.password.$dirty && form.password.$invalid }">
-                                <input type="password" name="password" class="form-control" ng-model="user.password" placeholder="Enter password &hellip;" ng-minlength="8" ng-requred="true">
+                                <input type="password" name="password" class="form-control" ng-model="invitation.password" placeholder="Enter password &hellip;" ng-minlength="8" ng-requred="true">
                                 <label>Password</label>
                             </div>
 
-                            <div class="input-block-inline" ng-class="{'has-error': form.confirmation.$dirty && (form.confirmation.$invalid || user.password_confirmation !== user.password) }">
-                                <input type="password" name="confirmation" class="form-control" ng-model="user.password_confirmation" placeholder="Enter password confirmation &hellip;"
+                            <div class="input-block-inline" ng-class="{'has-error': form.confirmation.$dirty && (form.confirmation.$invalid || invitation.password_confirmation !== invitation.password) }">
+                                <input type="password" name="confirmation" class="form-control" ng-model="invitation.password_confirmation" placeholder="Enter password confirmation &hellip;"
                                        ng-minlength="8" ng-required="true">
                                 <label>Password confirmation</label>
                             </div>
 
 
                             <div class="input-block" style="padding: 20px;">
-                                <input type="checkbox" name="tnc" class="form-control" ng-model="user.tnc" ng-required="true" style="height:20px; display: inline; width: 20px;">
+                                <input type="checkbox" name="tnc" class="form-control" ng-model="invitation.tnc" ng-required="true" style="height:20px; display: inline; width: 20px;">
                                 <span style="margin: 10px">Agree to EULA: <a href="/#/license" target="_blank">terms & conditions</a></span>
                             </div>
 
                             <div class="button-block">
-                                <button class="btn btn-green btn-lg" ng-click="register(user)" ng-disabled="form.$invalid || user.password_confirmation !== user.password || (!user.practice.id && !user.newPracticeId)">Register</button>
+                                <button class="btn btn-green btn-lg" ng-click="register(invitation)" ng-disabled="form.$invalid || invitation.password_confirmation !== invitation.password || (!invitation.practice.id && !invitation.newPracticeId)">Register</button>
                                 <button class="btn btn-green btn-lg" ng-click="discard()">Discard</button>
                             </div>
 
