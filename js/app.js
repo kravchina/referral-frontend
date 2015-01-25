@@ -42,6 +42,11 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             templateUrl: 'partials/registration.html',
             controller: 'RegistrationController'
         }).
+        state('promotion', {
+            url: '/register/promo/:promo',
+            templateUrl: 'partials/registration.html',
+            controller: 'RegistrationController'
+        }).
         state('new_user', {
             url: '/new_user/:invitation_token',
             templateUrl: 'partials/new_user.html',

@@ -7,13 +7,21 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
         $scope.alerts = [];
         $scope.showPracticeButtons = true;
 
-        $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
-            function (success) {
-            },
-            function (failure) {
-                Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.', true);
+        $scope.promo = $stateParams.promo;
+
+        $scope.initInvitation = function() {
+            if ($scope.promo) {
+                $scope.invitation = {}
+            } else {
+                $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
+                    function (success) {
+                    },
+                    function (failure) {
+                        Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.', true);
+                    }
+                );
             }
-        );
+        };
 
         $scope.practiceDialog = function () {
             var modalInstance = $modal.open({
@@ -58,13 +66,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
         };
 
         $scope.discard = function() {
-            $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
-                function (success) {
-                },
-                function (failure) {
-                    Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.', true);
-                }
-            );
+            $scope.initInvitation();
             $scope.showPracticeButtons = true;
         };
 
@@ -72,6 +74,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             Alert.close($scope.alerts, index);
         };
 
+        $scope.initInvitation();
     }]);
 
 
