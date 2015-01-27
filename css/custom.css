@@ -614,6 +614,9 @@ textarea.form-control {
         -o-transition: all 0.3s ease;
 		-webkit-transition: all 0.3s ease;
 }
+.attachment-block > a {
+    display: block;
+}
 .attachment-thumb {
 	float: left;
     background-color: #ffffff;
