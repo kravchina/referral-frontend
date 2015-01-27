@@ -27,7 +27,7 @@ var ViewReferralSpec = function() {
                     browser.getAllWindowHandles().then(function(handles) {
                         // assuming we now have exactly two tabs
                         browser.switchTo().window(handles[1]).then(function() {
-                            expect(browser.driver.getCurrentUrl()).toContain('https://referral-server.herokuapp.com/attachment/?file=');
+                            expect(browser.driver.getCurrentUrl()).toContain(browser.params.attachmentUrlPart);
                             browser.driver.isElementPresent(by.css('img')).then(function(present) {
                                 expect(present).toBeTruthy();
                                 browser.close();

@@ -19,12 +19,9 @@ describe('when user navigates to Sign In page', function() {
     it('shows Sign In page', function() {});
     
     describe('when user tries to log in with invalid credentials', function() {
-        var wrongEmail = 'qwerqwerqwer';
-        var wrongPass = 'qwerqwerqwer';
-        
         beforeEach(function() {
-            signInPage.setEmail(wrongEmail);
-            signInPage.setPass(wrongPass);
+            signInPage.setEmail(browser.params.login.wrong.email);
+            signInPage.setPass(browser.params.login.wrong.pass);
             signInPage.clickLogin();
             commonExpects.expectProgressDivHidden();
         });
@@ -32,16 +29,15 @@ describe('when user navigates to Sign In page', function() {
         it('shows error, keeps the email and erases the password', function() {
             commonExpects.expectMenuHidden();
             commonExpects.expectCurrentUrlToBe(signInPage.url);
-            expect(signInPage.getEmail()).toEqual(wrongEmail);
+            expect(signInPage.getEmail()).toEqual(browser.params.login.wrong.email);
             expect(signInPage.getPass()).toEqual('');
         });
-        
     });
     
     describe('when user tries to log in with valid credentials', function() {
         beforeEach(function() {
-            signInPage.setEmail(browser.params.login.user);
-            signInPage.setPass(browser.params.login.pass);
+            signInPage.setEmail(browser.params.login.correct.email);
+            signInPage.setPass(browser.params.login.correct.pass);
             signInPage.clickLogin();
             commonExpects.expectProgressDivHidden();
         });

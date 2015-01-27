@@ -4,9 +4,17 @@ exports.config = {
     // baseUrl: 'http://localhost:4000',
     params: {
         login: {
-            user: 'alexei@vidmich.com',
-            pass: '12345678'
-        }
+            correct: {
+                email: 'alexei@vidmich.com',
+                pass: '12345678'
+            },
+            wrong: {
+                email: 'qwerqwerqwer',
+                pass: 'qwerqwerqwer'
+            }
+        },
+        viewReferralId: 215,
+        attachmentUrlPart: 'https://referral-server.herokuapp.com/attachment/?file='
     },
     specs: ['test/e2e/MainSpec.js'],
     maxSessions: 1, // this is in order to make multiple browsers run sequentially
