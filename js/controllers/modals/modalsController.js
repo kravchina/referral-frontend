@@ -124,14 +124,21 @@ modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 
     };
 }]);
 
-modalsModule.controller('JoinPracticeModalController', ['$scope', '$modalInstance', 'ModalHandler','Alert', 'Practice', 'Spinner', function ($scope, $modalInstance, ModalHandler, Alert, Practice, Spinner) {
+modalsModule.controller('JoinPracticeModalController', ['$scope', '$modalInstance', 'Registration', 'ModalHandler','Alert', 'Practice', 'Spinner', function ($scope, $modalInstance, Registration, ModalHandler, Alert, Practice) {
     $scope.alerts = [];
     $scope.findPractice = function (searchValue) {
         return Practice.searchPractice({search: searchValue }).$promise;
     };
 
     $scope.ok = function (practice, securitycode) {
-        $modalInstance.close({'practice': practice, 'securitycode': securitycode});
+        Registration.verify_security_code({code: securitycode, practice_id: practice.id},
+            function(success){
+                $modalInstance.close({'practice': practice, 'securitycode': securitycode});
+        }, function(failure){
+                Alert.error($scope.alerts, 'Your security code was rejected. Please try another one.');
+
+            });
+
     };
 
     $scope.cancel = function () {
