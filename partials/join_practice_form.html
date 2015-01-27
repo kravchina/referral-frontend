@@ -8,7 +8,7 @@
         <div class="block-title">
             <h5>Practice Information</h5>
         </div>
-
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" >{{alert.message}}</alert>
         <div class="input-block" ng-class="{'has-error': joinPracticeForm.practice.$dirty && joinPracticeForm.practice.$invalid }">
             <input type="text" id="practice" name="practice" placeholder="Select practice &hellip;" class="form-control"
                    ng-model="practice"

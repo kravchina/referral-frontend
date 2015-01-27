@@ -134,7 +134,9 @@ dentalLinksServices.factory('ProviderInvitation', ['$resource', 'API_ENDPOINT', 
 }]);
 
 dentalLinksServices.factory('Registration', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
-    return $resource(API_ENDPOINT + '/sign_up')
+    return $resource(API_ENDPOINT + '/sign_up', {}, {
+        verify_security_code: {method: 'GET', url: API_ENDPOINT + '/verify_security_code/:code'}
+    })
 }]);
 
 dentalLinksServices.factory('Password', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
