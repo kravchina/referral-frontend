@@ -112,7 +112,7 @@ var AdminSpec = function() {
                 });
                 
                 it('shows Subscription tab', function() {
-                    expect(element(by.css('div#sectUpgrade>button[ng-click="upgradeDialog()"]')).isDisplayed()).toBe(true);
+                    expect(element(by.css('div#admintabAccount form#formAccountTab h2')).isDisplayed()).toBe(true);
                 });
             });
             
