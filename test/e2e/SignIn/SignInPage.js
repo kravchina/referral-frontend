@@ -25,10 +25,6 @@ var SignInPage = function() {
         element(by.buttonText('Login')).click();
     }
     
-    this.expectError = function() {
-        expect(element(by.css('div.alert-danger')).isPresent()).toBe(true);
-    }
-    
 };
 
 module.exports = new SignInPage();

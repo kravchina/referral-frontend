@@ -32,10 +32,8 @@ describe('when user navigates to Sign In page', function() {
         it('shows error, keeps the email and erases the password', function() {
             commonExpects.expectMenuHidden();
             commonExpects.expectCurrentUrlToBe(signInPage.url);
-            signInPage.expectError();
-            // TODO [ak] uncomment when #84990710 is fixed
-            // expect(signInPage.getEmail()).toEqual(wrongEmail);
-            // expect(signInPage.getPass()).toEqual('');
+            expect(signInPage.getEmail()).toEqual(wrongEmail);
+            expect(signInPage.getPass()).toEqual('');
         });
         
     });
