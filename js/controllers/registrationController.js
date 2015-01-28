@@ -15,6 +15,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
         $scope.initInvitation = function() {
             if ($scope.promo) {
                 $scope.invitation = {}
+                $scope.practice = {}
             } else {
                 $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
                     function (success) {
@@ -53,19 +54,58 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             });
         };
 
-        $scope.register = function (user) {
-            user.practice_id = user.practice.id;
-            Registration.save({user: user, invitation_token: $stateParams.invitation_token, security_code: $scope.security_code, skip_security_code: user.newPracticeId == user.practice_id},
+        // this function is used in case of registration through an invitation
+        $scope.register = function (invitation) {
+            invitation.practice_id = invitation.practice.id;
+            Registration.save({user: invitation, invitation_token: $stateParams.invitation_token, security_code: $scope.security_code, skip_security_code: invitation.newPracticeId == invitation.practice_id},
                 function (success) {
                     Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
                     Auth.current_user = success;
                     $scope.registrationSuccessful = true;
                 },
                 function (failure) {
-                    $scope.alerts = [];//reset alerts array, because we need only one error message at a time. Pivotal's ticket #82268450.
+                    $scope.alerts = [];
                     Alert.error($scope.alerts, 'Error during registration.', true);
                 }
             )
+        };
+
+        // this function is used instead of register() in case of registration through promotion
+        $scope.createPracticeAndRegister = function (practice, invitation) {
+            Practice.save({
+                    practice: practice,
+                    promo: $scope.promo
+                },
+                function (success) {
+                    console.log('created practice: ' + JSON.stringify(success));
+
+                    invitation.practice_id = success.id;
+
+                    Registration.save({
+                            user: invitation,
+                            invitation_token: $stateParams.invitation_token,
+                            security_code: $scope.security_code,
+                            skip_security_code: true,
+                            promo: $scope.promo
+                        },
+                        function (success) {
+                            Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
+                            Auth.current_user = success;
+                            $scope.registrationSuccessful = true;
+
+                            console.log('registered a new account: ' + JSON.stringify(success));;
+                        },
+                        function (failure) {
+                            $scope.alerts = [];
+                            Alert.error($scope.alerts, 'Error during registration.', true);
+                        }
+                    );
+                },
+                function (failure) {
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, 'Can\'t create practice.', true);
+                });
+
         };
 
         $scope.discard = function() {

@@ -75,7 +75,7 @@
                             <alert type="danger" ng-show="form.password.$dirty && form.password.$invalid">Password is required and should have at least 8 characters</alert>
 
                             <div class="input-block-inline" ng-class="{'has-error': form.email.$dirty && form.email.$invalid }">
-                                <input type="email" name="email" class="form-control" ng-model="invitation.email" disabled="disabled" placeholder="Enter email &hellip;" ng-required="true">
+                                <input type="email" name="email" class="form-control" ng-model="invitation.email" placeholder="Enter email &hellip;" ng-required="true">
                                 <label>Email</label>
                             </div>
 
@@ -97,7 +97,8 @@
                             </div>
 
                             <div class="button-block">
-                                <button class="btn btn-green btn-lg" ng-click="register(invitation)" ng-disabled="form.$invalid || invitation.password_confirmation !== invitation.password || (!invitation.practice.id && !invitation.newPracticeId)">Register</button>
+                                <button class="btn btn-green btn-lg" ng-click="register(invitation)" ng-hide="promo" ng-disabled="form.$invalid || invitation.password_confirmation !== invitation.password || (!invitation.practice.id && !invitation.newPracticeId)">Register</button>
+                                <button class="btn btn-green btn-lg" ng-click="createPracticeAndRegister(practice, invitation)" ng-show="promo" ng-disabled="form.$invalid || invitation.password_confirmation !== invitation.password">Register</button>
                                 <button class="btn btn-green btn-lg" ng-click="discard()">Discard</button>
                             </div>
 
