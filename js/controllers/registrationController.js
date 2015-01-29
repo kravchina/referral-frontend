@@ -12,7 +12,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
         $scope.practiceTypes = Procedure.practiceTypes();
 
 
-        $scope.initInvitation = function() {
+        $scope.initInvitation = function () {
             if ($scope.promo) {
                 $scope.invitation = {}
                 $scope.practice = {}
@@ -40,7 +40,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             });
         };
 
-        $scope.joinPracticeDialog = function() {
+        $scope.joinPracticeDialog = function () {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/join_practice_form.html',
                 controller: 'JoinPracticeModalController'
@@ -56,59 +56,77 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
 
         // this function is used in case of registration through an invitation
         $scope.register = function (invitation) {
+            $scope.submitted = true;
+            if (!$scope.form.$invalid && ($scope.invitation.practice.id || $scope.invitation.newPracticeId)) {
             invitation.practice_id = invitation.practice.id;
-            Registration.save({user: invitation, invitation_token: $stateParams.invitation_token, security_code: $scope.security_code, skip_security_code: invitation.newPracticeId == invitation.practice_id},
+            Registration.save({
+                    user: invitation,
+                    invitation_token: $stateParams.invitation_token,
+                    security_code: $scope.security_code,
+                    skip_security_code: invitation.newPracticeId == invitation.practice_id
+                },
                 function (success) {
                     Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
                     Auth.current_user = success;
                     $scope.registrationSuccessful = true;
                 },
                 function (failure) {
-                    $scope.alerts = [];
+                    $scope.alerts = [];//reset alerts array, because we need only one error message at a time. Pivotal's ticket #82268450.
                     Alert.error($scope.alerts, 'Error during registration.', true);
                 }
             )
+            }
         };
 
         // this function is used instead of register() in case of registration through promotion
         $scope.createPracticeAndRegister = function (practice, invitation) {
-            Practice.save({
-                    practice: practice,
-                    promo: $scope.promo
-                },
-                function (success) {
-                    console.log('created practice: ' + JSON.stringify(success));
+            $scope.submitted = true;
+            if (!$scope.form.$invalid && ($scope.invitation.practice.id || $scope.invitation.newPracticeId)) {
+                Practice.save({
+                        practice: practice,
+                        promo: $scope.promo
+                    },
+                    function (success) {
+                        console.log('created practice: ' + JSON.stringify(success));
 
-                    invitation.practice_id = success.id;
+                        invitation.practice_id = success.id;
 
-                    Registration.save({
-                            user: invitation,
-                            invitation_token: $stateParams.invitation_token,
-                            security_code: $scope.security_code,
-                            skip_security_code: true,
-                            promo: $scope.promo
-                        },
-                        function (success) {
-                            Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
-                            Auth.current_user = success;
-                            $scope.registrationSuccessful = true;
+                        Registration.save({
+                                user: invitation,
+                                invitation_token: $stateParams.invitation_token,
+                                security_code: $scope.security_code,
+                                skip_security_code: true,
+                                promo: $scope.promo
+                            },
+                            function (success) {
+                                Auth.set({
+                                    token: success.authentication_token,
+                                    email: success.email,
+                                    roles: success.roles,
+                                    is_admin: success.is_admin,
+                                    id: success.id,
+                                    practice_id: success.practice_id
+                                });
+                                Auth.current_user = success;
+                                $scope.registrationSuccessful = true;
 
-                            console.log('registered a new account: ' + JSON.stringify(success));;
-                        },
-                        function (failure) {
-                            $scope.alerts = [];
-                            Alert.error($scope.alerts, 'Error during registration.', true);
-                        }
-                    );
-                },
-                function (failure) {
-                    $scope.alerts = [];
-                    Alert.error($scope.alerts, 'Can\'t create practice.', true);
-                });
+                                console.log('registered a new account: ' + JSON.stringify(success));
+                            },
+                            function (failure) {
+                                $scope.alerts = [];
+                                Alert.error($scope.alerts, 'Error during registration.', true);
+                            }
+                        );
+                    },
+                    function (failure) {
+                        $scope.alerts = [];
+                        Alert.error($scope.alerts, 'Can\'t create practice.', true);
+                    });
+            }
 
         };
 
-        $scope.discard = function() {
+        $scope.discard = function () {
             $scope.initInvitation();
             $scope.showPracticeButtons = true;
         };
@@ -132,7 +150,7 @@ registrationModule.controller('NewUserController', ['$scope', '$location', '$sta
 
                 Logger.log('invitation.newPracticeId = ' + invitation.newPracticeId);
 
-                $scope.practice = Practice.get({practiceId: invitation.newPracticeId}, function(practice) {
+                $scope.practice = Practice.get({practiceId: invitation.newPracticeId}, function (practice) {
                     Logger.log('received practice info: ' + JSON.stringify($scope.practice));
                 });
             },
