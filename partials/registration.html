@@ -61,7 +61,7 @@
                             <p ng-show="!showPracticeButtons && invitation.practice">You selected practice - <b>{{ invitation.practice.name }}</b></p>
                         </div>
 
-                        <div id="sectPracticeFormFields" class="section-block" ng-show="promo">
+                        <div id="sectPracticeFormFields" class="section-block" ng-if="promo">
                             <h3>Practice</h3>
 
                             <div ng-include="'partials/practice_form_fields.html'">
