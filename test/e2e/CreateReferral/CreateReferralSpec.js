@@ -23,7 +23,15 @@ var CreateReferralSpec = function() {
                 commonExpects.expectCurrentUrlToBe(historyPage.url);
             });
             
-            describe('when user changes Patient and tries to leave', function() {
+            // TODO [ak] what controls are disabled and what enabled on page load (incl. Save button)
+            
+            // TODO [ak] checking that all fields are covered with unsaved changes: simple change for each field, then logo click -- alert. Dismiss -- go back, accept -- go away
+            
+            // TODO [ak] user enters everything field by field -- somewhere through drop-downs, etc., then at some point button Save is enabled, user Saves, then finds this referral in history, compares fields
+            
+            // TODO [ak] maybe later individual field errors (e.g. when user simply enters smth in patient, error is shown, etc.)
+            
+            describe('when user changes Patient and tries to leave without saving', function() {
                 var dataStr = 'asdf';
                 
                 beforeEach(function() {
