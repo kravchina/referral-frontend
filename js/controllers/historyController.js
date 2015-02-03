@@ -26,5 +26,5 @@ historyModule.controller('HistoryController', ['$scope', 'Auth', 'Referral', 'Lo
 			});
     };
 
-    $scope.findReferralsByDateRange( moment().subtract('days', 29), moment());
+    $scope.findReferralsByDateRange(moment(0), moment().endOf('day'));
 }]);
