@@ -1,4 +1,4 @@
-var historyModule = angular.module('history', ['ui.bootstrap']);
+var historyModule = angular.module('history', ['ui.bootstrap', 'infinite-scroll']);
 
 historyModule.controller('HistoryController', ['$scope', 'Auth', 'Referral', 'Logger', function ($scope, Auth, Referral, Logger) {
 
@@ -24,6 +24,17 @@ historyModule.controller('HistoryController', ['$scope', 'Auth', 'Referral', 'Lo
 				$scope.referrals = data.referrals;
 				$scope.referrals_total_count = data.referrals_total_count;
 			});
+    };
+
+    $scope.addMoreItems = function(){
+        var offset = $scope.referrals.length;
+        Referral.findByPractice({id: Auth.get().practice_id, start_date: $scope.start_date.toISOString(), end_date: $scope.end_date.toISOString(), term: $scope.query, limit: $scope.limitTo, offset: offset},
+            function(data){
+                for(var i=0; i < data.referrals.length; i++){
+                    $scope.referrals.push(data.referrals[i]);
+                }
+                $scope.referrals_total_count = data.referrals_total_count;
+        });
     };
 
     $scope.findReferralsByDateRange(moment(0), moment().endOf('day'));
