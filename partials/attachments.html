@@ -38,7 +38,7 @@
                         </div>
                         <div class="attachment-details" >
                             <span class="filename" title="{{item.file.name}}">{{ item.file.name }}</span>
-                            <span class="datestamp" title="Image Creation Date">{{item.file.lastModifiedDate | date: 'mediumDate'}}</span>
+                            <span class="datestamp inline" title="Image Creation Date">{{item.metadata.last_modified | date: 'mediumDate'}}</span> <span class="dlicons-pencil inline" title="Change Date" ng-click="openDatePicker(item)"></span>
                             <span class="filename" title="Added{{current_user.first_name? ' by ' : '' }}{{current_user.first_name}}{{current_user.last_name? ' ': ''}}{{current_user.last_name}} on {{ now() | date: 'mediumDate'}}">Added {{current_user.first_name? 'by' : '' }} {{current_user.first_name}} {{current_user.last_name}} on {{ now() | date: 'mediumDate'}}</span>
                         </div>
                     </li>

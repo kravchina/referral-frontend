@@ -157,7 +157,9 @@ dentalLinksServices.factory('Note', ['$resource', 'API_ENDPOINT', function ($res
 }]);
 
 dentalLinksServices.factory('Attachment', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
-    return $resource(API_ENDPOINT + '/attachments');
+    return $resource(API_ENDPOINT + '/attachments/:id', {}, {
+        update: { method: 'PUT'}
+    });
 }]);
 
 dentalLinksServices.factory('Procedure', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {

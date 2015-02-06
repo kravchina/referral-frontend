@@ -1,8 +1,24 @@
-dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fileUploader', 'Logger', 'API_ENDPOINT',
-    function ($scope, Alert, Auth, $fileUploader, Logger, API_ENDPOINT) {
+dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fileUploader', 'Logger', 'API_ENDPOINT', '$modal', 'ModalHandler',
+    function ($scope, Alert, Auth, $fileUploader, Logger, API_ENDPOINT, $modal, ModalHandler) {
 
         $scope.now = function () {
             return Date.now();
+        };
+
+        $scope.openDatePicker = function(attachment){
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/date_picker.html',
+                controller: 'DatePickerModalController',
+                resolve: {
+                    currentDate: function(){
+                        return attachment.metadata.last_modified;
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (date) {
+                attachment.metadata.last_modified = date; //we need write-enabled property so it is necessary
+            });
         };
 
         $scope.current_user = Auth.current_user;
@@ -54,9 +70,8 @@ dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fi
 
         uploader.bind('afteraddingfile', function (event, item) {
             Logger.info('After adding a file', item);
-            // marking an attachment for saving
-            // $scope.model.attachments.push({url: item.url + bucket_path + item.file.name, notes: item.notes, size: item.file.size});
-            item.formData.push({last_modified: item.file.lastModifiedDate});
+            item.metadata = {last_modified: item.file.lastModifiedDate}; //workaround - we need writable property (File object has read-only File.lastModifiedDate) to be able to change the date of the file according to https://www.pivotaltracker.com/story/show/84423098
+            item.formData.push(item.metadata);
         });
 
         uploader.bind('whenaddingfilefailed', function (event, item) {

@@ -263,3 +263,13 @@ modalsModule.controller('SecurityCodeModalController', ['$scope', '$modalInstanc
     };
 }]);
 
+modalsModule.controller('DatePickerModalController', ['$scope', '$modalInstance', 'ModalHandler', 'currentDate', function ($scope, $modalInstance, ModalHandler, currentDate) {
+    $scope.date = currentDate;
+
+    $scope.dateSelected = function(){
+        ModalHandler.close($modalInstance, $scope.date);
+    };
+    $scope.cancel = function () {
+        ModalHandler.dismiss($modalInstance);
+    };
+}]);

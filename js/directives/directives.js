@@ -305,6 +305,19 @@ dentalLinksDirectives.directive('ngCtrlEnter', ['$parse', '$timeout', function($
     }
 }]);
 
+dentalLinksDirectives.directive('stopEvent', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+            element.bind(attr.stopEvent, function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+            });
+        }
+    };
+});
+
 dentalLinksDirectives.directive('attachments', [function () {
     return {
         restrict: 'E',
