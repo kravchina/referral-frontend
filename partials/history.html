@@ -41,7 +41,7 @@
     <div class="row">
         <div class="table-wrapper">
             <div class="table-container">
-                <table class="table table-hover table-striped">
+                <table infinite-scroll="addMoreItems()" infinite-scroll-disabled="busy" class="table table-hover table-striped">
                     <thead>
                     <tr>
                         <th class="cell-datetime">Date / Time</th>
@@ -53,7 +53,7 @@
                     </thead>
                     <tbody>
 
-                    <tr ng-repeat="referral in referrals | limitTo: 20" class="clickable"
+                    <tr ng-repeat="referral in referrals" class="clickable"
                         ui-sref="{{referral.status == 'draft' ? 'reviewReferral({referral_id: referral.id})' : 'viewReferral({referral_id: referral.id})' }}">
 
                         <td class="cell-datetime">

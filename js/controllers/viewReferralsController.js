@@ -30,6 +30,23 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 Alert.error($scope.alerts, 'Something happened... Data was not retrieved from server.')
             }
         );
+        $scope.openDatePicker = function(attachment){
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/date_picker.html',
+                controller: 'DatePickerModalController',
+                resolve: {
+                    currentDate: function(){
+                        return attachment.last_modified;
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (date) {
+                Attachment.update({id:attachment.id}, {last_modified: date}, function(success){
+                    attachment.last_modified = date;
+                });
+            });
+        };
 
         $scope.referral.$promise.then(function (data) {
             Logger.debug('Filling in PDF data...');
@@ -111,7 +128,9 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
             uploader.bind('success', function (event, xhr, item, response) {
                 Logger.info('Success', xhr, item, response);
+                response.recentlyAdded = true;  //this flag enables editing attachment date only for recently added attachments
                 $scope.referral.attachments.push(response);
+
             });
 
             uploader.bind('cancel', function (event, xhr, item) {
