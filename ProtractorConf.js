@@ -22,5 +22,10 @@ exports.config = {
         {browserName: 'firefox'},
         {browserName: 'chrome'},
         {browserName: 'internet explorer'} // make sure to set the same Protected Mode settings for all zones in your Internet Options
-    ]
+    ],
+    onPrepare: function() {
+        browser.getCapabilities().then(function (cc) {
+            browser.currentRunBrowserName = cc.caps_.browserName;
+        });
+    }
 };
