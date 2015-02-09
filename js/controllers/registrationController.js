@@ -21,7 +21,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                     function (success) {
                     },
                     function (failure) {
-                        Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.', true);
+                        Alert.error($scope.alerts, 'invitation.invalid', true);
                     }
                 );
             }
@@ -72,7 +72,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                 },
                 function (failure) {
                     $scope.alerts = [];//reset alerts array, because we need only one error message at a time. Pivotal's ticket #82268450.
-                    Alert.error($scope.alerts, 'Error during registration.', true);
+                    Alert.error($scope.alerts, failure.data.errors[0], true);
                 }
             )
             }
@@ -114,13 +114,13 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                             },
                             function (failure) {
                                 $scope.alerts = [];
-                                Alert.error($scope.alerts, 'Error during registration.', true);
+                                Alert.error($scope.alerts, failure.data.errors[0], true);
                             }
                         );
                     },
                     function (failure) {
                         $scope.alerts = [];
-                        Alert.error($scope.alerts, 'Can\'t create practice.', true);
+                        Alert.error($scope.alerts, 'practice.create.failed', true);
                     });
             }
 
@@ -155,7 +155,7 @@ registrationModule.controller('NewUserController', ['$scope', '$location', '$sta
                 });
             },
             function (failure) {
-                Alert.error($scope.alerts, 'Something happened... Probably, invitation is invalid or was used already.', true);
+                Alert.error($scope.alerts, 'invitation.invalid', true);
             }
         );
 
@@ -168,7 +168,7 @@ registrationModule.controller('NewUserController', ['$scope', '$location', '$sta
                     $scope.registrationSuccessful = true;
                 },
                 function (failure) {
-                    Alert.error($scope.alerts, 'Error during registration.', true);
+                    Alert.error($scope.alerts, failure.data.errors[0], true);
                 }
             )
         };
