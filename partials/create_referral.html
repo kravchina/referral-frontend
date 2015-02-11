@@ -60,7 +60,7 @@
             <h2>Practice</h2>
         </div>
         <alert type="warning" ng-show="form.practice.$dirty && form.practice.$invalid">Please select existing practice or invite new provider</alert>
-        <input type="text" class="form-control" name="practice" placeholder="Enter existing practice or invite new provider with button on the right ..."
+        <input type="text" class="form-control" name="practice" placeholder="Enter existing practice/provider or add new provider with button on the right..."
                ng-model="practiceSearchText" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
                typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].first_name + ' ' + practice.users[0].last_name) : (practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '')) for practice in findPractice($viewValue) | filter:$viewValue">
     </div>
