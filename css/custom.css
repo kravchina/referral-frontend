@@ -1700,7 +1700,7 @@ td.cell-from .practice, td.cell-to .practice {
 	.input-block label, .input-block-inline label, .input-block-inline-left label, .input-block-inline-right label {
 		font-size: 11px;
 		font-size: 1.1rem;
-		font-weight: 300;
+		font-weight: 700;
 	}
 	#sectUsers.section-block, #sectInvite.section-block {
 		padding: 10px 0;
