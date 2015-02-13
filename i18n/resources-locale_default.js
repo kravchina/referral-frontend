@@ -29,5 +29,10 @@
         "key":"invalid.token",
         "value":"Error: provided token is invalid",
         "description":"Error message for the case when token was not valid"
+    },
+    {
+        "key":"has an extension that does not match its contents",
+        "value":"We do not currently support this file type, but if you believe it should be supported, let us know by sending a message to info@dentallinks.org",
+        "description":"Error message for the case when attachment file is not supported"
     }
 ]

@@ -109,13 +109,17 @@ dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fi
             Alert.info($scope.alerts, 'Attachment was cancelled.')
         });
 
-        uploader.bind('error', function (event, xhr, item, response) {
-            Logger.error('Error', xhr, item, response);
-            Alert.error($scope.alerts, 'An error occurred during attachment upload. Please try again later.')
+        uploader.bind('error', function (event, xhr, item, error) {
+            Logger.error('Error', xhr, item, error);
+            $scope.errorMessage = error.file[0]? error.file[0] : 'An error occurred during attachment upload. Please try again later.';
+            Alert.error($scope.attachment_alerts, $scope.errorMessage);
         });
 
         uploader.bind('complete', function (event, xhr, item, response) {
             Logger.info('Complete', xhr, item, response);
+            if(xhr.status == 201){
+                $scope.attachments.push(response);
+            }
         });
 
         uploader.bind('progressall', function (event, progress) {
@@ -128,10 +132,11 @@ dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fi
 
         uploader.bind('completeall', function (event, queue) {
             Logger.info('Complete all', queue);
+            queue.length = 0; //empty uploader queue
 
             // show the loading indicator
             $scope.$parent.progressIndicatorEnd();
-            queue.redirectCallback();
+            queue.redirectCallback($scope.errorMessage);
 
         });
     }]

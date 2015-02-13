@@ -1,13 +1,16 @@
 var viewReferralModule = angular.module('viewReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT',
-    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT) {
+viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message',
+    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message) {
         $scope.alerts = [];
         $scope.attachment_alerts = [];
 
         $scope.total_size = 0;
 
         $scope.auth = Auth.get();
+        if(message){
+            Alert.error($scope.attachment_alerts, message);
+        }
 
         Auth.current_user.$promise.then(function (data) {
             $scope.stripe_customer_id = data.practice.stripe_customer_id;
@@ -138,9 +141,9 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
                 Alert.info($scope.alerts, 'Attachment upload was cancelled.');
             });
 
-            uploader.bind('error', function (event, xhr, item, response) {
-                Logger.error('Error', xhr, item, response);
-                Alert.error($scope.alerts, 'Something went wrong while adding attachment...');
+            uploader.bind('error', function (event, xhr, item, error) {
+                Logger.error('Error', xhr, item, error);
+                Alert.error($scope.attachment_alerts, error.file[0] ? error.file[0] : 'An error occurred while adding attachment.' );
 
                 // show the loading indicator
                 $scope.$parent.progressIndicatorEnd()
