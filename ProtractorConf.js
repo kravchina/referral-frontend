@@ -9,7 +9,7 @@ exports.config = {
                 pass: '12345678'
             },
             wrong: {
-                email: 'qwerqwerqwer',
+                email: 'qwerqwerqwer@qwerqwer.com',
                 pass: 'qwerqwerqwer'
             }
         },
