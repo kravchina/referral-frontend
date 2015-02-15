@@ -19,9 +19,14 @@ TODO -- IE
 #### Setting up conf file
 
 Repository contains a sample Protractor configuration file **ProtractorConf.js.sample**. Intended sequence is that each developer creates
-a copy of it under the git-ignored name **ProtractorConf.js** and adjusts configuration for local running.
+a copy of it under the git-ignored name **ProtractorConf.js** and adjusts configuration for local running. This way developer's config
+with passwords and everything does neither get into the repo nor irritates by staying uncommitted.
 
-Sample file is generally configured for running agains the dev1 environment, and also contains comments for most of the parameters.
+It's generally expected that each developer checks/sets the following params in the file:
+* baseUrl;
+* params.login.correct;
+* params.viewReferralId;
+* params.attachmentUrlPart.
 
 ### Running
 
