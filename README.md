@@ -49,7 +49,7 @@ protractor ProtractorConf.js
 When you're developing and debugging new tests you're likely to want quick results, not waiting for the whole sequence each time. The two
 major places where you can manipulate with the amount of tests being run are:
 * your **ProtractorConf.js** -- comment/uncomment individual browsers;
-* MainSpec.js -- comment/uncomment sub-specs related to various application parts (Admin, Create Referral, View Referral, etc.).
+* **MainSpec.js** -- comment/uncomment sub-specs related to various application parts (Admin, Create Referral, View Referral, etc.).
 
 ### Known issues
 
