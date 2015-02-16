@@ -2,8 +2,8 @@ var registrationModule = angular.module('registration', []);
 
 
 // Just for invited providers to some existing practice or to a new practice
-registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Spinner',
-    function ($scope, $location, $stateParams, $modal, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Spinner) {
+registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure',
+    function ($scope, $location, $stateParams, $modal, $state, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure) {
         $scope.alerts = [];
         $scope.showPracticeButtons = true;
 
@@ -54,34 +54,45 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             });
         };
 
+        var showResultDialog = function(){
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/registration_result.html',
+                controller: 'RegistrationResultController'
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (res) {
+                $state.go('history');
+            });
+        };
+
         // this function is used in case of registration through an invitation
         $scope.register = function (invitation) {
             $scope.submitted = true;
-            if (!$scope.form.$invalid && ($scope.invitation.practice.id || $scope.invitation.newPracticeId)) {
-            invitation.practice_id = invitation.practice.id;
-            Registration.save({
-                    user: invitation,
-                    invitation_token: $stateParams.invitation_token,
-                    security_code: $scope.security_code,
-                    skip_security_code: invitation.newPracticeId == invitation.practice_id
-                },
-                function (success) {
-                    Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
-                    Auth.current_user = success;
-                    $scope.registrationSuccessful = true;
-                },
-                function (failure) {
-                    $scope.alerts = [];//reset alerts array, because we need only one error message at a time. Pivotal's ticket #82268450.
-                    Alert.error($scope.alerts, failure.data.errors[0], true);
-                }
-            )
+            if (!$scope.form.$invalid && ($scope.invitation.newPracticeId || $scope.invitation.practice.id)) {
+                invitation.practice_id = invitation.practice.id;
+                Registration.save({
+                        user: invitation,
+                        invitation_token: $stateParams.invitation_token,
+                        security_code: $scope.security_code,
+                        skip_security_code: invitation.newPracticeId == invitation.practice_id
+                    },
+                    function (success) {
+                        Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
+                        Auth.current_user = success;
+                        showResultDialog();
+                    },
+                    function (failure) {
+                        $scope.alerts = [];//reset alerts array, because we need only one error message at a time. Pivotal's ticket #82268450.
+                        Alert.error($scope.alerts, failure.data.errors[0], true);
+                    }
+                )
             }
         };
 
         // this function is used instead of register() in case of registration through promotion
         $scope.createPracticeAndRegister = function (practice, invitation) {
             $scope.submitted = true;
-            if (!$scope.form.$invalid && ($scope.invitation.practice.id || $scope.invitation.newPracticeId)) {
+            if (!$scope.form.$invalid && ( $scope.invitation.newPracticeId || $scope.invitation.practice.id)) {
                 Practice.save({
                         practice: practice,
                         promo: $scope.promo
@@ -108,8 +119,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                                     practice_id: success.practice_id
                                 });
                                 Auth.current_user = success;
-                                $scope.registrationSuccessful = true;
-
+                                showResultDialog();
                                 console.log('registered a new account: ' + JSON.stringify(success));
                             },
                             function (failure) {
@@ -140,8 +150,8 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
 
 
 // Only for users invited to the same practice
-registrationModule.controller('NewUserController', ['$scope', '$location', '$stateParams', '$modal', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Logger',
-    function ($scope, $location, $stateParams, $modal, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Logger) {
+registrationModule.controller('NewUserController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Logger',
+    function ($scope, $location, $stateParams, $modal, $state, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Logger) {
         $scope.alerts = [];
 
         $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
@@ -159,13 +169,24 @@ registrationModule.controller('NewUserController', ['$scope', '$location', '$sta
             }
         );
 
+        var showResultDialog = function(){
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/registration_result.html',
+                controller: 'RegistrationResultController'
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (res) {
+                $state.go('history');
+            });
+        };
+
         $scope.register = function (user) {
             user.practice_id = user.practice.id;
             Registration.save({user: user, invitation_token: $stateParams.invitation_token, security_code: $scope.security_code, skip_security_code: user.newPracticeId == user.practice_id},
                 function (success) {
                     Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
                     Auth.current_user = success;
-                    $scope.registrationSuccessful = true;
+                    showResultDialog();
                 },
                 function (failure) {
                     Alert.error($scope.alerts, failure.data.errors[0], true);
