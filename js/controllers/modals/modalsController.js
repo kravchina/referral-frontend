@@ -198,7 +198,8 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$
                     Logger.log(response);
                     if(response.error) {
                         // there was an error. Fix it.
-                        Alert.error($scope.alerts, 'An error occurred during account update: '+ response.error.message)
+                        $scope.alerts = [];
+                        Alert.error($scope.alerts, 'An error occurred during account update: '+ response.error.message, true)
                     } else {
                         // got stripe token, now charge it or smt
                         payment_info.stripe_token = response.id;
@@ -216,7 +217,8 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$
                                         ModalHandler.close($modalInstance,success);
                                     },
                                     function (failure) {
-                                        Alert.error($scope.alerts, 'An error occurred during account update: '+ failure.data.error)
+                                        $scope.alerts = [];
+                                        Alert.error($scope.alerts, 'An error occurred during account update: '+ failure.data.error, true)
                                     });
                     }
                 });
