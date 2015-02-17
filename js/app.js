@@ -60,6 +60,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         }).
         state('reviewReferral', {
             url: '/create_referral/:referral_id',
+            params: {message: null},
             templateUrl: 'partials/create_referral.html',
             controller: 'ReviewReferralsController',
             resolve: {
@@ -75,7 +76,10 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
                     });
                     return d.promise;
                 }
-                ]},
+                ],
+            message: ['$stateParams', function($stateParams){
+                return $stateParams.message;
+            }]},
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('logout', {
@@ -95,8 +99,14 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         }).
         state('viewReferral', {
             url: '/view_referral/:referral_id',
+            params: {message: null},
             templateUrl: 'partials/view_referral.html',
             controller: 'ViewReferralsController',
+            resolve: {
+                message: ['$stateParams', function($stateParams){
+                    return $stateParams.message;
+                }]
+            },
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('history', {

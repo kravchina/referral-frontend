@@ -172,8 +172,8 @@ dentalLinksDirectives.directive('dateRangePicker', ['$parse', function($parse){
             var dateRangeCallback = $parse(attrs.dateRangePicker);
             $element.daterangepicker(
                 {
-                    startDate: moment().subtract('days', 29),
-                    endDate: moment(),
+                    startDate: moment(0),
+                    endDate: moment().endOf('day'),
                     ranges: {
                         'Last 7 Days': [moment().subtract('days', 6), moment()],
                         'Last 30 Days': [moment().subtract('days', 29), moment()],
@@ -186,7 +186,7 @@ dentalLinksDirectives.directive('dateRangePicker', ['$parse', function($parse){
                 }
             );
 
-            $element.find('span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+            $element.find('span').html(moment(0).format('MMMM D, YYYY') + ' - ' + moment().endOf('day').format('MMMM D, YYYY'));
         }
     }
 }]);
@@ -313,6 +313,19 @@ dentalLinksDirectives.directive('ngCtrlEnter', ['$parse', '$timeout', function($
         }
     }
 }]);
+
+dentalLinksDirectives.directive('stopEvent', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+            element.bind(attr.stopEvent, function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+            });
+        }
+    };
+});
 
 dentalLinksDirectives.directive('attachments', [function () {
     return {

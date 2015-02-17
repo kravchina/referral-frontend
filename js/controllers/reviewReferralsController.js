@@ -1,5 +1,5 @@
-createReferralModule.controller('ReviewReferralsController', ['$scope', '$state', 'currentReferral', 'Alert', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'ReferralHelper', 'User',
-    function ($scope, $state, currentReferral, Alert, Auth, Procedure, Referral, UnsavedChanges, ReferralHelper, User) {
+createReferralModule.controller('ReviewReferralsController', ['$scope', '$state', 'currentReferral', 'Alert', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'ReferralHelper', 'User', 'message',
+    function ($scope, $state, currentReferral, Alert, Auth, Procedure, Referral, UnsavedChanges, ReferralHelper, User, message) {
 
         var auth = Auth.get() || {};
 
@@ -13,6 +13,10 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
         $scope.procedures = Procedure.query();
         $scope.currentPracticeProviders = User.getProviders({practice_id: auth.practice_id});
         $scope.userIsAux = auth.roles.indexOf('aux') >= 0;
+
+        if(message){
+            Alert.error($scope.attachment_alerts, message);
+        }
 
         Procedure.practiceTypes().$promise.then(function (types) {
             $scope.practiceTypes = types;
@@ -44,7 +48,7 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
                     Alert.success($scope.alerts, 'Template was saved successfully!');
                     ReferralHelper.uploadAttachments($scope, success.id, function () {
                         UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-                        $state.go('reviewReferral', {referral_id: success.id}, {reload: true});
+                        //$state.go('reviewReferral', {referral_id: success.id}, {reload: false});
                     });
 
                 }, failure: function (failure) {
@@ -59,9 +63,9 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
             var resultHandlers = {
                 success: function (referral) {
                     Alert.success($scope.alerts, 'Referral was sent successfully!');
-                    ReferralHelper.uploadAttachments($scope, referral.id, function () {
+                    ReferralHelper.uploadAttachments($scope, referral.id, function (message) {
                         UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-                        $state.go('viewReferral', {referral_id: referral.id});
+                        $state.go('viewReferral', {message: message, referral_id: referral.id});
                     });
                 },
                 failure: function (failure) {

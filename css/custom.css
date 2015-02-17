@@ -241,6 +241,8 @@ textarea.form-control {
         -o-transition: all 0.3s ease;
 		-webkit-transition: all 0.3s ease;
 }
+
+
 .btn:hover {
 	color: #fff;
 	transition: all 0.3s ease;
@@ -249,6 +251,16 @@ textarea.form-control {
         -o-transition: all 0.3s ease;
 		-webkit-transition: all 0.3s ease;
 }
+
+.datepicker .btn{
+    color: rgb(51, 51, 51) !important;
+    border: 1px solid #ccc !important;
+}
+
+.datepicker .btn:hover{
+    color: #333 !important
+}
+
 .btn:active, .btn.active, .btn:focus {
 	box-shadow: none;
 		-webkit-box-shadow: none;
@@ -301,12 +313,11 @@ textarea.form-control {
 	font-weight: 900;
 }
 .navbar-nav {
-	left: 0;
 	margin: 0;
 	position: absolute;
 	right: 0;
 	top: 0;
-	width: 100%;
+	width: 65%;
 }
 .navbar-nav > li > a {
 	color: #fff;
@@ -655,6 +666,10 @@ textarea.form-control {
 }
 .attachment-details span {
 	display: block;
+}
+
+.attachment-details span.inline{
+    display: inline;
 }
 .attachment-details .filename {
 	color: #333;
@@ -1254,12 +1269,11 @@ td.cell-from .practice, td.cell-to .practice {
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
 	.navbar-nav {
-		left: 0;
 		margin: 0;
 		position: absolute;
 		right: 0;
 		top: 0;
-		width: 100%;
+		width: 65%;
 	}
 	.navbar-nav > li {
 		float: none;
@@ -1684,7 +1698,7 @@ td.cell-from .practice, td.cell-to .practice {
 	.input-block label, .input-block-inline label, .input-block-inline-left label, .input-block-inline-right label {
 		font-size: 11px;
 		font-size: 1.1rem;
-		font-weight: 300;
+		font-weight: 700;
 	}
 	#sectUsers.section-block, #sectInvite.section-block {
 		padding: 10px 0;

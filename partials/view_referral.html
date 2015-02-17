@@ -173,7 +173,7 @@
             </label>
         </div>
 
-        <alert ng-repeat="alert in attachment_alerts" type="{{alert.type}}" close="closeAttachmentAlert($index)">{{alert.message}}</alert>
+        <alert ng-repeat="alert in attachment_alerts" type="{{alert.type}}" close="closeAttachmentAlert($index)">{{alert.message | i18n}}</alert>
 
         <div class="attachments-wrapper">
             <div class="my-drop-zone" ng-file-drop ng-file-over="another-file-over-class">
@@ -182,15 +182,14 @@
                     <!-- Attachment block -->
                     <li class="attachment-block" ng-repeat="attachment in referral.attachments"
                         title="Added{{attachment.author.first_name? ' by ' : '' }}{{ attachment.author.first_name}}{{attachment.author.last_name? ' ': ''}}{{attachment.author.last_name}} on {{attachment.created_at | date: 'mediumDate'}}">
-
-                        <a href="{{attachment | attachmentDownloadUrl}}" target="_blank">
+                        <a ng-href="{{attachment | attachmentDownloadUrl}}" target="_blank">
                             <div class="attachment-thumb" pdf-photos access="admin, doctor, aux" attachment-thumb="{{attachment | attachmentDownloadUrl}}">
 
                             </div>
                             <div class="attachment-details">
                                 <!--<span class="filename">{{attachment.filename | filename}}</span>-->
                                 <!--<span class="datestamp" title="Attachment Uploaded Date">{{attachment.created_at | date: 'mediumDate'}}</span>-->
-                                <span class="datestamp">{{attachment.last_modified | date: 'mediumDate'}}</span>
+                                <span class="datestamp inline">{{attachment.last_modified | date: 'mediumDate'}}</span> <span ng-show="attachment.recentlyAdded" class="dlicons-pencil inline" title="Change Date" stop-event="click" ng-click="openDatePicker(attachment)"></span>
                                 <span class="filename">{{attachment.author.first_name? 'Added by:' : '' }}<br/> {{attachment.author.first_name}} {{attachment.author.last_name}}</span>
                                 <!--on {{attachment.created_at | date: 'mediumDate'}}-->
                             </div>
