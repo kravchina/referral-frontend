@@ -194,11 +194,20 @@ dentalLinksDirectives.directive('dateRangePicker', ['$parse', function($parse){
 dentalLinksDirectives.directive('editForm', [function () {
     return {
         restrict: 'A',
-        scope: {},
+        scope: {
+            source: '=editForm'
+        },
         controller: function ($scope, $element) {
             var inputs = $element.find('input');
             var selects = $element.find('select');
             var labels = $element.find('label');
+
+            $scope.$watch("source", function(value) {
+                inputs = $element.find('input');
+                selects = $element.find('select');
+                labels = $element.find('label');
+            });
+            
             this.enableControls = function () {
                 inputs.removeClass('data1');
                 inputs.removeAttr('disabled');
