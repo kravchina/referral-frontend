@@ -313,12 +313,11 @@ textarea.form-control {
 	font-weight: 900;
 }
 .navbar-nav {
-	left: 0;
 	margin: 0;
 	position: absolute;
 	right: 0;
 	top: 0;
-	width: 100%;
+	width: 65%;
 }
 .navbar-nav > li > a {
 	color: #fff;
@@ -1270,12 +1269,11 @@ td.cell-from .practice, td.cell-to .practice {
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
 	.navbar-nav {
-		left: 0;
 		margin: 0;
 		position: absolute;
 		right: 0;
 		top: 0;
-		width: 100%;
+		width: 65%;
 	}
 	.navbar-nav > li {
 		float: none;
