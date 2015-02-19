@@ -1,8 +1,8 @@
 [
     {
         "key":"invitation.exists",
-        "value":"Provider with specified email already exists as invited or registered user. If you need to create referral for him please find it using practice search field.",
-        "description":"Validation message for the case when invited provider is already exists in the system."
+        "value":"This email already exists in our database. To send a referral to this practice, please find them by entering their name in the practice search field.",
+        "description":"Validation message for the case when invited provider already exists in the system."
     },
     {
         "key":"user.save.failed",

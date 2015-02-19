@@ -91,8 +91,8 @@ modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 
                 ModalHandler.close($modalInstance, success);
             },
             failure: function (failure) {
-                $scope.alerts = []; //reset alerts list because we need only one alert at a time.
-                Alert.error($scope.alerts, failure.data);
+                $scope.alerts = [];
+                Alert.error($scope.alerts, failure.data, true);
             }
         };
 
