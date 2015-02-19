@@ -21,7 +21,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                     function (success) {
                     },
                     function (failure) {
-                        Alert.error($scope.alerts, 'invitation.invalid', true);
+                        Alert.error($scope.alerts, 'invitation.invalid', true);1
                     }
                 );
             }
@@ -68,7 +68,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
         // this function is used in case of registration through an invitation
         $scope.register = function (invitation) {
             $scope.submitted = true;
-            if (!$scope.form.$invalid && ($scope.invitation.newPracticeId || $scope.invitation.practice.id)) {
+            if ($scope.form.$valid && ($scope.invitation.newPracticeId || $scope.invitation.practice)) {
                 invitation.practice_id = invitation.practice.id;
                 Registration.save({
                         user: invitation,
@@ -92,7 +92,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
         // this function is used instead of register() in case of registration through promotion
         $scope.createPracticeAndRegister = function (practice, invitation) {
             $scope.submitted = true;
-            if (!$scope.form.$invalid && ( $scope.invitation.newPracticeId || $scope.invitation.practice.id)) {
+            if ($scope.form.$valid) {
                 Practice.save({
                         practice: practice,
                         promo: $scope.promo
