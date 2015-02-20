@@ -124,7 +124,12 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                             },
                             function (failure) {
                                 $scope.alerts = [];
-                                Alert.error($scope.alerts, failure.data.errors[0], true);
+
+                                if (failure.data.errors.email) {
+                                    Alert.error($scope.alerts, failure.data.errors.email[0], true);
+                                } else {
+                                    Alert.error($scope.alerts, failure.data.errors[0], true);
+                                }
                             }
                         );
                     },
