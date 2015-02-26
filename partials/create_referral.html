@@ -70,7 +70,7 @@
             <h2>Provider</h2>
             <button type="button" class="btn btn-orange btn-toggle" ng-click="providerDialog()" data-toggle="tooltip" data-placement="top" title="Invite a New Provider" data-target="#modalProvider"><span class="dlicons-user-add"></span></button>
         </div>
-        <select id="selectProvider" ng-if="!model.referral.dest_provider_invited_id" name="provider" class="form-control" ng-disabled="!destinationPractice" ng-model="model.referral.dest_provider_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in destinationPractice.users" ng-required="true">
+        <select id="selectProvider" ng-if="!model.referral.dest_provider_invited_id" name="provider" class="form-control" ng-disabled="!destinationPractice" ng-model="model.referral.dest_provider_id" ng-options="p.id as (p.firstAvailable? p.name : 'Dr. ' + p.first_name + ' ' + p.last_name) for p in destinationPractice.users" ng-required="true">
             <option selected="selected" class="placeholder" value="">Choose a provider &hellip;</option>
         </select>
         <select id="selectInvitedProvider" ng-if="model.referral.dest_provider_invited_id" name="provider_invited" class="form-control" ng-disabled="!destinationPractice" ng-model="model.referral.dest_provider_invited_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in destinationPractice.users" ng-required="true">

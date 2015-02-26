@@ -429,12 +429,12 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
             result += state + ' ' + zip;
             return result;
         },
-        createPracticeData: function (blockTitle, provider) {
+        createPracticeData: function (blockTitle, provider, practice) {
             var practiceData = {};
             practiceData.blockTitle = blockTitle;
             practiceData.doctorName = (provider.first_name || '') + ' ' + (provider.middle_initial || '') + ' ' + (provider.last_name || '');
-            practiceData.practiceName = (provider.practice || {}).name || '';
-            var orig_address = ((provider || {}).practice || {}).address || {};
+            practiceData.practiceName = (practice || {}).name || '';
+            var orig_address = (practice || {}).address || {};
             practiceData.phone = orig_address.phone || '';
             practiceData.addressStreet = orig_address.street_line_1 || '';
             practiceData.addressCity = this.composeAddress((orig_address.city || ''), (orig_address.state || ''), (orig_address.zip || ''));
@@ -457,8 +457,8 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
                 procedureData.teeth = data.teeth;
             }
             
-            originalPracticeData = this.createPracticeData('Referred by:', data.orig_provider || {});
-            destinationPracticeData = this.createPracticeData('Referred to:', data.dest_provider || {});
+            originalPracticeData = this.createPracticeData('Referred by:', data.orig_provider || {}, data.orig_provider.practice || {});
+            destinationPracticeData = this.createPracticeData('Referred to:', data.dest_provider || {}, data.dest_practice || {});
             
             this.addNotes(data.notes);
 

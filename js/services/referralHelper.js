@@ -179,6 +179,7 @@ createReferralModule.service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 
                             if (users.length == 1) {
                                 scope.model.referral.dest_provider_id = users[0].id;
                             }
+                            users.unshift({id: -1, name: 'First Available', firstAvailable: true});
 
                         });
                     }

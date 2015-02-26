@@ -23,8 +23,9 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
             ReferralHelper.updatePracticeType($scope, currentReferral.procedure.practice_type_id);
         });
 
-        if (currentReferral.dest_provider && currentReferral.dest_provider.practice) {
-            $scope.destinationPractice = currentReferral.dest_provider.practice;
+        if (currentReferral.dest_practice) {
+            $scope.destinationPractice = currentReferral.dest_practice;
+            $scope.destinationPractice.users.unshift({id:-1, name: 'First Available', firstAvailable: true});
         } else {
             $scope.destinationPractice = {users: [currentReferral.dest_provider_invited], name: '-- pending registration --'};
         }
