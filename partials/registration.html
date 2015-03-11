@@ -7,20 +7,21 @@
 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message | i18n }}</alert>
 <div class="form-wrapper">
     <form name="form" novalidate class="simple-form">
-        <div class="box-white">
-
+        <div class="box-white box-padded">
             <div class="row">
-
-                <div class="responsive-tab-content">
-                    <div class="tab-content">
-
+                <div class="col-md-12 text-block">
+                    <div class="alert alert-warning">
                         <p>Welcome to Dental Links!</p>
                         <p>Please complete the registration form below and your account will be ready to start sending HIPAA compliant referrals for free!</p>
-
-                        <div id="sectPersonal" class="section-block">
+                    </div>
+                </div>
+            </div>
+                        <div class="row text-block">
                             <h3>Personal Information</h3>
+                        </div>
 
-                            <div class="input-block-inline">
+                        <div class="row">
+                            <div class="input-block col-xs-3">
                                 <select id="selectSalutation" name="salutation" ng-model="invitation.title" class="form-control">
                                     <option selected="selected" disabled="disabled" class="placeholder" value="">Select salutation</option>
                                     <option value="Mr.">Mr.</option>
@@ -31,23 +32,23 @@
                                 <label for="selectSalutation">Salutation</label>
                             </div>
 
-                            <div class="input-block-inline" ng-class="{'has-error': submitted && form.first_name.$invalid }">
+                            <div class="input-block col-sm-3" ng-class="{'has-error': submitted && form.first_name.$invalid }">
                                 <input type="text" name="first_name" class="form-control" ng-model="invitation.first_name" placeholder="Enter first name &hellip;" ng-required="true">
                                 <label>First Name</label>
                             </div>
 
-                            <div class="input-block-inline">
+                            <div class="input-block col-xs-3">
                                 <input type="text" name="middle_initial" class="form-control" ng-model="invitation.middle_initial" maxlength="1" placeholder="Enter middle initial &hellip;">
                                 <label>Middle Initial</label>
                             </div>
 
-                            <div class="input-block-inline" ng-class="{'has-error': submitted && form.last_name.$invalid }">
+                            <div class="input-block col-sm-3" ng-class="{'has-error': submitted && form.last_name.$invalid }">
                                 <input type="text" name="last_name" class="form-control" ng-model="invitation.last_name" placeholder="Enter last name &hellip;" ng-required="true">
                                 <label>Last Name</label>
                             </div>
-
                         </div>
-                        <div class="section-block" ng-hide="promo">
+
+                        <div ng-hide="promo">
                             <alert type="danger" ng-show="submitted && (!invitation.practice.id && !invitation.newPracticeId)">Please join existing practice or create a new one.</alert>
                             <div class="button-block">
                                 <button class="btn btn-green btn-lg" ng-click="joinPracticeDialog()" ng-show="showPracticeButtons">Join Existing Practice</button>
@@ -57,52 +58,55 @@
                             <p ng-show="!showPracticeButtons && invitation.practice">You selected practice - <b>{{ invitation.practice.name }}</b></p>
                         </div>
 
-                        <div id="sectPracticeFormFields" class="section-block" ng-if="promo">
-                            <h3>Practice</h3>
+                        <div ng-if="promo">
+                            <div class="row text-block">
+                                <h3>Practice</h3>
+                            </div>
 
                             <div ng-include="'partials/practice_form_fields.html'">
                             </div>
                         </div>
 
-                        <div class="section-block">
+                        <div class="row text-block">
                             <h3>Access details</h3>
+                        </div>
 
-                            <alert type="danger" ng-show="submitted && form.password.$invalid">Password is required and should have at least 8 characters</alert>
+                        <alert type="danger" ng-show="submitted && form.password.$invalid">Password is required and should have at least 8 characters</alert>
 
-                            <div class="input-block-inline" ng-class="{'has-error': submitted && form.email.$invalid }">
+                        <div class="row">
+                            <div class="input-block col-md-6" ng-class="{'has-error': submitted && form.email.$invalid }">
                                 <input type="email" name="email" class="form-control" ng-model="invitation.email" placeholder="Enter email &hellip;" ng-required="true">
                                 <label>Email</label>
                             </div>
 
-                            <div class="input-block-inline" ng-class="{'has-error': submitted && form.password.$invalid }">
+                            <div class="input-block col-md-3" ng-class="{'has-error': submitted && form.password.$invalid }">
                                 <input type="password" name="password" class="form-control" ng-model="invitation.password" placeholder="Enter password &hellip;" ng-minlength="8" ng-required="true">
                                 <label>Password</label>
                             </div>
 
-                            <div class="input-block-inline" ng-class="{'has-error': submitted && (form.confirmation.$invalid || invitation.password_confirmation !== invitation.password) }">
+                            <div class="input-block col-md-3" ng-class="{'has-error': submitted && (form.confirmation.$invalid || invitation.password_confirmation !== invitation.password) }">
                                 <input type="password" name="confirmation" class="form-control" ng-model="invitation.password_confirmation" placeholder="Enter password confirmation &hellip;"
                                        ng-minlength="8" ng-required="true">
                                 <label>Password confirmation</label>
                             </div>
+                        </div>
 
+                        <div class="row text-block">
+                            <h3>Terms</h3>
+                        </div>
 
-                            <alert type="danger" ng-show="submitted && form.tnc.$invalid">Please accept EULA.</alert>
-                            <div class="input-block-inline" style="padding-bottom: 20px;">
+                        <alert type="danger" ng-show="submitted && form.tnc.$invalid">Please accept EULA.</alert>
+                        <div class="row">
+                            <div class="input-block col-md-12">
                                 <input type="checkbox" name="tnc" class="form-control" ng-model="invitation.tnc" ng-required="true" style="height:20px; display: inline; width: 20px;">
                                 <span style="margin: 10px">Agree to EULA: <a href="/#/license" target="_blank">terms & conditions</a></span>
                             </div>
-
-                            <div class="button-block">
-                                <button class="btn btn-green btn-lg" ng-click="register(invitation)" ng-hide="promo">Register</button>
-                                <button class="btn btn-green btn-lg" ng-click="createPracticeAndRegister(practice, invitation)" ng-show="promo" ng-disabled="form.$invalid || invitation.password_confirmation !== invitation.password">Register</button>
-                                <button class="btn btn-green btn-lg" ng-click="discard()">Discard</button>
-                            </div>
-
                         </div>
-                    </div>
-
-                </div>
-            </div>
+                        <div class="button-block" style="padding-top: 20px;">
+                            <button class="btn btn-green btn-lg" ng-click="register(invitation)" ng-hide="promo">Register</button>
+                            <button class="btn btn-green btn-lg" ng-click="createPracticeAndRegister(practice, invitation)" ng-show="promo" ng-disabled="form.$invalid || invitation.password_confirmation !== invitation.password">Register</button>
+                            <button class="btn btn-green btn-lg" ng-click="discard()">Discard</button>
+                        </div>
         </div>
     </form>
 

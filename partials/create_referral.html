@@ -11,7 +11,7 @@
 
 <div class="form-wrapper">
 <form id="formCreateReferral" name="form" novalidate="novalidate">
-<div class="box-white">
+<div class="box-white box-padded">
 
 <!-- On behalf of block -->
 <div class="row" ng-if="userIsAux" >
@@ -55,7 +55,7 @@
 
 <!-- Practice / Provider block -->
 <div class="row">
-    <div class="input-block-left col-xs-12 col-sm-6" ng-class="{'has-error': form.practice.$dirty && form.practice.$invalid }">
+    <div class="input-block col-xs-12 col-sm-6" ng-class="{'has-error': form.practice.$dirty && form.practice.$invalid }">
         <div class="block-title">
             <h2>Practice</h2>
         </div>
@@ -65,7 +65,7 @@
                typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].first_name + ' ' + practice.users[0].last_name) : (practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '')) for practice in findPractice($viewValue) | filter:$viewValue">
     </div>
 
-    <div class="input-block-right col-xs-12 col-sm-6" ng-class="{'has-error': (form.provider.$dirty && form.provider.$invalid) || form.provider.$error.userActive || form.provider_invited.$error.userActive }">
+    <div class="input-block col-xs-12 col-sm-6" ng-class="{'has-error': (form.provider.$dirty && form.provider.$invalid) || form.provider.$error.userActive || form.provider_invited.$error.userActive }">
         <div class="block-title">
             <h2>Provider</h2>
             <button type="button" class="btn btn-orange btn-toggle" ng-click="providerDialog()" data-toggle="tooltip" data-placement="top" title="Invite a New Provider" data-target="#modalProvider"><span class="dlicons-user-add"></span></button>
@@ -80,7 +80,7 @@
 
 <!-- Procedure block -->
 <div class="row">
-    <div class="input-block-left col-xs-12 col-sm-6" ng-class="{'has-error': form.practiceType.$dirty && form.practiceType.$invalid }">
+    <div class="input-block col-xs-12 col-sm-6" ng-class="{'has-error': form.practiceType.$dirty && form.practiceType.$invalid }">
         <div class="block-title">
             <h2>Referral type</h2>
         </div>
@@ -89,7 +89,7 @@
         </select>
     </div>
 
-    <div class="input-block-right col-xs-12 col-sm-6" ng-class="{'has-error': form.procedure.$dirty && form.procedure.$invalid }">
+    <div class="input-block col-xs-12 col-sm-6" ng-class="{'has-error': form.procedure.$dirty && form.procedure.$invalid }">
         <div class="block-title">
             <h2>Procedure</h2>
         </div>

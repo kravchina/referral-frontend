@@ -382,6 +382,9 @@ textarea.form-control {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
 		-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
 }
+.box-padded {
+    padding: 10px;
+}
 .box-white + .button-block {
 	padding: 10px 0;
 	text-align: center;
@@ -419,9 +422,20 @@ textarea.form-control {
 	padding: 10px 12px;
 	text-transform: uppercase;
 }
-.input-block, .input-block-left, .input-block-right {
-	padding: 10px 25px 0;
+.input-block {
+	padding: 0 15px 10px;
 }
+
+.text-block {
+	padding: 15px 15px 5px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#sectPractice .input-block {
+    padding-bottom: 5px;
+}
+
 .form-control.data1 {
 	background-color: transparent;
 	border: none;
@@ -687,9 +701,6 @@ textarea.form-control {
 	font-weight: 600;
 	text-transform: uppercase;
 }
-.notes-wrapper {
-	padding-bottom: 40px;
-}
 .notes-wrapper ul {
 	list-style: none;
 	margin: 0;
@@ -923,47 +934,7 @@ td.cell-from .practice, td.cell-to .practice {
 #sectPersonal.section-block, #sectPayment.section-block {
 	padding: 10px 5px 10px;
 }
-.input-block-inline, .input-block-inline-left, .input-block-inline-right {
-	display: inline-block;
-}
-.input-block-inline {
-	padding-right: 0;
-}
-.input-block-inline-left {
-	padding-left: 0;
-	padding-right: 0;
-}
-.input-block-inline-right {
-	padding-right: 0;
-}
-.section-block .input-block {
-	padding: 0;
-}
-#sectPersonal .input-block-inline {
-	width: 100%;
-}
-#sectPersonal .input-block-inline-left, #sectPersonal .input-block-inline-right {
-	width: 100%;
-}
 
-#sectPracticeFormFields {
-    width: 450px;
-}
-#sectPracticeFormFields .input-block {
-    margin-bottom: 10px;
-    padding: 0;
-}
-#sectPracticeFormFields .input-block-right {
-    margin-bottom: 10px;
-    padding: 0 230px 0 0;
-}
-
-#sectPayment .input-block-inline {
-	width: 100%;
-}
-#sectPayment .input-block-inline-left, #sectPayment .input-block-inline-right {
-	width: 100%;
-}
 #sectPayment select {
 	display: inline-block;
 	margin-left: 3.33%;
@@ -972,20 +943,7 @@ td.cell-from .practice, td.cell-to .practice {
 #sectPayment #selectExpMM {
 	margin-left: 0;
 }
-#sectPractice .input-block-inline {
-	width: 100%;
-}
-#sectPractice .input-block-inline.website-block {
-	padding-right: 0;
-	width: 100%;
-}
-#sectPractice .input-block-inline-left {
-	width: 100%;
-}
-#sectPractice .input-block-inline-right {
-	width: 100%;
-}
-.input-block label, .input-block-inline label, .input-block-inline-left label, .input-block-inline-right label {
+.input-block label {
 	color: #34495e;
 	display: block;
 	font-size: 9px;
@@ -1226,10 +1184,6 @@ td.cell-from .practice, td.cell-to .practice {
 	margin-bottom: 10px;
 	padding: 0;
 }
-.modal .input-block-right {
-	margin-bottom: 10px;
-	padding: 0 230px 0 0;
-}
 .modal-footer {
 	background-color: #ecf0f1;
 	border-radius: 0 0 6px 6px;
@@ -1287,34 +1241,25 @@ td.cell-from .practice, td.cell-to .practice {
 	.page-header {
 		text-align: left;
 	}
+    .box-padded {
+        padding: 20px;
+    }
 	.box-white + .button-block .btn {
 		display: inline-block;
 		padding: 12px 70px;
 		width: auto;
 	}
-	.input-block, .input-block-left, .input-block-right {
-		padding: 20px 40px 0;
+	.input-block {
+		padding: 0 15px 20px;
 	}
-	.input-block-left {
-		padding-right: 10px;
-	}
-	.input-block-right {
-		padding-left: 10px;
-	}
+
 	.upper-chart li.tooth-button {
 		margin-left: 10px;
 	}
 	.lower-chart li.tooth-button {
 		margin-right: 10px;
 	}
-/*
-	.upper-chart li.tooth-button:first-child {
-		margin-left: 12px;
-	}
-	.lower-chart li.tooth-button:first-child {
-		margin-right: 12px;
-	}
-*/
+
 	#toothchart {
 		width: 100%;
 	}
@@ -1396,76 +1341,12 @@ td.cell-from .practice, td.cell-to .practice {
 		padding: 15px 5px 0;
 	}
 
-    #sectPracticeFormFields .input-block {
-        margin-bottom: 10px;
-        padding: 0 10px;
-    }
-    #sectPracticeFormFields .input-block-right {
-        margin-bottom: 10px;
-        padding: 0 230px 0 10px;
-    }
-
-	.section-block .input-block {
-		padding-left: 10px;
-		padding-right: 10px;
-	}
-	.input-block-inline {
-		padding-left: 10px;
-		padding-right: 10px;
-	}
-	.input-block-inline-left {
-		padding-left: 10px;
-		padding-right: 10px;
-	}
-	#sectPersonal .input-block-inline {
-		padding-left: 10px;
-		padding-right: 10px;
-		width: 330px;
-	}
-	#sectPersonal .input-block-inline-left, #sectPersonal .input-block-inline-right {
-		padding-left: 10px;
-		padding-right: 10px;
-		width: 330px;
-	}
-	#sectPayment .input-block-inline {
-		padding-left: 10px;
-		padding-right: 10px;
-		width: 330px;
-	}
-	#sectPayment .input-block-inline-left, #sectPayment .input-block-inline-right {
-		padding-left: 10px;
-		padding-right: 10px;
-		width: 330px;
-	}
-	#sectPayment .input-block-inline-right {
-		width: 690px;
-	}
 	#sectPayment select {
 		display: inline-block;
 		margin-left: 20px;
 		padding-left: 10px;
 		padding-right: 10px;
 		width: 310px;
-	}
-	#sectPractice .input-block-inline {
-		padding-left: 10px;
-		padding-right: 10px;
-		width: 330px;
-	}
-	#sectPractice .input-block-inline.website-block {
-		padding-left: 10px;
-		padding-right: 10px;
-		width: 330px;
-	}
-	#sectPractice .input-block-inline-left {
-		padding-left: 10px;
-		padding-right: 10px;
-		width: 330px;
-	}
-	#sectPractice .input-block-inline-right {
-		padding-left: 10px;
-		padding-right: 10px;
-		width: 330px;
 	}
 }
 
@@ -1543,14 +1424,8 @@ td.cell-from .practice, td.cell-to .practice {
 		font-size: 1.4rem;
 		padding: 12px 20px 13px;
 	}
-	.input-block, .input-block-left, .input-block-right {
-		padding: 40px 60px 0;
-	}
-	.input-block-left {
-		padding-right: 15px;
-	}
-	.input-block-right {
-		padding-left: 15px;
+	.input-block {
+		padding: 0 20px 30px;
 	}
 	.form-control.data1 {
 		font-size: 18px;
@@ -1638,67 +1513,10 @@ td.cell-from .practice, td.cell-to .practice {
 	#sectPersonal.section-block, #sectPayment.section-block {
 		padding: 20px 5px 5px;
 	}
-	.input-block-inline {
-		/*padding-left: 0;*/
-		padding-right: 15px;
-	}
-	.input-block-inline-left {
-		/*padding-left: 0;*/
-		padding-right: 15px;
-	}
-	.section-block .input-block {
-		/*padding-left: 0;*/
-		padding-right: 0;
-	}
-	#sectPersonal .input-block-inline {
-		/*padding-left: 0;*/
-		padding-right: 15px;
-		width: 215px;
-	}
-	#sectPersonal .input-block-inline-right {
-		padding-left: 0;
-		padding-right: 0;
-		width: 215px;
-	}
-	#sectPayment .input-block-inline {
-		/*padding-left: 0;*/
-		padding-right: 15px;
-		width: 230px;
-	}
-	#sectPayment .input-block-inline-right {
-		/*padding-left: 0;*/
-		padding-right: 0;
-		width: 283px;
-	}
 	#sectPayment select {
 		display: inline-block;
 		margin-left: 5px;
 		width: 136px;
-	}
-	#sectPractice .input-block-inline {
-		padding-left: 0;
-		padding-right: 15px;
-		width: 180px;
-	}
-	#sectPractice .input-block-inline.website-block {
-		padding-left: 0;
-		padding-right: 15px;
-		width: 450px;
-	}
-	#sectPractice .input-block-inline-left {
-		padding-left: 0;
-		padding-right: 15px;
-		width: 400px;
-	}
-	#sectPractice .input-block-inline-right {
-		padding-left: 0;
-		padding-right: 0;
-		width: 100px;
-	}
-	.input-block label, .input-block-inline label, .input-block-inline-left label, .input-block-inline-right label {
-		font-size: 11px;
-		font-size: 1.1rem;
-		font-weight: 700;
 	}
 	#sectUsers.section-block, #sectInvite.section-block {
 		padding: 10px 0;
@@ -1742,25 +1560,6 @@ td.cell-from .practice, td.cell-to .practice {
 	#sectPersonal.section-block, #sectPayment.section-block {
 		padding: 25px 5px 5px;
 	}
-	.input-block-inline {
-		padding-right: 18px;
-	}
-	.input-block-inline-left {
-		padding-left: 0;
-		padding-right: 18px;
-	}
-	#sectPersonal .input-block-inline {
-		width: 205px;
-	}
-	#sectPersonal .input-block-inline-left, #sectPersonal .input-block-inline-right {
-		width: 205px;
-	}
-	#sectPayment .input-block-inline {
-		width: 230px;
-	}
-	#sectPayment .input-block-inline-left, #sectPayment .input-block-inline-right {
-		width: 333px;
-	}
 	#sectPayment select {
 		display: inline-block;
 		margin-left: 10px;
@@ -1768,19 +1567,6 @@ td.cell-from .practice, td.cell-to .practice {
 	}
 	#sectPayment #selectExpMM {
 		margin-left: 0;
-	}
-	#sectPractice .input-block-inline {
-		width: 200px;
-	}
-	#sectPractice .input-block-inline.website-block {
-		padding-right: 0;
-		width: 540px;
-	}
-	#sectPractice .input-block-inline-left {
-		width: 500px;
-	}
-	#sectPractice .input-block-inline-right {
-		width: 140px;
 	}
 	.section-block td.cell-status {
 		padding-right: 200px;

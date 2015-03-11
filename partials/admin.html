@@ -30,50 +30,56 @@
                                     <div id="sectPractice">
                                         <div class="section-block">
 
-                                            <div class="input-block">
-                                                <input type="text" class="form-control data1" ng-model="practice.name" placeholder="Enter practice name &hellip;" value="Tooth Care Dental Clinic" disabled="disabled">
-                                                <label class="hidden">Practice name</label>
+                                            <div class="row">
+                                                <div class="input-block col-sm-12">
+                                                    <input type="text" class="form-control data1" ng-model="practice.name" placeholder="Enter practice name &hellip;" value="Tooth Care Dental Clinic" disabled="disabled">
+                                                    <label class="hidden">Practice name</label>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="section-block" ng-repeat="address in practice.address">
 
-                                            <div class="input-block-inline-left">
-                                                <input type="text" class="form-control data1" ng-model="practice.address[$index].street_line_1" placeholder="Enter street address &hellip;" disabled="disabled">
-                                                <label class="hidden">Street address</label>
+                                            <div class="row">
+                                                <div class="input-block col-sm-6">
+                                                    <input type="text" class="form-control data1" ng-model="practice.address[$index].street_line_1" placeholder="Enter street address &hellip;" disabled="disabled">
+                                                    <label class="hidden">Street address</label>
+                                                </div>
+
+                                                <div class="input-block col-xs-2">
+                                                    <input type="text" class="form-control data1" ng-model="practice.address[$index].city" placeholder="Enter town / city &hellip;"  disabled="disabled">
+                                                    <label class="hidden">Town / City</label>
+                                                </div>
+
+                                                <div class="input-block col-xs-2">
+                                                    <input type="text" class="form-control data1" ng-model="practice.address[$index].state" placeholder="Enter state &hellip;" disabled="disabled">
+                                                    <label class="hidden">State</label>
+                                                </div>
+
+                                                <div class="input-block col-xs-2">
+                                                    <input type="text" class="form-control data1" ng-model="practice.address[$index].zip" placeholder="Enter ZIP code &hellip;" disabled="disabled">
+                                                    <label class="hidden">ZIP code</label>
+                                                </div>
                                             </div>
 
-                                            <div class="input-block-inline">
-                                                <input type="text" class="form-control data1" ng-model="practice.address[$index].city" placeholder="Enter town / city &hellip;"  disabled="disabled">
-                                                <label class="hidden">Town / City</label>
+                                            <div class="row">
+                                                <div class="input-block col-sm-6">
+                                                    <input type="tel" class="form-control data1" ng-model="practice.address[$index].phone" placeholder="{{PhoneFormatter.UI_PLACEHOLDER}}" ui-mask="{{PhoneFormatter.MASK}}" disabled="disabled">
+                                                    <label class="hidden">Phone number</label>
+                                                </div>
+
+                                                <div class="input-block col-sm-6 website-block">
+                                                    <input type="text" class="form-control data1" ng-model="practice.address[$index].website" placeholder="Enter website address &hellip;"  disabled="disabled">
+                                                    <label class="hidden">Website</label>
+                                                </div>
                                             </div>
 
-                                            <div class="input-block-inline">
-                                                <input type="text" class="form-control data1" ng-model="practice.address[$index].state" placeholder="Enter state &hellip;" disabled="disabled">
-                                                <label class="hidden">State</label>
+                                            <div class="row">
+                                                <div class="button-block col-sm-12 btn-delete" access="admin" delete-button>
+                                                    <span class="dlicons-remove"></span> Delete location? <a ng-click="deleteUser(user)" class="link-green">Yes</a> | <a  class="link-orange">No</a>
+                                                </div>
                                             </div>
 
-                                            <div class="input-block-inline-right">
-                                                <input type="text" class="form-control data1" ng-model="practice.address[$index].zip" placeholder="Enter ZIP code &hellip;" disabled="disabled">
-                                                <label class="hidden">ZIP code</label>
-                                            </div>
-
-                                            <div class="input-block-inline-left">
-                                                <input type="tel" class="form-control data1" ng-model="practice.address[$index].phone" placeholder="{{PhoneFormatter.UI_PLACEHOLDER}}" ui-mask="{{PhoneFormatter.MASK}}" disabled="disabled">
-                                                <label class="hidden">Phone number</label>
-                                            </div>
-
-                                            <div class="input-block-inline website-block">
-                                                <input type="text" class="form-control data1" ng-model="practice.address[$index].website" placeholder="Enter website address &hellip;"  disabled="disabled">
-                                                <label class="hidden">Website</label>
-                                            </div>
-                                            
-                                            <div class="section-block">
-                                            <div access="admin" delete-button class="button-block btn-delete">
-                                                <span class="dlicons-remove"></span> Delete location? <a ng-click="deleteUser(user)" class="link-green">Yes</a> | <a  class="link-orange">No</a>
-                                            </div>
-                                        </div>
-                                           
                                         </div>
                                         <!--.section-block-->
                                     </div>

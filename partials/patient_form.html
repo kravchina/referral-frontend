@@ -14,7 +14,7 @@
                     </div>-->
                     <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
 
-                    <div class="input-block-right" ng-class="{ 'has-error': patientForm.salutation.$dirty && patientForm.salutation.$invalid }">
+                    <div class="input-block" ng-class="{ 'has-error': patientForm.salutation.$dirty && patientForm.salutation.$invalid }">
                         <select id="selectSalutation" name="salutation" ng-model="patient.salutation" ng-options="s for  s in salutations" class="form-control">
                             <option selected="selected" class="placeholder" value="">Select salutation</option>
                         </select>
@@ -22,7 +22,7 @@
                     <div class="input-block" ng-class="{ 'has-error': patientForm.firstName.$dirty && patientForm.firstName.$invalid }">
                         <input type="text" name="firstName" class="form-control" ng-model="patient.first_name" placeholder="Enter first name &hellip;" ng-required="true">
                     </div>
-                    <div class="input-block-right" ng-class="{ 'has-error': patientForm.middleInitial.$dirty && patientForm.middleInitial.$invalid }">
+                    <div class="input-block" ng-class="{ 'has-error': patientForm.middleInitial.$dirty && patientForm.middleInitial.$invalid }">
                         <input type="text" name="middleInitial" class="form-control" ng-model="patient.middle_initial" maxlength="1" placeholder="Enter middle initial &hellip;">
                     </div>
                     <div class="input-block"  ng-class="{ 'has-error': patientForm.lastName.$dirty && patientForm.lastName.$invalid }" >
