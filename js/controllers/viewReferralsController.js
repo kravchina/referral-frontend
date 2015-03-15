@@ -25,7 +25,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
 
                 data.teethChart = data.teeth.split('+');
                 if(data.dest_provider_id < 0){
-                    data.dest_provider = {id: data.dest_provider_id, name: 'First Available', firstAvailable: true}
+                    data.dest_provider = {id: data.dest_provider_id, first_name: 'First', last_name: 'Available', firstAvailable: true}
                 } else if (!data.dest_provider) {
                     data.dest_provider = data.dest_provider_invited;
                 }

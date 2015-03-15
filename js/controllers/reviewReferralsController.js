@@ -25,7 +25,7 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
 
         if (currentReferral.dest_practice) {
             $scope.destinationPractice = currentReferral.dest_practice;
-            $scope.destinationPractice.users.unshift({id:-1, name: 'First Available', firstAvailable: true});
+            $scope.destinationPractice.users.unshift({id:-1, first_name: 'First', last_name: 'Available', firstAvailable: true});
         } else {
             $scope.destinationPractice = {users: [currentReferral.dest_provider_invited], name: '-- pending registration --'};
         }

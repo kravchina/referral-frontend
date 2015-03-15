@@ -154,11 +154,27 @@ createReferralModule.service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 
 
             findPractice: function () {
                 return function (searchValue) {
-                    return $q.all([Practice.searchPractice({search: searchValue}).$promise, ProviderInvitation.searchProviderInvitation({search: searchValue}).$promise]).then(function (results) {
-                        return results[0].concat(results[1].map(function (invitation) {
+                    var providersPromise = Practice.searchPractice({search: searchValue}).$promise;
+                    var invitationsPromise = ProviderInvitation.searchProviderInvitation({search: searchValue}).$promise;
+                    return $q.all([providersPromise, invitationsPromise]).then(function (results) {
+
+                        var practices = [];
+                        var length = results[0].length;
+                        for (var i = 0; i < length; i++) {
+                            var p = results[0][i];
+
+                            p.address.map(function(a) {
+                                var newPractice = JSON.parse(JSON.stringify(p));
+                                newPractice.address = a;
+                                practices.push(newPractice);
+                            })
+                        }
+
+                        var invitations = results[1].map(function (invitation) {
                             invitation.roles_mask = 2;
                             return {users: [invitation], name: '-- pending registration --', isInvitation: true};
-                        }));
+                        });
+                        return practices.concat(invitations);
                     });
                 }
             },
@@ -179,7 +195,7 @@ createReferralModule.service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 
                             if (users.length == 1) {
                                 scope.model.referral.dest_provider_id = users[0].id;
                             }
-                            users.unshift({id: -1, name: 'First Available', firstAvailable: true});
+                            users.unshift({id: -1, first_name: 'First', last_name: 'Available', firstAvailable: true});
 
                         });
                     }

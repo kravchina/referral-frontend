@@ -41,9 +41,9 @@
         <div class="block-title">
             <h2>To</h2>
         </div>
-        <input type="text" class="form-control data1" ng-hide="referral.destProvider.firstAvailable" value="{{referral.dest_provider.first_name}} {{referral.dest_provider.middle_initial}} {{referral.dest_provider.last_name}}" disabled="disabled">
-        <input type="text" class="form-control data1" ng-show="referral.destProvider.firstAvailable" value="{{referral.dest_provider.name}}" disabled="disabled">
+        <input type="text" class="form-control data1" value="{{referral.dest_provider.first_name}} {{referral.dest_provider.middle_initial}} {{referral.dest_provider.last_name}}" disabled="disabled">
         <input type="text" class="form-control data2" value="{{referral.dest_practice.name}}" disabled="disabled">
+        dest_provider = {{referral.dest_provider}}
     </div>
 </div>
 <!-- .row -->
