@@ -57,6 +57,29 @@ modalsModule.controller('EditPatientModalController', [ '$scope', '$modalInstanc
     };
 }]);
 
+modalsModule.controller('ChangeDestProviderModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Referral', 'referral', 'User', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Referral, referral, User) {
+    $scope.providerId = referral.dest_provider_id;
+    $scope.referral = referral;
+
+    User.getProviders({practice_id: referral.dest_practice_id}).$promise.then(function (users) {
+        users.unshift({id: -1, first_name: 'First', last_name: 'Available', firstAvailable: true});
+        $scope.providers = users;
+    });
+
+    $scope.ok = function (providerId) {
+        Referral.update({id: referral.id}, {referral: {dest_provider_id: providerId}},
+            function (success) {
+                ModalHandler.close($modalInstance, providerId);
+            },
+            function (failure) {
+                Alert.error($scope.alerts, 'Error occurred during referral update.');
+            });
+    };
+    $scope.cancel = function () {
+        ModalHandler.dismiss($modalInstance);
+    };
+}]);
+
 modalsModule.controller('NoteModalController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
     $scope.ok = function (note) {
         //nothing to do, we cant save note right here because at this stage referral doesn't exist. We can only add new note to the list on the parent page (create referral) and save simultaneously with referral.

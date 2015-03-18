@@ -18,22 +18,27 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD)
         });
 
-        $scope.referral = Referral.get({id: $stateParams.referral_id}, function (data) {
-                angular.forEach(data.attachments, function(attachment, key){
-                    $scope.total_size = $scope.total_size + attachment.size;
-                });
+        $scope.initModel = function() {
+            $scope.referral = Referral.get({id: $stateParams.referral_id}, function (data) {
+                    angular.forEach(data.attachments, function(attachment, key){
+                        $scope.total_size = $scope.total_size + attachment.size;
+                    });
 
-                data.teethChart = data.teeth.split('+');
-                if(data.dest_provider_id < 0){
-                    data.dest_provider = {id: data.dest_provider_id, first_name: 'First', last_name: 'Available', firstAvailable: true}
-                } else if (!data.dest_provider) {
-                    data.dest_provider = data.dest_provider_invited;
+                    data.teethChart = data.teeth.split('+');
+                    if(data.dest_provider_id < 0){
+                        data.dest_provider = {id: data.dest_provider_id, first_name: 'First', last_name: 'Available', firstAvailable: true}
+                    } else if (!data.dest_provider) {
+                        data.dest_provider = data.dest_provider_invited;
+                    }
+                },
+                function (failure) {
+                    Alert.error($scope.alerts, 'Something happened... Data was not retrieved from server.')
                 }
-            },
-            function (failure) {
-                Alert.error($scope.alerts, 'Something happened... Data was not retrieved from server.')
-            }
-        );
+            );
+        };
+
+        $scope.initModel();
+
         $scope.openDatePicker = function(attachment){
             var modalInstance = $modal.open({
                 templateUrl: 'partials/date_picker.html',
@@ -170,7 +175,6 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             });
         });
 
-
         var buildFileName = function (suffix) {
             return $scope.referral.patient.first_name + '-' + $scope.referral.patient.last_name + '-' + suffix + '.pdf';
         };
@@ -196,6 +200,22 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (patient) {
                 $scope.referral.patient = patient;
+            });
+        };
+
+        $scope.editDestProviderDialog = function(){
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/change_dest_provider_form.html',
+                controller: 'ChangeDestProviderModalController',
+                resolve: {
+                    referral: function(){
+                        return $scope.referral;
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (providerId) {
+                $scope.initModel();  // have to reload referrer object from server, because it needs to provide object that has dest_provider attribute and many other customizations.
             });
         };
 
