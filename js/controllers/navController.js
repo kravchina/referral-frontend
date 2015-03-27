@@ -1,5 +1,10 @@
-dentalLinks.controller('NavController', ['$scope', '$state', 'Auth', 'Logger', 'Login', 'Spinner',  'UnsavedChanges', 'User',
-    function ($scope, $state, Auth, Logger, Login, Spinner, UnsavedChanges, User) {
+dentalLinks.controller('NavController', ['$scope', '$state', 'Auth', 'Logger', 'Login', 'Spinner',  'UnsavedChanges', 'User', 'API_ENDPOINT',
+    function ($scope, $state, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT) {
+
+        $scope.env = 'unknown.';
+        if (API_ENDPOINT.indexOf('dental-links-prod-1') > -1) $scope.env = '';
+        if (API_ENDPOINT.indexOf('dental-links-stage-1') > -1) $scope.env = 'stage1.';
+        if (API_ENDPOINT.indexOf('referral-server') > -1) $scope.env = 'dev1.';
 
         $scope.progressValue = 0;
 
