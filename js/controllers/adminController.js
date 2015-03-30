@@ -61,7 +61,7 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
                                 account_middle_initial: $scope.practice.account_middle_initial,
                                 account_last_name: $scope.practice.account_last_name,
                                 account_email: $scope.practice.account_email,
-                                address_attributes: $scope.practice.address
+                                addresses_attributes: $scope.practice.addresses
                             }
                         },
                         function (success) {

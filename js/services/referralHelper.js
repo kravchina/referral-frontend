@@ -163,7 +163,7 @@ createReferralModule.service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 
                         for (var i = 0; i < length; i++) {
                             var p = results[0][i];
 
-                            p.address.map(function(a) {
+                            p.addresses.map(function(a) {
                                 var newPractice = JSON.parse(JSON.stringify(p));
                                 newPractice.address = a;
                                 practices.push(newPractice);

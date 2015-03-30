@@ -198,29 +198,16 @@ dentalLinksDirectives.directive('editForm', [function () {
             source: '=editForm'
         },
         controller: function ($scope, $element) {
-            var inputs = $element.find('input');
-            var selects = $element.find('select');
-            var labels = $element.find('label');
-
-            $scope.$watch("source", function(value) {
-                inputs = $element.find('input');
-                selects = $element.find('select');
-                labels = $element.find('label');
-            });
-            
+            //we now can't store pre-found input and select elements as a variables because of ng-repeat directive for multiple addresses (it doesn't find elements inside ng-repeat)
             this.enableControls = function () {
-                inputs.removeClass('data1');
-                inputs.removeAttr('disabled');
-                selects.removeClass('data1');
-                selects.removeAttr('disabled');
-                labels.removeClass('hidden');
+                $element.find('input').removeClass('data1').removeAttr('disabled');
+                $element.find('select').removeClass('data1').removeAttr('disabled');
+                $element.find('label').removeClass('hidden');
             };
             this.disableControls = function () {
-                inputs.addClass('data1');
-                inputs.attr('disabled', 'disabled');
-                selects.addClass('data1');
-                selects.attr('disabled', 'disabled');
-                labels.addClass('hidden');
+                $element.find('input').addClass('data1').attr('disabled', 'disabled');
+                $element.find('select').addClass('data1').attr('disabled', 'disabled');
+                $element.find('label').addClass('hidden');
             };
         }
     }
