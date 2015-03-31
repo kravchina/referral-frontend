@@ -14,14 +14,14 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
 
         $scope.initInvitation = function () {
             if ($scope.promo) {
-                $scope.invitation = {}
+                $scope.invitation = {};
                 $scope.practice = {}
             } else {
                 $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
                     function (success) {
                     },
                     function (failure) {
-                        Alert.error($scope.alerts, 'invitation.invalid', true);1
+                        Alert.error($scope.alerts, 'invitation.invalid', true);
                     }
                 );
             }
@@ -83,7 +83,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                     },
                     function (failure) {
                         $scope.alerts = [];//reset alerts array, because we need only one error message at a time. Pivotal's ticket #82268450.
-                        Alert.error($scope.alerts, failure.data.errors[0], true);
+                        Alert.error($scope.alerts, 'Error: ' + failure.data.errors[0], true);
                     }
                 )
             }
