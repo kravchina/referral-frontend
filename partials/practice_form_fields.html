@@ -12,17 +12,17 @@
 
     <div class="row">
         <div class="input-block col-sm-12" ng-class="{ 'has-error': form.address.$dirty && form.address.$invalid }">
-            <input type="text" name="address" class="form-control" ng-model="practice.address_attributes.street_line_1" placeholder="Address &hellip;" ng-required="true">
+            <input type="text" name="address" class="form-control" ng-model="practice.addresses_attributes[0].street_line_1" placeholder="Address &hellip;" ng-required="true">
         </div>
     </div>
 
     <div class="row">
         <div class="input-block col-sm-6" ng-class="{ 'has-error': form.city.$dirty && form.city.$invalid }">
-            <input type="text" name="city" class="form-control" ng-model="practice.address_attributes.city" placeholder="City &hellip;" ng-required="true">
-        </div>
+            <input type="text" name="city" class="form-control" ng-model="practice.addresses_attributes[0].city" placeholder="City &hellip;" ng-required="true">
+        </div>                                                                                                        uye
 
         <div class="input-block col-xs-3" ng-class="{ 'has-error': form.state.$dirty && form.state.$invalid }">
-            <select name="state" class="form-control" ng-model="practice.address_attributes.state" placeholder="State &hellip;" ng-required="true">
+            <select name="state" class="form-control" ng-model="practice.addresses_attributes[0].state" placeholder="State &hellip;" ng-required="true">
                 <option disabled="disabled" class="placeholder" value="">Select state &hellip;</option>
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
@@ -78,16 +78,16 @@
         </div>
 
         <div class="input-block col-xs-3" ng-class="{ 'has-error': form.zip.$dirty && form.zip.$invalid }">
-            <input type="text" name="zip" class="form-control" ng-model="practice.address_attributes.zip" placeholder="Zip code &hellip;" ng-required="true" ng-pattern="/^\d+$/">
+            <input type="text" name="zip" class="form-control" ng-model="practice.addresses_attributes[0].zip" placeholder="Zip code &hellip;" ng-required="true" ng-pattern="/^\d+$/">
         </div>
     </div>
 
     <div class="row">
         <div class="input-block col-sm-6" ng-class="{ 'has-error': form.phone.$dirty && form.phone.$invalid }">
-            <input type="text" name="phone" class="form-control" ng-model="practice.address_attributes.phone" placeholder="Phone &hellip;" ng-required="true">
+            <input type="text" name="phone" class="form-control" ng-model="practice.addresses_attributes[0].phone" placeholder="Phone &hellip;" ng-required="true">
         </div>
 
         <div class="input-block col-sm-6" ng-class="{ 'has-error': form.website.$dirty && form.website.$invalid }">
-            <input type="text" name="website" class="form-control" ng-model="practice.address_attributes.website" placeholder="Website &hellip;">
+            <input type="text" name="website" class="form-control" ng-model="practice.addresses_attributes[0].website" placeholder="Website &hellip;">
         </div>
     </div>
