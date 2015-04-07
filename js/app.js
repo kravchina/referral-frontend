@@ -250,3 +250,14 @@ dentalLinks.filter('attachmentDownloadUrl', ['API_ENDPOINT', function(API_ENDPOI
        return API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.filename;
    }
 }]);
+
+dentalLinks.filter('authenticatableAttachmentDownloadUrl', ['API_ENDPOINT', '$window', 'Auth', function(API_ENDPOINT, $window, Auth){
+    return function(attachment){
+        var downloadUrl = API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.filename;
+        if (/trident/i.test($window.navigator.userAgent)){ //TODO: workaround for https://www.pivotaltracker.com/story/show/86373800. Remove that filter to use cookies for image authentication.
+            var auth = Auth.get();
+            downloadUrl += '&token=' + auth.token + '&from=' + auth.email;
+        }
+        return  downloadUrl;
+    }
+}]);

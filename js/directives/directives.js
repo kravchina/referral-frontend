@@ -57,7 +57,7 @@ dentalLinksDirectives.directive('pdfPhotos', ['Auth', 'PDF', 'File', 'Logger', f
     }
 }]);
 
-dentalLinksDirectives.directive('attachmentThumb', [function () {
+dentalLinksDirectives.directive('attachmentThumb', ['$window', 'Auth', function ($window, Auth) {
     return {
         link: function (scope, element, attributes) {
             var type = attributes.attachmentThumb.slice(attributes.attachmentThumb.lastIndexOf('.') + 1);
@@ -78,8 +78,15 @@ dentalLinksDirectives.directive('attachmentThumb', [function () {
                 case 'jpeg':
                 case 'png':
                 case 'gif':
-                    element.attr( 'style',  "background: url(" + attributes.attachmentThumb + "&is_thumb=true) no-repeat top/contain, url('img/loader.gif') no-repeat top");
-                    cssClass = '';
+                    if (/trident/i.test($window.navigator.userAgent)){
+                    //TODO: workaround for https://www.pivotaltracker.com/story/show/86373800. Need to change that to use cookies for image authentication.
+                        var auth = Auth.get();
+                        element.attr( 'style',  "background: url(" + attributes.attachmentThumb + '&token=' + auth.token + '&from=' + auth.email + "&is_thumb=true) no-repeat top/contain, url('img/loader.gif') no-repeat top");
+                        cssClass = '';
+                    }else{
+                        element.attr( 'style',  "background: url(" + attributes.attachmentThumb + "&is_thumb=true) no-repeat top/contain, url('img/loader.gif') no-repeat top");
+                        cssClass = '';
+                    }
                     break;
                 default :
                     cssClass = 'attach-file';
