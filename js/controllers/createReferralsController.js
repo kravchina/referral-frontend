@@ -10,7 +10,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
 
         $scope.procedures = Procedure.query();
         $scope.practiceTypes = Procedure.practiceTypes();
-        $scope.currentPracticeProviders = User.getProviders({practice_id: auth.practice_id});
+        $scope.currentPracticeProviders = User.getOtherProviders({practice_id: auth.practice_id});
         $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
 
         $scope.userIsAux = auth.roles.indexOf('aux') >= 0;

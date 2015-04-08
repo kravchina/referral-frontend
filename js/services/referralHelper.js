@@ -190,7 +190,7 @@ createReferralModule.service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 
                         scope.model.referral.dest_provider_invited_id = selectedItem.users[0].id;
                         scope.model.referral.dest_provider_id = null;
                     } else {
-                        scope.destinationPractice.users = User.getProviders({practice_id: selectedItem.id}, function(users){
+                        scope.destinationPractice.users = User.getOtherProviders({practice_id: selectedItem.id}, function(users){
                             scope.model.referral.dest_provider_invited_id = null;
                             if (users.length == 1) {
                                 scope.model.referral.dest_provider_id = users[0].id;

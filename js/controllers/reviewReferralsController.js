@@ -11,7 +11,7 @@ createReferralModule.controller('ReviewReferralsController', ['$scope', '$state'
         $scope.attachments = currentReferral.attachments;
         $scope.teeth = currentReferral.teeth.split('+');
         $scope.procedures = Procedure.query();
-        $scope.currentPracticeProviders = User.getProviders({practice_id: auth.practice_id});
+        $scope.currentPracticeProviders = User.getOtherProviders({practice_id: auth.practice_id});
         $scope.userIsAux = auth.roles.indexOf('aux') >= 0;
 
         if(message){
