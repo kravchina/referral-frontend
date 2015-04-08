@@ -1,28 +1,28 @@
 var dentalLinksPdf = angular.module('pdf', []);
-dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$timeout', 'API_ENDPOINT', function ($filter, Spinner, ImageUtils, File, $timeout, API_ENDPOINT) {
+dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth', '$timeout', '$window', 'API_ENDPOINT', function ($filter, Spinner, ImageUtils, File, Auth, $timeout, $window, API_ENDPOINT) {
     var jsPDFOrientation = 'p'; // portrait
     var jsPDFUnit = 'mm';
     var jsPDFFormat = 'letter';
-    
+
     var pdf = new jsPDF(jsPDFOrientation, jsPDFUnit, jsPDFFormat); // TODO [ak] refactor. Initialization of global vars requires this, but in fact PDF is created in buildPdf()
-    
+
     var patientData = {};
     var procedureData = {};
     var originalPracticeData = {};
     var destinationPracticeData = {};
     var images;
     var notes;
-    
+
     var pageSizes = {
         width: pdf.internal.pageSize.width,
         height: pdf.internal.pageSize.height
     };
-    
+
     var pagePaddings = {
         x: 10, // left & right
         y: 10 // top & bottom
     };
-    
+
     var headerHeight = 20;
     var headerColor = {
         r: 52, g: 73, b: 94
@@ -31,46 +31,46 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
         r: 255, g: 255, b: 255
     };
     var headerFontSize = 12;
-    
+
     // 'default' font styles, that are used in the majority of sections
     // these styles are also used as best guess when 'restoring' styles (e.g. see appendHeader)
     var fontSize = 10;
     var fontColor = {
         r: 0, g: 0, b: 0
     };
-    
+
     // small font gray texts: images available below, check more at the site, etc.
     var auxiliaryFontSize = 8;
     var auxiliaryFontColor = {
         r: 150, g: 150, b: 150
     };
-    
+
     var colPadding = 10; // horizontal, between the two columns
-    
+
     var blocksPadding = 3; // vertical, between info blocks; line separator is 2X this size
-    
+
     var addressPaddingX = 5; // x-padding under 'Referred' titles
-    
+
     var thumbnailSquareSize = 30; // width & height of the thumbnail square
     var thumbnailTextPaddingX = 5; // from the thumbnail itself
-    
+
     var defaultFillColor = {
         r: 255, g: 255, b: 255
     };
-    
+
     var fullSizeColWidth = pageSizes.width - 2 * pagePaddings.x;
     var halfSizeColWidth = (pageSizes.width - 2 * pagePaddings.x - colPadding) / 2;
-    
+
     var secondColX = pagePaddings.x + halfSizeColWidth + colPadding; // where second column starts
-    
+
     var headerFontSizeMm = headerFontSize / pdf.internal.scaleFactor;
     var fontSizeMm = fontSize / pdf.internal.scaleFactor;
     var auxiliaryFontSizeMm = auxiliaryFontSize / pdf.internal.scaleFactor;
-    
+
     var extractFileName = function (filename) {
         return $filter('filename')(filename) || '';
     };
-    
+
     // TODO [ak] refactor into binary search for better performance
     var fitString = function (str, fontSizeMm, expectedLengthMm) {
         var res = str;
@@ -79,32 +79,32 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
         do {
             // current width
             var width = pdf.getStringUnitWidth(res) * fontSizeMm;
-            
+
             if (width <= expectedLengthMm) {
                 // fits!
                 return res;
             }
-            
+
             if (res == trail) {
                 // we can't fit even the trail only
                 return '~';
             }
-            
+
             // cut one more off
             l -= 1;
             res = str.substring(0, l) + trail;
         } while (true); // will either fit or run out
     };
-    
+
     var formatDate = function (date) { // TODO [ak] remove from here. Create a centralized place where dates from across the whole app get formatted
         return $filter('date')(date, 'mediumDate') || '';
     };
-    
+
     var addPage = function (pdf) {
         pdf.addPage();
         return appendHeader(pdf);
     };
-    
+
     var addPageIfNeeded = function (pdf, caret, expectedHeight) {
         if (caret + expectedHeight > pageSizes.height - pagePaddings.y) {
             caret = addPage(pdf);
@@ -118,7 +118,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
         pdf.rect(0, 0, pageSizes.width, headerHeight, 'F');
 
         var y = pagePaddings.y + headerFontSizeMm; // because jsPDF draws text "up" from the specified Y
-        
+
         pdf.setTextColor(headerFontColor.r, headerFontColor.g, headerFontColor.b);
         pdf.setFontSize(headerFontSize);
         var strBold = 'Dental';
@@ -134,7 +134,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
         pdf.setFillColor(defaultFillColor.r, defaultFillColor.g, defaultFillColor.b);
         pdf.setTextColor(fontColor.r, fontColor.g, fontColor.b);
         pdf.setFontSize(fontSize);
-        
+
         return headerHeight + blocksPadding;
     };
 
@@ -153,19 +153,19 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
             caret = appendLineSeparator(pdf, caret);
             return caret;
         }
-        
+
         return caret;
     };
 
     var appendImages = function (pdf, caret) {
         if (images && images.length && images.length > 0) {
-            
+
             pdf.setFontSize(auxiliaryFontSize);
             pdf.setTextColor(auxiliaryFontColor.r, auxiliaryFontColor.g, auxiliaryFontColor.b);
             pdf.setFontType('italic');
             caret += auxiliaryFontSizeMm; // assuming we're not at EOP yet and can output one line
             pdf.text(pagePaddings.x, caret, pdf.splitTextToSize('See full-size attachments on subsequent pages. Also, visit www.dentallinks.org for more information', fullSizeColWidth));
-            
+
             for (var j = 0; j < images.length; j++) {
 
                 if (!images[j] || !images[j].image) {
@@ -174,23 +174,23 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
                 var image = images[j].image;
 
                 caret = addPage(pdf); // includes addHeader() resetting styles
-                
+
                 var outputDimensions = ImageUtils.resizeImage(
                     {width: image.width, height: image.height},
-                    {width: fullSizeColWidth, height: pageSizes.height - headerHeight - 2*blocksPadding - fontSizeMm - pagePaddings.y}
+                    {width: fullSizeColWidth, height: pageSizes.height - headerHeight - 2 * blocksPadding - fontSizeMm - pagePaddings.y}
                 );
-                
+
                 pdf.addImage(image, 'JPEG', pagePaddings.x, caret, outputDimensions.width, outputDimensions.height);
                 caret += outputDimensions.height + blocksPadding;
-                
+
                 pdf.setFontSize(fontSize);
                 pdf.setTextColor(fontColor.r, fontColor.g, fontColor.b);
                 pdf.setFontType('normal');
-                
+
                 caret += fontSizeMm;
                 var metadata = images[j].metadata;
-                pdf.text(pagePaddings.x, caret, extractFileName(metadata.filename) + (metadata.last_modified ?  ' - '+ formatDate(metadata.last_modified) : '') + (metadata.author ? ' -  Added by: ' + metadata.author.first_name + ' ' + metadata.author.last_name : '')); // no fitString in here, assuming whole page width is always enough
-                
+                pdf.text(pagePaddings.x, caret, extractFileName(metadata.filename) + (metadata.last_modified ? ' - ' + formatDate(metadata.last_modified) : '') + (metadata.author ? ' -  Added by: ' + metadata.author.first_name + ' ' + metadata.author.last_name : '')); // no fitString in here, assuming whole page width is always enough
+
                 caret += blocksPadding;
             }
         }
@@ -202,10 +202,10 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
             pdf.setFontSize(fontSize);
             pdf.setTextColor(fontColor.r, fontColor.g, fontColor.b);
             pdf.setFontType('normal');
-            
+
             // that's in case we're too close to page bottom already
             caret = addPageIfNeeded(pdf, caret, thumbnailSquareSize); // may include addHeader() resetting styles, but we have those default styles here anyway
-            
+
             var xCaret = pagePaddings.x;
             var remainingWidth = halfSizeColWidth - thumbnailSquareSize - thumbnailTextPaddingX;
             for (var j = 0; j < images.length; j++) {
@@ -231,18 +231,21 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
                     var image = images[j].image || images[j].icon;
                     var metadata = images[j].metadata;
 
-                    var thumbDimensions = ImageUtils.resizeImage({width: image.width ? image.width : thumbnailSquareSize, height: image.height ? image.height : thumbnailSquareSize}, {width: thumbnailSquareSize, height: thumbnailSquareSize});
+                    var thumbDimensions = ImageUtils.resizeImage({
+                        width: image.width ? image.width : thumbnailSquareSize,
+                        height: image.height ? image.height : thumbnailSquareSize
+                    }, {width: thumbnailSquareSize, height: thumbnailSquareSize});
 
                     var currentX = xCaret + thumbnailSquareSize + thumbnailTextPaddingX;
                     var currentY = caret;
                     pdf.addImage(image, 'JPEG', xCaret, currentY, thumbDimensions.width, thumbDimensions.height);
                     currentY += fontSizeMm;
                     pdf.text(currentX, currentY, fitString(extractFileName(metadata.filename), fontSizeMm, remainingWidth));
-                    if(metadata.last_modified){
+                    if (metadata.last_modified) {
                         currentY += fontSizeMm;
                         pdf.text(currentX, currentY, formatDate(metadata.last_modified));
                     }
-                    if(metadata.author){
+                    if (metadata.author) {
                         currentY += fontSizeMm;
                         pdf.text(currentX, currentY, 'Added by:');
                         currentY += fontSizeMm;
@@ -250,14 +253,15 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
                     }
 
 
-                    /*if (j % 2 == 0) {*/   /*this code doesn't work as expected in case when some image was null (for example, some error during uploading or downloading from S3)
-                    in that case number of elements in array doesn't correspond to number of rendered thumbnails and thus their order is different*/
+                    /*if (j % 2 == 0) {*/
+                    /*this code doesn't work as expected in case when some image was null (for example, some error during uploading or downloading from S3)
+                     in that case number of elements in array doesn't correspond to number of rendered thumbnails and thus their order is different*/
 
-                     if (currentX < secondColX/*can append to current row*/) { //this code works even if some attachment is null or undefined
-                         // switch to second column
-                         xCaret = secondColX;
-                     } else {
-                    // switch to first column and next row
+                    if (currentX < secondColX/*can append to current row*/) { //this code works even if some attachment is null or undefined
+                        // switch to second column
+                        xCaret = secondColX;
+                    } else {
+                        // switch to first column and next row
                         xCaret = pagePaddings.x;
                         caret += thumbnailSquareSize + blocksPadding;
                         caret = addPageIfNeeded(pdf, caret, thumbnailSquareSize); // may include addHeader() resetting styles, but we have those default styles here anyway
@@ -265,7 +269,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
                 }
             }
             /*if (images.length % 2 != 0) {*/  //this code doesn't work as expected in case when some image was null or undefined(for example, some error during uploading or downloading from S3)
-            if(pagePaddings.x < currentX && currentX < secondColX){
+            if (pagePaddings.x < currentX && currentX < secondColX) {
                 // last thumbnail is in first column, caret needs to be increased
                 caret += thumbnailSquareSize + blocksPadding;
             }
@@ -273,16 +277,16 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
         }
         return caret;
     };
-    
-    var appendPractice = function(pdf, x, caret, practiceData) {
+
+    var appendPractice = function (pdf, x, caret, practiceData) {
 //        pdf.rect(x, caret, halfSizeColWidth, 10);
         pdf.setFontType('bold');
         pdf.text(x, caret, practiceData.blockTitle);
         caret += fontSizeMm;
         pdf.setFontType('normal');
-        
+
         var paddedX = x + addressPaddingX;
-        
+
         pdf.text(paddedX, caret, fitString(practiceData.doctorName, fontSizeMm, halfSizeColWidth - addressPaddingX));
         caret += fontSizeMm;
         pdf.text(paddedX, caret, fitString(practiceData.practiceName, fontSizeMm, halfSizeColWidth - addressPaddingX));
@@ -298,23 +302,23 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
         }
         return caret;
     };
-    
-    var appendPractices = function(pdf, caret) {
+
+    var appendPractices = function (pdf, caret) {
         pdf.setFontSize(fontSize);
         caret += fontSizeMm;
         var caretLeft = appendPractice(pdf, pagePaddings.x, caret, originalPracticeData);
         var caretRight = appendPractice(pdf, secondColX, caret, destinationPracticeData);
         return Math.max(caretLeft, caretRight) + blocksPadding;
     };
-    
-    var appendPatientTextData = function(pdf, caret) {
+
+    var appendPatientTextData = function (pdf, caret) {
         caret += fontSizeMm;
         pdf.setFontType('bold');
         pdf.text(pagePaddings.x, caret, fitString(patientData.name + ' (' + formatDate(patientData.birthday) + ')', fontSizeMm, fullSizeColWidth));
-        return caret+blocksPadding;
+        return caret + blocksPadding;
     };
-    
-    var appendProcedureData = function(pdf, caret) {
+
+    var appendProcedureData = function (pdf, caret) {
         caret += fontSizeMm;
         pdf.setFontType('bold');
         pdf.text(pagePaddings.x, caret, procedureData.practiceType);
@@ -330,24 +334,26 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
                 } else {
                     caption = 'Teeth ';
                 }
-                pdf.text(pagePaddings.x, caret, caption + teethArray.sort(function(a, b) { return a-b; }).join(', '));
+                pdf.text(pagePaddings.x, caret, caption + teethArray.sort(function (a, b) {
+                    return a - b;
+                }).join(', '));
             }
         }
         return caret + blocksPadding;
     };
-    
-    var appendLineSeparator = function(pdf, caret) {
+
+    var appendLineSeparator = function (pdf, caret) {
         pdf.line(pagePaddings.x, caret, pagePaddings.x + fullSizeColWidth, caret);
         return caret + blocksPadding;
     };
-    
-    var appendBottomText = function(pdf, caret) {
+
+    var appendBottomText = function (pdf, caret) {
         var str = 'Visit www.dentallinks.org to see referral documents';
         pdf.setTextColor(auxiliaryFontColor.r, auxiliaryFontColor.g, auxiliaryFontColor.b);
         pdf.setFontType('italic');
         pdf.setFontSize(auxiliaryFontSize);
         caret += auxiliaryFontSizeMm;
-        
+
         var width = pdf.getStringUnitWidth(str) * auxiliaryFontSizeMm;
         pdf.text(pageSizes.width - pagePaddings.x - width, caret, str);
     };
@@ -362,6 +368,39 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
             }
         }
 
+        /**
+         * This method is a workaround that is needed because IE doesn't support CORS for images drawn to canvas.  You can read more here: http://stackoverflow.com/questions/18112047/canvas-todataurl-working-in-all-browsers-except-ie10
+         * @param index
+         * @returns {Image}
+         */
+        function downloadImageIE(index) {
+            var xhr = new XMLHttpRequest();
+            var img = new Image();
+            xhr.onload = function () {
+                var url = $window.URL.createObjectURL(this.response);
+
+                img.crossOrigin = 'use-credentials';
+                img.onload = function () {
+                    images[index].image = img;
+                    runCallbackIfReady();
+                    // don't forget to free memory up when you're done (you can do this as soon as image is drawn to canvas)
+                    $window.URL.revokeObjectURL(url);
+                };
+                img.onerror = function () {
+                    runCallbackIfReady();
+                    // don't forget to free memory up when you're done (you can do this as soon as image is drawn to canvas)
+                    $window.URL.revokeObjectURL(url);
+                };
+                img.src = url;
+
+            };
+            var auth = Auth.get();
+            xhr.open('GET', API_ENDPOINT + '/attachment/?file=' + images[j].metadata.id + '/' + images[j].metadata.filename + '&token=' + auth.token + '&from=' + auth.email, true);
+            xhr.responseType = 'blob';
+            xhr.send();
+            return img;
+        }
+
         function downloadImage(index) {
             var img = new Image();
             img.crossOrigin = 'use-credentials';
@@ -369,7 +408,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
                 images[index].image = img;
                 runCallbackIfReady();
             };
-            img.onerror = function(){
+            img.onerror = function () {
                 runCallbackIfReady();
             };
             img.src = API_ENDPOINT + '/attachment/?file=' + images[j].metadata.id + '/' + images[j].metadata.filename;
@@ -382,7 +421,11 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
                     if (!File.isImage(images[j].metadata.filename)) {
                         runCallbackIfReady();
                     } else {
-                        downloadImage(j);
+                        if (/trident/i.test($window.navigator.userAgent)) {
+                            downloadImageIE(j)
+                        } else {
+                            downloadImage(j);
+                        }
                     }
                 }
             }
@@ -419,7 +462,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
         addNotes: function (notesArray) {
             notes = notesArray;
         },
-        composeAddress: function(city, state, zip) {
+        composeAddress: function (city, state, zip) {
             var result = city;
             if (result != '') {
                 if ((state + zip) != '') {
@@ -449,37 +492,37 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', '$tim
             var patient = data.patient || {};
             patientData.name = (patient.first_name || '') + ' ' + (patient.last_name || '');
             patientData.birthday = (patient.birthday || '');
-            
+
             var procedure = data.procedure || {};
             procedureData.name = procedure.name || '';
             procedureData.practiceType = (procedure.practice_type || {}).name || '';
             if (data.teeth && data.teeth.length > 0) {
                 procedureData.teeth = data.teeth;
             }
-            
+
             originalPracticeData = this.createPracticeData('Referred by:', data.orig_provider || {}, data.orig_provider.practice || {});
             destinationPracticeData = this.createPracticeData('Referred to:', data.dest_provider || {}, data.dest_practice || {});
-            
+
             this.addNotes(data.notes);
 
         },
         save: function (filename) {
             Spinner.show();
-            prepareImages(function(){
+            prepareImages(function () {
                 buildPdf(false).save(filename);
-                $timeout(function(){  //need this $timeout() to notify Angular's two-way binding about updates from custom callback function. (It runs $apply() in a next digest cycle - prevents 'apply already in progress' error)
+                $timeout(function () {  //need this $timeout() to notify Angular's two-way binding about updates from custom callback function. (It runs $apply() in a next digest cycle - prevents 'apply already in progress' error)
                     Spinner.hide();
                 });
             });
         },
         saveForPatient: function (filename) {
             Spinner.show();
-            prepareImages(function(){
+            prepareImages(function () {
                 buildPdf(true).save(filename);
-                $timeout(function(){  //need this $timeout() to notify Angular's two-way binding about updates from custom callback function. (It runs $apply() in a next digest cycle - prevents 'apply already in progress' error)
-                        Spinner.hide();
-                    });
+                $timeout(function () {  //need this $timeout() to notify Angular's two-way binding about updates from custom callback function. (It runs $apply() in a next digest cycle - prevents 'apply already in progress' error)
+                    Spinner.hide();
                 });
+            });
         }
     };
 }]);

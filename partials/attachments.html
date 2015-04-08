@@ -18,7 +18,7 @@
                     <!-- Attachments on server -->
                     <li class="attachment-block" ng-repeat="attachment in attachments">
 
-                        <a href="{{attachment | attachmentDownloadUrl}}" target="_blank">
+                        <a href="{{attachment | authenticatableAttachmentDownloadUrl}}" target="_blank">
                             <div class="attachment-thumb" attachment-thumb="{{attachment | attachmentDownloadUrl}}">
 
                             </div>
