@@ -1209,7 +1209,11 @@ td.cell-from .practice, td.cell-to .practice {
 	.toothchart-wrapper {
 		overflow-x: hidden;
 	}
-	}
+
+    .modal-sm {
+        width: 300px;
+    }
+}
 /* Mobile devices (mobile, 620px and up) */
 @media (min-width: 620px) {
 	.table-container {
@@ -1494,11 +1498,16 @@ td.cell-from .practice, td.cell-to .practice {
 	.table-wrapper {
 		padding: 0 60px;
 	}
+
 	.modal-dialog {
 		margin: 80px auto;
 		width: 450px;
 	}
-	.responsive-tab-content .nav-tabs > li > a {
+    .modal-sm {
+        width: 300px;
+    }
+
+    .responsive-tab-content .nav-tabs > li > a {
 		font-size: 16px;
 		font-size: 1.6rem;
 		padding: 24px;

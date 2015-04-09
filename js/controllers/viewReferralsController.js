@@ -207,6 +207,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
             var modalInstance = $modal.open({
                 templateUrl: 'partials/change_dest_provider_form.html',
                 controller: 'ChangeDestProviderModalController',
+                size: 'sm',
                 resolve: {
                     referral: function(){
                         return $scope.referral;
