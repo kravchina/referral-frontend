@@ -176,14 +176,15 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
     $scope.ok = function (user) {
         user.practice_id = Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
-        ProviderInvitation.save({provider_invitation: user}, function (success) {
-            ModalHandler.close($modalInstance,success);
-        },  function (failure) {
-            Logger.log(failure);
-            $scope.alerts = [];//reset alerts list because we need only one alert at a time
-            Alert.error($scope.alerts, failure.data);
-            Logger.log($scope.alerts);
-        });
+        ProviderInvitation.save({provider_invitation: user},
+            function (success) {
+                ModalHandler.close($modalInstance, success);
+            }, function (failure) {
+                Logger.log(failure);
+                $scope.alerts = [];//reset alerts list because we need only one alert at a time
+                Alert.error($scope.alerts, failure.data.message[0]);
+                Logger.log($scope.alerts);
+            });
     };
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
