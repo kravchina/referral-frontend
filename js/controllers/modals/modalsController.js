@@ -115,7 +115,7 @@ modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 
             },
             failure: function (failure) {
                 $scope.alerts = [];
-                Alert.error($scope.alerts, failure.data, true);
+                Alert.error($scope.alerts, failure.data.message[0], true);
             }
         };
 
