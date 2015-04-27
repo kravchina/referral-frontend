@@ -3,6 +3,7 @@ createReferralModule.service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 
         return {
 
             prepareSubmit: function (scope, referral) {
+                referral.orig_practice_id = scope.auth.practice_id;
                 referral.dest_practice_id = scope.destinationPractice.id;
                 referral.patient_id = scope.patient.id;
                 referral.teeth = scope.teeth.join('+');

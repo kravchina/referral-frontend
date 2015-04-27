@@ -260,7 +260,7 @@ modalsModule.controller('EditUserModalController', ['$scope', '$modalInstance', 
     $scope.auth = Auth.get();
     $scope.ok = function (user) {
         if(user.password != user.password_confirmation){
-            Alert.error($scope.alerts, 'Error: Password does not mactch');
+            Alert.error($scope.alerts, 'Error: Password does not match');
             return;
         }
 

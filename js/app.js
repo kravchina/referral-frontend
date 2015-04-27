@@ -27,7 +27,8 @@ dentalLinks.constant('USER_ROLES', {
 dentalLinks.constant('FREE_TRIAL_PERIOD', 45);
 dentalLinks.constant('API_ENDPOINT', 'https://referral-server.herokuapp.com');
 dentalLinks.constant('AUTH_EVENTS', {
-    notAuthenticated: 'auth-not-authenticated'
+    notAuthenticated: 'auth-not-authenticated',
+    paymentRequired: 'payment-required'
 });
 
 dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', function ($stateProvider, $urlRouterProvider, USER_ROLES) {
@@ -131,7 +132,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         });
     $urlRouterProvider.otherwise('/sign_in');
 }])
-    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', 'Logger', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, Logger) {
+    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', '$modal', 'Logger', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, $modal, Logger) {
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
             ModalHandler.dismissIfOpen();  //close dialog if open.
@@ -146,6 +147,18 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             Auth.remove();
             redirect.path = args.redirect;
             $state.go('signIn', {}, {reload: true});
+        });
+
+        $rootScope.$on(AUTH_EVENTS.paymentRequired, function(event, args){
+           Logger.log('paymentRequired');
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/upgrade_required.html',
+                backdrop: 'static'
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function () {
+                $state.go('admin');
+            });
         });
 
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
@@ -164,6 +177,7 @@ dentalLinks.config(['$locationProvider', function ($locationProvider) {
 
 dentalLinks.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.defaults.useXDomain = true;
+    $httpProvider.defaults.withCredentials = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.interceptors.push('authInterceptor');
     $httpProvider.interceptors.push('spinnerInterceptor');
@@ -228,6 +242,9 @@ dentalLinks.factory('authInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', '$loc
                      }
                 }
 
+            }else if(response.status === 402){
+                //don't allow to show referral in case of expired subscription
+                $rootScope.$broadcast(AUTH_EVENTS.paymentRequired, {redirect: redirect.path})
             }
 
             return $q.reject(response);

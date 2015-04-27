@@ -6,7 +6,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
         $scope.alerts = [];
         $scope.attachment_alerts = [];
 
-        var auth = Auth.get() || {};
+        var auth = $scope.auth = Auth.get() || {};
 
         $scope.procedures = Procedure.query();
         $scope.practiceTypes = Procedure.practiceTypes();
