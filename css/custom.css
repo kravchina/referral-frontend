@@ -992,7 +992,7 @@ td.cell-from .practice, td.cell-to .practice {
 	position: relative;
 }
 
-.section-block .table .btn-delete {
+.section-block .table .btn-delete, .input-block .btn-delete {
 	cursor: pointer;
 	font-size: 12px;
 	font-size: 1.2rem;
@@ -1024,7 +1024,7 @@ td.cell-from .practice, td.cell-to .practice {
 	width: 20px;
 }
 
-.section-block .table .btn-delete:hover {
+.section-block .table .btn-delete:hover, .input-block .btn-delete:hover {
 	color: #7f8c8d;
 	transition: all 0.3s ease;
 		-moz-transition: all 0.3s ease;
@@ -1032,7 +1032,7 @@ td.cell-from .practice, td.cell-to .practice {
         -o-transition: all 0.3s ease;
 		-webkit-transition: all 0.3s ease;
 }
-.section-block .table .btn-delete.active {
+.section-block .table .btn-delete.active, .input-block .btn-delete.active {
 	color: #7f8c8d;
 	transition: all 0.3s ease;
 		-moz-transition: all 0.3s ease;
@@ -1041,7 +1041,7 @@ td.cell-from .practice, td.cell-to .practice {
 		-webkit-transition: all 0.3s ease;
 	width: auto;
 }
-.section-block .table .btn-delete [class^="dlicons-"], .section-block .table .btn-delete [class*=" dlicons-"] {
+.section-block .table .btn-delete [class^="dlicons-"], .section-block .table .btn-delete [class*=" dlicons-"], .input-block .btn-delete [class^="dlicons-"], .input-block .btn-delete [class*="dlicons-"] {
 	font-size: 18px;
 	font-size: 1.8rem;
 	vertical-align: middle;

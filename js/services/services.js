@@ -168,6 +168,10 @@ dentalLinksServices.factory('Procedure', ['$resource', 'API_ENDPOINT', function 
     })
 }]);
 
+dentalLinksServices.factory('Address', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/addresses/:id');
+}]);
+
 dentalLinksServices.factory('User', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/users/:id', {}, {
         getInvitees: {method: 'GET', url: API_ENDPOINT + '/invitees/:user_id', isArray: true},

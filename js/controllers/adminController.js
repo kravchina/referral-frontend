@@ -1,7 +1,7 @@
 var adminModule = angular.module('admin', ['ui.bootstrap', 'angularPayments']);
 
-adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'PhoneFormatter', 'Logger',
-    function ($scope, $modal, Auth, Alert, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, PhoneFormatter, Logger) {
+adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 'Address', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'PhoneFormatter', 'Logger',
+    function ($scope, $modal, Auth, Alert, Address, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, PhoneFormatter, Logger) {
 
 
         $scope.alerts = [];
@@ -198,6 +198,28 @@ adminModule.controller('AdminController', ['$scope', '$modal', 'Auth', 'Alert', 
 
             });
             ModalHandler.set(modalInstance);
+
+        };
+
+        $scope.addAddress = function(){
+            $scope.practice.addresses.push({new: true});
+        };
+
+        $scope.removeAddress = function(address){
+            function removeAddressFromList(addressToRemove) {
+                $scope.practice.addresses.splice($scope.practice.addresses.indexOf(addressToRemove), 1);
+            }
+
+            if (address.id){
+                //removing address if it is persisted on server-side
+                Address.remove({id: address.id}, function(success){
+                    removeAddressFromList(address);
+
+                });
+            }else{
+                //removing address if it is not persisted on server-side
+                removeAddressFromList(address);
+            }
 
         };
 

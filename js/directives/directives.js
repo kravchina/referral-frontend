@@ -244,12 +244,14 @@ dentalLinksDirectives.directive('toggleEdit', function () {
             var editFormCtrl = formCtrls[0];
             var formCtrl = formCtrls[1];
             var editButton = $element;
-            var saveButton = $element.next();
+            var addAddressButton = $element.next();
+            var saveButton = $element.next().next();
 
             // edit
             editButton.on('click', function (e) {
                 editButton.addClass('hide');
                 saveButton.removeClass('hide');
+                addAddressButton.removeClass('hide');
                 editFormCtrl.enableControls();
             });
 
@@ -258,6 +260,7 @@ dentalLinksDirectives.directive('toggleEdit', function () {
                 if (formCtrl.$valid) {
                     editButton.removeClass('hide');
                     saveButton.addClass('hide');
+                    addAddressButton.addClass('hide');
                     editFormCtrl.disableControls();
                 }
             });
