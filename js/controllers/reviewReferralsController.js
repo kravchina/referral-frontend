@@ -1,7 +1,7 @@
 createReferralModule.controller('ReviewReferralsController', ['$scope', '$state', 'currentReferral', 'Alert', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'ReferralHelper', 'User', 'message',
     function ($scope, $state, currentReferral, Alert, Auth, Procedure, Referral, UnsavedChanges, ReferralHelper, User, message) {
 
-        var auth = Auth.get() || {};
+        var auth = $scope.auth =  Auth.get() || {};
 
         $scope.alerts = [];
         $scope.attachment_alerts = [];
