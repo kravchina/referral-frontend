@@ -6,6 +6,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
 
     var pdf = new jsPDF(jsPDFOrientation, jsPDFUnit, jsPDFFormat); // TODO [ak] refactor. Initialization of global vars requires this, but in fact PDF is created in buildPdf()
 
+    var referralDate = {};
     var patientData = {};
     var procedureData = {};
     var originalPracticeData = {};
@@ -22,7 +23,10 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
         x: 10, // left & right
         y: 10 // top & bottom
     };
-
+    var headerDatePaddings = {
+        x: 140,
+        y: -5
+    };
     var headerHeight = 20;
     var headerColor = {
         r: 52, g: 73, b: 94
@@ -130,10 +134,15 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
         pdf.setFontType('normal');
         pdf.text(pagePaddings.x + width, y, strNormal);
 
+        pdf.setFontSize(fontSize);
+        var dateReferred = 'Referred: ' + new Date(referralDate).toLocaleString();
+        var dateGenerated = 'Generated: ' + new Date().toLocaleString();
+        pdf.text(pagePaddings.x + headerDatePaddings.x, y + headerDatePaddings.y, dateReferred);
+        pdf.text(pagePaddings.x + headerDatePaddings.x, y, dateGenerated);
+
         // best guess styles restoration :/
         pdf.setFillColor(defaultFillColor.r, defaultFillColor.g, defaultFillColor.b);
         pdf.setTextColor(fontColor.r, fontColor.g, fontColor.b);
-        pdf.setFontSize(fontSize);
 
         return headerHeight + blocksPadding;
     };
@@ -462,6 +471,8 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
         addNotes: function (notesArray) {
             notes = notesArray;
         },
+
+
         composeAddress: function (city, state, zip) {
             var result = city;
             if (result != '') {
@@ -502,7 +513,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
 
             originalPracticeData = this.createPracticeData('Referred by:', data.orig_provider || {}, data.orig_provider.practice || {});
             destinationPracticeData = this.createPracticeData('Referred to:', data.dest_provider || {}, data.dest_practice || {});
-
+            referralDate = data.created_at;
             this.addNotes(data.notes);
 
         },
