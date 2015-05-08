@@ -19,6 +19,8 @@
         </div>
 
         <div ng-repeat="address in practice.addresses_attributes" class="input-block">
+            <hr>
+
             <div class="block-title">
                 <div delete-button class="button-block btn-delete" ng-show="practice.addresses_attributes.length > 1">
                     <span class="dlicons-remove"></span> Delete? <a ng-click="removeAddress(address)" class="link-green">Yes</a> | <a class="link-orange">No</a>
