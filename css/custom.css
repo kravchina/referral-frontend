@@ -978,7 +978,7 @@ td.cell-from .practice, td.cell-to .practice {
 }
 
 .section-block .table td.cell-created{
-    min-width: 130px;
+    min-width: 160px;
 }
 
 .section-block .table tbody tr td.cell-created, .section-block .table tbody tr td.cell-invited {
