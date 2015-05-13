@@ -14,7 +14,7 @@ var AdminPage = function() {
     };
     
     this.clickPracticeTabEdit = function() {
-        element(by.css('form#formPracticeTab button.btn-edit')).click();
+        element(by.css('form#formPracticeTab button.btn-edit[title="Edit this section"]')).click();
     };
     
     this.expectPracticeViewMode = function() {
