@@ -33,5 +33,8 @@ exports.config = {
         browser.getCapabilities().then(function (cc) {
             browser.currentRunBrowserName = cc.caps_.browserName;
         });
+    },
+    jasmineNodeOpts: {
+        defaultTimeoutInterval: 60000
     }
 };
