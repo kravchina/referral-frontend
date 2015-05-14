@@ -25,15 +25,15 @@
                                         <h2>Practice</h2>
                                         <button type="button" access="admin" toggle-edit class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
                                         <button type="button" ng-click="addAddress()" class="btn btn-green btn-toggle-shifted btn-edit hide" data-toggle="tooltip" data-placement="top" title="Add practice address"><span class="dlicons-plus"></span></button>
-                                        <button type="button" ng-click='savePractice(practiceForm)' class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
+                                        <button type="button" ng-click='savePractice(practiceForm)' ng-disabled="practiceForm.$error.required" class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
                                     </div>
 
                                     <div id="sectPractice">
                                         <div class="section-block">
 
                                             <div class="row">
-                                                <div class="input-block col-sm-12">
-                                                    <input type="text" class="form-control data1" ng-model="practice.name" placeholder="Enter practice name &hellip;" value="Tooth Care Dental Clinic" ng-disabled="true">
+                                                <div class="input-block col-sm-12" ng-class="{'has-error': practiceForm.practiceName.$invalid}">
+                                                    <input type="text" class="form-control data1" ng-model="practice.name" name="practiceName"  placeholder="Enter practice name &hellip;" value="Tooth Care Dental Clinic" ng-disabled="true" required>
                                                     <label class="hidden">Practice name</label>
                                                 </div>
                                             </div>
@@ -41,24 +41,25 @@
 
                                         <div class="section-block" ng-repeat="address in practice.addresses">
                                             <hr>
+                                            <ng-form name="addressForm">
                                             <div class="row">
-                                                <div class="input-block col-sm-6">
-                                                    <input type="text" class="form-control" ng-class="{data1: !address.new}" ng-model="address.street_line_1" placeholder="Enter street address &hellip;" ng-disabled="!address.new">
+                                                <div class="input-block col-sm-6" ng-class="{'has-error': addressForm.street.$invalid}">
+                                                    <input type="text" class="form-control" ng-class="{data1: !address.new}" name="street"  ng-model="address.street_line_1" placeholder="Enter street address &hellip;" ng-disabled="!address.new" required>
                                                     <label ng-class="{hidden:!address.new}">Street address</label>
                                                 </div>
 
-                                                <div class="input-block col-xs-2">
-                                                    <input type="text" class="form-control" ng-class="{data1: !address.new}" ng-model="address.city" placeholder="Enter town / city &hellip;"  ng-disabled="!address.new">
+                                                <div class="input-block col-xs-2" ng-class="{'has-error': addressForm.city.$invalid}">
+                                                    <input type="text" class="form-control" name="city" ng-class="{data1: !address.new}"  ng-model="address.city" placeholder="Enter town / city &hellip;"  ng-disabled="!address.new" required>
                                                     <label ng-class="{hidden:!address.new}">Town / City</label>
                                                 </div>
 
-                                                <div class="input-block col-xs-2">
-                                                    <input type="text" class="form-control" ng-class="{data1: !address.new}" ng-model="address.state" placeholder="Enter state &hellip;" ng-disabled="!address.new">
+                                                <div class="input-block col-xs-2" ng-class="{'has-error': addressForm.state.$invalid}">
+                                                    <state-select class="{data1: !address.new}" disabled="!address.new"  name="state" address="address"></state-select>
                                                     <label ng-class="{hidden:!address.new}">State</label>
                                                 </div>
 
-                                                <div class="input-block col-xs-2">
-                                                    <input type="text" class="form-control" ng-class="{data1: !address.new}" ng-model="address.zip" placeholder="Enter ZIP code &hellip;" ng-disabled="!address.new">
+                                                <div class="input-block col-xs-2"  ng-class="{'has-error': addressForm.zip.$invalid}">
+                                                    <input type="text" class="form-control" ng-class="{data1: !address.new}" name="zip" ng-model="address.zip" placeholder="Enter ZIP code &hellip;" ng-disabled="!address.new" required>
                                                     <label ng-class="{hidden:!address.new}">ZIP code</label>
                                                 </div>
                                             </div>
@@ -81,6 +82,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            </ng-form>
+
                                         </div>
                                         <!--.section-block-->
 

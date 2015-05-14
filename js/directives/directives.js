@@ -44,6 +44,22 @@ dentalLinksDirectives.directive('expandNote', [function () {
 
 }]);
 
+dentalLinksDirectives.directive('stateSelect', [function(){
+    return {
+        restrict: 'E',
+        templateUrl: 'partials/state_select.html',
+        scope: {
+            'class': '@',
+            'disabled': '@',
+            'address': '='
+        }/*,
+        link: function(scope, element, attributes){
+            scope.disabled = attributes.ngDisabled;
+            scope.class = attributes.ngClass;
+        }*/
+    }
+}]);
+
 
 dentalLinksDirectives.directive('pdfPhotos', ['Auth', 'PDF', 'File', 'Logger', function (Auth, PDF, File, Logger) {
     return {
