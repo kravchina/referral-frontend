@@ -455,6 +455,17 @@ textarea.form-control {
 .form-control.data1[disabled], .form-control.data2[disabled] {
 	cursor: text;
 }
+
+.form-control.select.data1{
+	/*removing arrow for disabled select*/
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+ .form-control.select.data1::-ms-expand {
+     /*removing arrow for disabled select in IE10+*/
+     display: none;
+}
+
 .toothchart-wrapper {
 	overflow-x: scroll;
 }
