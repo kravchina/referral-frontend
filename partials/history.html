@@ -44,7 +44,7 @@
                 <table infinite-scroll="addMoreItems()" infinite-scroll-disabled="busy" class="table table-hover table-striped">
                     <thead>
                     <tr>
-                        <th class="cell-datetime">Date / Time</th>
+                        <th class="cell-datetime">Date</th>
                         <th class="cell-patient">Patient Name</th>
                         <th class="cell-from">From</th>
                         <th class="cell-to">To</th>
@@ -57,7 +57,7 @@
                         ui-sref="{{referral.status == 'draft' ? 'reviewReferral({referral_id: referral.id})' : 'viewReferral({referral_id: referral.id})' }}">
 
                         <td class="cell-datetime">
-                            <span class="ref-date">{{referral.created_at | date: 'mediumDate'}}</span>
+                            <span class="ref-date">{{referral.updated_at | date: 'mediumDate'}}</span>
                         </td>
                         <td class="cell-patient">{{referral.patient.first_name}} {{referral.patient.last_name}}</td>
                         <td class="cell-from">
