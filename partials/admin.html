@@ -166,7 +166,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th class="cell-provider">Provider's Name</th>
-                                                    <th class="cell-practice">Practice Name</th>
+                                                    <th class="cell-practice">E-mail</th>
                                                     <th class="cell-invited">Invited on</th>
                                                     <th class="cell-status">Status</th>
                                                 </tr>
@@ -174,7 +174,7 @@
                                                 <tbody>
                                                 <tr ng-repeat="provider in invitedColleagues">
                                                     <td class="cell-provider">{{provider.title}} {{provider.first_name}} {{provider.middle_initial}} {{provider.last_name}}</td>
-                                                    <td class="cell-practice">{{provider.registered_user.practice.name}}</td>
+                                                    <td class="cell-practice">{{provider.email}}</td>
                                                     <td class="cell-invited">{{provider.created_at | date: 'mediumDate'}}</td>
                                                     <td class="cell-status">
                                                         <div access="admin" delete-button class="button-block btn-delete" ng-hide="provider.status === 'registered'">
