@@ -1654,3 +1654,7 @@ label.tooth-label-view{
     color: rgb(170, 170, 170);
     border-color: rgb(243, 243, 243);
 }
+
+#formNewNote textarea{
+	height: 250px;
+}
