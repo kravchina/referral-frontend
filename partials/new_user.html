@@ -4,7 +4,7 @@
     <p class="page-subheader">Complete your registration to join {{practice.name}}.</p>
 </header><!-- .page-header -->
 
-<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
+<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{ alert.message | i18n }}</alert>
 <div class="form-wrapper">
     <form name="form" novalidate class="simple-form">
         <div class="box-white">
