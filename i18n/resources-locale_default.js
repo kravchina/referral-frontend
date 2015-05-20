@@ -20,6 +20,11 @@
         "description":"Error message for the case when invitation token considered invalid"
     },
     {
+        "key":"promotion.expired",
+        "value":"Your promo code is expired",
+        "description":"Error message for the case when promo code was expired"
+    },
+    {
         "key":"practice.create.failed",
         "value":"Unable to create practice",
         "description":"Error message for the case when practice creation was failed"

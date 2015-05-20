@@ -46,7 +46,24 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         state('promotion', {
             url: '/register/promo/:promo',
             templateUrl: 'partials/registration.html',
-            controller: 'RegistrationController'
+            controller: 'RegistrationController',
+            onEnter: ['$state', '$stateParams', 'Promo', function($state, $stateParams, Promo) {
+                Promo.validate({id: $stateParams.promo}).$promise
+                    .then(function(){
+                        // Promo code is valid, do nothing
+                    }, function(response){
+                        if(response.status === 404) {
+                            $state.go('signIn');
+                        }
+                        if(response.status === 422) {
+                            $state.go('promotion_expired');
+                        }
+                    });
+            }]
+        }).
+        state('promotion_expired', {
+            url: '/promoexpired',
+            templateUrl: 'partials/promotion_expired.html'
         }).
         state('new_user', {
             url: '/new_user/:invitation_token',
