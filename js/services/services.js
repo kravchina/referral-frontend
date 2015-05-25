@@ -243,3 +243,12 @@ dentalLinksServices.factory('ServerSettings', ['$resource', 'API_ENDPOINT', func
         }}
     })
 }]);
+
+dentalLinksServices.factory('Promo', ['$resource', 'API_ENDPOINT', function($resource, API_ENDPOINT){
+    return $resource(API_ENDPOINT + '/promo/:id', {id: '@id'}, {
+        validate: {
+            method: 'GET',
+            url: API_ENDPOINT + '/promo/validate/:id'
+        }
+    })
+}]);

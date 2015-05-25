@@ -14,7 +14,8 @@ var dentalLinks = angular.module('dentalLinks', [
     'dentalLinksServices',
     'dentalLinksDirectives',
     'ui.mask',
-    'localization'
+    'localization',
+    'error'
 ]);
 
 dentalLinks.constant('USER_ROLES', {
@@ -46,7 +47,25 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         state('promotion', {
             url: '/register/promo/:promo',
             templateUrl: 'partials/registration.html',
-            controller: 'RegistrationController'
+            controller: 'RegistrationController',
+            onEnter: ['$state', '$stateParams', 'Promo', function($state, $stateParams, Promo) {
+                Promo.validate({id: $stateParams.promo}).$promise
+                    .then(function(){
+                        // Promo code is valid, do nothing
+                    }, function(response){
+                        if(response.status === 404) {
+                            $state.go('error_page', {error_key: 'promotion.not.found'});
+                        }
+                        if(response.status === 422) {
+                            $state.go('error_page', {error_key: 'promotion.expired'});
+                        }
+                    });
+            }]
+        }).
+        state('error_page', {
+            url: '/error/:error_key',
+            templateUrl: 'partials/error.html',
+            controller: 'ErrorController'
         }).
         state('new_user', {
             url: '/new_user/:invitation_token',
