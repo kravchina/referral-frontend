@@ -14,7 +14,8 @@ var dentalLinks = angular.module('dentalLinks', [
     'dentalLinksServices',
     'dentalLinksDirectives',
     'ui.mask',
-    'localization'
+    'localization',
+    'error'
 ]);
 
 dentalLinks.constant('USER_ROLES', {
@@ -53,17 +54,18 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
                         // Promo code is valid, do nothing
                     }, function(response){
                         if(response.status === 404) {
-                            $state.go('signIn');
+                            $state.go('error_page', {error_key: 'promotion.not.found'});
                         }
                         if(response.status === 422) {
-                            $state.go('promotion_expired');
+                            $state.go('error_page', {error_key: 'promotion.expired'});
                         }
                     });
             }]
         }).
-        state('promotion_expired', {
-            url: '/promoexpired',
-            templateUrl: 'partials/promotion_expired.html'
+        state('error_page', {
+            url: '/error/:error_key',
+            templateUrl: 'partials/error.html',
+            controller: 'ErrorController'
         }).
         state('new_user', {
             url: '/new_user/:invitation_token',

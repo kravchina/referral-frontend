@@ -25,6 +25,11 @@
         "description":"Error message for the case when promo code was expired"
     },
     {
+        "key":"promotion.not.found",
+        "value":"Your promo code is not found",
+        "description":"Error message for the case when promo code was not found"
+    },
+    {
         "key":"practice.create.failed",
         "value":"Unable to create practice",
         "description":"Error message for the case when practice creation was failed"
@@ -44,5 +49,10 @@
         "key":"user.exists",
         "value":"Sorry an account with this email address already exists. If this is your email address please login into your existing account at www.dentallinks.org if you need further assistance please email us at info@dentallinks.org",
         "description":"Error message for when person is trying to register with an email that we already have as a registered user or an invitation"
+    },
+    {
+        "key":"default.error",
+        "value":"Unknown error",
+        "description":"Unknown error message"
     }
 ]
