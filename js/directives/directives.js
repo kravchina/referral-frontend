@@ -204,12 +204,16 @@ dentalLinksDirectives.directive('dateRangePicker', ['$parse', function($parse){
                     }
                 },
                 function(start, end) {
-                    $element.find('span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                    if (start.format('MMMM D, YYYY') == moment(0).format('MMMM D, YYYY') && end.format('MMMM D, YYYY') == moment().endOf('day').format('MMMM D, YYYY')) {
+                        $element.find('span').html('All');
+                    } else {
+                        $element.find('span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));    
+                    }
                     dateRangeCallback(scope, {start: start, end: end});
                 }
             );
 
-            $element.find('span').html(moment(0).format('MMMM D, YYYY') + ' - ' + moment().endOf('day').format('MMMM D, YYYY'));
+            $element.find('span').html('All');
         }
     }
 }]);
