@@ -488,7 +488,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
             practiceData.blockTitle = blockTitle;
             practiceData.doctorName = (provider.first_name || '') + ' ' + (provider.middle_initial || '') + ' ' + (provider.last_name || '');
             practiceData.practiceName = (practice || {}).name || '';
-            var orig_address = (practice || {}).addresses[0] || {};
+            var orig_address = ((practice || {}).addresses || [{}])[0] || {};
             practiceData.phone = orig_address.phone || '';
             practiceData.addressStreet = orig_address.street_line_1 || '';
             practiceData.addressCity = this.composeAddress((orig_address.city || ''), (orig_address.state || ''), (orig_address.zip || ''));
