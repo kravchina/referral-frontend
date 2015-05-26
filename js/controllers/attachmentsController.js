@@ -117,7 +117,7 @@ dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fi
 
         uploader.bind('complete', function (event, xhr, item, response) {
             Logger.info('Complete', xhr, item, response);
-            if(xhr.status == 201){
+            if (xhr.status == 201 && $scope && $scope.attachments) {
                 $scope.attachments.push(response);
             }
         });
