@@ -49,7 +49,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             templateUrl: 'partials/registration.html',
             controller: 'RegistrationController',
             onEnter: ['$state', '$stateParams', 'Promo', function($state, $stateParams, Promo) {
-                Promo.validate({id: $stateParams.promo}).$promise
+                Promo.validate({code: $stateParams.promo}).$promise
                     .then(function(){
                         // Promo code is valid, do nothing
                     }, function(response){
