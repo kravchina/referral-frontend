@@ -313,3 +313,12 @@ modalsModule.controller('RegistrationResultController', ['$scope', '$modalInstan
         ModalHandler.close($modalInstance);
     }
 }]);
+
+modalsModule.controller('ReferralSuccessModalController', ['$scope', '$modalInstance', 'ModalHandler', function($scope, $modalInstance, ModalHandler){
+    $scope.cancel = function () {
+        ModalHandler.dismiss($modalInstance);
+    };
+    $scope.goDownload = function () {
+        ModalHandler.close($modalInstance);
+    }
+}]);

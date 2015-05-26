@@ -1,0 +1,18 @@
+<form id="formReferralCreate" name="referralCreate">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Referral create</h4>
+    </div>
+    <div class="modal-body">
+        <!--<div ng-show="noteForm.$invalid" class="alert alert-danger">
+            <strong>Oops!</strong> Please fix the highlighted errors below.
+        </div>-->
+        <div class="input-block">
+            <div class="alert alert-success">{{'referral.success.create' | i18n}}</div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-orange" ng-click="goDownload(note)">Go to Download</button>
+        <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Close</button>
+    </div>
+</form>

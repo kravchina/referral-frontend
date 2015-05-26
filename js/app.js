@@ -119,7 +119,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         }).
         state('viewReferral', {
             url: '/view_referral/:referral_id',
-            params: {message: null},
+            params: {message: null, isNew: false},
             templateUrl: 'partials/view_referral.html',
             controller: 'ViewReferralsController',
             resolve: {

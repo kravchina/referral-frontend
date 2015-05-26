@@ -53,7 +53,7 @@ createReferralModule.controller('CreateReferralsController', ['$scope', '$state'
                     Alert.success($scope.alerts, 'Referral was sent successfully!');
                     ReferralHelper.uploadAttachments($scope, referral.id, function(message){
                         UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-                        $state.go('viewReferral', {referral_id: referral.id, message: message});
+                        $state.go('viewReferral', {referral_id: referral.id, message: message, isNew: true});
                     });
                 },
                 failure: function (failure) {

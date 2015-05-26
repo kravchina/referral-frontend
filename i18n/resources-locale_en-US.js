@@ -51,6 +51,11 @@
         "description":"Error message for when person is trying to register with an email that we already have as a registered user or an invitation"
     },
     {
+        "key":"referral.success.create",
+        "value":"Referral success created, please download PDF",
+        "description":"Referral success created"
+    },
+    {
         "key":"default.error",
         "value":"Unknown error",
         "description":"Unknown error message"
