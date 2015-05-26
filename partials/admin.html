@@ -213,13 +213,13 @@
 
 
                                             <div access="admin" ng-hide="practice.stripe_customer_id" id="sectUpgrade" class="section-block">
-                                                <button access="admin" type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Upgrade to Premium Account</button>
+                                                <button access="admin" type="button" class="btn btn-primary" ng-click="upgradeDialog()">Upgrade to Premium Account</button>
                                             </div>
 
                                             <div ng-show="practice.stripe_customer_id" id="sectEditPayment" class="section-block">
-                                                <button type="button" class="btn btn-primary" ng-click="upgradeDialog()"> Edit Payment Information</button>
+                                                <button type="button" class="btn btn-primary" ng-click="upgradeDialog()">Edit Payment Information</button>
 
-                                                <button access="admin" type="button" class="btn btn-primary" ng-click="cancelSubscription()"> Cancel Subscription</button>
+                                                <button access="admin" type="button" class="btn btn-primary" ng-click="cancelSubscription()">Cancel Subscription</button>
                                             </div>
 
                                             <div ng-show="practice.stripe_customer_id" id="sectPayment" class="section-block">
