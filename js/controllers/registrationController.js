@@ -21,7 +21,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                     function (success) {
                     },
                     function (failure) {
-                        Alert.error($scope.alerts, 'invitation.invalid', true);
+                        $state.go('signIn', {alreadyRegister: true});
                     }
                 );
             }

@@ -36,6 +36,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
     $stateProvider.
         state('signIn', {
             url: '/sign_in',
+            params: {alreadyRegister: false},
             templateUrl: 'partials/login.html',
             controller: 'LoginController'
         }).
@@ -119,7 +120,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         }).
         state('viewReferral', {
             url: '/view_referral/:referral_id',
-            params: {message: null},
+            params: {message: null, isNew: false},
             templateUrl: 'partials/view_referral.html',
             controller: 'ViewReferralsController',
             resolve: {

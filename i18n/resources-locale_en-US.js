@@ -20,6 +20,11 @@
         "description":"Error message for the case when invitation token considered invalid"
     },
     {
+        "key":"invitation.exist",
+        "value":"You already registered, Please log in.",
+        "description":"Error message for the case when you already registered by this invitation."
+    },
+    {
         "key":"promotion.expired",
         "value":"Your promo code is expired",
         "description":"Error message for the case when promo code was expired"
@@ -49,6 +54,11 @@
         "key":"user.exists",
         "value":"Sorry an account with this email address already exists. If this is your email address please login into your existing account at www.dentallinks.org if you need further assistance please email us at info@dentallinks.org",
         "description":"Error message for when person is trying to register with an email that we already have as a registered user or an invitation"
+    },
+    {
+        "key":"referral.success.create",
+        "value":"Referral success created, please download PDF",
+        "description":"Referral success created"
     },
     {
         "key":"default.error",

@@ -1,7 +1,7 @@
 var viewReferralModule = angular.module('viewReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParams', '$fileUploader', '$timeout', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message',
-    function ($scope, $stateParams, $fileUploader, $timeout, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message) {
+viewReferralModule.controller('ViewReferralsController', ['$scope', '$location', '$stateParams', '$fileUploader', '$timeout', '$anchorScroll', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message',
+    function ($scope, $location, $stateParams, $fileUploader, $timeout, $anchorScroll, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message) {
         $scope.alerts = [];
         $scope.attachment_alerts = [];
 
@@ -38,6 +38,18 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$stateParam
         };
 
         $scope.initModel();
+
+        if($stateParams.isNew){
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/referral_create_message.html',
+                controller: 'ReferralSuccessModalController'
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function() {
+                $location.hash('downloadPdf');
+                $anchorScroll();
+            });
+        }
 
         $scope.openDatePicker = function(attachment){
             var modalInstance = $modal.open({

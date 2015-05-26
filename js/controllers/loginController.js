@@ -1,13 +1,16 @@
 var loginModule = angular.module('login', []);
 
-loginModule.controller('LoginController', ['$scope', 'Auth', 'Alert', 'User', '$location', 'Login', 'redirect', 'Logger',
-    function ($scope, Auth, Alert, User, $location, Login, redirect, Logger) {
+loginModule.controller('LoginController', ['$scope', '$stateParams', 'Auth', 'Alert', 'User', '$location', 'Login', 'redirect', 'Logger',
+    function ($scope, $stateParams, Auth, Alert, User, $location, Login, redirect, Logger) {
         var auth = Auth.get();
         if(auth){// user is authenticated by tries to open login window
             $location.path('/history');
         }
         $scope.email = (auth || {}).email;
         $scope.alerts = [];
+        if($stateParams.alreadyRegister){
+            Alert.error($scope.alerts, 'invitation.exist');
+        }
         $scope.login = function (user) {   /*{'user': {'email': user.email, 'password': user.password }}*/
 
             Login.login({'user': user},
