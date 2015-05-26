@@ -20,6 +20,11 @@
         "description":"Error message for the case when invitation token considered invalid"
     },
     {
+        "key":"invitation.exist",
+        "value":"You already registered, Please log in.",
+        "description":"Error message for the case when you already registered by this invitation."
+    },
+    {
         "key":"promotion.expired",
         "value":"Your promo code is expired",
         "description":"Error message for the case when promo code was expired"

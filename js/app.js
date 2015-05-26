@@ -36,6 +36,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
     $stateProvider.
         state('signIn', {
             url: '/sign_in',
+            params: {alreadyRegister: false},
             templateUrl: 'partials/login.html',
             controller: 'LoginController'
         }).
