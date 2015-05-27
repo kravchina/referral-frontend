@@ -1,6 +1,6 @@
 var errorModule = angular.module('error', []);
 
-errorModule.controller('ErrorController', ['$scope', '$stateParams', function($scope, $stateParams){
+errorModule.controller('ErrorController', ['$scope', '$stateParams', '$sce', function($scope, $stateParams, $sce){
 	$scope.error = {};
 
 	if ($stateParams.error_key == '') {
@@ -8,4 +8,5 @@ errorModule.controller('ErrorController', ['$scope', '$stateParams', function($s
 	} else {
 		$scope.error.key = $stateParams.error_key;
 	}
+
 }]);
