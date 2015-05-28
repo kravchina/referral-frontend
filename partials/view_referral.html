@@ -3,7 +3,7 @@
 
     <p class="page-subheader">Shared patient chart.</p>
 
-    <alert ng-hide="stripe_customer_id" type="{{alert.type}}">It is always free to send referrals but you will need a premium membership to receive referrals after {{trial_end_date | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
+    <alert ng-show="paymentNotification.show" type="{{alert.type}}">It is always free to send referrals but you will need a premium membership to receive referrals after {{paymentNotification.dueDate | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
 </header><!-- .page-header -->
 
 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>

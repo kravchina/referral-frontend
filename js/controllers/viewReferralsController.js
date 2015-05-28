@@ -1,7 +1,7 @@
 var viewReferralModule = angular.module('viewReferrals', ['ui.bootstrap', 'angularFileUpload']);
 
-viewReferralModule.controller('ViewReferralsController', ['$scope', '$location', '$stateParams', '$fileUploader', '$timeout', '$anchorScroll', 'Alert', 'Referral', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message',
-    function ($scope, $location, $stateParams, $fileUploader, $timeout, $anchorScroll, Alert, Referral, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message) {
+viewReferralModule.controller('ViewReferralsController', ['$scope', '$location', '$stateParams', '$fileUploader', '$timeout', '$anchorScroll', 'Alert', 'Referral', 'Practice', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message',
+    function ($scope, $location, $stateParams, $fileUploader, $timeout, $anchorScroll, Alert, Referral, Practice, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message) {
         $scope.alerts = [];
         $scope.attachment_alerts = [];
 
@@ -12,10 +12,11 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
             Alert.error($scope.attachment_alerts, message);
         }
 
-        Auth.current_user.$promise.then(function (data) {
-            $scope.stripe_customer_id = data.practice.stripe_customer_id;
-            $scope.trial_end_date = new Date(data.practice.created_at);
-            $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD)
+        Practice.get({practiceId: $scope.auth.practice_id}, function(practice){
+            $scope.paymentNotification = {
+                show: new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
+                dueDate: practice.subscription_active_until || 'trial end'
+            }
         });
 
         $scope.initModel = function() {
