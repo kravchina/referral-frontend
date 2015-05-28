@@ -298,3 +298,9 @@ dentalLinks.filter('authenticatableAttachmentDownloadUrl', ['API_ENDPOINT', '$wi
         return  downloadUrl;
     }
 }]);
+
+dentalLinks.filter("allowHtml", ['$sce', function($sce) {
+  return function(htmlCode){
+    return $sce.trustAsHtml(htmlCode);
+  }
+}]);

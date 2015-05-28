@@ -2,4 +2,11 @@
     <h1>Error page</h1>
 </header><!-- .page-header -->
 
-<alert type="danger">{{ error.key | i18n }}</alert>
+<alert type="danger">
+	<div ng-bind-html="error.key | i18n | allowHtml"></div>
+</alert>
+<div class="row">
+	<div class="col-xs-3 col-sm-3 col-xs-offset-5 col-sm-offset-5">
+		<a ui-sref="history" class="btn btn-warning">Back to History</a>
+	</div>
+</div>
