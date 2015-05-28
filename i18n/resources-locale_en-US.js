@@ -25,9 +25,19 @@
         "description":"Error message for the case when you already registered by this invitation."
     },
     {
+        "key":"promotion.expired.header",
+        "value":"Promo code has expired.",
+        "description":"Error message for the case when promo code was expired"
+    },
+    {
         "key":"promotion.expired",
         "value":"This promo code has expired. If you are interested in registering a Dental Links account, please contact us at <a href='mailto:info@dentallinks.org'>info@dentallinks.org</a>",
         "description":"Error message for the case when promo code was expired"
+    },
+    {
+        "key":"promotion.not.found.header",
+        "value":"Promo code is not found.",
+        "description":"Error message for the case when promo code was not found"
     },
     {
         "key":"promotion.not.found",
@@ -59,6 +69,22 @@
         "key":"referral.success.create",
         "value":"Referral success created, please download PDF",
         "description":"Referral success created"
+    },
+
+    {
+        "key": "payment.required.header",
+        "value": "Upgrade your account",
+        "description": "Error page header for the case when user tries to open referral, but his practice didn't pay for a premium account."
+    },
+    {
+        "key": "payment.required",
+        "value": "Please go to your <a ng-href='#/admin'>account settings page</a> and select 'Subscription' tab to activate premium account. After that you will be able to review referrals sent by other providers. You will be able to access referral as soon as we obtain a confirmation from payment system.",
+        "description": "Error message for the case when user tries to open referral, but his practice didn't pay for a premium account."
+    },
+    {
+        "key":"default.error.header",
+        "value":"Error page",
+        "description":"Unknown error page header"
     },
     {
         "key":"default.error",

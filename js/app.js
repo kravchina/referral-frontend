@@ -171,14 +171,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
 
         $rootScope.$on(AUTH_EVENTS.paymentRequired, function(event, args){
            Logger.log('paymentRequired');
-            var modalInstance = $modal.open({
-                templateUrl: 'partials/upgrade_required.html',
-                backdrop: 'static'
-            });
-            ModalHandler.set(modalInstance);
-            modalInstance.result.then(function () {
-                $state.go('admin');
-            });
+            $state.go('error_page', {error_key: 'payment.required'});
         });
 
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
