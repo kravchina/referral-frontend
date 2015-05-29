@@ -322,3 +322,12 @@ modalsModule.controller('ReferralSuccessModalController', ['$scope', '$modalInst
         ModalHandler.close($modalInstance);
     }
 }]);
+
+modalsModule.controller('UpgradeRequiredModalController', ['$scope', '$modalInstance', 'ModalHandler', function($scope, $modalInstance, ModalHandler){
+    $scope.upgrate = function(){
+        ModalHandler.close($modalInstance);
+    };
+    $scope.cancel = function () {
+        ModalHandler.dismiss($modalInstance);
+    }
+}]);

@@ -1,5 +1,6 @@
 var dentalLinks = angular.module('dentalLinks', [
     'ui.router',
+    'ui.router.tabs',
     'ngCookies',
     'admin',
     'history',
@@ -142,6 +143,30 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             controller: 'AdminController',
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
+        state('admin.practice', {
+            url: '/practice',
+            templateUrl: 'partials/admin_practice.html',
+            controller: 'AdminPracticeController',
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
+        state('admin.users', {
+            url: '/users',
+            templateUrl: 'partials/admin_users.html',
+            controller: 'AdminUsersController',
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
+        state('admin.invite', {
+            url: '/invite',
+            templateUrl: 'partials/admin_invite.html',
+            controller: 'AdminInviteController',
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
+        state('admin.subscription', {
+            url: '/subscription',
+            templateUrl: 'partials/admin_subscription.html',
+            controller: 'AdminSubscriptionController',
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
         state('faq', {
             url: '/faq',
             templateUrl: 'partials/faq.html'
@@ -173,11 +198,14 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
            Logger.log('paymentRequired');
             var modalInstance = $modal.open({
                 templateUrl: 'partials/upgrade_required.html',
+                controller: 'UpgradeRequiredModalController',
                 backdrop: 'static'
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function () {
-                $state.go('admin');
+                $state.go('admin.subscription');
+            }, function(){
+                $state.go('history');
             });
         });
 

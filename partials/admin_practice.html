@@ -1,0 +1,72 @@
+<!-- Practice Tab -->
+<div id="admintabPractice">
+    <form edit-form="practice.address" id="formPracticeTab" name="practiceForm">
+        <div class="block-title">
+            <h2>Practice</h2>
+            <button type="button" access="admin" toggle-edit class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
+            <button type="button" ng-click="addAddress()" class="btn btn-green btn-toggle-shifted btn-edit hide" data-toggle="tooltip" data-placement="top" title="Add practice address"><span class="dlicons-plus"></span></button>
+            <button type="button" ng-click='savePractice(practiceForm)' ng-disabled="practiceForm.$error.required" class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
+        </div>
+
+        <div id="sectPractice">
+            <div class="section-block">
+
+                <div class="row">
+                    <div class="input-block col-sm-12" ng-class="{'has-error': practiceForm.practiceName.$invalid}">
+                        <input type="text" class="form-control data1" ng-model="practice.name" name="practiceName"  placeholder="Enter practice name &hellip;" value="Tooth Care Dental Clinic" ng-disabled="true" required>
+                        <label class="hidden">Practice name</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-block" ng-repeat="address in practice.addresses">
+                <hr>
+                <ng-form name="addressForm">
+                <div class="row">
+                    <div class="input-block col-sm-6" ng-class="{'has-error': addressForm.street.$invalid}">
+                        <input type="text" class="form-control" ng-class="{data1: !address.new}" name="street"  ng-model="address.street_line_1" placeholder="Enter street address &hellip;" ng-disabled="!address.new" required>
+                        <label ng-class="{hidden:!address.new}">Street address</label>
+                    </div>
+
+                    <div class="input-block col-xs-2" ng-class="{'has-error': addressForm.city.$invalid}">
+                        <input type="text" class="form-control" name="city" ng-class="{data1: !address.new}"  ng-model="address.city" placeholder="Enter town / city &hellip;"  ng-disabled="!address.new" required>
+                        <label ng-class="{hidden:!address.new}">Town / City</label>
+                    </div>
+
+                    <div class="input-block col-xs-2" ng-class="{'has-error': addressForm.state.$invalid}">
+                        <state-select class="{data1: !address.new}" disabled="!address.new"  name="state" address="address"></state-select>
+                        <label ng-class="{hidden:!address.new}">State</label>
+                    </div>
+
+                    <div class="input-block col-xs-2"  ng-class="{'has-error': addressForm.zip.$invalid}">
+                        <input type="text" class="form-control" ng-class="{data1: !address.new}" name="zip" ng-model="address.zip" placeholder="Enter ZIP code &hellip;" ng-disabled="!address.new" required>
+                        <label ng-class="{hidden:!address.new}">ZIP code</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-block col-sm-6">
+                        <input type="tel" class="form-control" ng-class="{data1: !address.new}" ng-model="address.phone" placeholder="{{PhoneFormatter.UI_PLACEHOLDER}}" ui-mask="{{PhoneFormatter.MASK}}" ng-disabled="!address.new">
+                        <label ng-class="{hidden:!address.new}">Phone number</label>
+                    </div>
+
+                    <div class="input-block col-sm-4 website-block">
+                        <input type="text" class="form-control" ng-class="{data1: !address.new}" ng-model="address.website" placeholder="Enter website address &hellip;"  ng-disabled="!address.new">
+                        <label ng-class="{hidden:!address.new}">Website</label>
+                    </div>
+
+                    <div class="input-block col-xs-2" >
+                        <!--<button type="button" class="btn btn-danger" ng-click="removeAddress(address)" ng-class="{hidden:!address.new}"><span class="dlicons-remove"></span> Remove</button>-->
+                        <div access="admin" delete-button class="button-block btn-delete" ng-if="practice.addresses.length > 1">
+                            <span class="dlicons-remove"></span> Delete? <a ng-click="removeAddress(address)" class="link-green">Yes</a> | <a class="link-orange">No</a>
+                        </div>
+                    </div>
+                </div>
+                </ng-form>
+
+            </div>
+            <!--.section-block-->
+
+        </div>
+    </form>
+</div>
