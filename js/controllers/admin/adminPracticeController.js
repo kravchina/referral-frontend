@@ -13,6 +13,7 @@ adminModule.controller('AdminPracticeController', ['$scope', 'Alert', 'Address',
             $scope.trial_end_date = new Date($scope.practice.created_at);
             $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD)
         });  
+
         // TODO [ak] refactor bad design: savePractice() does not in fact operate on a single form
         $scope.savePractice = function (form) {
             

@@ -195,18 +195,8 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         });
 
         $rootScope.$on(AUTH_EVENTS.paymentRequired, function(event, args){
-           Logger.log('paymentRequired');
-            var modalInstance = $modal.open({
-                templateUrl: 'partials/upgrade_required.html',
-                controller: 'UpgradeRequiredModalController',
-                backdrop: 'static'
-            });
-            ModalHandler.set(modalInstance);
-            modalInstance.result.then(function () {
-                $state.go('admin.subscription');
-            }, function(){
-                $state.go('history');
-            });
+            Logger.log('paymentRequired');
+            $state.go('error_page', {error_key: 'payment.required'});
         });
 
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
@@ -325,4 +315,10 @@ dentalLinks.filter('authenticatableAttachmentDownloadUrl', ['API_ENDPOINT', '$wi
         }
         return  downloadUrl;
     }
+}]);
+
+dentalLinks.filter("allowHtml", ['$sce', function($sce) {
+  return function(htmlCode){
+    return $sce.trustAsHtml(htmlCode);
+  }
 }]);
