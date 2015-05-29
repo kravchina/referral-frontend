@@ -324,6 +324,7 @@ modalsModule.controller('ReferralSuccessModalController', ['$scope', '$modalInst
 }]);
 
 modalsModule.controller('InvitationValidationController', ['$scope', '$modalInstance', 'Alert', 'ModalHandler', 'ProviderInvitation', 'invitation', function($scope, $modalInstance, Alert, ModalHandler, ProviderInvitation, invitation){
+    $scope.alerts = [];
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
     };
