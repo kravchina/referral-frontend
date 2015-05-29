@@ -322,3 +322,17 @@ modalsModule.controller('ReferralSuccessModalController', ['$scope', '$modalInst
         ModalHandler.close($modalInstance);
     }
 }]);
+
+modalsModule.controller('InvitationValidationController', ['$scope', '$modalInstance', 'Alert', 'ModalHandler', 'ProviderInvitation', 'invitation', function($scope, $modalInstance, Alert, ModalHandler, ProviderInvitation, invitation){
+    $scope.cancel = function () {
+        ModalHandler.dismiss($modalInstance);
+    };
+    $scope.sendInvitation = function () {
+        ProviderInvitation.resend({id: invitation.id}, function (success) {
+                ModalHandler.close($modalInstance);
+            },
+            function (failure) {
+                Alert.error($scope.alerts, 'An error occurred during invitation resend...')
+            });
+    }
+}]);

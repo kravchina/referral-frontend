@@ -2,8 +2,8 @@ var registrationModule = angular.module('registration', []);
 
 
 // Just for invited providers to some existing practice or to a new practice
-registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure',
-    function ($scope, $location, $stateParams, $modal, $state, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure) {
+registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Promo',
+    function ($scope, $location, $stateParams, $modal, $state, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Promo) {
         $scope.alerts = [];
         $scope.showPracticeButtons = true;
 
@@ -93,50 +93,74 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
         $scope.createPracticeAndRegister = function (practice, invitation) {
             $scope.submitted = true;
             if ($scope.form.$valid) {
-                Practice.save({
-                        practice: practice,
-                        promo: $scope.promo
-                    },
-                    function (success) {
-                        console.log('created practice: ' + JSON.stringify(success));
+                //we check first, that email is new and was not used for invitation
+                ProviderInvitation.validate({email: invitation.email}, function(success){
+                    Practice.save({
+                            practice: practice,
+                            promo: $scope.promo
+                        },
+                        function (success) {
+                            console.log('created practice: ' + JSON.stringify(success));
 
-                        invitation.practice_id = success.id;
+                            invitation.practice_id = success.id;
 
-                        Registration.save({
-                                user: invitation,
-                                invitation_token: $stateParams.invitation_token,
-                                security_code: $scope.security_code,
-                                skip_security_code: true,
-                                promo: $scope.promo
-                            },
-                            function (success) {
-                                Auth.set({
-                                    token: success.authentication_token,
-                                    email: success.email,
-                                    roles: success.roles,
-                                    is_admin: success.is_admin,
-                                    id: success.id,
-                                    practice_id: success.practice_id
-                                });
-                                Auth.current_user = success;
-                                showResultDialog();
-                                console.log('registered a new account: ' + JSON.stringify(success));
-                            },
-                            function (failure) {
-                                $scope.alerts = [];
+                            Registration.save({
+                                    user: invitation,
+                                    invitation_token: $stateParams.invitation_token,
+                                    security_code: $scope.security_code,
+                                    skip_security_code: true,
+                                    promo: $scope.promo
+                                },
+                                function (success) {
+                                    Auth.set({
+                                        token: success.authentication_token,
+                                        email: success.email,
+                                        roles: success.roles,
+                                        is_admin: success.is_admin,
+                                        id: success.id,
+                                        practice_id: success.practice_id
+                                    });
+                                    Auth.current_user = success;
+                                    showResultDialog();
+                                    console.log('registered a new account: ' + JSON.stringify(success));
+                                },
+                                function (failure) {
+                                    $scope.alerts = [];
 
-                                if (failure.data.errors.email) {
-                                    Alert.error($scope.alerts, failure.data.errors.email[0], true);
-                                } else {
-                                    Alert.error($scope.alerts, failure.data.errors[0], true);
+                                    if (failure.data.errors.email) {
+                                        Alert.error($scope.alerts, failure.data.errors.email[0], true);
+                                    } else {
+                                        Alert.error($scope.alerts, failure.data.errors[0], true);
+                                    }
+                                }
+                            );
+                        },
+                        function (failure) {
+                            $scope.alerts = [];
+                            Alert.error($scope.alerts, 'practice.create.failed', true);
+                        });
+
+
+                }, function(error){
+                    if(error.status === 302){
+                        var modalInstance = $modal.open({
+                            templateUrl: 'partials/invitation_validation_result.html',
+                            controller: 'InvitationValidationController',
+                            resolve: {
+                                invitation: function () {
+                                    return error.data;
                                 }
                             }
-                        );
-                    },
-                    function (failure) {
-                        $scope.alerts = [];
-                        Alert.error($scope.alerts, 'practice.create.failed', true);
-                    });
+
+                        });
+                        ModalHandler.set(modalInstance);
+                        modalInstance.result.then(function (res) {
+
+                        });
+                    }
+                });
+
+
             }
 
         };
