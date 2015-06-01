@@ -33,7 +33,6 @@ adminModule.controller('AdminUsersController', ['$scope', '$state', '$modal', 'A
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (user) {
                 $scope.invitedUsers.push(user);
-                console.log(user);
             });
         };
 

@@ -3,7 +3,7 @@ var historyModule = angular.module('history', ['ui.bootstrap', 'infinite-scroll'
 historyModule.controller('HistoryController', ['$scope', 'Auth', 'Referral', 'Logger', function ($scope, Auth, Referral, Logger) {
 	$scope.limitTo = 20;
     $scope.referrals = [];
-//$scope.$emit('payment-required');
+
     $scope.findReferralsByDateRange = function (start, end) {
     	$scope.start_date = start;
     	$scope.end_date = end;

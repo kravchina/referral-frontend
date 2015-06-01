@@ -323,11 +323,17 @@ modalsModule.controller('ReferralSuccessModalController', ['$scope', '$modalInst
     }
 }]);
 
-modalsModule.controller('UpgradeRequiredModalController', ['$scope', '$modalInstance', 'ModalHandler', function($scope, $modalInstance, ModalHandler){
-    $scope.upgrate = function(){
-        ModalHandler.close($modalInstance);
-    };
+modalsModule.controller('InvitationValidationController', ['$scope', '$modalInstance', 'Alert', 'ModalHandler', 'ProviderInvitation', 'invitation', function($scope, $modalInstance, Alert, ModalHandler, ProviderInvitation, invitation){
+    $scope.alerts = [];
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
+    };
+    $scope.sendInvitation = function () {
+        ProviderInvitation.resend({id: invitation.id}, function (success) {
+                ModalHandler.close($modalInstance);
+            },
+            function (failure) {
+                Alert.error($scope.alerts, 'An error occurred during invitation resend...')
+            });
     }
 }]);
