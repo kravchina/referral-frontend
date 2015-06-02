@@ -67,8 +67,8 @@
     },
     {
         "key":"referral.success.create",
-        "value":"Referral success created, please download PDF",
-        "description":"Referral success created"
+        "value":"Your referral was sent successfully",
+        "description":"Your referral was sent successfully"
     },
 
     {
