@@ -2,14 +2,12 @@ adminModule.controller('AdminSubscriptionController', ['$scope', '$state', '$mod
     function ($scope, $state, $modal, Auth, Alert, Address, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, Logger) {
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function(practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
+            $scope.paymentNotification = {
+                showTrial: practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
+                showTrialExpired: practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
+                showSubscriptionExpired: !practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime()
+            }
         });
-
-        $scope.practice.$promise.then(function (data) {
-            Logger.log($scope.practice);
-            Logger.log(FREE_TRIAL_PERIOD);
-            $scope.trial_end_date = new Date($scope.practice.created_at);
-            $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD)
-        });  
 
         $scope.upgradeDialog = function () {
             var modalInstance = $modal.open({

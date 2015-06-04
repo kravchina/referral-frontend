@@ -1,6 +1,8 @@
 <div id="admintabAccount" >
 <p>
-    <alert ng-hide="practice.stripe_customer_id" type="{{alert.type}}">It is always free to send referrals but you will need a premium membership to receive referrals after {{trial_end_date | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
+    <alert ng-show="paymentNotification.showTrial" type="{{alert.type}}">It is always free to send referrals but you will need a premium membership to receive referrals after {{practice.subscription_active_until | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
+    <alert ng-show="paymentNotification.showTrialExpired" type="{{alert.type}}">Your trial is over. You need premium account to receive referrals. You can upgrade at any time in the account settings.</alert>
+    <alert ng-show="paymentNotification.showSubscriptionExpired" type="{{alert.type}}">Either your premium account has been cancelled or we were unable to process your payment. Please enter new payment information to activate your premium account features</alert>
 
     <form edit-form id="formAccountTab" name="accountForm">
         <div class="block-title">
