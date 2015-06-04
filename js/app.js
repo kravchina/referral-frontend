@@ -1,5 +1,6 @@
 var dentalLinks = angular.module('dentalLinks', [
     'ui.router',
+    'ui.router.tabs',
     'ngCookies',
     'admin',
     'history',
@@ -142,6 +143,30 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             controller: 'AdminController',
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
+        state('admin.practice', {
+            url: '/practice',
+            templateUrl: 'partials/admin_practice.html',
+            controller: 'AdminPracticeController',
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
+        state('admin.users', {
+            url: '/users',
+            templateUrl: 'partials/admin_users.html',
+            controller: 'AdminUsersController',
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
+        state('admin.invite', {
+            url: '/invite',
+            templateUrl: 'partials/admin_invite.html',
+            controller: 'AdminInviteController',
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
+        state('admin.subscription', {
+            url: '/subscription',
+            templateUrl: 'partials/admin_subscription.html',
+            controller: 'AdminSubscriptionController',
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
         state('faq', {
             url: '/faq',
             templateUrl: 'partials/faq.html'
@@ -170,7 +195,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         });
 
         $rootScope.$on(AUTH_EVENTS.paymentRequired, function(event, args){
-           Logger.log('paymentRequired');
+            Logger.log('paymentRequired');
             $state.go('error_page', {error_key: 'payment.required'});
         });
 
@@ -290,10 +315,4 @@ dentalLinks.filter('authenticatableAttachmentDownloadUrl', ['API_ENDPOINT', '$wi
         }
         return  downloadUrl;
     }
-}]);
-
-dentalLinks.filter("allowHtml", ['$sce', function($sce) {
-  return function(htmlCode){
-    return $sce.trustAsHtml(htmlCode);
-  }
 }]);

@@ -373,4 +373,15 @@ dentalLinksDirectives.directive('notes', [function () {
     }
 }]);
 
-
+dentalLinksDirectives.directive('dynamicHtml', function ($compile) {
+  return {
+    restrict: 'A',
+    replace: true,
+    link: function (scope, element, attrs) {
+        scope.$watch(attrs.dynamicHtml, function(html) {
+        element.html(html);
+        $compile(element.contents())(scope);
+      });
+    }
+  };
+});
