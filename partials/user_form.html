@@ -30,11 +30,11 @@
                 Invite
             </label>
             <label class="radio-inline">
-                <input type="radio" value="register" ng-model="registerBtn" ng-change="changeRadio(value)">
+                <input type="radio" value="password" ng-model="registerBtn" ng-change="changeRadio(value)">
                 Password
             </label>
         </div>
-        <div ng-show="registerBtn == 'register'">
+        <div ng-show="registerBtn == 'password'">
             <div class="input-block" ng-class="{ 'has-error': userForm.password.$dirty && userForm.password.$invalid }">
                 <input type="password" class="form-control" name="password" ng-model="user.password" ng-disabled="!isDisabled" placeholder="Enter user password &hellip;" ng-required="isDisabled">
             </div>

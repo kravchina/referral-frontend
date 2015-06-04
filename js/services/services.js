@@ -133,13 +133,13 @@ dentalLinksServices.factory('ProviderInvitation', ['$resource', 'API_ENDPOINT', 
         resend: {method: 'GET', url: API_ENDPOINT + '/invitations/resend/:id'},
         delete: {method: 'DELETE', url: API_ENDPOINT + '/invitations/:id'},
         update: {method: 'PUT', url: API_ENDPOINT + '/invitations/:id'},
-        create_user: {method: 'POST', url: API_ENDPOINT + '/invitations/create_user'}
     });
 }]);
 
 dentalLinksServices.factory('Registration', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/sign_up', {}, {
-        verify_security_code: {method: 'GET', url: API_ENDPOINT + '/verify_security_code/:code'}
+        verify_security_code: {method: 'GET', url: API_ENDPOINT + '/verify_security_code/:code'},
+        create_user: {method: 'POST', url: API_ENDPOINT + '/register_without_invite'}
     })
 }]);
 

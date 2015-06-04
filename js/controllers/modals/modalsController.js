@@ -176,7 +176,7 @@ modalsModule.controller('JoinPracticeModalController', ['$scope', '$modalInstanc
     };
 }]);
 
-modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Logger', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Auth, Alert, Logger) {
+modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger) {
     $scope.result = {};
     $scope.alerts = [];
     $scope.registerBtn = 'invite';
@@ -190,8 +190,8 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
         user.practice_id = Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
         
-        if($scope.registerBtn == 'register'){
-            ProviderInvitation.create_user({user: user},
+        if($scope.registerBtn == 'password'){
+            Registration.create_user({user: user},
                 function(success){
                     ModalHandler.close($modalInstance, success);
                 },function(failure){
