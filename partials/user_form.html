@@ -26,15 +26,15 @@
         <label>Register with:</label>
         <div class="form-group">
             <label class="radio-inline">
-                <input type="radio" value="invite" ng-model="registerBtn" ng-change="changeRadio(value)">
+                <input type="radio" ng-value="true" ng-model="isInvite" ng-change="changeRadio(value)">
                 Invite
             </label>
             <label class="radio-inline">
-                <input type="radio" value="password" ng-model="registerBtn" ng-change="changeRadio(value)">
+                <input type="radio" ng-value="false" ng-model="isInvite" ng-change="changeRadio(value)">
                 Password
             </label>
         </div>
-        <div ng-show="registerBtn == 'password'">
+        <div ng-show="!isInvite">
             <div class="input-block" ng-class="{ 'has-error': userForm.password.$dirty && userForm.password.$invalid }">
                 <input type="password" class="form-control" name="password" ng-model="user.password" ng-disabled="!isDisabled" placeholder="Enter user password &hellip;" ng-required="isDisabled">
             </div>

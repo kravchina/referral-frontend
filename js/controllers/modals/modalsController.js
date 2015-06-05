@@ -179,7 +179,7 @@ modalsModule.controller('JoinPracticeModalController', ['$scope', '$modalInstanc
 modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger) {
     $scope.result = {};
     $scope.alerts = [];
-    $scope.registerBtn = 'invite';
+    $scope.isInvite = true;
     $scope.isDisabled = false;
     
     $scope.changeRadio = function(value){
@@ -190,17 +190,7 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
         user.practice_id = Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
         
-        if($scope.registerBtn == 'password'){
-            Registration.create_user({user: user},
-                function(success){
-                    ModalHandler.close($modalInstance, success);
-                },function(failure){
-                    Logger.log(failure);
-                    $scope.alerts = [];//reset alerts list because we need only one alert at a time
-                    Alert.error($scope.alerts, failure.data.message[0]);
-                    Logger.log($scope.alerts);
-                });
-        } else if($scope.registerBtn == 'invite'){
+        if($scope.isInvite){
             ProviderInvitation.save({provider_invitation: user},
                 function (success) {
                     ModalHandler.close($modalInstance, success);
@@ -210,7 +200,17 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
                     Alert.error($scope.alerts, failure.data.message[0]);
                     Logger.log($scope.alerts);
                 });
-            }
+        } else {
+            Registration.create_user({user: user},
+                function(success){
+                    ModalHandler.close($modalInstance, success);
+                },function(failure){
+                    Logger.log(failure);
+                    $scope.alerts = [];//reset alerts list because we need only one alert at a time
+                    Alert.error($scope.alerts, failure.data.message[0]);
+                    Logger.log($scope.alerts);
+                });
+        }
     };
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
