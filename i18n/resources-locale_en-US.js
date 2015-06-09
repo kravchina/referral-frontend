@@ -82,6 +82,16 @@
         "description": "Error message for the case when user tries to open referral, but his practice didn't pay for a premium account."
     },
     {
+        "key":"error.http.requestTimeout",
+        "value":"Request Timeout Error. Please try again.",
+        "description":"Request Timeout Error"
+    },
+    {
+        "key":"error.http.serverError",
+        "value":"Server Error. Please try again.",
+        "description":"Server Error: 500 - 600"
+    },
+    {
         "key":"default.error.header",
         "value":"Error page",
         "description":"Unknown error page header"

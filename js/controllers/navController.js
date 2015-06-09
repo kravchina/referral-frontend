@@ -1,5 +1,5 @@
-dentalLinks.controller('NavController', ['$scope', '$state', 'Auth', 'Logger', 'Login', 'Spinner',  'UnsavedChanges', 'User', 'API_ENDPOINT',
-    function ($scope, $state, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT) {
+dentalLinks.controller('NavController', ['$scope', '$state', '$modal', 'Auth', 'Logger', 'Login', 'Spinner', 'UnsavedChanges', 'User', 'API_ENDPOINT', 'HTTP_ERROR_EVENTS',
+    function ($scope, $state, $modal, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT, HTTP_ERROR_EVENTS) {
 
         $scope.env = 'unknown.';
         if (API_ENDPOINT.indexOf('dental-links-prod-1') > -1) $scope.env = '';
@@ -16,6 +16,26 @@ dentalLinks.controller('NavController', ['$scope', '$state', 'Auth', 'Logger', '
         }else{
             Auth.current_user = null;
         }
+
+        $scope.$on(HTTP_ERROR_EVENTS.requestTimeout, function(event, args){
+            showErrorModal('error.http.requestTimeout');
+        });
+
+        $scope.$on(HTTP_ERROR_EVENTS.serverError, function(event, args){
+            showErrorModal('error.http.serverError');
+        });
+
+        var showErrorModal = function(message) {
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/error_modal.html',
+                controller: 'ErrorModalController',
+                resolve: {
+                    message: function(){
+                        return message;
+                    }
+                }
+            });
+        };
 
         $scope.progressIndicatorStart = function(){
             $scope.loadingProgress = true;

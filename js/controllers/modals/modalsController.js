@@ -337,3 +337,11 @@ modalsModule.controller('InvitationValidationController', ['$scope', '$modalInst
             });
     }
 }]);
+
+modalsModule.controller('ErrorModalController', ['$scope', '$modalInstance', 'ModalHandler', 'message', function($scope, $modalInstance, ModalHandler, message){
+    $scope.message = message;
+
+    $scope.cancel = function(){
+        ModalHandler.dismiss($modalInstance);
+    };
+}]);

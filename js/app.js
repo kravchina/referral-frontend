@@ -27,6 +27,10 @@ dentalLinks.constant('USER_ROLES', {
 });
 
 dentalLinks.constant('FREE_TRIAL_PERIOD', 45);
+dentalLinks.constant('HTTP_ERROR_EVENTS', {
+    requestTimeout: 'http-request-timeout',
+    serverError: 'http-server-error'
+});
 dentalLinks.constant('API_ENDPOINT', 'https://referral-server.herokuapp.com');
 dentalLinks.constant('AUTH_EVENTS', {
     notAuthenticated: 'auth-not-authenticated',
@@ -219,6 +223,7 @@ dentalLinks.config(['$httpProvider', function ($httpProvider) {
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.interceptors.push('authInterceptor');
     $httpProvider.interceptors.push('spinnerInterceptor');
+    $httpProvider.interceptors.push('errorsHttpInterceptor');
 }
 ]);
 
@@ -286,6 +291,25 @@ dentalLinks.factory('authInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', '$loc
             }
 
             return $q.reject(response);
+        }
+    };
+}]);
+
+dentalLinks.factory('errorsHttpInterceptor', ['$rootScope', '$q', '$injector', 'HTTP_ERROR_EVENTS', function($rootScope, $q, $injector, HTTP_ERROR_EVENTS){
+    return {
+        requestError: function(rejection){
+            $rootScope.$broadcast(HTTP_ERROR_EVENTS.requestError, {status: rejection.status, text: rejection.statusText});
+            return $q.reject(rejection);
+        },
+        responseError: function(rejection){
+            if(rejection.status == 418) {
+                $rootScope.$broadcast(HTTP_ERROR_EVENTS.requestTimeout, 
+                    {status: rejection.status, text: rejection.statusText});
+            } else if(rejection.status >= 500 && rejection.status < 600){
+                $rootScope.$broadcast(HTTP_ERROR_EVENTS.serverError, 
+                    {status: rejection.status, text: rejection.statusText});
+            }
+            return $q.reject(rejection);
         }
     };
 }]);
