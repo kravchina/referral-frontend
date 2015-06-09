@@ -89,7 +89,7 @@ dentalLinksServices.factory('Practice', ['$resource', 'API_ENDPOINT',
                 'Pragma': 'no-cache',
                 'Expires': '0'
             }, skipSpinner: true},
-            cancelSubscription: {method: 'GET', url: API_ENDPOINT + '/practices/:practiceId/cancel_subscription'},
+            cancelSubscription: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/cancel_subscription'},
             update: {method: 'PUT'}
         });
     }]);
