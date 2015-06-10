@@ -182,7 +182,7 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
     $scope.isInvite = true;
     $scope.isDisabled = false;
     
-    $scope.changeRadio = function(value){
+    $scope.toggleRadio = function(value){
         $scope.isDisabled = !$scope.isDisabled;
     };
 
