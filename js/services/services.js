@@ -121,6 +121,7 @@ dentalLinksServices.factory('Login', ['$resource', 'API_ENDPOINT', function ($re
         logout: {method: 'DELETE', url: API_ENDPOINT + '/sign_out', withCredentials: true}
     });
 }]);
+
 dentalLinksServices.factory('ProviderInvitation', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/invitations/:invitation_token', {}, {
         searchProviderInvitation: {method: 'GET', url: API_ENDPOINT + '/invitations/search', isArray: true, headers: {
@@ -131,13 +132,14 @@ dentalLinksServices.factory('ProviderInvitation', ['$resource', 'API_ENDPOINT', 
         validate: {method: 'GET',  url: API_ENDPOINT + '/invitations/validate'},
         resend: {method: 'GET', url: API_ENDPOINT + '/invitations/resend/:id'},
         delete: {method: 'DELETE', url: API_ENDPOINT + '/invitations/:id'},
-        update: {method: 'PUT', url: API_ENDPOINT + '/invitations/:id'}
+        update: {method: 'PUT', url: API_ENDPOINT + '/invitations/:id'},
     });
 }]);
 
 dentalLinksServices.factory('Registration', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/sign_up', {}, {
-        verify_security_code: {method: 'GET', url: API_ENDPOINT + '/verify_security_code/:code'}
+        verify_security_code: {method: 'GET', url: API_ENDPOINT + '/verify_security_code/:code'},
+        create_user: {method: 'POST', url: API_ENDPOINT + '/register_without_invite'}
     })
 }]);
 

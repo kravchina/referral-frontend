@@ -23,8 +23,27 @@
         <div class="input-block" ng-class="{ 'has-error': userForm.email.$dirty && userForm.email.$invalid }">
             <input type="email" class="form-control" name="email" ng-model="user.email" placeholder="Enter user's email address &hellip;" ng-required="true">
         </div>
+        <label>Register with:</label>
+        <div class="form-group">
+            <label class="radio-inline">
+                <input type="radio" ng-value="true" ng-model="isInvite" ng-change="toggleRadio(value)">
+                Invite
+            </label>
+            <label class="radio-inline">
+                <input type="radio" ng-value="false" ng-model="isInvite" ng-change="toggleRadio(value)">
+                Password
+            </label>
+        </div>
+        <div ng-show="!isInvite">
+            <div class="input-block" ng-class="{ 'has-error': userForm.password.$dirty && userForm.password.$invalid }">
+                <input type="password" class="form-control" name="password" ng-model="user.password" ng-disabled="!isDisabled" placeholder="Enter user password &hellip;" ng-required="isDisabled">
+            </div>
+            <div class="input-block" ng-class="{ 'has-error': userForm.passwordConfirm.$invalid || (user.password != user.passwordConfirm)}">
+                <input type="password" class="form-control" name="passwordConfirm" ng-model="user.passwordConfirm" ng-disabled="!isDisabled" placeholder="Confirm user password &hellip;" ng-required="isDisabled">
+            </div>
+        </div>
         <div class="input-block"  ng-class="{ 'has-error': userForm.role.$dirty && userForm.role.$invalid }" >
-            <select type="text" name="role" class="form-control" ng-model="user.roles_mask"  ng-required="true">
+            <select type="text" name="role" class="form-control" ng-model="user.roles_mask" ng-required="true">
                 <option selected="selected" disabled="disabled" class="placeholder" value="">Select role</option>
                 <option value="2">Doctor</option>
                 <option value="4">Auxiliary</option>
@@ -35,7 +54,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-orange" ng-click="ok(user)" ng-disabled="userForm.$invalid">Send</button>
+        <button type="submit" class="btn btn-orange" ng-click="ok(user)" ng-disabled="userForm.$invalid || (user.password != user.passwordConfirm)">Send</button>
         <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Discard</button>
     </div>
 </form>
