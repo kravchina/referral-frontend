@@ -9,6 +9,10 @@ adminModule.controller('AdminSubscriptionController', ['$scope', '$state', '$mod
             }
         });
 
+        $scope.isPremium = function(){
+            return $scope.practice.stripe_customer_id && $scope.practice.stripe_subscription_id
+        };
+
         $scope.upgradeDialog = function () {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/upgrade_form.html',
@@ -17,8 +21,8 @@ adminModule.controller('AdminSubscriptionController', ['$scope', '$state', '$mod
                     practice_id: function () {
                         return $scope.practice.id;
                     },
-                    stripe_customer_id: function () {
-                        return $scope.practice.stripe_customer_id;
+                    stripe_subscription_id: function () {
+                        return $scope.practice.stripe_subscription_id;
                     }
                 }
             });

@@ -217,14 +217,14 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
     };
 }]);
 
-modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_customer_id', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_customer_id) {
+modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id) {
     $scope.result = {};
     $scope.alerts = [];
     var currentYear = moment().year();
     $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4, currentYear + 5 ];
 
-    $scope.stripe_customer_id = stripe_customer_id;
-    Logger.log($scope.stripe_customer_id);
+    $scope.stripe_subscription_id = stripe_subscription_id;
+    Logger.log($scope.stripe_subscription_id);
     var handleError = function(failure){
         Alert.error($scope.alerts, 'Error: can\'t access to payment system. Please try again later.');
         $scope.disableForm = true;
