@@ -14,8 +14,9 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
 
         Practice.get({practiceId: $scope.auth.practice_id}, function(practice){
             $scope.paymentNotification = {
-                show: new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
-                dueDate: practice.subscription_active_until || 'trial end'
+                showTrial: practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
+                expirationDate: new Date(practice.subscription_active_until),
+                showSubscriptionCancelled: !practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime()
             }
         });
 
