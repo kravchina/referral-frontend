@@ -24,7 +24,6 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
             $scope.referral = Referral.get({id: $stateParams.referral_id}, function (data) {
                     angular.forEach(data.attachments, function(attachment, key){
                         $scope.total_size = $scope.total_size + attachment.attach_file_size;
-                        attachment.attach_updated_at = Date.parse(attachment.attach_updated_at);
                     });
 
                     data.teethChart = data.teeth.split('+');
