@@ -32,11 +32,13 @@ dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fi
 
         angular.forEach($scope.attachments, function (attachment, key) {
             $scope.total_size += $scope.total_size + attachment.size;
+            attachment.last_modified = Date.parse(attachment.last_modified);
         });
 
         var uploader = $scope.uploader = $fileUploader.create({
             scope: $scope,
             url: API_ENDPOINT + '/attachment/upload',
+            alias: 'attach',
             formData: [
                 {filename: ''}
             ],
@@ -101,7 +103,7 @@ dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fi
 
         uploader.bind('success', function (event, xhr, item, response) {
             Logger.info('Success', xhr, item, response);
-            item.downloadUrl = response.filename;
+            item.downloadUrl = response.attach_file_name;
         });
 
         uploader.bind('cancel', function (event, xhr, item) {

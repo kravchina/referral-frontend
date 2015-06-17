@@ -23,9 +23,9 @@
 
                             </div>
                             <div class="attachment-details">
-                                <span class="filename" title="{{attachment.filename | filename}}">{{attachment.filename | filename}}</span>
+                                <span class="filename" title="{{attachment.attach_file_name | filename}}">{{attachment.attach_file_name | filename}}</span>
                                 <span class="datestamp" title="File Creation Date">{{attachment.last_modified | date: 'mediumDate'}}</span>
-                                <span class="filename" title="Added{{attachment.author.first_name? ' by ' : '' }}{{ attachment.author.first_name}}{{attachment.author.last_name? ' ': ''}}{{attachment.author.last_name}} on {{attachment.created_at | date: 'mediumDate'}}">Added {{attachment.author.first_name? 'by' : '' }} {{attachment.author.first_name}} {{attachment.author.last_name}} on {{attachment.created_at | date: 'mediumDate'}} </span>
+                                <span class="filename" title="Added{{attachment.author.first_name? ' by ' : '' }}{{ attachment.author.first_name}}{{attachment.author.last_name? ' ': ''}}{{attachment.author.last_name}} on {{attachment.attach_updated_at | date: 'mediumDate'}}">Added {{attachment.author.first_name? 'by' : '' }} {{attachment.author.first_name}} {{attachment.author.last_name}} on {{attachment.attach_updated_at | date: 'mediumDate'}} </span>
                             </div>
                         </a>
                     </li>

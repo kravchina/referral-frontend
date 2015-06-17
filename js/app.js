@@ -326,13 +326,13 @@ dentalLinks.filter('phoneNumber', ['PhoneFormatter', function(PhoneFormatter) {
 
 dentalLinks.filter('attachmentDownloadUrl', ['API_ENDPOINT', function(API_ENDPOINT){
    return function(attachment){
-       return API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.filename;
+       return API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.attach_file_name;
    }
 }]);
 
 dentalLinks.filter('authenticatableAttachmentDownloadUrl', ['API_ENDPOINT', '$window', 'Auth', function(API_ENDPOINT, $window, Auth){
     return function(attachment){
-        var downloadUrl = API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.filename;
+        var downloadUrl = API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.attach_file_name;
         if (/trident/i.test($window.navigator.userAgent)){ //TODO: workaround for https://www.pivotaltracker.com/story/show/86373800. Remove that filter to use cookies for image authentication.
             var auth = Auth.get();
             downloadUrl += '&token=' + auth.token + '&from=' + auth.email;
