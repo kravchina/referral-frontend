@@ -14,15 +14,16 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
 
         Practice.get({practiceId: $scope.auth.practice_id}, function(practice){
             $scope.paymentNotification = {
-                show: new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
-                dueDate: practice.subscription_active_until || 'trial end'
+                showTrial: practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
+                expirationDate: new Date(practice.subscription_active_until),
+                showSubscriptionCancelled: !practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime()
             }
         });
 
         $scope.initModel = function() {
             $scope.referral = Referral.get({id: $stateParams.referral_id}, function (data) {
                     angular.forEach(data.attachments, function(attachment, key){
-                        $scope.total_size = $scope.total_size + attachment.size;
+                        $scope.total_size = $scope.total_size + attachment.attach_file_size;
                     });
 
                     data.teethChart = data.teeth.split('+');
@@ -78,6 +79,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
             var uploader = $scope.uploader = $fileUploader.create({
                 scope: $scope,
                 url: API_ENDPOINT + '/attachment/upload',
+                alias: 'attach',
                 formData: [
                     {referral_id: $scope.referral.id},
                     {filename: 'test'}
@@ -152,7 +154,6 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
                 Logger.info('Success', xhr, item, response);
                 response.recentlyAdded = true;  //this flag enables editing attachment date only for recently added attachments
                 $scope.referral.attachments.push(response);
-
             });
 
             uploader.bind('cancel', function (event, xhr, item) {

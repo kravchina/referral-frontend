@@ -5,6 +5,7 @@ adminModule.controller('AdminSubscriptionController', ['$scope', '$state', '$mod
             $scope.paymentNotification = {
                 showTrial: practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
                 showTrialExpired: practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
+                showSubscriptionCancelled: !practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
                 showSubscriptionExpired: !practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime()
             }
         });

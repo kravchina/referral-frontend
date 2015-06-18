@@ -198,7 +198,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
 
                 caret += fontSizeMm;
                 var metadata = images[j].metadata;
-                pdf.text(pagePaddings.x, caret, extractFileName(metadata.filename) + (metadata.last_modified ? ' - ' + formatDate(metadata.last_modified) : '') + (metadata.author ? ' -  Added by: ' + metadata.author.first_name + ' ' + metadata.author.last_name : '')); // no fitString in here, assuming whole page width is always enough
+                pdf.text(pagePaddings.x, caret, extractFileName(metadata.attach_file_name) + (metadata.last_modified ? ' - ' + formatDate(metadata.last_modified) : '') + (metadata.author ? ' -  Added by: ' + metadata.author.first_name + ' ' + metadata.author.last_name : '')); // no fitString in here, assuming whole page width is always enough
 
                 caret += blocksPadding;
             }
@@ -220,7 +220,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
             for (var j = 0; j < images.length; j++) {
                 if (images[j]) {
                     if (!images[j].image) {
-                        var type = images[j].metadata.filename.slice(images[j].metadata.filename.lastIndexOf('.') + 1);
+                        var type = images[j].metadata.attach_file_name.slice(images[j].metadata.attach_file_name.lastIndexOf('.') + 1);
                         switch (type.toLowerCase()) {
                             case 'docx':
                             case 'doc':
@@ -249,7 +249,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
                     var currentY = caret;
                     pdf.addImage(image, 'JPEG', xCaret, currentY, thumbDimensions.width, thumbDimensions.height);
                     currentY += fontSizeMm;
-                    pdf.text(currentX, currentY, fitString(extractFileName(metadata.filename), fontSizeMm, remainingWidth));
+                    pdf.text(currentX, currentY, fitString(extractFileName(metadata.attach_file_name), fontSizeMm, remainingWidth));
                     if (metadata.last_modified) {
                         currentY += fontSizeMm;
                         pdf.text(currentX, currentY, formatDate(metadata.last_modified));
@@ -404,7 +404,7 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
 
             };
             var auth = Auth.get();
-            xhr.open('GET', API_ENDPOINT + '/attachment/?file=' + images[j].metadata.id + '/' + images[j].metadata.filename + '&token=' + auth.token + '&from=' + auth.email, true);
+            xhr.open('GET', API_ENDPOINT + '/attachment/?file=' + images[j].metadata.id + '/' + images[j].metadata.attach_file_name + '&token=' + auth.token + '&from=' + auth.email, true);
             xhr.responseType = 'blob';
             xhr.send();
             return img;
@@ -420,14 +420,14 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
             img.onerror = function () {
                 runCallbackIfReady();
             };
-            img.src = API_ENDPOINT + '/attachment/?file=' + images[j].metadata.id + '/' + images[j].metadata.filename;
+            img.src = API_ENDPOINT + '/attachment/?file=' + images[j].metadata.id + '/' + images[j].metadata.attach_file_name;
             return img;
         }
 
         if (images && images.length > 0) {
             for (var j = 0; j < images.length; j++) {
                 if (images[j]) {
-                    if (!File.isImage(images[j].metadata.filename)) {
+                    if (!File.isImage(images[j].metadata.attach_file_name)) {
                         runCallbackIfReady();
                     } else {
                         if (/trident/i.test($window.navigator.userAgent)) {
