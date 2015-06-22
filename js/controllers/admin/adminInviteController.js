@@ -17,12 +17,7 @@ adminModule.controller('AdminInviteController', ['$scope', '$modal', 'Alert', 'U
         $scope.inviteDialog = function () {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/provider_form.html',
-                controller: 'ProviderModalController',
-                resolve: {
-                    isSendEmail: function(){
-                        return true;
-                    }
-                }
+                controller: 'ProviderModalController'
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (provider) {
