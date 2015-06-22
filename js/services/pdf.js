@@ -1,5 +1,5 @@
 var dentalLinksPdf = angular.module('pdf', []);
-dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth', '$timeout', '$window', 'API_ENDPOINT', function ($filter, Spinner, ImageUtils, File, Auth, $timeout, $window, API_ENDPOINT) {
+dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth', '$timeout', '$window', 'API_ENDPOINT', 'PhoneFormatter', function ($filter, Spinner, ImageUtils, File, Auth, $timeout, $window, API_ENDPOINT, PhoneFormatter) {
     var jsPDFOrientation = 'p'; // portrait
     var jsPDFUnit = 'mm';
     var jsPDFFormat = 'letter';
@@ -324,6 +324,12 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
         caret += fontSizeMm;
         pdf.setFontType('bold');
         pdf.text(pagePaddings.x, caret, fitString(patientData.name + ' (' + formatDate(patientData.birthday) + ')', fontSizeMm, fullSizeColWidth));
+        pdf.setFontType('normal');
+        caret += fontSizeMm;
+        pdf.text(pagePaddings.x, caret, fitString(patientData.email, fontSizeMm, halfSizeColWidth - addressPaddingX));
+        caret += fontSizeMm;
+        pdf.text(pagePaddings.x, caret, fitString(patientData.phone, fontSizeMm, halfSizeColWidth - addressPaddingX));
+        caret += fontSizeMm;
         return caret + blocksPadding;
     };
 
@@ -503,6 +509,8 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
             var patient = data.patient || {};
             patientData.name = (patient.first_name || '') + ' ' + (patient.last_name || '');
             patientData.birthday = (patient.birthday || '');
+            patientData.email = (patient.email || '');
+            patientData.phone = patient.phone ? PhoneFormatter.format(patient.phone) : '';
 
             var procedure = data.procedure || {};
             procedureData.name = procedure.name || '';
