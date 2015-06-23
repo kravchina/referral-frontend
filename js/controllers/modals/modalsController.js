@@ -264,7 +264,7 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$
                             },
                                     function (success) {
                                         Logger.log(success);
-                                        //Alert.success($scope.alerts, 'Thank you for upgrading to a Premium Account. Your automatic renewal date  is ' + moment(success.subscription_active_until).format('MM-DD-YY'), true);
+                                        Alert.success($scope.alerts, 'Thank you for upgrading to a Premium Account. Your automatic renewal date  is ' + moment(success.subscription_active_until).format('MM-DD-YY'), true);
                                         ModalHandler.close($modalInstance,success);
                                     },
                                     function (failure) {

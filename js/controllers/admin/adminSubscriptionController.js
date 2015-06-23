@@ -30,7 +30,6 @@ adminModule.controller('AdminSubscriptionController', ['$scope', '$state', '$mod
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (practice) {
                 // $scope.practice.users.push(user);
-                Alert.success($scope.alerts, 'Thank you for upgrading to a Premium Account. Your automatic renewal date  is ' + moment(practice.subscription_active_until).format('MM-DD-YY'), true);
                 $scope.practice = practice
             });
         };
