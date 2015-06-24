@@ -1655,6 +1655,10 @@ label.tooth-label-view{
     border-color: rgb(243, 243, 243);
 }
 
+.delete-button-margin{
+	margin-right: 5px;
+}
+
 #formNewNote textarea{
 	height: 250px;
 }
