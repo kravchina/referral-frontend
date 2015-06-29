@@ -292,11 +292,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
         };
 
         $scope.deleteAttachment = function(attachment){
-            angular.forEach($scope.referral.attachments, function(item, key){
-                if(item.id == attachment.id) {
-                    $scope.referral.attachments.splice(key, 1);
-                }
-            });
+            $scope.referral.attachments.splice($scope.referral.attachments.indexOf(attachment),1);
             Attachment.delete({id: attachment.id});
         };
     }]);

@@ -23,19 +23,11 @@ dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fi
 
         $scope.deleteAttachment = function(attachment){
             if(typeof attachment.id !== 'undefined'){
-                angular.forEach($scope.attachments, function(attach, key){
-                    if(attach.id == attachment.id) {
-                        $scope.attachments.splice(key, 1);
-                    }
-                });
+                $scope.attachments.splice($scope.attachments.indexOf(attachment),1);
                 Attachment.delete({id: attachment.id});
             }
             else{
-                angular.forEach($scope.uploader.queue, function(attach, key){
-                    if(attach == attachment){
-                        $scope.uploader.queue.splice(key,1);
-                    }
-                });
+                $scope.uploader.queue.splice($scope.uploader.queue.indexOf(attachment),1);
             }
         };
 
