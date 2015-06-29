@@ -12,8 +12,12 @@ var CommonExpects = function() {
         expect(element(by.css('ul.nav.navbar-nav.navbar-right.ng-hide')).isPresent()).toBe(true);
     };
     
-    this.expectCurrentUrlToBe = function(pageUrl) {
-        expect(browser.getLocationAbsUrl()).toEqual(browser.baseUrl + pageUrl);
+    this.expectCurrentUrlToBe = function(pageUrl, doneCallback) {
+        // refactored to using then() after URL mismatches from time to time
+        browser.getLocationAbsUrl().then(function(url) {
+            expect(url).toEqual(browser.baseUrl + pageUrl);
+            if (doneCallback != undefined) doneCallback();
+        });
     };
     
     this.expectCurrentUrlToContain = function(pageUrl) {

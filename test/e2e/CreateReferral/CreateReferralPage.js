@@ -21,6 +21,14 @@ var CreateReferralPage = function() {
         return element(by.css('button[ng-click="discardTemplate(model.referral)"]'));
     };
     
+    this.getCreationConfirmationDialogElement = function() {
+        return element(by.css('div.modal-dialog form#formReferralCreate'));
+    };
+    
+    this.getCreationConfirmationDialogCloseButton = function() {
+        return element(by.css('form#formReferralCreate div.modal-footer button[ng-click="cancel()"]'));
+    };
+    
     // patient block
     
     this.getPatientElement = function() {
@@ -53,6 +61,34 @@ var CreateReferralPage = function() {
     
     this.getProviderElement = function() {
         return element(by.model('model.referral.dest_provider_id'));
+    };
+    
+    this.getInvitedProviderElement = function() {
+        return element(by.model('model.referral.dest_provider_invited_id'));
+    };
+    
+    this.getInviteProviderButton = function() {
+        return element(by.css('button[ng-click="providerDialog()"]'));
+    };
+    
+    this.getProviderDialogElement = function() {
+        return element(by.css('div.modal-dialog form#formNewProvider'));
+    };
+    
+    this.getProviderDialogFirstNameElement = function() {
+        return element(by.model('model.provider.first_name'));
+    };
+    
+    this.getProviderDialogLastNameElement = function() {
+        return element(by.model('model.provider.last_name'));
+    };
+    
+    this.getProviderDialogEmailElement = function() {
+        return element(by.model('model.provider.email'));
+    };
+    
+    this.getProviderDialogSendButton = function() {
+        return element(by.css('button[ng-click="ok(model.provider)"]'));
     };
     
     // referral type block

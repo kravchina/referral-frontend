@@ -24,7 +24,23 @@ var ViewReferralSpec = function() {
                 });
                 
                 it('opens a new tab with image in it', function(done) {
-                    browser.getAllWindowHandles().then(function(handles) {
+                    var d = protractor.promise.defer(); // refactored from simple getAllWindowHandles().then() to this after getting second handle as '' from time to time
+                    var newWindowGotHandle = false;
+                    
+                    function checkWindowHandles() {
+                        browser.getAllWindowHandles().then(function(handles) {
+                            if (handles[handles.length-1] !== '') {
+                                newWindowGotHandle = true;
+                                d.fulfill(handles);
+                            } else {
+                                setTimeout(checkWindowHandles, 1000)
+                            }
+                        });
+                    };
+                    
+                    setTimeout(checkWindowHandles, 1000);
+                    
+                    d.promise.then(function(handles) {
                         // assuming we now have exactly two tabs
                         browser.switchTo().window(handles[1]).then(function() {
                             expect(browser.driver.getCurrentUrl()).toContain(browser.params.attachmentUrlPart);

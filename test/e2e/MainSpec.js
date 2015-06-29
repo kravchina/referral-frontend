@@ -3,9 +3,14 @@ var commonExpects = require('./CommonExpects');
 var signInPage = require('./SignIn/SignInPage');
 var historyPage = require('./History/HistoryPage');
 
-var adminSpec = require('./Admin/AdminSpec');
+var adminPracticeSpec = require('./Admin/AdminPracticeSpec');
+var adminUsersSpec = require('./Admin/AdminUsersSpec');
+var adminInviteSpec = require('./Admin/AdminInviteSpec');
+var adminSubscriptionSpec = require('./Admin/AdminSubscriptionSpec');
+
 var createReferralSpec = require('./CreateReferral/CreateReferralSpec');
 var viewReferralSpec = require('./ViewReferral/ViewReferralSpec');
+var createReferralAndInvitationSpec = require('./Registration/CreateReferralAndInvitationSpec');
 
 describe('when user navigates to Sign In page', function() {
     commonActions.maximizeBrowser();
@@ -16,7 +21,10 @@ describe('when user navigates to Sign In page', function() {
         commonExpects.expectMenuHidden();
     });
     
-    it('shows Sign In page', function() {});
+    it('shows Sign In page with empty fields', function() {
+      expect(signInPage.getEmail()).toEqual('');
+      expect(signInPage.getPass()).toEqual('');
+    });
     
     describe('when user tries to log in with invalid credentials', function() {
         beforeEach(function() {
@@ -47,7 +55,10 @@ describe('when user navigates to Sign In page', function() {
             commonExpects.expectCurrentUrlToBe(historyPage.url);
         });
         
-        adminSpec.run();
+        adminPracticeSpec.run();
+        adminUsersSpec.run();
+        adminInviteSpec.run();
+        adminSubscriptionSpec.run();
         createReferralSpec.run();
         viewReferralSpec.run();
         
@@ -58,5 +69,7 @@ describe('when user navigates to Sign In page', function() {
             commonExpects.expectCurrentUrlToBe(signInPage.url);
         });
     });
+    
+   createReferralAndInvitationSpec.run();
     
 });

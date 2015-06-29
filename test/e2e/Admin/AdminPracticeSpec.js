@@ -1,31 +1,31 @@
 var commonActions = require('../CommonActions');
 var commonExpects = require('../CommonExpects');
-var adminPage = require('./AdminPage');
+var adminPracticePage = require('./AdminPracticePage');
 var historyPage = require('../History/HistoryPage');
 
-var AdminSpec = function() {
+var AdminPracticeSpec = function() {
     this.run = function() {
-        describe('when user navigates to Admin', function() {
+        describe('when user navigates to Admin Practice', function() {
             beforeEach(function() {
-                adminPage.open();
+                adminPracticePage.open();
                 commonExpects.expectProgressDivHidden();
-                commonExpects.expectCurrentUrlToBe(adminPage.url);
+                commonExpects.expectCurrentUrlToBe(adminPracticePage.url);
             });
             
-            it('shows Admin page with Practice tab opened in Practice view mode', function() {
+            it('shows Admin Practice page in Practice view mode', function() {
                 expect(element(by.css('#adminTabContent')).isPresent()).toBe(true);
-                adminPage.expectPracticeTabOpened();
-                adminPage.expectPracticeViewMode();
-                // TODO [ak] add more criteria of recognizing Admin page
+                expect(element(by.model('practice.name')).isDisplayed()).toBe(true); // this input is displayed on the page in both view and edit modes
+                adminPracticePage.expectPracticeViewMode();
+                // TODO [ak] add more criteria of recognizing page
             });
             
             describe('when user tries to enter Practice edit mode', function() {
                 beforeEach(function() {
-                    adminPage.clickPracticeTabEdit();
+                    adminPracticePage.clickPracticeEdit();
                 });
                 
                 it('enters Practice edit mode', function() {
-                    adminPage.expectPracticeEditMode();
+                    adminPracticePage.expectPracticeEditMode();
                 });
                 
                 it('allows navigation away without unsaved changes warning', function() {
@@ -38,9 +38,10 @@ var AdminSpec = function() {
                     var dataStr = 'asdf';
                     
                     beforeEach(function() {
-                        adminPage.setPracticeName(dataStr);
-                        expect(adminPage.getPracticeName()).toEqual(dataStr);
+                        adminPracticePage.setPracticeName(dataStr);
+                        expect(adminPracticePage.getPracticeName()).toEqual(dataStr);
                         commonActions.clickLogo();
+                        browser.wait(protractor.ExpectedConditions.alertIsPresent(), 10000); // added to prevent "No alert is active" under IE from time to time
                     });
                     
                     var alertDialog; // TODO [ak] extract common alert functions somewhere, re-use code
@@ -68,17 +69,17 @@ var AdminSpec = function() {
                         });
                         
                         it('stays on page with data kept', function() {
-                            commonExpects.expectCurrentUrlToBe(adminPage.url);
-                            expect(adminPage.getPracticeName()).toEqual(dataStr);
+                            commonExpects.expectCurrentUrlToBe(adminPracticePage.url);
+                            expect(adminPracticePage.getPracticeName()).toEqual(dataStr);
                         });
                         
-                        afterEach(function() {
+                        afterEach(function(doneCallback) {
                             // manually getting out of the page and accepting the alert to allow log out and other flows
                             commonActions.clickLogo();
                             alertDialog = browser.switchTo().alert();
                             alertDialog.accept();
                             commonExpects.expectProgressDivHidden();
-                            commonExpects.expectCurrentUrlToBe(historyPage.url);
+                            commonExpects.expectCurrentUrlToBe(historyPage.url, doneCallback);
                         });
                     });
                     
@@ -86,38 +87,8 @@ var AdminSpec = function() {
                 
             });
             
-            describe('when user clicks Users tab', function() {
-                beforeEach(function() {
-                    adminPage.clickUsersTab();
-                });
-                
-                it('shows Users tab', function() {
-                    expect(element(by.css('th.cell-user')).isDisplayed()).toBe(true);
-                });
-            });
-            
-            describe('when user clicks Invite Colleague tab', function() {
-                beforeEach(function() {
-                    adminPage.clickInviteColleagueTab();
-                });
-                
-                it('shows Invite Colleague tab', function() {
-                    expect(element(by.css('th.cell-provider')).isDisplayed()).toBe(true);
-                });
-            });
-            
-            describe('when user clicks Subscription tab', function() {
-                beforeEach(function() {
-                    adminPage.clickSubscriptionTab();
-                });
-                
-                it('shows Subscription tab', function() {
-                    expect(element(by.css('div#admintabAccount form#formAccountTab h2')).isDisplayed()).toBe(true);
-                });
-            });
-            
         });
     };
 };
 
-module.exports = new AdminSpec();
+module.exports = new AdminPracticeSpec();
