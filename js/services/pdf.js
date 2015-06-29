@@ -1,5 +1,5 @@
 var dentalLinksPdf = angular.module('pdf', []);
-dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth', '$timeout', '$window', 'API_ENDPOINT', function ($filter, Spinner, ImageUtils, File, Auth, $timeout, $window, API_ENDPOINT) {
+dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth', '$timeout', '$window', 'API_ENDPOINT', 'PhoneFormatter', function ($filter, Spinner, ImageUtils, File, Auth, $timeout, $window, API_ENDPOINT, PhoneFormatter) {
     var jsPDFOrientation = 'p'; // portrait
     var jsPDFUnit = 'mm';
     var jsPDFFormat = 'letter';
@@ -151,12 +151,16 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
         if (notes && notes.length && notes.length > 0) {
             pdf.setFontType('normal');
             for (var k = 0; k < notes.length; k++) {
+                caret += fontSizeMm;
+                pdf.setFontType('bold');
+                pdf.text(pagePaddings.x, caret, notes[k].user.first_name + " " + notes[k].user.last_name + " " + moment(notes[k].created_at).format("MMM D, YYYY h:mm"));
+                pdf.setFontType('normal');
                 var noteLines = pdf.splitTextToSize(notes[k].message, fullSizeColWidth);
                 var noteHeight = noteLines.length * fontSizeMm;
                 caret = addPageIfNeeded(pdf, caret, noteHeight); // may include addHeader() resetting styles, but we have those default styles here anyway
                 caret += fontSizeMm;
                 pdf.text(pagePaddings.x, caret, noteLines); // assuming that note can fit at least a blank page. If not, what kind of "note" is it?..
-                caret += noteHeight - fontSizeMm;
+                caret += noteHeight;
             }
             caret += blocksPadding;
             caret = appendLineSeparator(pdf, caret);
@@ -324,6 +328,12 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
         caret += fontSizeMm;
         pdf.setFontType('bold');
         pdf.text(pagePaddings.x, caret, fitString(patientData.name + ' (' + formatDate(patientData.birthday) + ')', fontSizeMm, fullSizeColWidth));
+        pdf.setFontType('normal');
+        caret += fontSizeMm;
+        pdf.text(pagePaddings.x, caret, fitString(patientData.email, fontSizeMm, halfSizeColWidth - addressPaddingX));
+        caret += fontSizeMm;
+        pdf.text(pagePaddings.x, caret, fitString(patientData.phone, fontSizeMm, halfSizeColWidth - addressPaddingX));
+        caret += fontSizeMm;
         return caret + blocksPadding;
     };
 
@@ -503,6 +513,8 @@ dentalLinksPdf.factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth
             var patient = data.patient || {};
             patientData.name = (patient.first_name || '') + ' ' + (patient.last_name || '');
             patientData.birthday = (patient.birthday || '');
+            patientData.email = (patient.email || '');
+            patientData.phone = patient.phone ? PhoneFormatter.format(patient.phone) : '';
 
             var procedure = data.procedure || {};
             procedureData.name = procedure.name || '';

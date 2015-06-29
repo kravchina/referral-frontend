@@ -1,8 +1,9 @@
 var modalsModule = angular.module('modals', ['ui.bootstrap']);
 
-modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname) {
+modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', 'PhoneFormatter', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname, PhoneFormatter) {
 
     $scope.title = 'Create a New Patient Record';
+    $scope.phoneFormatter = PhoneFormatter;
 
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
 
@@ -37,12 +38,13 @@ modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 
     };
 }]);
 
-modalsModule.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit) {
+modalsModule.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', 'PhoneFormatter', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, PhoneFormatter) {
     $scope.title = 'Edit Patient Record';
+    $scope.phoneFormatter = PhoneFormatter;
 
     $scope.alerts = [];
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
-    $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: patientForEdit.birthday};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
+    $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: patientForEdit.birthday, email: patientForEdit.email, phone: patientForEdit.phone};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
     $scope.ok = function (patient) {
         Patient.update({id: patientForEdit.id}, {patient: patient},
             function (success) {
