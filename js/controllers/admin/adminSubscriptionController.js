@@ -5,6 +5,7 @@ adminModule.controller('AdminSubscriptionController', ['$scope', '$state', '$mod
             $scope.paymentNotification = {
                 showTrial: practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
                 showTrialExpired: practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
+                showSubscriptionSuccess: false,
                 showSubscriptionCancelled: !practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
                 showSubscriptionExpired: !practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime()
             }
@@ -30,7 +31,9 @@ adminModule.controller('AdminSubscriptionController', ['$scope', '$state', '$mod
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (practice) {
                 // $scope.practice.users.push(user);
-                $scope.practice = practice
+                $scope.paymentNotification.showSubscriptionSuccess = true;
+                $scope.paymentNotification.showTrial = practice.trial_period;
+                $scope.practice = practice;
             });
         };
 
