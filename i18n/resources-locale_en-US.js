@@ -67,8 +67,8 @@
     },
     {
         "key":"referral.success.create",
-        "value":"Referral success created, please download PDF",
-        "description":"Referral success created"
+        "value":"Your referral was sent successfully",
+        "description":"Your referral was sent successfully"
     },
 
     {
@@ -78,8 +78,18 @@
     },
     {
         "key": "payment.required",
-        "value": "Please go to your <a href='#/admin'>account settings page</a> and select 'Subscription' tab to activate premium account. After that you will be able to review referrals sent by other providers. You will be able to access referral as soon as we obtain a confirmation from payment system.",
+        "value": "Please go to your <a ui-sref='admin.subscription'>account settings page</a> to activate premium account. After that you will be able to review referrals sent by other providers. You will be able to access referral as soon as we obtain a confirmation from payment system.",
         "description": "Error message for the case when user tries to open referral, but his practice didn't pay for a premium account."
+    },
+    {
+        "key":"error.http.requestTimeout",
+        "value":"Request Timeout Error. Please try again.",
+        "description":"Request Timeout Error"
+    },
+    {
+        "key":"error.http.serverError",
+        "value":"Server Error. Please try again.",
+        "description":"Server Error: 500 - 600"
     },
     {
         "key":"default.error.header",

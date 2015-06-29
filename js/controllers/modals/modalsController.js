@@ -1,8 +1,9 @@
 var modalsModule = angular.module('modals', ['ui.bootstrap']);
 
-modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname) {
+modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', 'PhoneFormatter', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname, PhoneFormatter) {
 
     $scope.title = 'Create a New Patient Record';
+    $scope.phoneFormatter = PhoneFormatter;
 
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
 
@@ -37,12 +38,13 @@ modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 
     };
 }]);
 
-modalsModule.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit) {
+modalsModule.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', 'PhoneFormatter', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, PhoneFormatter) {
     $scope.title = 'Edit Patient Record';
+    $scope.phoneFormatter = PhoneFormatter;
 
     $scope.alerts = [];
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
-    $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: patientForEdit.birthday};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
+    $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: patientForEdit.birthday, email: patientForEdit.email, phone: patientForEdit.phone};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
     $scope.ok = function (patient) {
         Patient.update({id: patientForEdit.id}, {patient: patient},
             function (success) {
@@ -99,6 +101,7 @@ modalsModule.controller('NoteModalController', ['$scope', '$modalInstance', 'Mod
 modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', 'Spinner', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth, Spinner) {
     $scope.alerts = [];
     $scope.model = {};
+
     $scope.$watch( //we need only one-way updates from typeahead, otherwise typeahead works incorrectly
         function () {
             return $scope.model.existingProvider;
@@ -176,36 +179,55 @@ modalsModule.controller('JoinPracticeModalController', ['$scope', '$modalInstanc
     };
 }]);
 
-modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Logger', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Auth, Alert, Logger) {
+modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger) {
     $scope.result = {};
     $scope.alerts = [];
+    $scope.isInvite = true;
+    $scope.isDisabled = false;
     
+    $scope.toggleRadio = function(value){
+        $scope.isDisabled = !$scope.isDisabled;
+    };
+
     $scope.ok = function (user) {
         user.practice_id = Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
-        ProviderInvitation.save({provider_invitation: user},
-            function (success) {
-                ModalHandler.close($modalInstance, success);
-            }, function (failure) {
-                Logger.log(failure);
-                $scope.alerts = [];//reset alerts list because we need only one alert at a time
-                Alert.error($scope.alerts, failure.data.message[0]);
-                Logger.log($scope.alerts);
-            });
+        
+        if($scope.isInvite){
+            ProviderInvitation.save({provider_invitation: user},
+                function (success) {
+                    ModalHandler.close($modalInstance, success);
+                }, function (failure) {
+                    Logger.log(failure);
+                    $scope.alerts = [];//reset alerts list because we need only one alert at a time
+                    Alert.error($scope.alerts, failure.data.message[0]);
+                    Logger.log($scope.alerts);
+                });
+        } else {
+            Registration.create_user({user: user},
+                function(success){
+                    ModalHandler.close($modalInstance, success);
+                },function(failure){
+                    Logger.log(failure);
+                    $scope.alerts = [];//reset alerts list because we need only one alert at a time
+                    Alert.error($scope.alerts, failure.data.message[0]);
+                    Logger.log($scope.alerts);
+                });
+        }
     };
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
     };
 }]);
 
-modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_customer_id', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_customer_id) {
+modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id) {
     $scope.result = {};
     $scope.alerts = [];
     var currentYear = moment().year();
     $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4, currentYear + 5 ];
 
-    $scope.stripe_customer_id = stripe_customer_id;
-    Logger.log($scope.stripe_customer_id);
+    $scope.stripe_subscription_id = stripe_subscription_id;
+    Logger.log($scope.stripe_subscription_id);
     var handleError = function(failure){
         Alert.error($scope.alerts, 'Error: can\'t access to payment system. Please try again later.');
         $scope.disableForm = true;
@@ -336,4 +358,12 @@ modalsModule.controller('InvitationValidationController', ['$scope', '$modalInst
                 Alert.error($scope.alerts, 'An error occurred during invitation resend...')
             });
     }
+}]);
+
+modalsModule.controller('ErrorModalController', ['$scope', '$modalInstance', 'ModalHandler', 'message', function($scope, $modalInstance, ModalHandler, message){
+    $scope.message = message;
+
+    $scope.cancel = function(){
+        ModalHandler.dismiss($modalInstance);
+    };
 }]);

@@ -1,0 +1,44 @@
+<!-- Users Tab -->
+<div id="admintabUsers">
+    <div class="block-title">
+        <h2>Users</h2>
+        <button access="admin" type="button" ng-click="usersDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-user" data-toggle="tooltip" data-placement="top" title="Add a New User" data-target="#modalUser"><span class="dlicons-user-add"></span></button>
+    </div>
+
+    <div id="sectUsers" class="section-block">
+        <div class="table-wrapper">
+            <div class="table-container">
+                <table class="table table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th class="cell-user">Name</th>
+                        <th class="cell-username">Email</th>
+                        <th class="cell-role">Role</th>
+                        <th class="cell-created">Created on</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  ng-repeat="user in practice.users.concat(invitedUsers)">
+                        <td class="cell-user">{{user.first_name}} {{user.middle_initial}} {{user.last_name}}</td>
+                        <td class="cell-username">{{user.email}}</td>
+                        <td class="cell-role">
+                            <span>{{roleName(user.is_admin, user.roles_mask)}}</span>
+
+                        </td>
+                        <td class="cell-created">
+                            <div ng-if="user.email != auth.email" access="admin" delete-button class="button-block btn-delete">
+                                <span class="dlicons-remove"></span> Delete this user? <a ng-click="deleteUser(user)" class="link-green">Yes</a> | <a  class="link-orange">No</a>
+                            </div>
+                            <div ng-click="editDialog(user)" ng-hide="user.status || (!auth.is_admin && auth.email != user.email)" class="button-block btn-change-password">
+                                <span class="dlicons-pencil" title="Change Password"></span>
+                            </div>
+                            <span class="create-date">{{user.created_at | date: 'mediumDate'}}&nbsp;</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div><!-- .table-container -->
+        </div><!-- .table-wrapper -->
+    </div><!-- .section-block -->
+
+</div>

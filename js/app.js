@@ -1,5 +1,6 @@
 var dentalLinks = angular.module('dentalLinks', [
     'ui.router',
+    'ui.router.tabs',
     'ngCookies',
     'admin',
     'history',
@@ -26,6 +27,10 @@ dentalLinks.constant('USER_ROLES', {
 });
 
 dentalLinks.constant('FREE_TRIAL_PERIOD', 45);
+dentalLinks.constant('HTTP_ERROR_EVENTS', {
+    requestTimeout: 'http-request-timeout',
+    serverError: 'http-server-error'
+});
 dentalLinks.constant('API_ENDPOINT', 'https://referral-server.herokuapp.com');
 dentalLinks.constant('AUTH_EVENTS', {
     notAuthenticated: 'auth-not-authenticated',
@@ -142,6 +147,30 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
             controller: 'AdminController',
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
+        state('admin.practice', {
+            url: '/practice',
+            templateUrl: 'partials/admin_practice.html',
+            controller: 'AdminPracticeController',
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
+        state('admin.users', {
+            url: '/users',
+            templateUrl: 'partials/admin_users.html',
+            controller: 'AdminUsersController',
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
+        state('admin.invite', {
+            url: '/invite',
+            templateUrl: 'partials/admin_invite.html',
+            controller: 'AdminInviteController',
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
+        state('admin.subscription', {
+            url: '/subscription',
+            templateUrl: 'partials/admin_subscription.html',
+            controller: 'AdminSubscriptionController',
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
         state('faq', {
             url: '/faq',
             templateUrl: 'partials/faq.html'
@@ -170,7 +199,7 @@ dentalLinks.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', functi
         });
 
         $rootScope.$on(AUTH_EVENTS.paymentRequired, function(event, args){
-           Logger.log('paymentRequired');
+            Logger.log('paymentRequired');
             $state.go('error_page', {error_key: 'payment.required'});
         });
 
@@ -194,6 +223,7 @@ dentalLinks.config(['$httpProvider', function ($httpProvider) {
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.interceptors.push('authInterceptor');
     $httpProvider.interceptors.push('spinnerInterceptor');
+    $httpProvider.interceptors.push('errorsHttpInterceptor');
 }
 ]);
 
@@ -265,6 +295,25 @@ dentalLinks.factory('authInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', '$loc
     };
 }]);
 
+dentalLinks.factory('errorsHttpInterceptor', ['$rootScope', '$q', '$injector', 'HTTP_ERROR_EVENTS', function($rootScope, $q, $injector, HTTP_ERROR_EVENTS){
+    return {
+        requestError: function(rejection){
+            $rootScope.$broadcast(HTTP_ERROR_EVENTS.requestError, {status: rejection.status, text: rejection.statusText});
+            return $q.reject(rejection);
+        },
+        responseError: function(rejection){
+            if(rejection.status == 418) {
+                $rootScope.$broadcast(HTTP_ERROR_EVENTS.requestTimeout, 
+                    {status: rejection.status, text: rejection.statusText});
+            } else if(rejection.status >= 500 && rejection.status < 600){
+                $rootScope.$broadcast(HTTP_ERROR_EVENTS.serverError, 
+                    {status: rejection.status, text: rejection.statusText});
+            }
+            return $q.reject(rejection);
+        }
+    };
+}]);
+
 dentalLinks.filter('filename', function () {
     return function (fullFileName) {
         return fullFileName.slice(fullFileName.lastIndexOf('/') + 1);
@@ -277,23 +326,17 @@ dentalLinks.filter('phoneNumber', ['PhoneFormatter', function(PhoneFormatter) {
 
 dentalLinks.filter('attachmentDownloadUrl', ['API_ENDPOINT', function(API_ENDPOINT){
    return function(attachment){
-       return API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.filename;
+       return API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.attach_file_name;
    }
 }]);
 
 dentalLinks.filter('authenticatableAttachmentDownloadUrl', ['API_ENDPOINT', '$window', 'Auth', function(API_ENDPOINT, $window, Auth){
     return function(attachment){
-        var downloadUrl = API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.filename;
+        var downloadUrl = API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.attach_file_name;
         if (/trident/i.test($window.navigator.userAgent)){ //TODO: workaround for https://www.pivotaltracker.com/story/show/86373800. Remove that filter to use cookies for image authentication.
             var auth = Auth.get();
             downloadUrl += '&token=' + auth.token + '&from=' + auth.email;
         }
         return  downloadUrl;
     }
-}]);
-
-dentalLinks.filter("allowHtml", ['$sce', function($sce) {
-  return function(htmlCode){
-    return $sce.trustAsHtml(htmlCode);
-  }
 }]);
