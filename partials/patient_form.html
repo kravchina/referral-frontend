@@ -29,10 +29,10 @@
                         <input type="text" name="lastName" class="form-control" ng-model="patient.last_name" placeholder="Enter last name &hellip;" ng-required="true">
                     </div>
                     <div class="input-block"  ng-class="{ 'has-error': patientForm.email.$dirty && patientForm.email.$invalid }" >
-                        <input type="email" name="email" class="form-control" ng-model="patient.email" placeholder="Enter email &hellip;" ng-required="true">
+                        <input type="email" name="email" class="form-control" ng-model="patient.email" placeholder="Enter email &hellip;">
                     </div>
                     <div class="input-block"  ng-class="{ 'has-error': patientForm.phone.$dirty && patientForm.phone.$invalid }" >
-                        <input type="tel" name="phone" class="form-control" ng-model="patient.phone" placeholder="{{phoneFormatter.UI_PLACEHOLDER}}" ui-mask="{{phoneFormatter.MASK}}" ng-required="true">
+                        <input type="tel" name="phone" class="form-control" ng-model="patient.phone" placeholder="{{phoneFormatter.UI_PLACEHOLDER}}" ui-mask="{{phoneFormatter.MASK}}">
                     </div>
                     <div class="input-block"  ng-class="{ 'has-error': patientForm.birthday.$dirty && patientForm.birthday.$invalid }" >
                         <input type="date" name="birthday" class="form-control" ng-model="patient.birthday" placeholder="Enter birthday &hellip;" ng-required="true">
