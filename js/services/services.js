@@ -111,7 +111,8 @@ dentalLinksServices.factory('Referral', ['$resource', 'API_ENDPOINT', function (
         saveTemplate: {method: 'POST', url: API_ENDPOINT + '/referrals/new/template'},
         update: {method: 'PUT'},
         updateStatus: {method: 'PUT', url: API_ENDPOINT + '/referrals/:id/status'},
-        findByPractice: {method: 'GET', url: API_ENDPOINT + '/referrals/practice/:id', isArray: false}
+        findByPractice: {method: 'GET', url: API_ENDPOINT + '/referrals/practice/:id', isArray: false},
+        countByInvited: {method: 'GET', url: API_ENDPOINT + '/referrals/count/:id', isArray: false}
     });
 }]);
 
