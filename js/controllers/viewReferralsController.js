@@ -290,5 +290,10 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
             $timeout.cancel($scope.attachment_alerts[index].promise); //cancel automatic removal
             $scope.attachment_alerts.splice(index, 1);
         };
+
+        $scope.deleteAttachment = function(attachment){
+            $scope.referral.attachments.splice($scope.referral.attachments.indexOf(attachment),1);
+            Attachment.delete({id: attachment.id});
+        };
     }]);
 
