@@ -97,7 +97,8 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                 ProviderInvitation.validate({email: invitation.email}, function(success){
                     Practice.save({
                             practice: practice,
-                            promo: $scope.promo
+                            promo: $scope.promo,
+                            user: invitation
                         },
                         function (success) {
                             console.log('created practice: ' + JSON.stringify(success));
@@ -137,7 +138,12 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                         },
                         function (failure) {
                             $scope.alerts = [];
-                            Alert.error($scope.alerts, 'practice.create.failed', true);
+
+                            if(failure.data.error === 'user.exists') {
+                                Alert.error($scope.alerts, failure.data.error, true);
+                            } else {
+                                Alert.error($scope.alerts, 'practice.create.failed', true);
+                            }
                         });
 
 
