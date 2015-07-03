@@ -135,7 +135,12 @@ createReferralModule.service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 
                 return function () {
                     var modalInstance = $modal.open({
                         templateUrl: 'partials/provider_form.html',
-                        controller: 'ProviderModalController'
+                        controller: 'ProviderModalController',
+                        resolve: {
+                            isSendEmail: function(){
+                                return false;
+                            }
+                        }
                     });
                     ModalHandler.set(modalInstance);
                     modalInstance.result.then(function (provider) {

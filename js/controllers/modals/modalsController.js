@@ -96,9 +96,13 @@ modalsModule.controller('NoteModalController', ['$scope', '$modalInstance', 'Mod
 
 }]);
 
-modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', 'Spinner', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth, Spinner) {
+modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', 'Spinner', 'isSendEmail', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth, Spinner, isSendEmail) {
     $scope.alerts = [];
     $scope.model = {};
+
+    if(typeof isSendEmail === 'undefined'){
+        isSendEmail = true;
+    }
 
     $scope.$watch( //we need only one-way updates from typeahead, otherwise typeahead works incorrectly
         function () {
@@ -120,7 +124,7 @@ modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 
             }
         };
 
-        ProviderInvitation.save({provider_invitation: provider}, resultHandlers.success, resultHandlers.failure);
+        ProviderInvitation.save({provider_invitation: provider, send_email: isSendEmail}, resultHandlers.success, resultHandlers.failure);
     };
     $scope.closeAlert = function (index) {
         Alert.close($scope.alerts, index);
