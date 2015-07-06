@@ -137,7 +137,7 @@ createReferralModule.service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 
                         templateUrl: 'partials/provider_form.html',
                         controller: 'ProviderModalController',
                         resolve: {
-                            isSendEmail: function(){
+                            sendEmailNotification: function(){
                                 return false;
                             }
                         }
