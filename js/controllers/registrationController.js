@@ -2,8 +2,8 @@ var registrationModule = angular.module('registration', []);
 
 
 // Just for invited providers to some existing practice or to a new practice
-registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Promo',
-    function ($scope, $location, $stateParams, $modal, $state, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Promo) {
+registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Referral','Promo',
+    function ($scope, $location, $stateParams, $modal, $state, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral,Promo) {
         $scope.alerts = [];
         $scope.showPracticeButtons = true;
 
@@ -19,12 +19,17 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             } else {
                 $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
                     function (success) {
+                        Referral.countByInvited({id: $scope.invitation.id},
+                        function(success){
+                            $scope.invitation.referrals_count = success.count;
+                        });
                     },
                     function (failure) {
                         $state.go('signIn', {alreadyRegister: true});
                     }
                 );
             }
+
         };
 
         $scope.practiceDialog = function () {
