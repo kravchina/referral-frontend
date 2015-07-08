@@ -16,7 +16,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
             $scope.paymentNotification = {
                 showTrial: practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
                 expirationDate: new Date(practice.subscription_active_until),
-                showSubscriptionCancelled: !practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime()
+                showSubscriptionCancelled: !practice.trial_period && !practice.stripe_subscription_id && Date().getTime() < new Date(practice.subscription_active_until).getTime()
             }
         });
 
@@ -289,6 +289,11 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
         $scope.closeAttachmentAlert = function (index) {
             $timeout.cancel($scope.attachment_alerts[index].promise); //cancel automatic removal
             $scope.attachment_alerts.splice(index, 1);
+        };
+
+        $scope.deleteAttachment = function(attachment){
+            $scope.referral.attachments.splice($scope.referral.attachments.indexOf(attachment),1);
+            Attachment.delete({id: attachment.id});
         };
     }]);
 

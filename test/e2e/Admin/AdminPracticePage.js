@@ -1,7 +1,7 @@
 var commonActions = require('../CommonActions');
 
-var AdminPage = function() {
-    this.url = "/#/admin";
+var AdminPracticePage = function() {
+    this.url = "/#/admin/practice";
     
     this.open = function() {
         // TODO [ak] refactor both these things into a special menu-related component
@@ -9,11 +9,7 @@ var AdminPage = function() {
         element(by.linkText('Account Settings')).click();
     };
     
-    this.expectPracticeTabOpened = function() {
-        expect(element(by.model('practice.name')).isDisplayed()).toBe(true); // this input is displayed on the tab in both view and edit modes
-    };
-    
-    this.clickPracticeTabEdit = function() {
+    this.clickPracticeEdit = function() {
         element(by.css('form#formPracticeTab button.btn-edit[title="Edit this section"]')).click();
     };
     
@@ -23,18 +19,6 @@ var AdminPage = function() {
     
     this.expectPracticeEditMode = function() {
         expect(element(by.css('input.data1[ng-model="practice.name"]')).isPresent()).toBe(false);
-    };
-    
-    this.clickUsersTab = function() {
-        element.all(by.css('li.ng-isolate-scope>a')).get(1).click();
-    };
-    
-    this.clickInviteColleagueTab = function() {
-        element.all(by.css('li.ng-isolate-scope>a')).get(2).click();
-    };
-    
-    this.clickSubscriptionTab = function() {
-        element.all(by.css('li.ng-isolate-scope>a')).get(3).click();
     };
     
     this.setPracticeName = function(value) {
@@ -48,4 +32,4 @@ var AdminPage = function() {
     
 };
 
-module.exports = new AdminPage();
+module.exports = new AdminPracticePage();

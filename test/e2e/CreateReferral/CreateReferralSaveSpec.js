@@ -4,11 +4,11 @@ var createReferralPage = require('./CreateReferralPage');
 var CreateReferralSaveSpec = function() {
     this.run = function() {
         var referral = {
-            patient: "Test Testing (2/3/79)",
-            patientPart: "Testing",
-            practice: "First Dental Practice 1",
-            practicePart: "First Dental",
-            provider: "Dr. Test pro vider 47",
+            patient: "Marty McFly (1/1/68)",
+            patientPart: "Marty",
+            practice: "David Wolf, DDS, PC",
+            practicePart: "David",
+            provider: "Doctor Another",
             referralType: "General Dentistry",
             procedure: "Follow-up Care",
             tooth: 22

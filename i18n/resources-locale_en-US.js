@@ -73,12 +73,12 @@
 
     {
         "key": "payment.required.header",
-        "value": "Upgrade your account",
+        "value": "PLEASE UPGRADE YOUR ACCOUNT TO VIEW NEW REFERRALS",
         "description": "Error page header for the case when user tries to open referral, but his practice didn't pay for a premium account."
     },
     {
         "key": "payment.required",
-        "value": "Please go to your <a ui-sref='admin.subscription'>account settings page</a> to activate premium account. After that you will be able to review referrals sent by other providers. You will be able to access referral as soon as we obtain a confirmation from payment system.",
+        "value": "We are sorry but your premium account trial period has ended.  In order to receive referrals from other providers you will need to upgrade to a PREMIUM ACCOUNT. Once your account has been upgraded to a premium account you will be able to send and receive referral information to any account. The recipient of your referrals will NOT need to upgrade to  a premium account.  Please follow this link to <a ui-sref='admin.subscription'>edit your account</a>.",
         "description": "Error message for the case when user tries to open referral, but his practice didn't pay for a premium account."
     },
     {

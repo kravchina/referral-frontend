@@ -1,5 +1,5 @@
-dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fileUploader', 'Logger', 'API_ENDPOINT', '$modal', 'ModalHandler',
-    function ($scope, Alert, Auth, $fileUploader, Logger, API_ENDPOINT, $modal, ModalHandler) {
+dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fileUploader', 'Logger', 'API_ENDPOINT', 'Attachment', '$modal', 'ModalHandler',
+    function ($scope, Alert, Auth, $fileUploader, Logger, API_ENDPOINT, Attachment, $modal, ModalHandler) {
 
         $scope.now = function () {
             return Date.now();
@@ -19,6 +19,16 @@ dentalLinks.controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fi
             modalInstance.result.then(function (date) {
                 attachment.metadata.last_modified = date; //we need write-enabled property so it is necessary
             });
+        };
+
+        $scope.deleteAttachment = function(attachment){
+            if(typeof attachment.id !== 'undefined'){
+                $scope.attachments.splice($scope.attachments.indexOf(attachment),1);
+                Attachment.delete({id: attachment.id});
+            }
+            else{
+                $scope.uploader.queue.splice($scope.uploader.queue.indexOf(attachment),1);
+            }
         };
 
         $scope.current_user = Auth.current_user;

@@ -302,10 +302,10 @@ dentalLinks.factory('errorsHttpInterceptor', ['$rootScope', '$q', '$injector', '
             return $q.reject(rejection);
         },
         responseError: function(rejection){
-            if(rejection.status == 418) {
+            if(rejection.status == 408) {
                 $rootScope.$broadcast(HTTP_ERROR_EVENTS.requestTimeout, 
                     {status: rejection.status, text: rejection.statusText});
-            } else if(rejection.status >= 500 && rejection.status < 600){
+            } else if(rejection.status >= 503 && rejection.status < 504){
                 $rootScope.$broadcast(HTTP_ERROR_EVENTS.serverError, 
                     {status: rejection.status, text: rejection.statusText});
             }
