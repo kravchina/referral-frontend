@@ -139,7 +139,8 @@ dentalLinksServices.factory('ProviderInvitation', ['$resource', 'API_ENDPOINT', 
 dentalLinksServices.factory('Registration', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/sign_up', {}, {
         verify_security_code: {method: 'GET', url: API_ENDPOINT + '/verify_security_code/:code'},
-        create_user: {method: 'POST', url: API_ENDPOINT + '/register_without_invite'}
+        create_user: {method: 'POST', url: API_ENDPOINT + '/register_without_invite'},
+        register_with_promo: {method: 'POST', url: API_ENDPOINT + '/register_with_promo'}
     })
 }]);
 
