@@ -6,7 +6,7 @@ adminModule.controller('AdminSubscriptionController', ['$scope', '$state', '$mod
                 showTrial: practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
                 showTrialExpired: practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
                 showSubscriptionSuccess: false,
-                showSubscriptionCancelled: !practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
+                showSubscriptionCancelled: !practice.trial_period && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
                 showSubscriptionExpired: !practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime()
             }
         });
@@ -33,6 +33,7 @@ adminModule.controller('AdminSubscriptionController', ['$scope', '$state', '$mod
                 // $scope.practice.users.push(user);
                 $scope.paymentNotification.showSubscriptionSuccess = true;
                 $scope.paymentNotification.showTrial = practice.trial_period;
+                $scope.showSubscriptionExpired = false;
                 $scope.practice = practice;
             });
         };
@@ -42,7 +43,9 @@ adminModule.controller('AdminSubscriptionController', ['$scope', '$state', '$mod
                 function (success) {
                     Logger.log(success);
                     Alert.success($scope.alerts, 'Subscription was cancelled successfully!');
-                    $scope.practice = success
+                    $scope.practice = success;
+                    $scope.paymentNotification.showSubscriptionCancelled = true;
+                    $scope.paymentNotification.showSubscriptionSuccess = false;
                 },
                 function (failure) {
                     Alert.error($scope.alerts, 'An error occurred during cancelling subscription...')
