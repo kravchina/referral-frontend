@@ -100,53 +100,33 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
             if ($scope.form.$valid) {
                 //we check first, that email is new and was not used for invitation
                 ProviderInvitation.validate({email: invitation.email}, function(success){
-                    Practice.save({
+                    Registration.register_with_promo({
+                            user: invitation,
                             practice: practice,
+                            security_code: $scope.security_code,
+                            skip_security_code: true,
                             promo: $scope.promo
                         },
-                        function (success) {
-                            console.log('created practice: ' + JSON.stringify(success));
-
-                            invitation.practice_id = success.id;
-
-                            Registration.save({
-                                    user: invitation,
-                                    invitation_token: $stateParams.invitation_token,
-                                    security_code: $scope.security_code,
-                                    skip_security_code: true,
-                                    promo: $scope.promo
-                                },
-                                function (success) {
-                                    Auth.set({
-                                        token: success.authentication_token,
-                                        email: success.email,
-                                        roles: success.roles,
-                                        is_admin: success.is_admin,
-                                        id: success.id,
-                                        practice_id: success.practice_id
-                                    });
-                                    Auth.current_user = success;
-                                    showResultDialog();
-                                    console.log('registered a new account: ' + JSON.stringify(success));
-                                },
-                                function (failure) {
-                                    $scope.alerts = [];
-
-                                    if (failure.data.errors.email) {
-                                        Alert.error($scope.alerts, failure.data.errors.email[0], true);
-                                    } else {
-                                        Alert.error($scope.alerts, failure.data.errors[0], true);
-                                    }
-                                }
-                            );
+                        function(success){
+                            Auth.set({
+                                token: success.user.authentication_token,
+                                email: success.user.email,
+                                roles: success.user.roles,
+                                is_admin: success.user.is_admin,
+                                id: success.user.id,
+                                practice_id: success.user.practice_id
+                            });
+                            Auth.current_user = success.user;
+                            showResultDialog();
+                            console.log('registered a new account: ' + JSON.stringify(success));
                         },
-                        function (failure) {
+                        function(fail){
                             $scope.alerts = [];
-                            Alert.error($scope.alerts, 'practice.create.failed', true);
+                            Alert.error($scope.alerts, fail.data, true);
+
                         });
-
-
-                }, function(error){
+                },
+                function(error){
                     if(error.status === 302){
                         var modalInstance = $modal.open({
                             templateUrl: 'partials/invitation_validation_result.html',
@@ -164,8 +144,6 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                         });
                     }
                 });
-
-
             }
 
         };
