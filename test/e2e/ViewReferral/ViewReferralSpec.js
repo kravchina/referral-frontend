@@ -61,7 +61,19 @@ var ViewReferralSpec = function() {
             it('shows patient copy button on the page', function() {
                 expect(element(by.css('button[ng-click="savePatientPdf()"]')).isPresent()).toBe(true);
             });
-            
+
+            it('| show error when not real provider has been selected', function(){
+                expect(element(by.css('button[ng-click="editDestProviderDialog()"]')).isPresent()).toBe(true);
+                element(by.css('button[ng-click="editDestProviderDialog()"]')).click();
+                expect(element(by.css('div.modal-dialog form#formNewPatient')).isDisplayed()).toBe(true);
+                var old_value = element(by.css("div.modal-dialog form#formNewPatient option:checked")).getText();
+                element(by.cssContainingText('option', 'First Available')).click();
+                element(by.css('button[ng-click="ok(providerId)"]')).click();
+                expect(element(by.css('button[ng-click="completeReferral(referral)"]')).isPresent()).toBe(true);
+                element(by.css('button[ng-click="completeReferral(referral)"]')).click();
+                expect(element(by.css('div.alert[ng-repeat="alert in alerts"]')).isDisplayed()).toBe(true);
+                expect(element(by.css('div.alert[ng-repeat="alert in alerts"]')).getText()).toContain('real');
+            });
         });
     };
 };

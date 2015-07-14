@@ -266,15 +266,18 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
         };
 
         $scope.completeReferral = function (referral) {
-            Referral.updateStatus({id: referral.id }, {status: 'completed'},
-                function (success) {
-                    referral.status = 'completed';
-                    Alert.success($scope.alerts, 'Status was updated successfully!');
-                },
-                function (failure) {
-                    Alert.error($scope.alerts, 'Something went wrong while changing status...');
-                });
-
+            if(referral.dest_provider.id == -1){
+                Alert.error($scope.alerts, 'A "real" provider it should be selected in order for the referral to be set complete.', true);
+            } else {
+                Referral.updateStatus({id: referral.id }, {status: 'completed'},
+                    function (success) {
+                        referral.status = 'completed';
+                        Alert.success($scope.alerts, 'Status was updated successfully!');
+                    },
+                    function (failure) {
+                        Alert.error($scope.alerts, 'Something went wrong while changing status...');
+                    });
+            }
         };
 
         $scope.userBelongsToDestPractice = function () {
