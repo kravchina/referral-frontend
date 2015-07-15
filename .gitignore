@@ -1,4 +1,7 @@
 /.idea
 /ProtractorConf.js
 /.c9
-
+/npm-debug.log
+/node_modules
+.awspublish-*
+GulpConfig.json

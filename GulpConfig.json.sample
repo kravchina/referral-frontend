@@ -1,0 +1,6 @@
+{
+  amazonAws : {
+      accessKeyId: "***YOUR ACCESS KEY***",
+      secretAccessKey: "***YOUR SECRET KEY***"
+  }
+}
