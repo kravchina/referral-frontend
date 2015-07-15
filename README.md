@@ -59,14 +59,14 @@ Take the following into consideration:
 
 ## Gulp
 
-How to install and use
+How to install and use:
 1. Check the npm(node package manager) is already installed. If not, you should install Node.js, it included npm.
 2. Run this to install the depended packages
 ```Batchfile
 npm install
 ```
 3. Rename the *GulpConfig.json.sample* to *GulpConfig.json* and replace inner keys on your.
-3. Use command *gulp* and task name with params(if required), e.g.:
+4. Use command *gulp* and task name with params(if required), e.g.:
 ```Batchfile
 gulp taskname --taskarg=argval
 ```
