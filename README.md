@@ -59,17 +59,11 @@ Take the following into consideration:
 
 ## Gulp
 
-How to install and use:
-1. Check the npm(node package manager) is already installed. If not, you should install Node.js, it included npm.
-2. Run this to install the depended packages
-```Batchfile
-npm install
-```
-3. Rename the *GulpConfig.json.sample* to *GulpConfig.json* and replace inner keys on your.
-4. Use command *gulp* and task name with params(if required), e.g.:
-```Batchfile
-gulp taskname --taskarg=argval
-```
+How to install and use:  
+1. Check the npm(node package manager) is already installed. If not, you should install Node.js, it included npm.  
+2. Run this to install the depended packages `npm install`  
+3. Rename the *GulpConfig.json.sample* to *GulpConfig.json* and replace inner keys on your.  
+4. Use command *gulp* and task name with params(if required), e.g.: `gulp taskname --taskarg=argval`  
 
 ### Gulp tasks
 
@@ -78,5 +72,5 @@ Task format:
 ```Batchfile
 gulp publish --bucket=[bucket_name]
 ```
-The *bucket* argument is not required, default value: *dev1.dentallinks.org*.
+The *bucket* argument is not required, default value: *dev1.dentallinks.org*.  
 This task required an *accessKeyId* and *secretAccessKey*. You should be put it in *GulpConfig.json*
