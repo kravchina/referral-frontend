@@ -66,7 +66,6 @@ var ViewReferralSpec = function() {
                 expect(element(by.css('button[ng-click="editDestProviderDialog()"]')).isPresent()).toBe(true);
                 element(by.css('button[ng-click="editDestProviderDialog()"]')).click();
                 expect(element(by.css('div.modal-dialog form#formNewPatient')).isDisplayed()).toBe(true);
-                var old_value = element(by.css("div.modal-dialog form#formNewPatient option:checked")).getText();
                 element(by.cssContainingText('option', 'First Available')).click();
                 element(by.css('button[ng-click="ok(providerId)"]')).click();
                 expect(element(by.css('button[ng-click="completeReferral(referral)"]')).isPresent()).toBe(true);
