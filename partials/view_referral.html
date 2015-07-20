@@ -14,6 +14,13 @@
 <form id="formCreateReferral" name="viewReferralForm">
 <div class="box-white box-padded">
 
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12 text-right">
+        created: {{referral.created_at | date: 'mediumDate'}} |
+        updated: {{referral.updated_at | date: 'mediumDate'}}
+    </div>
+</div>
+
 <!-- Patient block -->
 <div class="row">
     <div class="input-block col-xs-12 col-sm-12">
