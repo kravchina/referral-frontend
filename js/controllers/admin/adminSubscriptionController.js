@@ -1,5 +1,8 @@
-adminModule.controller('AdminSubscriptionController', ['$scope', '$state', '$modal', 'Auth', 'Alert', 'Address', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'Logger',
-    function ($scope, $state, $modal, Auth, Alert, Address, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, Logger) {
+adminModule.controller('AdminSubscriptionController', ['$scope', '$state', '$modal', 'Auth', 'Alert', 'Address', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'BASE_SUBSCRIPTION_PRICE', 'Logger',
+    function ($scope, $state, $modal, Auth, Alert, Address, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, BASE_SUBSCRIPTION_PRICE, Logger) {
+
+        $scope.baseSubscriptionPrice = BASE_SUBSCRIPTION_PRICE;
+
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function(practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
             $scope.paymentNotification = {
@@ -8,7 +11,10 @@ adminModule.controller('AdminSubscriptionController', ['$scope', '$state', '$mod
                 showSubscriptionSuccess: false,
                 showSubscriptionCancelled: !practice.trial_period && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
                 showSubscriptionExpired: !practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime()
-            }
+            };
+
+            $scope.locationsNumber = practice.addresses.length;
+
         });
 
         $scope.isPremium = function(){
