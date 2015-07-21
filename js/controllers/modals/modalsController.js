@@ -220,7 +220,7 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
     };
 }]);
 
-modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id) {
+modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', 'Spinner', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id, Spinner) {
     $scope.result = {};
     $scope.alerts = [];
     var currentYear = moment().year();
@@ -242,6 +242,7 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$
     }, handleError);
 
     $scope.ok = function (payment_info) {
+        Spinner.show();
         $window.Stripe.card.createToken({
                     number: payment_info.card_number,
                     cvc: payment_info.card_cvc,
@@ -252,13 +253,13 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$
                     if(response.error) {
                         // there was an error. Fix it.
                         $scope.alerts = [];
-                        Alert.error($scope.alerts, 'An error occurred during account update: '+ response.error.message, true)
+                        Alert.error($scope.alerts, 'An error occurred during account update: '+ response.error.message, true);
+                        Spinner.hide();
                     } else {
                         // got stripe token, now charge it or smt
                         payment_info.stripe_token = response.id;
                         Logger.log(payment_info);
-
-                        Practice.update({practiceId: practice_id}, {
+                        Practice.subscribe({practiceId: practice_id}, {
                                         practice: {
                                             name_on_card: payment_info.name_on_card,
                                             stripe_token: payment_info.stripe_token
@@ -273,6 +274,7 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$
                                         $scope.alerts = [];
                                         Alert.error($scope.alerts, 'An error occurred during account update: '+ failure.data.error, true)
                                     });
+                        Spinner.hide();
                     }
                 });
     };
@@ -363,6 +365,17 @@ modalsModule.controller('InvitationValidationController', ['$scope', '$modalInst
 modalsModule.controller('ErrorModalController', ['$scope', '$modalInstance', 'ModalHandler', 'message', function($scope, $modalInstance, ModalHandler, message){
     $scope.message = message;
 
+    $scope.cancel = function(){
+        ModalHandler.dismiss($modalInstance);
+    };
+}]);
+
+modalsModule.controller('SubscriptionChangeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'BASE_SUBSCRIPTION_PRICE', 'locationsNumber', function($scope, $modalInstance, ModalHandler, BASE_SUBSCRIPTION_PRICE, locationsNumber){
+    $scope.baseSubscriptionPrice = BASE_SUBSCRIPTION_PRICE;
+    $scope.locationsNumber = locationsNumber;
+    $scope.ok = function(){
+        ModalHandler.close($modalInstance);
+    };
     $scope.cancel = function(){
         ModalHandler.dismiss($modalInstance);
     };

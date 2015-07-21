@@ -4,7 +4,7 @@
         <div class="block-title">
             <h2>Practice</h2>
             <button type="button" access="admin" toggle-edit class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
-            <button type="button" ng-click="addAddress()" class="btn btn-green btn-toggle-shifted btn-edit hide" data-toggle="tooltip" data-placement="top" title="Add practice address"><span class="dlicons-plus"></span></button>
+            <button type="button" ng-hide="practice.addresses.length > 20" ng-click="addAddress()" class="btn btn-green btn-toggle-shifted btn-edit hide" data-toggle="tooltip" data-placement="top" title="Add practice address"><span class="dlicons-plus"></span></button>
             <button type="button" ng-click='savePractice(practiceForm)' ng-disabled="practiceForm.$error.required" class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes"><span class="dlicons-check"></span></button>
         </div>
 
