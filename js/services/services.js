@@ -259,3 +259,35 @@ dentalLinksServices.factory('Promo', ['$resource', 'API_ENDPOINT', function($res
         }
     })
 }]);
+
+dentalLinksServices.factory('PracticeEditMode', [function(){
+    var editBtn = {};
+    var saveBtn = {};
+    var addAddressBtn = {};
+    var editFormCtrl = {};
+    var formCtrl = {};
+    return {
+        init: function(editFormControl, formControl, editButton, addAddressButton, saveButton){
+            editBtn = editButton;
+            saveBtn = saveButton;
+            addAddressBtn = addAddressButton;
+            editFormCtrl = editFormControl;
+            formCtrl = formControl;
+        },
+        on: function(){
+            editBtn.addClass('hide');
+            saveBtn.removeClass('hide');
+            addAddressBtn.removeClass('hide');
+            editFormCtrl.enableControls();
+
+        },
+        off: function(){
+            if (formCtrl.$valid) {
+                editBtn.removeClass('hide');
+                saveBtn.addClass('hide');
+                addAddressBtn.addClass('hide');
+                editFormCtrl.disableControls();
+            }
+        }
+    }
+}]);

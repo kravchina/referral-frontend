@@ -370,13 +370,14 @@ modalsModule.controller('ErrorModalController', ['$scope', '$modalInstance', 'Mo
     };
 }]);
 
-modalsModule.controller('SubscriptionChangeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'BASE_SUBSCRIPTION_PRICE', 'locationsNumber', function($scope, $modalInstance, ModalHandler, BASE_SUBSCRIPTION_PRICE, locationsNumber){
+modalsModule.controller('SubscriptionChangeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'BASE_SUBSCRIPTION_PRICE', 'locationsNumber', 'cancelCallback', function($scope, $modalInstance, ModalHandler, BASE_SUBSCRIPTION_PRICE, locationsNumber, cancelCallback){
     $scope.baseSubscriptionPrice = BASE_SUBSCRIPTION_PRICE;
     $scope.locationsNumber = locationsNumber;
     $scope.ok = function(){
         ModalHandler.close($modalInstance);
     };
     $scope.cancel = function(){
+        cancelCallback();
         ModalHandler.dismiss($modalInstance);
     };
 }]);

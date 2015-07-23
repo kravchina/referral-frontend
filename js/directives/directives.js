@@ -254,7 +254,7 @@ dentalLinksDirectives.directive('deleteButton', [function () {
 
 }]);
 
-dentalLinksDirectives.directive('toggleEdit', function () {
+dentalLinksDirectives.directive('toggleEdit', ['PracticeEditMode', function (PracticeEditMode) {
     return {
         scope: {},
         restrict: 'A',
@@ -266,29 +266,21 @@ dentalLinksDirectives.directive('toggleEdit', function () {
             var editButton = $element;
             var addAddressButton = $element.next();
             var saveButton = $element.next().next();
-
+            PracticeEditMode.init(editFormCtrl, formCtrl, editButton, addAddressButton, saveButton);
             // edit
             editButton.on('click', function (e) {
-                editButton.addClass('hide');
-                saveButton.removeClass('hide');
-                addAddressButton.removeClass('hide');
-                editFormCtrl.enableControls();
+                PracticeEditMode.on();
             });
 
             // save
             saveButton.on('click', function (e) {
-                if (formCtrl.$valid) {
-                    editButton.removeClass('hide');
-                    saveButton.addClass('hide');
-                    addAddressButton.addClass('hide');
-                    editFormCtrl.disableControls();
-                }
+                PracticeEditMode.off();
             });
 
         }
     }
 
-});
+}]);
 
 dentalLinksDirectives.directive('ngFocusMe', ['$parse', '$timeout', function($parse, $timeout){
     return {

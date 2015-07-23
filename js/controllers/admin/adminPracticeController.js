@@ -1,5 +1,5 @@
-adminModule.controller('AdminPracticeController', ['$scope', '$modal', 'ModalHandler', 'Alert', 'Address', 'Practice', 'User', 'FREE_TRIAL_PERIOD', 'UnsavedChanges', 'PhoneFormatter', 'Logger',
-    function ($scope, $modal, ModalHandler, Alert, Address, Practice, User, FREE_TRIAL_PERIOD, UnsavedChanges, PhoneFormatter, Logger) {
+adminModule.controller('AdminPracticeController', ['$scope', '$modal', 'ModalHandler', 'Alert', 'Address', 'Practice', 'User', 'FREE_TRIAL_PERIOD', 'UnsavedChanges', 'PhoneFormatter', 'Logger', 'PracticeEditMode',
+    function ($scope, $modal, ModalHandler, Alert, Address, Practice, User, FREE_TRIAL_PERIOD, UnsavedChanges, PhoneFormatter, Logger, PracticeEditMode) {
 
         $scope.PhoneFormatter = PhoneFormatter;
 
@@ -55,6 +55,11 @@ adminModule.controller('AdminPracticeController', ['$scope', '$modal', 'ModalHan
                         resolve: {
                             locationsNumber: function () {
                                 return $scope.practice.addresses.length;
+                            },
+                            cancelCallback: function(){
+                                return function(){
+                                    PracticeEditMode.on();
+                                }
                             }
                         }
                     });
@@ -88,6 +93,11 @@ adminModule.controller('AdminPracticeController', ['$scope', '$modal', 'ModalHan
                         resolve: {
                             locationsNumber: function () {
                                 return $scope.practice.addresses.length - 1;
+                            },
+                            cancelCallback: function(){
+                                return function(){
+                                    //we have nothing to do on cancel here
+                                };
                             }
                         }
                     });
