@@ -50,5 +50,11 @@ adminModule.controller('AdminController', ['$scope', '$state', '$modal', 'Auth',
                 tab.active = $scope.active(tab.route);
             });
         });
+
+        $scope.onChangeTab = function(data){
+            $scope.tabsData.forEach(function(tab) {
+                tab.active = $scope.active(tab.route);
+            });
+        };
         
     }]);
