@@ -28,6 +28,19 @@ It's generally expected that each developer checks/sets the following params in 
 * params.viewReferralId;
 * params.attachmentUrlPart.
 
+###Prepare running
+It is highly recommended to run your tests on a test Rails environment.
+Before every run you will need to your database to a initial ready-to-test state.
+You can do that using two consequent commands:
+
+```Batchfile
+rake db:reset RAILS_ENV=test
+rake db:seed_test RAILS_ENV=test STRIPE_API_SECRET_KEY=<your_stripe_api_key>
+```
+After that run your rails server in a test mode (or using predefined test configuration in your IDE):
+```Batchfile
+rails server -b 127.0.0.1 -p 3000 -e test
+```
 ### Running
 
 Day-to-day local running sequence boils down to the following.
