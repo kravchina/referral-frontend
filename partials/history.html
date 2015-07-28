@@ -26,12 +26,19 @@
                 </div>
             </div>
 
-            <div class="input-block col-xs-12 col-sm-4 col-sm-offset-4">
+            <div class="input-block col-xs-12 col-sm-4 col-sm-offset-1">
                 <input type="search" ng-model="query" placeholder="Search &hellip;" class="form-control placeholder search-no-button" ng-change="findReferralsByTerm()">
             </div>
 
-            <div class="results-block">Showing <span class="count">{{referrals.length}} of {{referrals_total_count}}</span></div>
-
+            <div class="input-block col-xs-12 col-sm-2 col-sm-offset-1">
+                <select class="form-control" ng-model="statusFilter" ng-change="findReferralsByStatus()">
+                    <option value="">All</option>
+                    <option value="New">New</option>
+                    <option value="Active">Active</option>
+                    <option value="Draft">Draft</option>
+                    <option value="Complete">Complete</option>
+                </select>
+            </div>
         </div>
         <!-- .filter-controls-block -->
     </div>

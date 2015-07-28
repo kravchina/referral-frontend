@@ -1662,3 +1662,7 @@ label.tooth-label-view{
 #formNewNote textarea{
 	height: 250px;
 }
+
+.select-padding{
+	padding-right: 25px !important;
+}
