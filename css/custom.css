@@ -224,6 +224,24 @@ textarea.form-control {
 .space-nowrap{
     white-space: nowrap;
 }
+.global-notification{
+	height: 30px;
+	line-height: 30px;
+	font-size: larger;
+}
+
+.global-notification.info{
+	background-color: aqua;
+}
+.global-notification.success{
+	background-color: lime;
+}
+.global-notification.warning{
+	background-color: yellow;
+}
+.global-notification.error{
+	background-color: orangered;
+}
 
 /* Buttons */
 .btn {
@@ -1370,7 +1388,7 @@ td.cell-from .practice, td.cell-to .practice {
 	body {
 		font-size: 14px;
 		/*font-size: 1.4rem;*/
-		padding-top: 100px;
+		padding-top: 115px;
 	}
 	h1 {
 		font-size: 36px;

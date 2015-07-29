@@ -1,7 +1,7 @@
 var loginModule = angular.module('login', []);
 
-loginModule.controller('LoginController', ['$scope', '$stateParams', 'Auth', 'Alert', 'User', '$location', 'Login', 'redirect', 'Logger',
-    function ($scope, $stateParams, Auth, Alert, User, $location, Login, redirect, Logger) {
+loginModule.controller('LoginController', ['$scope', '$stateParams', 'Auth', 'Alert', 'User', '$location', 'Login', 'redirect', 'Logger', 'Notification',
+    function ($scope, $stateParams, Auth, Alert, User, $location, Login, redirect, Logger, Notification) {
         var auth = Auth.get();
         if(auth){// user is authenticated by tries to open login window
             $location.path('/history');
@@ -9,6 +9,7 @@ loginModule.controller('LoginController', ['$scope', '$stateParams', 'Auth', 'Al
         $scope.email = (auth || {}).email;
         $scope.alerts = [];
         if($stateParams.alreadyRegister){
+            Notification.error("Invitation.exists");
             Alert.error($scope.alerts, 'invitation.exist');
         }
         $scope.login = function (user) {   /*{'user': {'email': user.email, 'password': user.password }}*/
@@ -27,6 +28,7 @@ loginModule.controller('LoginController', ['$scope', '$stateParams', 'Auth', 'Al
                     Auth.remove();
                     user.password = undefined;
                     $scope.alerts = [];
+                   Notification.error(failure.status == 0 ?'Upstream server connectivity error. Administrator was informed. Please try again later' : 'Unable to login with provided credentials');
                     Alert.error($scope.alerts, failure.status == 0 ?'Upstream server connectivity error. Administrator was informed. Please try again later' : 'Unable to login with provided credentials');
                     $scope.$broadcast('focusPassword');
                 });
