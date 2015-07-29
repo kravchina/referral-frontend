@@ -37,6 +37,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
                     Alert.error($scope.alerts, 'Something happened... Data was not retrieved from server.')
                 }
             );
+            $scope.alerts = [];
         };
 
         $scope.initModel();
