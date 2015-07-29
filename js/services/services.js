@@ -135,6 +135,8 @@ dentalLinksServices.factory('ProviderInvitation', ['$resource', 'API_ENDPOINT', 
         resend: {method: 'GET', url: API_ENDPOINT + '/invitations/resend/:id'},
         delete: {method: 'DELETE', url: API_ENDPOINT + '/invitations/:id'},
         update: {method: 'PUT', url: API_ENDPOINT + '/invitations/:id'},
+        saveUser: {method: 'POST', url: API_ENDPOINT + '/invitations/user'},
+        saveProvider: {method: 'POST', url: API_ENDPOINT + '/invitations/provider'},
     });
 }]);
 
