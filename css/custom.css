@@ -243,6 +243,18 @@ textarea.form-control {
 	background-color: orangered;
 }
 
+
+.radio-inline{
+	display: inline-block!important;
+	font-size: inherit!important;
+	text-transform: none!important;
+
+}
+
+.radio-inline input{
+	margin-left: 0!important;
+
+}
 /* Buttons */
 .btn {
 	border: none;
