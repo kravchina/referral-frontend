@@ -37,6 +37,7 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
                     Alert.error($scope.alerts, 'Something happened... Data was not retrieved from server.')
                 }
             );
+            $scope.alerts = [];
         };
 
         $scope.initModel();
@@ -267,7 +268,9 @@ viewReferralModule.controller('ViewReferralsController', ['$scope', '$location',
 
         $scope.completeReferral = function (referral) {
             if(referral.dest_provider.id == -1){
-                Alert.error($scope.alerts, 'A "real" provider it should be selected in order for the referral to be set complete.', true);
+                Alert.error($scope.alerts, 'To complete this referral a treating provider should be selected, currently First Available is selected', true);
+                $anchorScroll('topAlert');
+                $anchorScroll();
             } else {
                 Referral.updateStatus({id: referral.id }, {status: 'completed'},
                     function (success) {
