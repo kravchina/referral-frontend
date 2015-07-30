@@ -287,8 +287,9 @@ modalsModule.controller('EditUserModalController', ['$scope', '$modalInstance', 
     $scope.result = {};
     $scope.alerts = [];
     Logger.log(editUser.id);
-    $scope.user = {is_admin: editUser.is_admin};//for now we need only is_admin property to be set
+    $scope.user = editUser;//for now we need only is_admin property to be set
     $scope.auth = Auth.get();
+
     $scope.ok = function (user) {
         if(user.password != user.password_confirmation){
             Alert.error($scope.alerts, 'Error: Password does not match');

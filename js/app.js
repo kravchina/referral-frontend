@@ -32,7 +32,8 @@ dentalLinks.constant('HTTP_ERROR_EVENTS', {
     requestTimeout: 'http-request-timeout',
     serverError: 'http-server-error'
 });
-dentalLinks.constant('API_ENDPOINT', 'https://referral-server.herokuapp.com');
+//dentalLinks.constant('API_ENDPOINT', 'https://referral-server.herokuapp.com');
+dentalLinks.constant('API_ENDPOINT', 'http://0.0.0.0:3000');
 dentalLinks.constant('AUTH_EVENTS', {
     notAuthenticated: 'auth-not-authenticated',
     paymentRequired: 'payment-required'
