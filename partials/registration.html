@@ -48,6 +48,14 @@
                                 <label>Last Name</label>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="input-block">
+                                <label class="radio-inline"><input name="selectRole" type="radio" value="2" ng-value="2" ng-model="invitation.roles_mask" >Doctor</label>
+                                <label class="radio-inline"><input name='selectRole' type="radio" value="4" ng-value="4" ng-model="invitation.roles_mask" >Auxiliary</label>
+                                <label>Role</label>
+                            </div>
+                        </div>
+
 
                         <div ng-hide="promo">
                             <alert type="danger" ng-show="submitted && (!invitation.practice.id && !invitation.newPracticeId)">Please join existing practice or create a new one.</alert>
