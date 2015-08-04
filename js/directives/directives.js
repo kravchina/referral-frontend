@@ -35,7 +35,7 @@ dentalLinksDirectives.directive('expandNote', [function () {
         scope: true,
         restrict: 'A',
         link: function (scope, $element, attrs) {
-            $element.on('click', function () {
+            $element.children('.note-more').on('click', function () {
                 $element.toggleClass('expand');
             });
 
