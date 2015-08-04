@@ -143,13 +143,7 @@ modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 
         $scope.practice.addresses_attributes.splice($scope.practice.addresses_attributes.indexOf(address), 1);
     };
     $scope.ok = function (practice) {
-        Practice.save({practice: practice},
-            function (success) {
-                ModalHandler.close($modalInstance,success);
-            },
-            function (failure) {
-                Alert.error($scope.alerts, 'Can\'t create practice.');
-            });
+        ModalHandler.close($modalInstance, practice);
     };
 
     $scope.cancel = function () {
