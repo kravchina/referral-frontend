@@ -122,7 +122,7 @@ modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 
             }
         };
 
-        ProviderInvitation.save({provider_invitation: provider, send_email: sendEmailNotification}, resultHandlers.success, resultHandlers.failure);
+        ProviderInvitation.saveProvider({provider_invitation: provider, send_email: sendEmailNotification}, resultHandlers.success, resultHandlers.failure);
     };
     $scope.closeAlert = function (index) {
         Alert.close($scope.alerts, index);
@@ -143,13 +143,7 @@ modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 
         $scope.practice.addresses_attributes.splice($scope.practice.addresses_attributes.indexOf(address), 1);
     };
     $scope.ok = function (practice) {
-        Practice.save({practice: practice},
-            function (success) {
-                ModalHandler.close($modalInstance,success);
-            },
-            function (failure) {
-                Alert.error($scope.alerts, 'Can\'t create practice.');
-            });
+        ModalHandler.close($modalInstance, practice);
     };
 
     $scope.cancel = function () {
@@ -194,7 +188,7 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
         user.inviter_id = Auth.getOrRedirect().id;
         
         if($scope.isInvite){
-            ProviderInvitation.save({provider_invitation: user},
+            ProviderInvitation.saveUser({provider_invitation: user},
                 function (success) {
                     ModalHandler.close($modalInstance, success);
                 }, function (failure) {

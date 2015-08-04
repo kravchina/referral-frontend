@@ -135,6 +135,8 @@ dentalLinksServices.factory('ProviderInvitation', ['$resource', 'API_ENDPOINT', 
         resend: {method: 'GET', url: API_ENDPOINT + '/invitations/resend/:id'},
         delete: {method: 'DELETE', url: API_ENDPOINT + '/invitations/:id'},
         update: {method: 'PUT', url: API_ENDPOINT + '/invitations/:id'},
+        saveUser: {method: 'POST', url: API_ENDPOINT + '/invitations/user'},
+        saveProvider: {method: 'POST', url: API_ENDPOINT + '/invitations/provider'},
     });
 }]);
 
@@ -289,5 +291,42 @@ dentalLinksServices.factory('PracticeEditMode', [function(){
                 editFormCtrl.disableControls();
             }
         }
+    }
+}]);
+
+dentalLinksServices.factory('Notification', ['$timeout', function ($timeout) {
+    var notification = {message: undefined, type: undefined, promise: undefined};
+    var closePromise = $timeout(function () {
+        notification.message = undefined;
+    }, 10000);
+    return {
+        info: function(message) {
+            notification.message = message;
+            notification.type = 'info';
+            notification.promise = closePromise;
+        },
+        success: function(message) {
+            notification.message = message;
+            notification.type = 'success';
+            notification.promise = closePromise;
+        },
+        warning: function(message) {
+            notification.message = message;
+            notification.type = 'warning';
+            notification.promise = closePromise;
+        },
+        error: function(message) {
+            notification.message = message;
+            notification.type = 'error';
+            notification.promise = closePromise;
+        },
+        get: function() {
+            return notification;
+        },
+        close: function() {
+            $timeout.cancel(notification.promise); //cancel automatic removal
+            notification.message = undefined;
+        }
+
     }
 }]);

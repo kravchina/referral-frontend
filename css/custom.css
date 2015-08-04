@@ -224,7 +224,37 @@ textarea.form-control {
 .space-nowrap{
     white-space: nowrap;
 }
+.global-notification{
+	height: 30px;
+	line-height: 30px;
+	font-size: larger;
+}
 
+.global-notification.info{
+	background-color: aqua;
+}
+.global-notification.success{
+	background-color: lime;
+}
+.global-notification.warning{
+	background-color: yellow;
+}
+.global-notification.error{
+	background-color: orangered;
+}
+
+
+.radio-inline{
+	display: inline-block!important;
+	font-size: inherit!important;
+	text-transform: none!important;
+
+}
+
+.radio-inline input{
+	margin-left: 0!important;
+
+}
 /* Buttons */
 .btn {
 	border: none;
@@ -719,7 +749,6 @@ textarea.form-control {
 }
 .note-block {
 	border-bottom: 1px solid #aaa;
-	cursor: pointer;
 	opacity: 0.8;
 		filter: alpha(opacity=80);
 	padding: 3px 12px;
@@ -767,6 +796,13 @@ textarea.form-control {
 	font-weight: 500;
 	text-align: right;
 	text-transform: uppercase;
+}
+.note-block .note-more{
+	text-align: right;
+}
+.note-block .note-more:hover{
+	text-decoration: underline;
+	cursor: pointer;
 }
 .filter-controls-block {
 	padding: 10px 25px;
@@ -1304,9 +1340,17 @@ td.cell-from .practice, td.cell-to .practice {
 		margin-right: 2%;
 		width: 15%;
 	}
+	.note-block .note-more {
+		margin-left: 4%;
+		cursor: pointer;
+		width: 6%;
+	}
+	.note-block .note-more:hover {
+		text-decoration: underline;
+	}
 	.note-block .datestamp {
 		margin-left: 2%;
-		width: 19%;
+		width: 10%;
 	}
 	.filter-controls-block {
 		padding: 20px 40px;
@@ -1370,7 +1414,7 @@ td.cell-from .practice, td.cell-to .practice {
 	body {
 		font-size: 14px;
 		/*font-size: 1.4rem;*/
-		padding-top: 100px;
+		padding-top: 115px;
 	}
 	h1 {
 		font-size: 36px;
@@ -1663,6 +1707,10 @@ label.tooth-label-view{
 	height: 250px;
 }
 
-.select-padding{
+.select-padding {
 	padding-right: 25px !important;
+}
+
+#formNewPatient select{
+	overflow-y: auto;
 }

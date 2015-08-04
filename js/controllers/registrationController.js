@@ -77,6 +77,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                 invitation.practice_id = invitation.practice.id;
                 Registration.save({
                         user: invitation,
+                        practice: invitation.practice,
                         invitation_token: $stateParams.invitation_token,
                         security_code: $scope.security_code,
                         skip_security_code: invitation.newPracticeId == invitation.practice_id
