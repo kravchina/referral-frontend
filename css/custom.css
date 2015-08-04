@@ -1707,6 +1707,10 @@ label.tooth-label-view{
 	height: 250px;
 }
 
+.select-padding {
+	padding-right: 25px !important;
+}
+
 #formNewPatient select{
 	overflow-y: auto;
 }
