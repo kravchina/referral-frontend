@@ -1706,3 +1706,7 @@ label.tooth-label-view{
 #formNewNote textarea{
 	height: 250px;
 }
+
+#formNewPatient select{
+	overflow-y: auto;
+}
