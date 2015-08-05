@@ -20,6 +20,18 @@ exports.config = {
             wrong: {
                 email: 'user@example.com',
                 pass: 'qwerqwerqwer'
+            },
+            subscribed_user:{
+                email: 'subscribed@example.com',
+                pass: '12345678'
+            },
+            unsubscribed_user: {
+                email: 'unsubscribed@example.com',
+                pass: '12345678'
+            },
+            trial_user: {
+                email: 'trial@example.com',
+                pass: '12345678'
             }
         },
         // id of the referral to run View Referral tests on. Check the tests to see what this referral should have
