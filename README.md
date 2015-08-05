@@ -69,6 +69,34 @@ major places where you can manipulate with the amount of tests being run are:
 Take the following into consideration:
 * sometimes during first run some of the tests may fail. Please make sure you have run them all 2-3 times before taking actions on failures.
 
+## Unit tests
+
+### Installing and configuring the runner
+
+Install karma stuff:
+
+```Batchfile
+npm install -g karma
+npm install -g karma-cli
+npm install -g karma-firefox-launcher
+npm install -g karma-ie-launcher
+```
+
+Check presense of karma executable:
+
+```Batchfile
+karma --version
+```
+
+Read through **karma.conf.js** carefully. Most of the parameters are self-explaining and have comments.
+
+### Running
+
+For a single run:
+
+```Batchfile
+karma start karma.conf.js
+```
 
 ## Gulp
 
