@@ -232,7 +232,8 @@
                 <li class="note-block" expand-note ng-repeat="note in referral.notes">
                     <span class="note-user">{{note.user.first_name}} {{note.user.last_name}}</span>
                     <span class="note-content">{{note.message}}</span>
-                    <span class="note-more">See more</span>
+                    <span class="note-expand more">See more</span>
+                    <span class="note-expand less">See less</span>
                     <span class="datestamp">{{note.created_at | date: 'short' }}</span>
                 </li>
 

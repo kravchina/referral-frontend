@@ -797,10 +797,10 @@ textarea.form-control {
 	text-align: right;
 	text-transform: uppercase;
 }
-.note-block .note-more{
+.note-block .note-expand{
 	text-align: right;
 }
-.note-block .note-more:hover{
+.note-block .note-expand:hover{
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -1713,4 +1713,19 @@ label.tooth-label-view{
 
 #formNewPatient select{
 	overflow-y: auto;
+}
+
+.note-block.expand .note-expand.more{
+	display: none;
+}
+
+.note-block.expand .note-expand.less{
+	display: inline-block;
+}
+.note-block .note-expand.more{
+	display: inline-block;
+}
+
+.note-block .note-expand.less{
+	display: none;
 }
