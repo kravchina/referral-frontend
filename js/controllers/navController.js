@@ -9,6 +9,8 @@ dentalLinks.controller('NavController', ['$scope', '$state', '$modal', 'Auth', '
 
         $scope.progressValue = 0;
 
+        $scope.checkModal = null;
+
         $scope.loading = Spinner.loading();
 
         if(Auth.get()){
@@ -26,15 +28,22 @@ dentalLinks.controller('NavController', ['$scope', '$state', '$modal', 'Auth', '
         });
 
         var showErrorModal = function(message) {
-            var modalInstance = $modal.open({
-                templateUrl: 'partials/error_modal.html',
-                controller: 'ErrorModalController',
-                resolve: {
-                    message: function(){
-                        return message;
+            if(!$scope.checkModal){
+                var modalInstance = $modal.open({
+                    templateUrl: 'partials/error_modal.html',
+                    controller: 'ErrorModalController',
+                    resolve: {
+                        message: function(){
+                            return message;
+                        }
                     }
-                }
+                });
+                $scope.checkModal = modalInstance;
+            }
+            $scope.checkModal.result.then(function(){
+                $scope.checkModal = null;
             });
+
         };
 
         $scope.progressIndicatorStart = function(){
