@@ -1,5 +1,5 @@
-dentalLinks.controller('NavController', ['$scope', '$state', '$modal', 'Auth', 'Logger', 'Login', 'Spinner', 'UnsavedChanges', 'User', 'API_ENDPOINT', 'HTTP_ERROR_EVENTS',
-    function ($scope, $state, $modal, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT, HTTP_ERROR_EVENTS) {
+dentalLinks.controller('NavController', ['$scope', '$state', '$modal', 'Auth', 'Logger', 'Login', 'Spinner', 'UnsavedChanges', 'User', 'API_ENDPOINT', 'HTTP_ERROR_EVENTS', 'Notification',
+    function ($scope, $state, $modal, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT, HTTP_ERROR_EVENTS, Notification) {
 
         $scope.env = 'unknown.';
         if (API_ENDPOINT.indexOf('dental-links-prod-1') > -1) $scope.env = '';
@@ -8,8 +8,6 @@ dentalLinks.controller('NavController', ['$scope', '$state', '$modal', 'Auth', '
         if (API_ENDPOINT.indexOf('localhost') > -1) $scope.env = 'local.';
 
         $scope.progressValue = 0;
-
-        $scope.checkModal = null;
 
         $scope.loading = Spinner.loading();
 
@@ -20,30 +18,23 @@ dentalLinks.controller('NavController', ['$scope', '$state', '$modal', 'Auth', '
         }
 
         $scope.$on(HTTP_ERROR_EVENTS.requestTimeout, function(event, args){
-            showErrorModal('error.http.requestTimeout');
+            Notification.error("error.http.requestTimeout");
         });
 
         $scope.$on(HTTP_ERROR_EVENTS.serverError, function(event, args){
-            showErrorModal('error.http.serverError');
+            Notification.error("error.http.serverError");
         });
 
         var showErrorModal = function(message) {
-            if(!$scope.checkModal){
-                var modalInstance = $modal.open({
-                    templateUrl: 'partials/error_modal.html',
-                    controller: 'ErrorModalController',
-                    resolve: {
-                        message: function(){
-                            return message;
-                        }
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/error_modal.html',
+                controller: 'ErrorModalController',
+                resolve: {
+                    message: function(){
+                        return message;
                     }
-                });
-                $scope.checkModal = modalInstance;
-            }
-            $scope.checkModal.result.then(function(){
-                $scope.checkModal = null;
+                }
             });
-
         };
 
         $scope.progressIndicatorStart = function(){
