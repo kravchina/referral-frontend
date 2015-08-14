@@ -143,7 +143,7 @@
         <!--</div>/.nav-collapse -->
     </div>
     <div class="global-notification" ng-class="notification.type" ng-show="notification.message" ng-controller="NotificationAreaController">
-        <div class="container">{{notification.message}}
+        <div class="container">{{notification.message | i18n}}
             <button type="button" class="close" ng-click="close()">
                 <span aria-hidden="true">×</span>
                 <span class="sr-only">Close</span>
