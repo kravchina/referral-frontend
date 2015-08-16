@@ -1,7 +1,7 @@
-var commonActions = require('../CommonActions');
-var commonExpects = require('../CommonExpects');
-var adminPracticePage = require('./AdminPracticePage');
-var historyPage = require('../History/HistoryPage');
+var commonActions = require('../../../commons/CommonActions');
+var commonExpects = require('../../../commons/CommonExpects');
+var adminPracticePage = require('../../../pages/AdminPracticePage');
+var historyPage = require('../../../pages/HistoryPage');
 
 var AdminPracticeSpec = function() {
     this.run = function() {

@@ -1,4 +1,4 @@
-var commonActions = require('../CommonActions');
+var commonActions = require('../commons/CommonActions');
 
 var AdminPracticePage = function() {
     this.url = "/#/admin/practice";

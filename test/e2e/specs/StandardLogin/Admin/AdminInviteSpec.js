@@ -1,5 +1,5 @@
-var commonExpects = require('../CommonExpects');
-var adminInvitePage = require('./AdminInvitePage');
+var commonExpects = require('../../../commons/CommonExpects');
+var adminInvitePage = require('../../../pages/AdminInvitePage');
 
 var AdminInviteSpec = function() {
     this.run = function() {

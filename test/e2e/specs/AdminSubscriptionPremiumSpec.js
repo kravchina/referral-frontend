@@ -1,7 +1,7 @@
-var commonActions = require('../CommonActions');
-var commonExpects = require('../CommonExpects');
-var adminSubscriptionPage = require('./AdminSubscriptionPage');
-var signInPage = require('../SignIn/SignInPage');
+var commonActions = require('../commons/CommonActions');
+var commonExpects = require('../commons/CommonExpects');
+var adminSubscriptionPage = require('../pages/AdminSubscriptionPage');
+var signInPage = require('../pages/SignInPage');
 
 var AdminSubscriptionPremiumSpec = function() {
     this.run = function() {

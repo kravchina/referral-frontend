@@ -1,6 +1,6 @@
-var commonActions = require('../CommonActions');
-var commonExpects = require('../CommonExpects');
-var viewReferralPage = require('./ViewReferralPage');
+var commonActions = require('../../../commons/CommonActions');
+var commonExpects = require('../../../commons/CommonExpects');
+var viewReferralPage = require('../../../pages/ViewReferralPage');
 
 var ViewReferralSpec = function() {
     this.run = function() {
