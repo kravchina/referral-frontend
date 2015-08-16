@@ -4,9 +4,12 @@ var signInPage = require('./SignIn/SignInPage');
 var historyPage = require('./History/HistoryPage');
 
 var adminPracticeSpec = require('./Admin/AdminPracticeSpec');
+var adminPracticePremiumSpec = require('./Admin/AdminPracticePremiumSpec');
+var adminPracticeNonPremiumSpec = require('./Admin/AdminPracticeNonPremiumSpec');
 var adminUsersSpec = require('./Admin/AdminUsersSpec');
 var adminInviteSpec = require('./Admin/AdminInviteSpec');
 var adminSubscriptionSpec = require('./Admin/AdminSubscriptionSpec');
+var adminSubscriptionPremiumSpec = require('./Admin/adminSubscriptionPremiumSpec');
 
 var createReferralSpec = require('./CreateReferral/CreateReferralSpec');
 var viewReferralSpec = require('./ViewReferral/ViewReferralSpec');
@@ -71,5 +74,8 @@ describe('when user navigates to Sign In page', function() {
     });
     
    createReferralAndInvitationSpec.run();
+   adminPracticePremiumSpec.run();
+   adminPracticeNonPremiumSpec.run();
+   adminSubscriptionPremiumSpec.run();
     
 });
