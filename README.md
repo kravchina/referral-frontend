@@ -30,10 +30,10 @@ File **MainSpec.js** is the entry point for running all specs.
 Each and every test is expected to be reasonably (to the extent possible for e2e-tests) isolated. Particular e2e-related reason for isolation is that, depending on the browser, the whole set may take up to 5-15 minutes to run. Without isolation, supporting and debugging of each particular test would be a total nightmare.
 
 Consequently, each and every test is expected to:
-1) prepare the website for itself (e.g. login with particular user, navigate to a particular page, etc.). Nobody else should prepare this -- isolation!
-2) "clean up after itself" (e.g. answer an alert question, if needed, perform a sign out, etc.). Test should not complicate life for other tests -- isolation!
+1. Prepare the website for itself (e.g. login with particular user, navigate to a particular page, etc.). Nobody else should prepare this -- isolation!
+2. "Clean up after itself" (e.g. answer an alert question, if needed, perform a sign out, etc.). Test should not complicate life for other tests -- isolation!
 
-Of course these actions are repeated for many tests (although not for all). This is where code reuse comes into play. For example, re-usable simple functions may be put to **commons**.
+Of course these actions are repeated for many tests (although not for all). This is where code reuse comes into play. For example, re-usable simple functions may be put into **commons**.
 
 However, if we have 100 tests, moving log in and log out functions into **commons** doesn't save us from mentioning them 100 times. This is similarly true for, say, 10 different tests which check something on page X.
 
