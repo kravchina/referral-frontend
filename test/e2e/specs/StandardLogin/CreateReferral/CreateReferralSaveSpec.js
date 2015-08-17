@@ -1,5 +1,5 @@
-var commonExpects = require('../CommonExpects');
-var createReferralPage = require('./CreateReferralPage');
+var commonExpects = require('../../../commons/CommonExpects');
+var createReferralPage = require('../../../pages/CreateReferralPage');
 
 var CreateReferralSaveSpec = function() {
     this.run = function() {

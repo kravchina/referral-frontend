@@ -1,5 +1,5 @@
-dentalLinks.controller('NavController', ['$scope', '$state', '$modal', 'Auth', 'Logger', 'Login', 'Spinner', 'UnsavedChanges', 'User', 'API_ENDPOINT', 'HTTP_ERROR_EVENTS',
-    function ($scope, $state, $modal, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT, HTTP_ERROR_EVENTS) {
+dentalLinks.controller('NavController', ['$scope', '$state', '$modal', 'Auth', 'Logger', 'Login', 'Spinner', 'UnsavedChanges', 'User', 'API_ENDPOINT', 'HTTP_ERROR_EVENTS', 'Notification',
+    function ($scope, $state, $modal, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT, HTTP_ERROR_EVENTS, Notification) {
 
         $scope.env = 'unknown.';
         if (API_ENDPOINT.indexOf('dental-links-prod-1') > -1) $scope.env = '';
@@ -18,11 +18,11 @@ dentalLinks.controller('NavController', ['$scope', '$state', '$modal', 'Auth', '
         }
 
         $scope.$on(HTTP_ERROR_EVENTS.requestTimeout, function(event, args){
-            showErrorModal('error.http.requestTimeout');
+            Notification.error("error.http.requestTimeout");
         });
 
         $scope.$on(HTTP_ERROR_EVENTS.serverError, function(event, args){
-            showErrorModal('error.http.serverError');
+            Notification.error("error.http.serverError");
         });
 
         var showErrorModal = function(message) {

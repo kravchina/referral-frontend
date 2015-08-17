@@ -98,7 +98,7 @@ modalsModule.controller('NoteModalController', ['$scope', '$modalInstance', 'Mod
 
 }]);
 
-modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', 'Spinner', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth, Spinner) {
+modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', 'Spinner', 'sendEmailNotification', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth, Spinner, sendEmailNotification) {
     $scope.alerts = [];
     $scope.model = {};
 
@@ -122,7 +122,7 @@ modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 
             }
         };
 
-        ProviderInvitation.save({provider_invitation: provider}, resultHandlers.success, resultHandlers.failure);
+        ProviderInvitation.saveProvider({provider_invitation: provider, send_email: sendEmailNotification}, resultHandlers.success, resultHandlers.failure);
     };
     $scope.closeAlert = function (index) {
         Alert.close($scope.alerts, index);
@@ -143,13 +143,7 @@ modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 
         $scope.practice.addresses_attributes.splice($scope.practice.addresses_attributes.indexOf(address), 1);
     };
     $scope.ok = function (practice) {
-        Practice.save({practice: practice},
-            function (success) {
-                ModalHandler.close($modalInstance,success);
-            },
-            function (failure) {
-                Alert.error($scope.alerts, 'Can\'t create practice.');
-            });
+        ModalHandler.close($modalInstance, practice);
     };
 
     $scope.cancel = function () {
@@ -194,7 +188,7 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
         user.inviter_id = Auth.getOrRedirect().id;
         
         if($scope.isInvite){
-            ProviderInvitation.save({provider_invitation: user},
+            ProviderInvitation.saveUser({provider_invitation: user},
                 function (success) {
                     ModalHandler.close($modalInstance, success);
                 }, function (failure) {
@@ -220,7 +214,7 @@ modalsModule.controller('UserModalController', ['$scope', '$modalInstance', 'Mod
     };
 }]);
 
-modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id) {
+modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', 'Spinner', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id, Spinner) {
     $scope.result = {};
     $scope.alerts = [];
     var currentYear = moment().year();
@@ -242,6 +236,7 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$
     }, handleError);
 
     $scope.ok = function (payment_info) {
+        Spinner.show();
         $window.Stripe.card.createToken({
                     number: payment_info.card_number,
                     cvc: payment_info.card_cvc,
@@ -252,13 +247,13 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$
                     if(response.error) {
                         // there was an error. Fix it.
                         $scope.alerts = [];
-                        Alert.error($scope.alerts, 'An error occurred during account update: '+ response.error.message, true)
+                        Alert.error($scope.alerts, 'An error occurred during account update: '+ response.error.message, true);
+                        Spinner.hide();
                     } else {
                         // got stripe token, now charge it or smt
                         payment_info.stripe_token = response.id;
                         Logger.log(payment_info);
-
-                        Practice.update({practiceId: practice_id}, {
+                        Practice.subscribe({practiceId: practice_id}, {
                                         practice: {
                                             name_on_card: payment_info.name_on_card,
                                             stripe_token: payment_info.stripe_token
@@ -273,6 +268,7 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$
                                         $scope.alerts = [];
                                         Alert.error($scope.alerts, 'An error occurred during account update: '+ failure.data.error, true)
                                     });
+                        Spinner.hide();
                     }
                 });
     };
@@ -285,8 +281,9 @@ modalsModule.controller('EditUserModalController', ['$scope', '$modalInstance', 
     $scope.result = {};
     $scope.alerts = [];
     Logger.log(editUser.id);
-    $scope.user = {is_admin: editUser.is_admin};//for now we need only is_admin property to be set
+    $scope.user = editUser;//for now we need only is_admin property to be set
     $scope.auth = Auth.get();
+
     $scope.ok = function (user) {
         if(user.password != user.password_confirmation){
             Alert.error($scope.alerts, 'Error: Password does not match');
@@ -364,6 +361,18 @@ modalsModule.controller('ErrorModalController', ['$scope', '$modalInstance', 'Mo
     $scope.message = message;
 
     $scope.cancel = function(){
+        ModalHandler.close($modalInstance);
+    };
+}]);
+
+modalsModule.controller('SubscriptionChangeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'BASE_SUBSCRIPTION_PRICE', 'locationsNumber', 'cancelCallback', function($scope, $modalInstance, ModalHandler, BASE_SUBSCRIPTION_PRICE, locationsNumber, cancelCallback){
+    $scope.baseSubscriptionPrice = BASE_SUBSCRIPTION_PRICE;
+    $scope.locationsNumber = locationsNumber;
+    $scope.ok = function(){
+        ModalHandler.close($modalInstance);
+    };
+    $scope.cancel = function(){
+        cancelCallback();
         ModalHandler.dismiss($modalInstance);
     };
 }]);

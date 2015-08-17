@@ -49,8 +49,8 @@
     </fieldset>
 
     <div class="modal-footer">
-        <button ng-hide="stripe_subscription_id" type="submit" class="btn btn-orange" ng-click="ok(payment_info)" ng-disabled="upgradeForm.$invalid">Upgrade</button>
-        <button ng-show="stripe_subscription_id" type="submit" class="btn btn-orange" ng-click="ok(payment_info)" ng-disabled="upgradeForm.$invalid">Save</button>
+        <button id="upgradeSubscriptionBtn" ng-hide="stripe_subscription_id" type="submit" class="btn btn-orange" ng-click="ok(payment_info)" ng-disabled="upgradeForm.$invalid">Upgrade</button>
+        <button id="changePaymentInfo" ng-show="stripe_subscription_id" type="submit" class="btn btn-orange" ng-click="ok(payment_info)" ng-disabled="upgradeForm.$invalid">Save</button>
         <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Discard</button>
     </div>
 </form>

@@ -1,0 +1,19 @@
+
+<div class="modal-header">
+    <h4 class="modal-title" id="subscriptionChangedTitle">Subscription changes</h4>
+</div>
+<div class="modal-body">
+    <div class="block-title">
+        <h5>Your subscription will be changed</h5>
+    </div>
+    <p>Premium account is ${{baseSubscriptionPrice}} per month per practice location.
+        For your practice with {{locationsNumber}} location(s), your monthly payment will be ${{baseSubscriptionPrice * locationsNumber | number: 2}}
+    </p>
+
+    <p>Your subscription will be prorated automatically. Thank you for using DentalLinks!</p>
+</div>
+<div class="modal-footer">
+    <button id="subscription_ok_btn" type="button" class="btn btn-orange" ng-click="ok()">OK</button>
+    <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Cancel</button>
+</div>
+

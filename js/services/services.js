@@ -89,6 +89,7 @@ dentalLinksServices.factory('Practice', ['$resource', 'API_ENDPOINT',
                 'Pragma': 'no-cache',
                 'Expires': '0'
             }, skipSpinner: true},
+            subscribe: {method: 'PUT', url: API_ENDPOINT + '/practices/:practiceId/subscribe'},
             cancelSubscription: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/cancel_subscription'},
             update: {method: 'PUT'}
         });
@@ -134,13 +135,16 @@ dentalLinksServices.factory('ProviderInvitation', ['$resource', 'API_ENDPOINT', 
         resend: {method: 'GET', url: API_ENDPOINT + '/invitations/resend/:id'},
         delete: {method: 'DELETE', url: API_ENDPOINT + '/invitations/:id'},
         update: {method: 'PUT', url: API_ENDPOINT + '/invitations/:id'},
+        saveUser: {method: 'POST', url: API_ENDPOINT + '/invitations/user'},
+        saveProvider: {method: 'POST', url: API_ENDPOINT + '/invitations/provider'},
     });
 }]);
 
 dentalLinksServices.factory('Registration', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/sign_up', {}, {
         verify_security_code: {method: 'GET', url: API_ENDPOINT + '/verify_security_code/:code'},
-        create_user: {method: 'POST', url: API_ENDPOINT + '/register_without_invite'}
+        create_user: {method: 'POST', url: API_ENDPOINT + '/register_without_invite'},
+        register_with_promo: {method: 'POST', url: API_ENDPOINT + '/register_with_promo'}
     })
 }]);
 
@@ -256,4 +260,73 @@ dentalLinksServices.factory('Promo', ['$resource', 'API_ENDPOINT', function($res
             url: API_ENDPOINT + '/promo/validate/:code'
         }
     })
+}]);
+
+dentalLinksServices.factory('PracticeEditMode', [function(){
+    var editBtn = {};
+    var saveBtn = {};
+    var addAddressBtn = {};
+    var editFormCtrl = {};
+    var formCtrl = {};
+    return {
+        init: function(editFormControl, formControl, editButton, addAddressButton, saveButton){
+            editBtn = editButton;
+            saveBtn = saveButton;
+            addAddressBtn = addAddressButton;
+            editFormCtrl = editFormControl;
+            formCtrl = formControl;
+        },
+        on: function(){
+            editBtn.addClass('hide');
+            saveBtn.removeClass('hide');
+            addAddressBtn.removeClass('hide');
+            editFormCtrl.enableControls();
+
+        },
+        off: function(){
+            if (formCtrl.$valid) {
+                editBtn.removeClass('hide');
+                saveBtn.addClass('hide');
+                addAddressBtn.addClass('hide');
+                editFormCtrl.disableControls();
+            }
+        }
+    }
+}]);
+
+dentalLinksServices.factory('Notification', ['$timeout', function ($timeout) {
+    var notification = {message: undefined, type: undefined, promise: undefined};
+    var closePromise = $timeout(function () {
+        notification.message = undefined;
+    }, 10000);
+    return {
+        info: function(message) {
+            notification.message = message;
+            notification.type = 'info';
+            notification.promise = closePromise;
+        },
+        success: function(message) {
+            notification.message = message;
+            notification.type = 'success';
+            notification.promise = closePromise;
+        },
+        warning: function(message) {
+            notification.message = message;
+            notification.type = 'warning';
+            notification.promise = closePromise;
+        },
+        error: function(message) {
+            notification.message = message;
+            notification.type = 'error';
+            notification.promise = closePromise;
+        },
+        get: function() {
+            return notification;
+        },
+        close: function() {
+            $timeout.cancel(notification.promise); //cancel automatic removal
+            notification.message = undefined;
+        }
+
+    }
 }]);

@@ -1,18 +1,25 @@
 <header class="page-header">
-    <h1>Referral</h1>
+    <h1>Shared Patient Chart</h1>
 
-    <p class="page-subheader">Shared patient chart.</p>
+    <p class="page-subheader">Attach post-op images and notes</p>
 
     <alert ng-show="paymentNotification.showTrial" type="{{alert.type}}">It is always free to send referrals but you will need a premium membership to receive referrals after {{ paymentNotification.expirationDate | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
     <alert ng-show="paymentNotification.showSubscriptionCancelled" type="{{alert.type}}">Your premium subscription will expire on {{paymentNotification.expirationDate | date: 'short' }}, you will need to enter new payment information for your premium account to stay active.</alert>
 </header><!-- .page-header -->
 
-<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
+<alert id="topAlert" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
 
 
 <div class="form-wrapper">
 <form id="formCreateReferral" name="viewReferralForm">
 <div class="box-white box-padded">
+
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12 text-right">
+        created: {{referral.created_at | date: 'mediumDate'}} |
+        updated: {{referral.updated_at | date: 'mediumDate'}}
+    </div>
+</div>
 
 <!-- Patient block -->
 <div class="row">
@@ -225,6 +232,8 @@
                 <li class="note-block" expand-note ng-repeat="note in referral.notes">
                     <span class="note-user">{{note.user.first_name}} {{note.user.last_name}}</span>
                     <span class="note-content">{{note.message}}</span>
+                    <span class="note-expand more">See more</span>
+                    <span class="note-expand less">See less</span>
                     <span class="datestamp">{{note.created_at | date: 'short' }}</span>
                 </li>
 
