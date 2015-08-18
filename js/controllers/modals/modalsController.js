@@ -361,7 +361,7 @@ modalsModule.controller('ErrorModalController', ['$scope', '$modalInstance', 'Mo
     $scope.message = message;
 
     $scope.cancel = function(){
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.close($modalInstance);
     };
 }]);
 

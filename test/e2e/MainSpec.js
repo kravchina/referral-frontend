@@ -1,16 +1,14 @@
-var commonActions = require('./CommonActions');
-var commonExpects = require('./CommonExpects');
-var signInPage = require('./SignIn/SignInPage');
-var historyPage = require('./History/HistoryPage');
+var commonActions = require('./commons/CommonActions');
+var commonExpects = require('./commons/CommonExpects');
 
-var adminPracticeSpec = require('./Admin/AdminPracticeSpec');
-var adminUsersSpec = require('./Admin/AdminUsersSpec');
-var adminInviteSpec = require('./Admin/AdminInviteSpec');
-var adminSubscriptionSpec = require('./Admin/AdminSubscriptionSpec');
+var signInPage = require('./pages/SignInPage');
 
-var createReferralSpec = require('./CreateReferral/CreateReferralSpec');
-var viewReferralSpec = require('./ViewReferral/ViewReferralSpec');
-var createReferralAndInvitationSpec = require('./Registration/CreateReferralAndInvitationSpec');
+var invalidLoginSpec = require('./specs/InvalidLoginSpec');
+var standardLoginSpec = require('./specs/StandardLogin/StandardLoginSpec');
+var adminPracticePremiumSpec = require('./specs/AdminPracticePremiumSpec');
+var adminPracticeNonPremiumSpec = require('./specs/AdminPracticeNonPremiumSpec');
+var adminSubscriptionPremiumSpec = require('./specs/AdminSubscriptionPremiumSpec');
+var createReferralAndInvitationSpec = require('./specs/CreateReferralAndInvitationSpec');
 
 describe('when user navigates to Sign In page', function() {
     commonActions.maximizeBrowser();
@@ -26,50 +24,11 @@ describe('when user navigates to Sign In page', function() {
       expect(signInPage.getPass()).toEqual('');
     });
     
-    describe('when user tries to log in with invalid credentials', function() {
-        beforeEach(function() {
-            signInPage.setEmail(browser.params.login.wrong.email);
-            signInPage.setPass(browser.params.login.wrong.pass);
-            signInPage.clickLogin();
-            commonExpects.expectProgressDivHidden();
-        });
-        
-        it('shows error, keeps the email and erases the password', function() {
-            commonExpects.expectMenuHidden();
-            commonExpects.expectCurrentUrlToBe(signInPage.url);
-            expect(signInPage.getEmail()).toEqual(browser.params.login.wrong.email);
-            expect(signInPage.getPass()).toEqual('');
-        });
-    });
-    
-    describe('when user tries to log in with valid credentials', function() {
-        beforeEach(function() {
-            signInPage.setEmail(browser.params.login.correct.email);
-            signInPage.setPass(browser.params.login.correct.pass);
-            signInPage.clickLogin();
-            commonExpects.expectProgressDivHidden();
-        });
-        
-        it('shows the top menu and redirects to History page', function() {
-            commonExpects.expectMenuShown();
-            commonExpects.expectCurrentUrlToBe(historyPage.url);
-        });
-        
-        adminPracticeSpec.run();
-        adminUsersSpec.run();
-        adminInviteSpec.run();
-        adminSubscriptionSpec.run();
-        createReferralSpec.run();
-        viewReferralSpec.run();
-        
-        afterEach(function() {
-            commonActions.signOut();
-            commonExpects.expectProgressDivHidden();
-            commonExpects.expectMenuHidden();
-            commonExpects.expectCurrentUrlToBe(signInPage.url);
-        });
-    });
-    
-   createReferralAndInvitationSpec.run();
+    invalidLoginSpec.run();
+    standardLoginSpec.run();
+    createReferralAndInvitationSpec.run();
+    adminPracticePremiumSpec.run();
+    adminPracticeNonPremiumSpec.run();
+    adminSubscriptionPremiumSpec.run();
     
 });

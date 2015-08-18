@@ -1,3 +1,4 @@
+/*
 var commonActions = require('./CommonActions');
 var commonExpects = require('./CommonExpects');
 var signInPage = require('./SignIn/SignInPage');
@@ -83,3 +84,4 @@ describe('when user navigates to Sign In page', function() {
     //test finished
 
 });
+*/

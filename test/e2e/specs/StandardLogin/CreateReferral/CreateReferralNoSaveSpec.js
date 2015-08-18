@@ -1,7 +1,7 @@
-var commonActions = require('../CommonActions');
-var commonExpects = require('../CommonExpects');
-var createReferralPage = require('./CreateReferralPage');
-var historyPage = require('../History/HistoryPage');
+var commonActions = require('../../../commons/CommonActions');
+var commonExpects = require('../../../commons/CommonExpects');
+var createReferralPage = require('../../../pages/CreateReferralPage');
+var historyPage = require('../../../pages/HistoryPage');
 
 var CreateReferralNoSaveSpec = function() {
     this.run = function() {

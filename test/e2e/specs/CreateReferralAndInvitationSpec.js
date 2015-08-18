@@ -1,11 +1,11 @@
-var commonActions = require('../CommonActions');
-var commonExpects = require('../CommonExpects');
-var commonMenu = require('../CommonMenu');
-var signInPage = require('../SignIn/SignInPage');
-var createReferralPage = require('../CreateReferral/CreateReferralPage');
-var viewReferralPage = require('../ViewReferral/ViewReferralPage');
-var registrationPage = require('../Registration/RegistrationPage');
-var historyPage = require('../History/HistoryPage');
+var commonActions = require('../commons/CommonActions');
+var commonExpects = require('../commons/CommonExpects');
+var commonMenu = require('../commons/CommonMenu');
+var signInPage = require('../pages/SignInPage');
+var createReferralPage = require('../pages/CreateReferralPage');
+var viewReferralPage = require('../pages/ViewReferralPage');
+var registrationPage = require('../pages/RegistrationPage');
+var historyPage = require('../pages/HistoryPage');
 
 var CreateReferralAndInvitationSpec = function() {
     this.run = function() {

@@ -1,22 +1,10 @@
-var commonActions = require('../CommonActions');
-var commonExpects = require('../CommonExpects');
-var adminSubscriptionPage = require('./AdminSubscriptionPage');
-var signInPage = require('../SignIn/SignInPage');
+var commonActions = require('../commons/CommonActions');
+var commonExpects = require('../commons/CommonExpects');
+var adminSubscriptionPage = require('../pages/AdminSubscriptionPage');
+var signInPage = require('../pages/SignInPage');
 
-var AdminSubscriptionSpec = function() {
+var AdminSubscriptionPremiumSpec = function() {
     this.run = function() {
-        describe('when user navigates to Admin Subscription', function() {
-            beforeEach(function() {
-                adminSubscriptionPage.open();
-                commonExpects.expectProgressDivHidden();
-                commonExpects.expectCurrentUrlToBe(adminSubscriptionPage.url);
-            });
-            
-            it('shows Subscription page', function() {
-                expect(element(by.css('div#admintabAccount form#formAccountTab h2')).isDisplayed()).toBe(true);
-            });
-            
-        });
         describe('when user subscribes to premium account', function(){
             var validPaymentDetails = {
                 name: "Test Subscriber",
@@ -29,15 +17,6 @@ var AdminSubscriptionSpec = function() {
 
 
             beforeEach(function(){
-                commonActions.signOut();
-                commonExpects.expectProgressDivHidden();
-                commonExpects.expectMenuHidden();
-                commonExpects.expectCurrentUrlToBe(signInPage.url);
-
-
-                commonExpects.expectProgressDivHidden();
-                commonExpects.expectMenuHidden();
-
                 signInPage.setEmail(browser.params.login.unsubscribed_user.email);
                 signInPage.setPass(browser.params.login.unsubscribed_user.pass);
                 signInPage.clickLogin();
@@ -68,8 +47,15 @@ var AdminSubscriptionSpec = function() {
                 }, 10000);
 
             });
+            
+            afterEach(function() {
+                commonActions.signOut();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectMenuHidden();
+                commonExpects.expectCurrentUrlToBe(signInPage.url);
+            });
         });
     };
 };
 
-module.exports = new AdminSubscriptionSpec();
+module.exports = new AdminSubscriptionPremiumSpec();
