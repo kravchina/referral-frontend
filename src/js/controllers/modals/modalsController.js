@@ -198,7 +198,7 @@ angular.module('modals')
                     Logger.log($scope.alerts);
                 });
         } else {
-            Registration.create_user({user: user},
+            Registration.create_no_login_user({user: user},
                 function(success){
                     ModalHandler.close($modalInstance, success);
                 },function(failure){
