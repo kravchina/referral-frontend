@@ -9,7 +9,12 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     minifyCss = require('gulp-minify-css'),
     ngHtml2Js = require("gulp-ng-html2js"),
-    closureCompiler = require('gulp-closure-compiler');
+    closureCompiler = require('gulp-closure-compiler'),
+    webserver = require('gulp-webserver'),
+    replace = require('gulp-replace');
+
+var environment = argv.env ? config.env[argv.env] : config.env['local'];
+
 
 gulp.task('publish', ['build'], function() {
     var publisher = awspublish.create({
@@ -30,10 +35,12 @@ gulp.task('publish', ['build'], function() {
         .pipe(awspublish.reporter());
 });
 
+gulp.task('run', ['build', 'watch', 'server']);
+
 gulp.task('build', ['build-js','build-css', 'build-templates', 'copy-files']);
 
 gulp.task('build-js', function() {
-    return gulp.src([
+    var process = gulp.src([
             'src/js/lib/ui-router-tabs.js',
             'src/js/lib/localize.js',
             'src/js/lib/ng-infinite-scroll.min.js',
@@ -55,12 +62,23 @@ gulp.task('build-js', function() {
             'src/js/app.js',
             'src/js/controllers/**',
             'src/js/directives/**',
-            'src/js/services/**'])
-        .pipe(sourcemaps.init())
+            'src/js/services/**']);
+
+        for(variable in environment) {
+            var key = variable.toUpperCase(),
+                value = environment[variable];
+
+            process = process.pipe(
+                replace('{{' + key + '}}', value));
+        }
+
+    process.pipe(sourcemaps.init())
         .pipe(concat('app.js'))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('build'));
+
+    return process;
 });
 
 gulp.task('build-css', function() {
@@ -96,4 +114,17 @@ gulp.task('build-templates', function(){
         }))
     .pipe(concat('partials.js'))
     .pipe(gulp.dest("build"));
+});
+
+gulp.task('server', function(){
+    gulp.src(config.devServer.rootDir)
+        .pipe(webserver({
+            livereload: config.devServer.livereload,
+            host: config.devServer.host,
+            port: config.devServer.port
+        }));
+});
+
+gulp.task('watch', function(){
+    gulp.watch('src/**', ['build']);
 });

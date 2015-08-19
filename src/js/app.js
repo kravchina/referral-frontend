@@ -47,7 +47,7 @@ angular.module('dentalLinks', [
     requestTimeout: 'http-request-timeout',
     serverError: 'http-server-error'
 })
-.constant('API_ENDPOINT', 'https://referral-server.herokuapp.com')
+.constant('API_ENDPOINT', '{{API_ENDPOINT}}')
 .constant('AUTH_EVENTS', {
     notAuthenticated: 'auth-not-authenticated',
     paymentRequired: 'payment-required'

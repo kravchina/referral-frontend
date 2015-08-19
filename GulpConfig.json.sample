@@ -1,6 +1,32 @@
 {
-  amazonAws : {
-      accessKeyId: "***YOUR ACCESS KEY***",
-      secretAccessKey: "***YOUR SECRET KEY***"
-  }
+    amazonAws : {
+        accessKeyId: "***YOUR ACCESS KEY***",
+        secretAccessKey: "***YOUR SECRET KEY***"
+    },
+
+    devServer: {
+        rootDir: 'build',
+        livereload: true,
+        host: 'localhost',
+        port: 8000
+    },
+
+    env: {
+        local: {
+            api_endpoint: 'http://0.0.0.0:3000',
+            google_analytics_key: 'LOCAL KEY'
+        },
+        dev: {
+            api_endpoint: 'https://referral-server.herokuapp.com',
+            google_analytics_key: 'UA-28482471-4'
+        },
+        stage: {
+            api_endpoint: 'STAGE_API_URL',
+            google_analytics_key: 'UA-28482471-3'
+        },
+        production: {
+            api_endpoint: 'PRODUCTION API_URL',
+            google_analytics_key: 'UA-28482471-2'
+        }
+    }
 }
