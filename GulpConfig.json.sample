@@ -18,15 +18,18 @@
         },
         dev: {
             api_endpoint: 'https://referral-server.herokuapp.com',
-            google_analytics_key: 'UA-28482471-4'
+            google_analytics_key: 'UA-28482471-4',
+            amazonAwsBucket: 'dev1.dentallinks.org'
         },
         stage: {
             api_endpoint: 'STAGE_API_URL',
-            google_analytics_key: 'UA-28482471-3'
+            google_analytics_key: 'UA-28482471-3',
+            amazonAwsBucket: ''
         },
         production: {
             api_endpoint: 'PRODUCTION API_URL',
-            google_analytics_key: 'UA-28482471-2'
+            google_analytics_key: 'UA-28482471-2',
+            amazonAwsBucket: ''
         }
     }
 }

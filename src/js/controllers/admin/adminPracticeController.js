@@ -13,7 +13,7 @@ angular.module('admin')
             Logger.log($scope.practice);
             Logger.log(FREE_TRIAL_PERIOD);
             $scope.trial_end_date = new Date($scope.practice.created_at);
-            $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD)
+            $scope.trial_end_date.setDate($scope.trial_end_date.getDate() + FREE_TRIAL_PERIOD);
         });
         var updatePractice = function (form) {
             Practice.update({practiceId: $scope.practice.id}, {
@@ -33,10 +33,10 @@ angular.module('admin')
                     $scope.practice.addresses = success.addresses;
                     // no UnsavedChanges operations here, we stay on page, callback stays the same, form is now pristine
                     // note: the other tab form might not be pristine here. See #72581022
-                    Alert.success($scope.$parent.alerts, 'Account was updated successfully!')
+                    Alert.success($scope.$parent.alerts, 'Account was updated successfully!');
                 },
                 function (failure) {
-                    Alert.error($scope.$parent.alerts, 'An error occurred during account update...')
+                    Alert.error($scope.$parent.alerts, 'An error occurred during account update...');
                 });
         };
         var prorate_required = function () {

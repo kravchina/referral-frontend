@@ -19,7 +19,7 @@ var environment = argv.env ? config.env[argv.env] : config.env['local'];
 gulp.task('publish', ['build'], function() {
     var publisher = awspublish.create({
         params: {
-            Bucket: argv.bucket ? argv.bucket : 'dev1.dentallinks.org'
+            Bucket: environment.amazonAwsBucket
         },
         accessKeyId: config.amazonAws.accessKeyId,
         secretAccessKey: config.amazonAws.secretAccessKey
@@ -29,7 +29,7 @@ gulp.task('publish', ['build'], function() {
         'Cache-Control': 'max-age=315360000, no-transform, public'
     };
 
-    return gulp.src('build/**')
+    return gulp.src('build/**/*')
         .pipe(parallelize(publisher.publish(headers), 10))
         .pipe(publisher.cache())
         .pipe(awspublish.reporter());
@@ -74,7 +74,7 @@ gulp.task('build-js', function() {
 
     process.pipe(sourcemaps.init())
         .pipe(concat('app.js'))
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('build'));
 
@@ -88,7 +88,7 @@ gulp.task('build-css', function() {
         .pipe(sourcemaps.init())
         .pipe(concat('style.css'))
         .pipe(minifyCss())
-        .pipe(sourcemaps.write())
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('build'));
 });
 
@@ -96,13 +96,13 @@ gulp.task('copy-files', function(){
     gulp.src('src/index.html')
         .pipe(gulp.dest('build'));
 
-    gulp.src('src/img/**')
+    gulp.src('src/img/**/*')
         .pipe(gulp.dest('build/img'));
 
-    gulp.src('src/i18n/**')
+    gulp.src('src/i18n/**/*')
         .pipe(gulp.dest('build/i18n'));
 
-    gulp.src('src/fonts/**')
+    gulp.src('src/fonts/**/*')
         .pipe(gulp.dest('build/fonts'));
 });
 
@@ -126,5 +126,5 @@ gulp.task('server', function(){
 });
 
 gulp.task('watch', function(){
-    gulp.watch('src/**', ['build']);
+    gulp.watch('src/**/*.*', ['build']);
 });
