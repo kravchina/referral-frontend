@@ -9,7 +9,6 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     minifyCss = require('gulp-minify-css'),
     ngHtml2Js = require("gulp-ng-html2js"),
-    closureCompiler = require('gulp-closure-compiler'),
     webserver = require('gulp-webserver'),
     replace = require('gulp-replace');
 
@@ -60,9 +59,9 @@ gulp.task('build-js', function() {
             'src/js/lib/moment.js', 
             'src/js/lib/daterangepicker.js',
             'src/js/app.js',
-            'src/js/controllers/**',
-            'src/js/directives/**',
-            'src/js/services/**']);
+            'src/js/controllers/**/*',
+            'src/js/directives/**/*',
+            'src/js/services/**/*']);
 
         for(variable in environment) {
             var key = variable.toUpperCase(),
@@ -107,7 +106,7 @@ gulp.task('copy-files', function(){
 });
 
 gulp.task('build-templates', function(){
-    gulp.src('src/partials/*.html')
+    gulp.src('src/partials/**/*.html')
         .pipe(ngHtml2Js({
             moduleName: "dentalLinksPartials",
             prefix: "partials/"

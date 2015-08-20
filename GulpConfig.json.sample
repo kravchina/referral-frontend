@@ -6,7 +6,7 @@
 
     devServer: {
         rootDir: 'build',
-        livereload: true,
+        livereload: false,
         host: 'localhost',
         port: 8000
     },
