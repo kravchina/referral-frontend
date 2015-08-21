@@ -6,6 +6,7 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
     function ($scope, $location, $stateParams, $modal, $state, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral,Promo) {
         $scope.alerts = [];
         $scope.showPracticeButtons = true;
+        $scope.isResend = false;
 
         $scope.promo = $stateParams.promo;
 
@@ -147,6 +148,38 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
                 });
             }
 
+        };
+
+        $scope.checkEmail = function (email){
+
+            $scope.alerts = [];
+
+            ProviderInvitation.validate({email: email, all: true}, function(success){
+                $scope.form.email.$invalid = false;
+                $scope.form.email.$valid = true;
+                $scope.isResend = false;
+            }, function(failure){
+                $scope.form.email.$invalid = true;
+                $scope.form.email.$valid = false;
+
+                if(failure.data.status == 'registered'){
+                    $scope.isResend = false;
+                    Alert.error($scope.alerts, 'Sorry this email address is already in use. If this is your account please follow this link to login or reset your password if needed', true);
+                } else if(failure.data.status == 'invited') {
+                    $scope.isResend = true;
+                    $scope.resendProvider = failure.data;
+                    Alert.error($scope.alerts, 'Sorry this email address has already invited in our system.  We will need to resend the special invitation link for you to register using this address', true);
+                }
+            });
+        };
+
+        $scope.resend = function(){
+            ProviderInvitation.resend({id: $scope.resendProvider.id}, function(success){
+                ModalHandler.dismiss($modalInstance);
+            }, function(failure){
+                $scope.alerts = [];
+                Alert.error($scope.alerts, failure.data.message[0], true);
+            });
         };
 
         $scope.discard = function () {
