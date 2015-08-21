@@ -164,11 +164,11 @@ registrationModule.controller('RegistrationController', ['$scope', '$location', 
 
                 if(failure.data.status == 'registered'){
                     $scope.isResend = false;
-                    Alert.error($scope.alerts, 'Sorry this email address is already in use. If this is your account please follow this link to login or reset your password if needed', true);
+                    Alert.error($scope.alerts, 'invitation.email.register', true);
                 } else if(failure.data.status == 'invited') {
                     $scope.isResend = true;
                     $scope.resendProvider = failure.data;
-                    Alert.error($scope.alerts, 'Sorry this email address has already invited in our system.  We will need to resend the special invitation link for you to register using this address', true);
+                    Alert.error($scope.alerts, 'invitation.email.invited', true);
                 }
             });
         };
