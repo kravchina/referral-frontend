@@ -132,8 +132,9 @@ modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 
     };
 }]);
 
-modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 'ModalHandler','Alert', 'Practice', 'Procedure', function ($scope, $modalInstance, ModalHandler, Alert, Practice, Procedure) {
+modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 'ModalHandler','Alert', 'Practice', 'Procedure', 'PhoneFormatter', function ($scope, $modalInstance, ModalHandler, Alert, Practice, Procedure, PhoneFormatter) {
     $scope.alerts = [];
+    $scope.phoneFormatter = PhoneFormatter;
     $scope.practice = {addresses_attributes: [{}]};
     $scope.practiceTypes = Procedure.practiceTypes();
     $scope.addAddress = function(){
