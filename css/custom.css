@@ -1729,3 +1729,12 @@ label.tooth-label-view{
 .note-block .note-expand.less{
 	display: none;
 }
+
+.resend-link{
+	text-decoration: underline;
+}
+
+.resend-link:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
