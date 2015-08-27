@@ -1,9 +1,8 @@
 var modalsModule = angular.module('modals', ['ui.bootstrap']);
 
-modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', 'PhoneFormatter', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname, PhoneFormatter) {
+modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname) {
 
     $scope.title = 'Create a New Patient Record';
-    $scope.phoneFormatter = PhoneFormatter;
 
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
 
@@ -38,9 +37,8 @@ modalsModule.controller('PatientModalController', [ '$scope', '$modalInstance', 
     };
 }]);
 
-modalsModule.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', 'PhoneFormatter', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, PhoneFormatter) {
+modalsModule.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit) {
     $scope.title = 'Edit Patient Record';
-    $scope.phoneFormatter = PhoneFormatter;
 
     $scope.alerts = [];
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
@@ -132,9 +130,8 @@ modalsModule.controller('ProviderModalController', ['$scope', '$modalInstance', 
     };
 }]);
 
-modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 'ModalHandler','Alert', 'Practice', 'Procedure', 'PhoneFormatter', function ($scope, $modalInstance, ModalHandler, Alert, Practice, Procedure, PhoneFormatter) {
+modalsModule.controller('PracticeModalController', ['$scope', '$modalInstance', 'ModalHandler','Alert', 'Practice', 'Procedure', function ($scope, $modalInstance, ModalHandler, Alert, Practice, Procedure) {
     $scope.alerts = [];
-    $scope.phoneFormatter = PhoneFormatter;
     $scope.practice = {addresses_attributes: [{}]};
     $scope.practiceTypes = Procedure.practiceTypes();
     $scope.addAddress = function(){

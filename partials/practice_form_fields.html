@@ -84,7 +84,7 @@
 
     <div class="row">
         <div class="input-block col-sm-6" ng-class="{ 'has-error': form.phone.$dirty && form.phone.$invalid }">
-            <input type="text" name="phone" class="form-control" ng-model="practice.addresses_attributes[0].phone" placeholder="{{phoneFormatter.UI_PLACEHOLDER}}" ui-mask="{{phoneFormatter.MASK}}" ng-required="true">
+            <input type="text" name="phone" class="form-control" ng-model="practice.addresses_attributes[0].phone" phone-formatter ng-required="true">
         </div>
 
         <div class="input-block col-sm-6" ng-class="{ 'has-error': form.website.$dirty && form.website.$invalid }">

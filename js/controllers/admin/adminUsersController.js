@@ -1,5 +1,5 @@
-adminModule.controller('AdminUsersController', ['$scope', '$state', '$modal', 'Auth', 'Alert', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'PhoneFormatter', 'Logger',
-    function ($scope, $state, $modal, Auth, Alert, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, PhoneFormatter, Logger) {
+adminModule.controller('AdminUsersController', ['$scope', '$state', '$modal', 'Auth', 'Alert', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'Logger',
+    function ($scope, $state, $modal, Auth, Alert, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, Logger) {
         
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function(practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));

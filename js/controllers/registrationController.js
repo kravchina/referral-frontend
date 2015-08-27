@@ -2,13 +2,11 @@ var registrationModule = angular.module('registration', []);
 
 
 // Just for invited providers to some existing practice or to a new practice
-registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Referral','Promo', 'PhoneFormatter',
-    function ($scope, $location, $stateParams, $modal, $state, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral, Promo, PhoneFormatter) {
+registrationModule.controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Referral','Promo',
+    function ($scope, $location, $stateParams, $modal, $state, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral, Promo) {
         $scope.alerts = [];
         $scope.showPracticeButtons = true;
         $scope.isResend = false;
-
-        $scope.phoneFormatter = PhoneFormatter;
 
         $scope.promo = $stateParams.promo;
 

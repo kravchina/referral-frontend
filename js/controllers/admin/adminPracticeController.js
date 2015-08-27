@@ -1,7 +1,5 @@
-adminModule.controller('AdminPracticeController', ['$scope', '$modal', 'ModalHandler', 'Alert', 'Address', 'Practice', 'User', 'FREE_TRIAL_PERIOD', 'UnsavedChanges', 'PhoneFormatter', 'Logger', 'PracticeEditMode',
-    function ($scope, $modal, ModalHandler, Alert, Address, Practice, User, FREE_TRIAL_PERIOD, UnsavedChanges, PhoneFormatter, Logger, PracticeEditMode) {
-
-        $scope.PhoneFormatter = PhoneFormatter;
+adminModule.controller('AdminPracticeController', ['$scope', '$modal', 'ModalHandler', 'Alert', 'Address', 'Practice', 'User', 'FREE_TRIAL_PERIOD', 'UnsavedChanges', 'Logger', 'PracticeEditMode',
+    function ($scope, $modal, ModalHandler, Alert, Address, Practice, User, FREE_TRIAL_PERIOD, UnsavedChanges, Logger, PracticeEditMode) {
 
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function (practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
