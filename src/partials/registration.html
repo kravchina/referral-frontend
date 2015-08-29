@@ -4,7 +4,9 @@
     <p class="page-subheader">Submit your registration details.</p>
 </header><!-- .page-header -->
 
-<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{ alert.message | i18n }}</alert>
+<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{ alert.message | i18n }}
+    <p ng-show="isResend">Use <a class="resend-link" ng-click="resend()">this</a> link to resend</p>
+</alert>
 <div class="form-wrapper">
     <form name="form" novalidate class="simple-form">
         <div class="box-white box-padded">
@@ -17,6 +19,31 @@
                     </div>
                 </div>
             </div>
+
+                        <div class="row text-block">
+                            <h3>Access details</h3>
+                        </div>
+
+                        <alert type="danger" ng-show="submitted && form.password.$invalid">Password is required and should have at least 8 characters</alert>
+
+                        <div class="row">
+                            <div class="input-block col-md-6" ng-class="{'has-error': submitted || form.email.$invalid }">
+                                <input type="email" name="email" class="form-control" ng-model="invitation.email" placeholder="Enter email &hellip;" ng-change="checkEmail(invitation.email)" ng-required="true">
+                                <label>Email</label>
+                            </div>
+
+                            <div class="input-block col-md-3" ng-class="{'has-error': submitted && form.password.$invalid }">
+                                <input type="password" name="password" class="form-control" ng-model="invitation.password" placeholder="Enter password &hellip;" ng-minlength="8" ng-required="true">
+                                <label>Password</label>
+                            </div>
+
+                            <div class="input-block col-md-3" ng-class="{'has-error': submitted && (form.confirmation.$invalid || invitation.password_confirmation !== invitation.password) }">
+                                <input type="password" name="confirmation" class="form-control" ng-model="invitation.password_confirmation" placeholder="Enter password confirmation &hellip;"
+                                       ng-minlength="8" ng-required="true">
+                                <label>Password confirmation</label>
+                            </div>
+                        </div>
+
                         <div class="row text-block">
                             <h3>Personal Information</h3>
                         </div>
@@ -77,30 +104,6 @@
                         </div>
 
                         <div class="row text-block">
-                            <h3>Access details</h3>
-                        </div>
-
-                        <alert type="danger" ng-show="submitted && form.password.$invalid">Password is required and should have at least 8 characters</alert>
-
-                        <div class="row">
-                            <div class="input-block col-md-6" ng-class="{'has-error': submitted && form.email.$invalid }">
-                                <input type="email" name="email" class="form-control" ng-model="invitation.email" placeholder="Enter email &hellip;" ng-required="true">
-                                <label>Email</label>
-                            </div>
-
-                            <div class="input-block col-md-3" ng-class="{'has-error': submitted && form.password.$invalid }">
-                                <input type="password" name="password" class="form-control" ng-model="invitation.password" placeholder="Enter password &hellip;" ng-minlength="8" ng-required="true">
-                                <label>Password</label>
-                            </div>
-
-                            <div class="input-block col-md-3" ng-class="{'has-error': submitted && (form.confirmation.$invalid || invitation.password_confirmation !== invitation.password) }">
-                                <input type="password" name="confirmation" class="form-control" ng-model="invitation.password_confirmation" placeholder="Enter password confirmation &hellip;"
-                                       ng-minlength="8" ng-required="true">
-                                <label>Password confirmation</label>
-                            </div>
-                        </div>
-
-                        <div class="row text-block">
                             <h3>Terms</h3>
                         </div>
 
@@ -113,7 +116,7 @@
                         </div>
                         <div class="button-block" style="padding-top: 20px;">
                             <button class="btn btn-green btn-lg" ng-click="register(invitation)" ng-hide="promo">Register</button>
-                            <button class="btn btn-green btn-lg" ng-click="createPracticeAndRegister(practice, invitation)" ng-show="promo" ng-disabled="form.$invalid || invitation.password_confirmation !== invitation.password">Register</button>
+                            <button class="btn btn-green btn-lg" ng-click="createPracticeAndRegister(practice, invitation)" ng-show="promo" ng-disabled="form.$invalid || invitation.password_confirmation !== invitation.password || isResend">Register</button>
                             <button class="btn btn-green btn-lg" ng-click="discard()">Discard</button>
                         </div>
         </div>
