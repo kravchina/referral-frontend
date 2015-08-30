@@ -161,7 +161,7 @@ Task format:
 gulp build --env=environment_name
 ```
 
-The *env* argument is not required, default value is: *local*.
+The **env** argument is not required, default value is: **local**.
 
 #### Run
 

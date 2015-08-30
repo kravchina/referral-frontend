@@ -12,13 +12,13 @@ var gulp = require('gulp'),
     webserver = require('gulp-webserver'),
     replace = require('gulp-replace');
 
-var environment = argv.env ? config.env[argv.env] : config.env['local'];
+var environment = argv.env ? config.environment[argv.env] : config.environment['local'];
 
 
 gulp.task('publish', ['build'], function() {
     var publisher = awspublish.create({
         params: {
-            Bucket: environment.amazonAwsBucket
+            Bucket: environment.amazon_aws_bucket
         },
         accessKeyId: config.amazonAws.accessKeyId,
         secretAccessKey: config.amazonAws.secretAccessKey

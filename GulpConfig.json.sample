@@ -1,5 +1,5 @@
 {
-    amazonAws : {
+    amazonAws: {
         accessKeyId: "***YOUR ACCESS KEY***",
         secretAccessKey: "***YOUR SECRET KEY***"
     },
@@ -11,25 +11,25 @@
         port: 8000
     },
 
-    env: {
+    environment: {
         local: {
             api_endpoint: 'http://0.0.0.0:3000',
-            google_analytics_key: 'LOCAL KEY'
+            google_analytics_key: 'LOCAL_KEY'
         },
         dev: {
             api_endpoint: 'https://referral-server.herokuapp.com',
             google_analytics_key: 'UA-28482471-4',
-            amazonAwsBucket: 'dev1.dentallinks.org'
+            amazon_aws_bucket: 'dev1.dentallinks.org'
         },
         stage: {
             api_endpoint: 'STAGE_API_URL',
             google_analytics_key: 'UA-28482471-3',
-            amazonAwsBucket: ''
+            amazon_aws_bucket: ''
         },
         production: {
             api_endpoint: 'PRODUCTION_API_URL',
             google_analytics_key: 'UA-28482471-2',
-            amazonAwsBucket: ''
+            amazon_aws_bucket: ''
         }
     }
 }
