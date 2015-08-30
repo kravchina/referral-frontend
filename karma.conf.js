@@ -23,7 +23,8 @@ module.exports = function(config) {
       'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-resource.js',
       'http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.2.js',
       'http://angular-ui.github.io/ui-router/release/angular-ui-router.js',
-      'js/**/*.js', // it will find our test specs there
+      'build/**/*.js', // it will find our test specs there
+      'test/unit/**/*.js', // it will find our test specs there
     ],
 
 

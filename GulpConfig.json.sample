@@ -27,7 +27,7 @@
             amazonAwsBucket: ''
         },
         production: {
-            api_endpoint: 'PRODUCTION API_URL',
+            api_endpoint: 'PRODUCTION_API_URL',
             google_analytics_key: 'UA-28482471-2',
             amazonAwsBucket: ''
         }
