@@ -5,31 +5,35 @@
     },
 
     devServer: {
-        rootDir: 'build',
         livereload: false,
         host: 'localhost',
-        port: 8000
+        port: 8000,
+        openInBrowser: false
     },
 
     environment: {
         local: {
             api_endpoint: 'http://0.0.0.0:3000',
-            google_analytics_key: 'LOCAL_KEY'
+            google_analytics_key: 'LOCAL_KEY',
+            minify: false
         },
         dev: {
             api_endpoint: 'https://referral-server.herokuapp.com',
             google_analytics_key: 'UA-28482471-4',
-            amazon_aws_bucket: 'dev1.dentallinks.org'
+            amazon_aws_bucket: 'dev1.dentallinks.org',
+            minify: false
         },
         stage: {
             api_endpoint: 'STAGE_API_URL',
             google_analytics_key: 'UA-28482471-3',
-            amazon_aws_bucket: ''
+            amazon_aws_bucket: '',
+            minify: true
         },
         production: {
             api_endpoint: 'PRODUCTION_API_URL',
             google_analytics_key: 'UA-28482471-2',
-            amazon_aws_bucket: ''
+            amazon_aws_bucket: '',
+            minify: true
         }
     }
 }
