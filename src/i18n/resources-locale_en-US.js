@@ -110,5 +110,10 @@
         "key":"default.error",
         "value":"Unknown error",
         "description":"Unknown error message"
+    },
+    {
+        "key": "email.exists",
+        "value": "Your email is already registered. Please provide a new one.",
+        "description": "Error is shown when user provides an email that already registered in our system"
     }
 ]

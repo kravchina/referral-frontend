@@ -306,8 +306,8 @@ angular.module('modals')
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
     };
-}]);
-modalsModule.controller('EditNoLoginUserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser',
+}])
+.controller('EditNoLoginUserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser',
     function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser) {
         $scope.user = editUser;
         $scope.alerts = [];
@@ -320,13 +320,11 @@ modalsModule.controller('EditNoLoginUserModalController', ['$scope', '$modalInst
                      ModalHandler.close($modalInstance,success);
                  },
                  function(failure){
-                    Alert.error($scope.alerts, 'Error: ' + failure.data.message);
+                    Alert.error($scope.alerts, failure.data);
                  });
         }
 
-}]);
 }])
-
 .controller('SecurityCodeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'Auth', 'SecurityCode', function ($scope, $modalInstance, ModalHandler, Auth, SecurityCode) {
     $scope.securityCode = SecurityCode.get({practice_id: Auth.get().practice_id});
     $scope.cancel = function () {

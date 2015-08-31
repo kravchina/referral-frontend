@@ -171,6 +171,7 @@ Task format:
 ```Batchfile
 gulp run --env=environment_name
 ```
+The **env** argument is not required, default value is: **local**.
 
 #### Publish
 

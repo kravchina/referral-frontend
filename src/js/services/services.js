@@ -190,7 +190,7 @@ angular.module('dentalLinksServices')
         update: {method: 'PUT' },
         changePassword: {method: 'PUT', url: API_ENDPOINT + '/users/:id/change_password'},
         sendPasswordInvitation: {method: 'PUT', url: API_ENDPOINT + '/users/:id/password'},
-        savePassword: {method: 'POST', url: API_ENDPOINT + '/users/:id/password'}
+        savePassword: {method: 'POST', url: API_ENDPOINT + '/save_password'}
     })
 }])
 
