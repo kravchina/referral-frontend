@@ -134,6 +134,11 @@ angular.module('dentalLinks', [
             templateUrl: 'partials/reset_password.html',
             controller: 'PasswordsController'
         }).
+        state('addPassword', {
+            url: '/add_password/:add_password_token',
+            templateUrl: 'partials/add_password.html',
+            controller: 'SavePasswordController'
+        }).
         state('resetPasswordToken', {
             url: '/edit_password/:reset_password_token',
             templateUrl: 'partials/edit_password.html',

@@ -188,7 +188,9 @@ angular.module('dentalLinksServices')
         getOtherProviders: {method: 'GET', url: API_ENDPOINT + '/other_providers', isArray: true},
         getProviders: {method: 'GET', url: API_ENDPOINT + '/providers', isArray: true},
         update: {method: 'PUT' },
-        changePassword: {method: 'PUT', url: API_ENDPOINT + '/users/:id/change_password'}
+        changePassword: {method: 'PUT', url: API_ENDPOINT + '/users/:id/change_password'},
+        sendPasswordInvitation: {method: 'PUT', url: API_ENDPOINT + '/users/:id/password'},
+        savePassword: {method: 'POST', url: API_ENDPOINT + '/users/:id/password'}
     })
 }])
 

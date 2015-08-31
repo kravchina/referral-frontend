@@ -306,6 +306,25 @@ angular.module('modals')
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
     };
+}]);
+modalsModule.controller('EditNoLoginUserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser',
+    function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser) {
+        $scope.user = editUser;
+        $scope.alerts = [];
+        $scope.cancel = function () {
+            ModalHandler.dismiss($modalInstance);
+        };
+        $scope.ok = function (user) {
+             User.sendPasswordInvitation({id: user.id}, {email: user.email},
+                 function(success){
+                     ModalHandler.close($modalInstance,success);
+                 },
+                 function(failure){
+                    Alert.error($scope.alerts, 'Error: ' + failure.data.message);
+                 });
+        }
+
+}]);
 }])
 
 .controller('SecurityCodeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'Auth', 'SecurityCode', function ($scope, $modalInstance, ModalHandler, Auth, SecurityCode) {

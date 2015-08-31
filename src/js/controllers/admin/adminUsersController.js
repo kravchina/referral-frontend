@@ -38,15 +38,29 @@ angular.module('admin')
         };
 
         $scope.editDialog = function (editUser) {
-            var modalInstance = $modal.open({
-                templateUrl: 'partials/edit_user_form.html',
-                controller: 'EditUserModalController',
-                resolve: {
-                    editUser: function () {
-                        return editUser;
+            var modalInstance;
+            if (editUser.no_login) {
+                modalInstance = $modal.open({
+                    templateUrl: 'partials/edit_nologin_user_form.html',
+                    controller: 'EditNoLoginUserModalController',
+                    resolve: {
+                        editUser: function () {
+                            return editUser;
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                modalInstance = $modal.open({
+                    templateUrl: 'partials/edit_user_form.html',
+                    controller: 'EditUserModalController',
+                    resolve: {
+                        editUser: function () {
+                            return editUser;
+                        }
+                    }
+                });
+
+            }
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (user) {
                 editUser.is_admin = user.is_admin; //update user's role after editing
