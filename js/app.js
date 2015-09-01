@@ -16,7 +16,8 @@ var dentalLinks = angular.module('dentalLinks', [
     'dentalLinksDirectives',
     'ui.mask',
     'localization',
-    'error'
+    'error',
+    'isteven-multi-select'
 ]);
 
 dentalLinks.constant('USER_ROLES', {

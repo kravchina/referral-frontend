@@ -43,6 +43,9 @@ adminModule.controller('AdminUsersController', ['$scope', '$state', '$modal', 'A
                 resolve: {
                     editUser: function () {
                         return editUser;
+                    },
+                    practiceUsers: function(){
+                        return $scope.practice.users;
                     }
                 }
             });

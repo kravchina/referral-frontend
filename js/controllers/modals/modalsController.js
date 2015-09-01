@@ -277,12 +277,24 @@ modalsModule.controller('UpgradeModalController', ['$scope', '$modalInstance','$
     };
 }]);
 
-modalsModule.controller('EditUserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser) {
+modalsModule.controller('EditUserModalController',
+    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers',
+        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers) {
     $scope.result = {};
     $scope.alerts = [];
     Logger.log(editUser.id);
     $scope.user = editUser;//for now we need only is_admin property to be set
     $scope.auth = Auth.get();
+    $scope.listInputUsers = practiceUsers.map(function(inputUser){
+        inputUser = angular.copy(inputUser);
+        editUser.email_bindings.forEach(function(checkedUser){
+            if(inputUser.id == checkedUser.id) {
+                inputUser.ticked = true;
+            }
+        });
+        return inputUser;
+    });
+    $scope.listOutputUsers = [];
 
     $scope.ok = function (user) {
         if(user.password != user.password_confirmation){
@@ -290,7 +302,7 @@ modalsModule.controller('EditUserModalController', ['$scope', '$modalInstance', 
             return;
         }
 
-        User.update({id: editUser.id}, {user: user}, function (success) {
+        User.update({id: editUser.id}, {user: user, email_relations: $scope.listOutputUsers}, function (success) {
             Logger.log(success);
             ModalHandler.close($modalInstance,success);
         },  function (failure) {
@@ -302,9 +314,11 @@ modalsModule.controller('EditUserModalController', ['$scope', '$modalInstance', 
             }
             
         });
+        editUser.email_bindings = $scope.listOutputUsers;
     };
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
+        $scope.listInputUsers = [];
     };
 }]);
 
