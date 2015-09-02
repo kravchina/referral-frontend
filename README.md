@@ -179,5 +179,5 @@ This runs the `build` task and after that publish in amazon bucket.
 
 Task format:
 ```Batchfile
-gulp build --env=environment_name
+gulp publish --env=environment_name
 ```
