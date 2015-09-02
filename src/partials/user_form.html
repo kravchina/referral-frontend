@@ -41,7 +41,7 @@
                 <option value="4">Auxiliary</option>
             </select>
         </div>
-        <div class="input-block" ng-class="">
+        <div class="input-block" ng-class="" ng-if="isInvite">
             &nbsp;<input type="checkbox" name="is_admin" ng-model="user.is_admin">&nbsp;Admin?
         </div>
     </div>
