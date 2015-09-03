@@ -307,6 +307,7 @@ angular.module('modals')
         ModalHandler.dismiss($modalInstance);
     };
 }])
+
 .controller('EditNoLoginUserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser',
     function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser) {
         $scope.user = editUser;
@@ -325,6 +326,7 @@ angular.module('modals')
         }
 
 }])
+
 .controller('SecurityCodeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'Auth', 'SecurityCode', function ($scope, $modalInstance, ModalHandler, Auth, SecurityCode) {
     $scope.securityCode = SecurityCode.get({practice_id: Auth.get().practice_id});
     $scope.cancel = function () {
@@ -392,4 +394,12 @@ angular.module('modals')
         cancelCallback();
         ModalHandler.dismiss($modalInstance);
     };
+}])
+
+.controller('RegistrationEmailResendModalController', ['$scope', '$modalInstance', 'ModalHandler',
+    function ($scope, $modalInstance, ModalHandler) {
+        $scope.ok = function () {
+            ModalHandler.dismiss($modalInstance);
+        }
+
 }]);

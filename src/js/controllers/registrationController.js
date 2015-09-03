@@ -173,7 +173,11 @@ angular.module('registration')
 
         $scope.resend = function(){
             ProviderInvitation.resend({id: $scope.resendProvider.id}, function(success){
-                ModalHandler.dismiss($modalInstance);
+                var modalInstance = $modal.open({
+                    templateUrl: 'partials/registration_email_send_message.html',
+                    controller: 'RegistrationEmailResendModalController'
+                });
+                ModalHandler.set(modalInstance);
             }, function(failure){
                 $scope.alerts = [];
                 Alert.error($scope.alerts, failure.data.message[0], true);

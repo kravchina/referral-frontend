@@ -107,6 +107,11 @@
         "description":"Email invited"
     },
     {
+        "key": "register.invitation.resend",
+        "value": "We have resent the email to your address. Please check your email and follow the directions to register your account using this email address.",
+        "description": "Message show when invitation resend to email on register page"
+    },
+    {
         "key":"default.error",
         "value":"Unknown error",
         "description":"Unknown error message"
