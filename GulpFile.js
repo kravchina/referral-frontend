@@ -53,7 +53,7 @@ gulp.task('build-js', function() {
             'src/js/lib/jspdf.plugin.standard_fonts_metrics.js',
             'src/js/lib/FileSaver.min.js',
             'src/js/lib/mask.js',
-            'src/js/lib/angular-payments.min.js',
+            'src/js/lib/angular-payments.js',
             'src/js/lib/jquery.placeholder.js', 
             'src/js/lib/bootstrap.min.js', 
             'src/js/lib/bootstrap-tabcollapse.js', 
