@@ -212,6 +212,13 @@ angular.module('dentalLinks', [
             }
         });
 
+        $rootScope.$on('$stateChangeSuccess',function(event){
+                if (!$window.ga)
+                    return;
+
+                $window.ga('send', 'pageview', { page: $location.path() });
+            });
+
         $rootScope.$on(AUTH_EVENTS.notAuthenticated, function (event, args) {
             Logger.log('notAuthenticated');
             Auth.remove();
