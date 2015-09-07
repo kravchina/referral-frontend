@@ -53,7 +53,7 @@ gulp.task('build-js', function() {
             'src/js/lib/jspdf.plugin.standard_fonts_metrics.js',
             'src/js/lib/FileSaver.min.js',
             'src/js/lib/mask.js',
-            'src/js/lib/angular-payments.min.js',
+            'src/js/lib/angular-payments.js',
             'src/js/lib/jquery.placeholder.js', 
             'src/js/lib/bootstrap.min.js', 
             'src/js/lib/bootstrap-tabcollapse.js', 
@@ -103,8 +103,17 @@ gulp.task('build-css', function() {
 });
 
 gulp.task('copy-files', function(){
-    gulp.src('src/index.html')
-        .pipe(gulp.dest(buildPath));
+    var process = gulp.src('src/index.html');
+
+    for(variable in environment) {
+        var key = variable.toUpperCase(),
+            value = environment[variable];
+
+        process = process.pipe(
+            replace('{{' + key + '}}', value));
+    }
+
+    process.pipe(gulp.dest(buildPath));
 
     gulp.src('src/img/**/*')
         .pipe(gulp.dest(buildPath + '/img'));
