@@ -98,12 +98,12 @@
     },
     {
         "key":"invitation.email.register",
-        "value":"Sorry this email address is already in use. If this is your account please follow this link to login or reset your password if needed",
+        "value":"Sorry this email address is already in use. If this is your account please follow this <a ui-sref='signIn'>link</a> to login or reset your password if needed",
         "description":"Email registered"
     },
     {
         "key":"invitation.email.invited",
-        "value":"Sorry this email address has already invited in our system.  We will need to resend the special invitation link for you to register using this address",
+        "value":"Sorry this email address has been invited in our system.  We will need to resend the special invitation link for you to register using this address",
         "description":"Email invited"
     },
     {
