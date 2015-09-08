@@ -16,6 +16,8 @@ var environmentName = argv.env ? argv.env : 'local',
     environment = config.environment[environmentName],
     buildPath = 'build/' + environmentName;
 
+    environment.timestamp = new Date().getTime().toString();
+
 
 gulp.task('publish', ['build'], function() {
     var publisher = awspublish.create({
@@ -65,13 +67,7 @@ gulp.task('build-js', function() {
             'src/js/directives/**/*',
             'src/js/services/**/*']);
 
-        for(variable in environment) {
-            var key = variable.toUpperCase(),
-                value = environment[variable];
-
-            process = process.pipe(
-                replace('{{' + key + '}}', value));
-        }
+    process = replaceEnvironmentVariables(process);
 
     process = process
         .pipe(sourcemaps.init())
@@ -105,13 +101,7 @@ gulp.task('build-css', function() {
 gulp.task('copy-files', function(){
     var process = gulp.src('src/index.html');
 
-    for(variable in environment) {
-        var key = variable.toUpperCase(),
-            value = environment[variable];
-
-        process = process.pipe(
-            replace('{{' + key + '}}', value));
-    }
+    process = replaceEnvironmentVariables(process);
 
     process.pipe(gulp.dest(buildPath));
 
@@ -126,13 +116,17 @@ gulp.task('copy-files', function(){
 });
 
 gulp.task('build-templates', function(){
-    gulp.src('src/partials/**/*.html')
+    var process = gulp.src('src/partials/**/*.html')
         .pipe(ngHtml2Js({
             moduleName: "dentalLinksPartials",
             prefix: "partials/"
         }))
-    .pipe(concat('partials.js'))
-    .pipe(gulp.dest(buildPath));
+    .pipe(concat('partials.js'));
+
+    process = replaceEnvironmentVariables(process);
+    
+    process
+        .pipe(gulp.dest(buildPath));
 });
 
 gulp.task('server', ['build'], function(){
@@ -148,3 +142,15 @@ gulp.task('server', ['build'], function(){
 gulp.task('watch', function(){
     gulp.watch('src/**/*.*', ['build']);
 });
+
+var replaceEnvironmentVariables = function(process) {
+    for(variable in environment) {
+        var key = variable.toUpperCase(),
+            value = environment[variable];
+
+        process = process.pipe(
+            replace('{{' + key + '}}', value));
+    }
+
+    return process;
+};
