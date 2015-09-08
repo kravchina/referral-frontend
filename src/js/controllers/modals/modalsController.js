@@ -181,7 +181,7 @@ angular.module('modals')
         if($scope.isInvite){
             user.roles_mask = '';
         } else {
-            user.roles_mask = 4;
+            user.roles_mask = 1;
         }
     };
 
