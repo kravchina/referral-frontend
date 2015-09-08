@@ -1,5 +1,5 @@
 angular.module('pdf')
-    .factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth', '$timeout', '$window', 'API_ENDPOINT', 'PhoneFormatter', function ($filter, Spinner, ImageUtils, File, Auth, $timeout, $window, API_ENDPOINT, PhoneFormatter) {
+    .factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth', '$timeout', '$window', 'API_ENDPOINT', function ($filter, Spinner, ImageUtils, File, Auth, $timeout, $window, API_ENDPOINT) {
     var jsPDFOrientation = 'p'; // portrait
     var jsPDFUnit = 'mm';
     var jsPDFFormat = 'letter';
@@ -102,6 +102,13 @@ angular.module('pdf')
 
     var formatDate = function (date) { // TODO [ak] remove from here. Create a centralized place where dates from across the whole app get formatted
         return $filter('date')(date, 'mediumDate') || '';
+    };
+
+    var formatPhone = function(str) {
+        // empty/not only digits/non-NANP length => return as is
+        if (!str || str.match(/[^\d]/) || str.length != 10) return str;
+
+        return '(' + str.slice(0, 3) + ') ' + str.slice(3, 6) + '-' + str.slice(6);
     };
 
     var addPage = function (pdf) {
@@ -304,7 +311,7 @@ angular.module('pdf')
         caret += fontSizeMm;
         pdf.text(paddedX, caret, fitString(practiceData.practiceName, fontSizeMm, halfSizeColWidth - addressPaddingX));
         caret += fontSizeMm;
-        pdf.text(paddedX, caret, fitString($filter('phoneNumber')(practiceData.phone), fontSizeMm, halfSizeColWidth - addressPaddingX));
+        pdf.text(paddedX, caret, fitString(formatPhone(practiceData.phone), fontSizeMm, halfSizeColWidth - addressPaddingX));
         caret += fontSizeMm;
         pdf.text(paddedX, caret, fitString(practiceData.addressStreet, fontSizeMm, halfSizeColWidth - addressPaddingX));
         caret += fontSizeMm;
@@ -514,7 +521,7 @@ angular.module('pdf')
             patientData.name = (patient.first_name || '') + ' ' + (patient.last_name || '');
             patientData.birthday = (patient.birthday || '');
             patientData.email = (patient.email || '');
-            patientData.phone = patient.phone ? PhoneFormatter.format(patient.phone) : '';
+            patientData.phone = patient.phone ? formatPhone(patient.phone) : '';
 
             var procedure = data.procedure || {};
             procedureData.name = procedure.name || '';

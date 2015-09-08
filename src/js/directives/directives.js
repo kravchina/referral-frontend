@@ -369,4 +369,18 @@ angular.module('dentalLinksDirectives')
       });
     }
   };
-});
+})
+
+.directive('phoneFormatter', ['$compile', function($compile){
+    return {
+        terminal: true,
+        priority: 1000,
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            attrs.$set('ui-mask', '(999) 999-9999');
+            attrs.$set('placeholder', '(xxx) xxx-xxxx');
+            element.removeAttr('phone-formatter');
+            $compile(element)(scope);
+        }
+    };
+}]);

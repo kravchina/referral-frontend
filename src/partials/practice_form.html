@@ -97,7 +97,7 @@
             </div>
 
             <div class="input-block" ng-class="{ 'has-error': practiceForm.phone.$dirty && practiceForm.phone.$invalid }">
-                <input type="text" name="phone" class="form-control" ng-model="address.phone" placeholder="Phone &hellip;" ng-required="true">
+                <input type="text" name="phone" class="form-control" ng-model="address.phone" phone-formatter ng-required="true">
             </div>
 
             <div class="input-block" ng-class="{ 'has-error': practiceForm.website.$dirty && practiceForm.website.$invalid }">

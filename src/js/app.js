@@ -351,10 +351,6 @@ angular.module('dentalLinks', [
     }
 })
 
-.filter('phoneNumber', ['PhoneFormatter', function(PhoneFormatter) {
-    return PhoneFormatter.format;
-}])
-
 .filter('attachmentDownloadUrl', ['API_ENDPOINT', function(API_ENDPOINT){
    return function(attachment){
        return API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.attach_file_name;
