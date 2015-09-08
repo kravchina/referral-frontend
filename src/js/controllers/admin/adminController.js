@@ -1,7 +1,7 @@
 
 angular.module('admin')
-.controller('AdminController', ['$scope', '$state', '$modal', 'Auth', 'Alert', 'Address', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'PhoneFormatter', 'Logger',
-    function ($scope, $state, $modal, Auth, Alert, Address, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, PhoneFormatter, Logger) {
+.controller('AdminController', ['$scope', '$state', '$modal', 'Auth', 'Alert', 'Address', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'Logger',
+    function ($scope, $state, $modal, Auth, Alert, Address, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, Logger) {
         if($state.is('admin')){
             $state.go('admin.practice')
         }
@@ -18,7 +18,7 @@ angular.module('admin')
             active: false
         },
         {
-            heading: 'Invite Colleague',
+            heading: 'Invite New Practice',
             route: 'admin.invite',
             class: 'dlicons-user-add',
             active: false

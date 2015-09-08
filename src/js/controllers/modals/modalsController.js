@@ -1,9 +1,7 @@
 angular.module('modals')
-
-.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', 'PhoneFormatter', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname, PhoneFormatter) {
+.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname) {
 
     $scope.title = 'Create a New Patient Record';
-    $scope.phoneFormatter = PhoneFormatter;
 
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
 
@@ -38,9 +36,8 @@ angular.module('modals')
     };
 }])
 
-.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', 'PhoneFormatter', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, PhoneFormatter) {
+.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit) {
     $scope.title = 'Edit Patient Record';
-    $scope.phoneFormatter = PhoneFormatter;
 
     $scope.alerts = [];
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
@@ -101,6 +98,7 @@ angular.module('modals')
 .controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', 'Spinner', 'sendEmailNotification', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth, Spinner, sendEmailNotification) {
     $scope.alerts = [];
     $scope.model = {};
+    $scope.isProviderInvite = true;
 
     $scope.$watch( //we need only one-way updates from typeahead, otherwise typeahead works incorrectly
         function () {
