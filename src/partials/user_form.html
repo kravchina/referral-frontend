@@ -23,11 +23,11 @@
         <label>Register with:</label>
         <div class="form-group">
             <label class="radio-inline">
-                <input type="radio" ng-value="true" ng-model="isInvite" ng-change="toggleRadio(value)">
+                <input type="radio" ng-value="true" ng-model="isInvite" ng-change="toggleRadio(user)">
                 Invite
             </label>
             <label class="radio-inline">
-                <input type="radio" ng-value="false" ng-model="isInvite" ng-change="toggleRadio(value)">
+                <input type="radio" ng-value="false" ng-model="isInvite" ng-change="toggleRadio(user)">
                 No Login
             </label>
         </div>
@@ -38,7 +38,7 @@
             <select type="text"  name="role" class="form-control" ng-model="user.roles_mask" ng-required="true">
                 <option selected="selected" disabled="disabled" class="placeholder" value="" ng-show="isInvite">Select role</option>
                 <option value="2" ng-show="isInvite">Doctor</option>
-                <option value="4" ng-selected="!isInvite">Auxiliary</option>
+                <option value="4">Auxiliary</option>
             </select>
         </div>
         <div class="input-block" ng-class="" ng-if="isInvite">

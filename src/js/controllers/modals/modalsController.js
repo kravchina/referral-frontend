@@ -175,10 +175,14 @@ angular.module('modals')
     $scope.result = {};
     $scope.alerts = [];
     $scope.isInvite = true;
-    $scope.isDisabled = false;
-    
-    $scope.toggleRadio = function(value){
-        $scope.isDisabled = !$scope.isDisabled;
+    $scope.user = [];
+
+    $scope.toggleRadio = function(user){
+        if($scope.isInvite){
+            user.roles_mask = '';
+        } else {
+            user.roles_mask = 4;
+        }
     };
 
     $scope.ok = function (user) {
