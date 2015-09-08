@@ -175,7 +175,7 @@ angular.module('modals')
     $scope.result = {};
     $scope.alerts = [];
     $scope.isInvite = true;
-    $scope.user = [];
+    $scope.user = {};
 
     $scope.toggleRadio = function(user){
         if($scope.isInvite){
