@@ -59,6 +59,7 @@ gulp.task('build-js', function() {
             'src/js/lib/bootstrap-tabcollapse.js', 
             'src/js/lib/moment.js', 
             'src/js/lib/daterangepicker.js',
+            'src/js/lib/isteven-multi-select.js',
             'src/js/app.js',
             'src/js/controllers/**/*',
             'src/js/directives/**/*',
@@ -91,7 +92,9 @@ gulp.task('build-js', function() {
 gulp.task('build-css', function() {
     return gulp.src([
             'src/css/custom.css',
-            'src/css/daterangepicker-bs3.css'])
+            'src/css/daterangepicker-bs3.css',
+            'src/css/isteven-multi-select.css'
+    ])
         .pipe(sourcemaps.init())
         .pipe(concat('style.css'))
         .pipe(minifyCss())

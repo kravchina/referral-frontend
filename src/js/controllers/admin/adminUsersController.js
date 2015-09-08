@@ -56,9 +56,13 @@ angular.module('admin')
                     resolve: {
                         editUser: function () {
                             return editUser;
+                        },
+                        practiceUsers: function() {
+                            return $scope.practice.users;
                         }
                     }
                 });
+
 
             }
             ModalHandler.set(modalInstance);

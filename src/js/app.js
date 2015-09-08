@@ -31,6 +31,7 @@ angular.module('dentalLinks', [
     'ui.mask',
     'localization',
     'error',
+    'isteven-multi-select',
     'dentalLinksPartials'
 ])
 
