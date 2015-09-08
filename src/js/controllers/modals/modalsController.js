@@ -98,6 +98,7 @@ angular.module('modals')
 .controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', 'Spinner', 'sendEmailNotification', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth, Spinner, sendEmailNotification) {
     $scope.alerts = [];
     $scope.model = {};
+    $scope.isProviderInvite = true;
 
     $scope.$watch( //we need only one-way updates from typeahead, otherwise typeahead works incorrectly
         function () {
