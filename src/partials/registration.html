@@ -4,7 +4,7 @@
     <p class="page-subheader">Submit your registration details.</p>
 </header><!-- .page-header -->
 
-<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{ alert.message | i18n }}
+<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><span dynamic-html="alert.message | i18n"></span>
     <p ng-show="isResend">Use this <a class="resend-link" ng-click="resend()">link</a> to resend</p>
 </alert>
 <div class="form-wrapper">
