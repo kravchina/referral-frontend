@@ -29,7 +29,8 @@
             <input type="text" name="lastName" class="form-control" ng-model="model.provider.last_name" placeholder="Enter last name &hellip;" ng-show="isProviderInvite" ng-required="isProviderInvite">
         </div>
         <div class="input-block" ng-class="{ 'has-error': providerForm.email.$dirty && providerForm.email.$invalid }">
-            <input type="email" class="form-control" name="email" ng-model="model.provider.email" placeholder="Enter provider's email address &hellip;" ng-required="true">
+            <input ng-show="isProviderInvite" type="email" class="form-control" name="email" ng-model="model.provider.email" placeholder="Enter provider's email address &hellip;" ng-required="true">
+            <input ng-show="!isProviderInvite" type="email" class="form-control" name="email" ng-model="model.provider.email" placeholder="Enter email address &hellip;" ng-required="true">
         </div>
     </div>
     <div class="modal-footer">
