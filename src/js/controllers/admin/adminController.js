@@ -1,7 +1,7 @@
 
 angular.module('admin')
-.controller('AdminController', ['$scope', '$state', '$modal', 'Auth', 'Alert', 'Address', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'Logger',
-    function ($scope, $state, $modal, Auth, Alert, Address, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, Logger) {
+.controller('AdminController', ['$scope', '$state', '$modal', 'Auth', 'Practice',
+    function ($scope, $state, $modal, Auth,  Practice) {
         if($state.is('admin')){
             $state.go('admin.practice')
         }
@@ -30,14 +30,8 @@ angular.module('admin')
             active: false
         }];
 
-        $scope.alerts = [];
-        
         var currentYear = moment().year();
         $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4 ];
-
-        $scope.closeAlert = function (index) {
-            Alert.close($scope.alerts, index);
-        };
 
         var auth = $scope.auth = Auth.get();
 

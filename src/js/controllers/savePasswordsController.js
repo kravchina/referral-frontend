@@ -1,6 +1,5 @@
 angular.module('passwords')
-    .controller('SavePasswordController', ['$scope', '$state', '$stateParams', 'Alert', 'Auth', 'User', 'Notification', function ($scope, $state, $stateParams, Alert, Auth, User, Notification) {
-        $scope.alerts = [];
+    .controller('SavePasswordController', ['$scope', '$state', '$stateParams', 'Auth', 'User', 'Notification', function ($scope, $state, $stateParams, Auth, User, Notification) {
         $scope.savePassword = function (model) {
             model.add_password_token = $stateParams.add_password_token;
             User.savePassword({user: model},
@@ -11,7 +10,7 @@ angular.module('passwords')
                     $state.go('history');
                 },
                 function (error) {
-                    Alert.error($scope.alerts, 'Error: can\'t change your password. Please try again later.');
+                    Notification.error('Error: can\'t change your password. Please try again later.');
 
                 });
         };

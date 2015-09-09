@@ -1,6 +1,6 @@
 angular.module('admin')
-    .controller('AdminInviteController', ['$scope', '$modal', 'Alert', 'User', 'ModalHandler', 'ProviderInvitation', 'Logger',
-    function ($scope, $modal, Alert, User, ModalHandler, ProviderInvitation, Logger) {
+    .controller('AdminInviteController', ['$scope', '$modal', 'Notification', 'User', 'ModalHandler', 'ProviderInvitation', 'Logger',
+    function ($scope, $modal, Notification, User, ModalHandler, ProviderInvitation, Logger) {
         $scope.invitedUsers = [];
         $scope.invitedColleagues = [];
         
@@ -37,7 +37,7 @@ angular.module('admin')
                     $scope.invitedColleagues.splice($scope.invitedColleagues.indexOf(provider), 1);
                 },
                 function (failure) {
-                    Alert.error($scope.$parent.alerts, 'An error occurred during provider removal...')
+                    Notification.error('An error occurred during provider removal...')
                 });
         };
 

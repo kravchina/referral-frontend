@@ -1,5 +1,5 @@
-angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'Alert', 'Auth', '$fileUploader', 'Logger', 'API_ENDPOINT', 'Attachment', '$modal', 'ModalHandler',
-    function ($scope, Alert, Auth, $fileUploader, Logger, API_ENDPOINT, Attachment, $modal, ModalHandler) {
+angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'Notification', 'Auth', '$fileUploader', 'Logger', 'API_ENDPOINT', 'Attachment', '$modal', 'ModalHandler',
+    function ($scope, Notification, Auth, $fileUploader, Logger, API_ENDPOINT, Attachment, $modal, ModalHandler) {
 
         $scope.now = function () {
             return Date.now();
@@ -63,12 +63,12 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'Al
         uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
 
             if (item.size > each_file_size_limit) {
-                Alert.error($scope.attachment_alerts, 'You can not upload a file with more than 50 MB size.');
+                Notification.error('You can not upload a file with more than 50 MB size.');
                 return false;
             }
 
             if ($scope.total_size + item.size > total_file_size_limit) {
-                Alert.error($scope.attachment_alerts, 'You can not upload files with more than 100 MB size.');
+                Notification.error('You can not upload files with more than 100 MB size.');
                 return false;
             }
 
@@ -87,7 +87,7 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'Al
 
         uploader.bind('whenaddingfilefailed', function (event, item) {
             Logger.info('When adding a file failed', item);
-            Alert.error($scope.alerts, 'Adding file failed. Please try again later.')
+            Notification.error('Adding file failed. Please try again later.')
         });
 
         uploader.bind('afteraddingall', function (event, items) {
@@ -117,13 +117,13 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'Al
 
         uploader.bind('cancel', function (event, xhr, item) {
             Logger.info('Cancel', xhr, item);
-            Alert.info($scope.alerts, 'Attachment was cancelled.')
+            Notification.info('Attachment was cancelled.')
         });
 
         uploader.bind('error', function (event, xhr, item, error) {
             Logger.error('Error', xhr, item, error);
             $scope.errorMessage = error.file[0]? error.file[0] : 'An error occurred during attachment upload. Please try again later.';
-            Alert.error($scope.attachment_alerts, $scope.errorMessage);
+            Notification.error( $scope.errorMessage);
         });
 
         uploader.bind('complete', function (event, xhr, item, response) {

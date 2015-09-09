@@ -1,6 +1,6 @@
 angular.module('admin')
-    .controller('AdminUsersController', ['$scope', '$state', '$modal', 'Auth', 'Alert', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'Logger',
-    function ($scope, $state, $modal, Auth, Alert, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, Logger) {
+    .controller('AdminUsersController', ['$scope',  '$modal',  'Notification', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'FREE_TRIAL_PERIOD', 'Logger',
+    function ($scope, $modal, Notification, ModalHandler, Practice, ProviderInvitation, User, FREE_TRIAL_PERIOD, Logger) {
         
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function(practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
@@ -75,27 +75,27 @@ angular.module('admin')
             if (user.status) {
                 ProviderInvitation.delete({id: user.id}, function (success) {
                         if(success.msg){
-                            Alert.error($scope.alerts, success.msg)
+                            Notification.error( success.msg)
                         }else{
                             $scope.invitedUsers.splice($scope.invitedUsers.indexOf(user), 1);
                         }
 
                     },
                     function (failure) {
-                        Alert.error($scope.alerts, 'An error occurred during invitation removal...')
+                        Notification.error('An error occurred during invitation removal...')
                     });
 
             } else {
                 User.delete({id: user.id}, function (success) {
                         if(success.msg){
-                            Alert.error($scope.alerts, success.msg)
+                            Notification.error(success.msg)
                         }else{
                             $scope.practice.users.splice($scope.practice.users.indexOf(user), 1);
                         }
 
                     },
                     function (failure) {
-                        Alert.error($scope.alerts, 'An error occurred during user removal...')
+                        Notification.error('An error occurred during user removal...')
                     });
             }
 

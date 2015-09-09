@@ -1,9 +1,6 @@
 angular.module('createReferrals')
-    .controller('CreateReferralsController', ['$scope', '$state','Alert', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper', 'User',
-    function ($scope, $state, Alert, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User) {
-
-        $scope.alerts = [];
-        $scope.attachment_alerts = [];
+    .controller('CreateReferralsController', ['$scope', '$state','Notification', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper', 'User',
+    function ($scope, $state, Notification, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User) {
 
         var auth = $scope.auth = Auth.get() || {};
 
@@ -13,14 +10,6 @@ angular.module('createReferrals')
         $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
 
         $scope.userIsAux = auth.roles.indexOf('aux') >= 0;
-
-        $scope.closeAlert = function (index) {
-            Alert.close($scope.alerts, index);
-        };
-
-        $scope.closeAttachmentAlert = function (index) {
-            Alert.close($scope.attachment_alerts, index);
-        };
 
         $scope.onPracticeSelected = ReferralHelper.onPracticeSelected($scope, auth);
 
@@ -33,13 +22,13 @@ angular.module('createReferrals')
                     $scope.model.referral.id = success.id;
                     $scope.model.attachments = [];
                     $scope.model.referral.notes_attributes = [];
-                    Alert.success($scope.alerts, 'Template was saved successfully!');
+                    Notification.success('Template was saved successfully!');
                     ReferralHelper.uploadAttachments($scope, success.id, function(message){
                         UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
                         $state.go('reviewReferral', {referral_id: success.id, message: message}, {reload: true});
                     });
                 }, failure: function (failure) {
-                    Alert.error($scope.alerts, 'An error occurred during referral template creation...');
+                    Notification.error('An error occurred during referral template creation...');
 
                 }};
             Referral.saveTemplate(model, resultHandlers.success, resultHandlers.failure);
@@ -49,14 +38,14 @@ angular.module('createReferrals')
             var resultHandlers = {
                 success: function (referral) {
                     Logger.debug('Sent referral #' + referral.id);
-                    Alert.success($scope.alerts, 'Referral was sent successfully!');
+                    Notification.success('Referral was sent successfully!');
                     ReferralHelper.uploadAttachments($scope, referral.id, function(message){
                         UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
                         $state.go('viewReferral', {referral_id: referral.id, message: message, isNew: true});
                     });
                 },
                 failure: function (failure) {
-                    Alert.error($scope.alerts, 'An error occurred during referral creation...');
+                    Notification.error('An error occurred during referral creation...');
                 }
             };
             ReferralHelper.prepareSubmit($scope, model.referral);

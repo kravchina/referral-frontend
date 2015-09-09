@@ -253,6 +253,7 @@ angular.module('dentalLinks', [
     $httpProvider.interceptors.push('authInterceptor');
     $httpProvider.interceptors.push('spinnerInterceptor');
     $httpProvider.interceptors.push('errorsHttpInterceptor');
+    $httpProvider.interceptors.push('requestNotificationInterceptor');
 }
 ])
 
@@ -345,6 +346,19 @@ angular.module('dentalLinks', [
         }
     };
 }])
+    .factory('requestNotificationInterceptor', ['$rootScope', '$q', 'Notification', function ($rootScope, $q, Notification) {
+        return {
+            request: function (config) {
+                Notification.close();
+                return config;
+            },
+
+            requestError: function (rejection) {
+                Notification.close();
+                return $q.reject(rejection);
+            }
+        };
+    }])
 
 .filter('filename', function () {
     return function (fullFileName) {

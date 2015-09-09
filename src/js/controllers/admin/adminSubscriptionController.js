@@ -1,6 +1,6 @@
 angular.module('admin')
-    .controller('AdminSubscriptionController', ['$scope', '$state', '$modal', 'Auth', 'Alert', 'Address', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'BASE_SUBSCRIPTION_PRICE', 'Logger',
-    function ($scope, $state, $modal, Auth, Alert, Address, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, BASE_SUBSCRIPTION_PRICE, Logger) {
+    .controller('AdminSubscriptionController', ['$scope', '$state', '$modal', 'Auth', 'Notification', 'Address', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'BASE_SUBSCRIPTION_PRICE', 'Logger',
+    function ($scope, $state, $modal, Auth, Notification, Address, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, BASE_SUBSCRIPTION_PRICE, Logger) {
 
         $scope.baseSubscriptionPrice = BASE_SUBSCRIPTION_PRICE;
 
@@ -49,13 +49,13 @@ angular.module('admin')
             Practice.cancelSubscription({practiceId: $scope.practice.id}, {},
                 function (success) {
                     Logger.log(success);
-                    Alert.success($scope.alerts, 'Subscription was cancelled successfully!');
+                    Notification.success('Subscription was cancelled successfully!');
                     $scope.practice = success;
                     $scope.paymentNotification.showSubscriptionCancelled = true;
                     $scope.paymentNotification.showSubscriptionSuccess = false;
                 },
                 function (failure) {
-                    Alert.error($scope.alerts, 'An error occurred during cancelling subscription...')
+                    Notification.error('An error occurred during cancelling subscription...')
                 });
         };
 

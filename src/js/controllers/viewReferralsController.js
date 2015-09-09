@@ -1,14 +1,12 @@
 angular.module('viewReferrals')
-    .controller('ViewReferralsController', ['$scope', '$location', '$stateParams', '$fileUploader', '$timeout', '$anchorScroll', 'Alert', 'Referral', 'Practice', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message',
-    function ($scope, $location, $stateParams, $fileUploader, $timeout, $anchorScroll, Alert, Referral, Practice, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message) {
-        $scope.alerts = [];
-        $scope.attachment_alerts = [];
+    .controller('ViewReferralsController', ['$scope', '$location', '$stateParams', '$fileUploader', '$timeout', '$anchorScroll', 'Notification', 'Referral', 'Practice', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message',
+    function ($scope, $location, $stateParams, $fileUploader, $timeout, $anchorScroll, Notification, Referral, Practice, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message) {
 
         $scope.total_size = 0;
 
         $scope.auth = Auth.get();
         if(message){
-            Alert.error($scope.attachment_alerts, message);
+            Notification.error(message);
         }
 
         Practice.get({practiceId: $scope.auth.practice_id}, function(practice){
@@ -33,10 +31,9 @@ angular.module('viewReferrals')
                     }
                 },
                 function (failure) {
-                    Alert.error($scope.alerts, 'Something happened... Data was not retrieved from server.')
+                    Notification.error('Something happened... Data was not retrieved from server.')
                 }
             );
-            $scope.alerts = [];
         };
 
         $scope.initModel();
@@ -100,13 +97,13 @@ angular.module('viewReferrals')
                 Logger.log(item);
 
                 if (item.size > each_file_size_limit) {
-                    Alert.error($scope.attachment_alerts, 'You can not upload a file with more than 50 MB size.');
+                    Notification.error('You can not upload a file with more than 50 MB size.');
 
                     return false;
                 }
 
                 if ($scope.total_size + item.size > total_file_size_limit) {
-                    Alert.error($scope.attachment_alerts, 'You can not upload files with more than 100 MB size.');
+                    Notification.error('You can not upload files with more than 100 MB size.');
                     return false;
                 }
 
@@ -130,7 +127,7 @@ angular.module('viewReferrals')
 
             uploader.bind('whenaddingfilefailed', function (event, item) {
                 Logger.info('When adding a file failed', item);
-                Alert.error($scope.alerts, 'Something went wrong while adding attachment...');
+                Notification.error('Something went wrong while adding attachment...');
             });
 
             uploader.bind('afteraddingall', function (event, items) {
@@ -158,12 +155,12 @@ angular.module('viewReferrals')
 
             uploader.bind('cancel', function (event, xhr, item) {
                 Logger.info('Cancel', xhr, item);
-                Alert.info($scope.alerts, 'Attachment upload was cancelled.');
+                Notification.info('Attachment upload was cancelled.');
             });
 
             uploader.bind('error', function (event, xhr, item, error) {
                 Logger.error('Error', xhr, item, error);
-                Alert.error($scope.attachment_alerts, error.file[0] ? error.file[0] : 'An error occurred while adding attachment.' );
+                Notification.error(error.file[0] ? error.file[0] : 'An error occurred while adding attachment.' );
 
                 // show the loading indicator
                 $scope.$parent.progressIndicatorEnd()
@@ -250,7 +247,7 @@ angular.module('viewReferrals')
             Note.save({note: {message: note, referral_id: $scope.referral.id, user_id: $scope.auth.id}}, function (success) {
                 $scope.referral.notes.push({message: note, created_at: Date.now(), user: {first_name: Auth.current_user.first_name, last_name: Auth.current_user.last_name}});
             }, function (failure) {
-                Alert.error($scope.alerts, 'Something went wrong, note was not saved.');
+                Notification.error('Something went wrong, note was not saved.');
             });
         };
 
@@ -258,26 +255,24 @@ angular.module('viewReferrals')
             Referral.updateStatus({id: referral.id}, {status: 'active'},
                 function (success) {
                     referral.status = 'active';
-                    Alert.success($scope.alerts, 'Status was updated successfully!');
+                    Notification.success('Status was updated successfully!');
                 },
                 function (failure) {
-                    Alert.error($scope.alerts, 'Something went wrong while changing status...');
+                    Notification.error('Something went wrong while changing status...');
                 });
         };
 
         $scope.completeReferral = function (referral) {
             if(referral.dest_provider.id == -1){
-                Alert.error($scope.alerts, 'To complete this referral a treating provider should be selected, currently First Available is selected', true);
-                $anchorScroll('topAlert');
-                $anchorScroll();
+                Notification.error('To complete this referral a treating provider should be selected, currently First Available is selected');
             } else {
                 Referral.updateStatus({id: referral.id }, {status: 'completed'},
                     function (success) {
                         referral.status = 'completed';
-                        Alert.success($scope.alerts, 'Status was updated successfully!');
+                        Notification.success('Status was updated successfully!');
                     },
                     function (failure) {
-                        Alert.error($scope.alerts, 'Something went wrong while changing status...');
+                        Notification.error('Something went wrong while changing status...');
                     });
             }
         };
@@ -286,15 +281,6 @@ angular.module('viewReferrals')
             return Auth.get().practice_id == $scope.referral.dest_practice_id;
         };
 
-        $scope.closeAlert = function (index) {
-            $timeout.cancel($scope.alerts[index].promise); //cancel automatic removal
-            $scope.alerts.splice(index, 1);
-        };
-
-        $scope.closeAttachmentAlert = function (index) {
-            $timeout.cancel($scope.attachment_alerts[index].promise); //cancel automatic removal
-            $scope.attachment_alerts.splice(index, 1);
-        };
 
         $scope.deleteAttachment = function(attachment){
             $scope.referral.attachments.splice($scope.referral.attachments.indexOf(attachment),1);

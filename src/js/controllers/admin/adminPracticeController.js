@@ -1,6 +1,6 @@
 angular.module('admin')
-    .controller('AdminPracticeController', ['$scope', '$modal', 'ModalHandler', 'Alert', 'Address', 'Practice', 'User', 'FREE_TRIAL_PERIOD', 'UnsavedChanges', 'Logger', 'PracticeEditMode',
-    function ($scope, $modal, ModalHandler, Alert, Address, Practice, User, FREE_TRIAL_PERIOD, UnsavedChanges, Logger, PracticeEditMode) {
+    .controller('AdminPracticeController', ['$scope', '$modal', 'ModalHandler', 'Notification', 'Address', 'Practice', 'FREE_TRIAL_PERIOD', 'UnsavedChanges', 'Logger', 'PracticeEditMode',
+    function ($scope, $modal, ModalHandler, Notification, Address, Practice, FREE_TRIAL_PERIOD, UnsavedChanges, Logger, PracticeEditMode) {
 
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function (practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
@@ -31,10 +31,10 @@ angular.module('admin')
                     $scope.practice.addresses = success.addresses;
                     // no UnsavedChanges operations here, we stay on page, callback stays the same, form is now pristine
                     // note: the other tab form might not be pristine here. See #72581022
-                    Alert.success($scope.$parent.alerts, 'Account was updated successfully!');
+                    Notification.success('Account was updated successfully!');
                 },
                 function (failure) {
-                    Alert.error($scope.$parent.alerts, 'An error occurred during account update...');
+                    Notification.error('An error occurred during account update...');
                 });
         };
         var prorate_required = function () {

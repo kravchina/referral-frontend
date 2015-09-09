@@ -1,7 +1,6 @@
 <div>
     <form name="form" novalidate class="simple-form">
         <br />
-        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message | i18n}}</alert>
 
         <div ng-class="{'has-error': form.email.$invalid && form.email.$dirty}">
             <label>

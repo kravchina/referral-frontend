@@ -1,8 +1,7 @@
 angular.module('registration')
 // Just for invited providers to some existing practice or to a new practice
-    .controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Referral','Promo',
-    function ($scope, $location, $stateParams, $modal, $state, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral, Promo) {
-        $scope.alerts = [];
+    .controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Notification', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Referral',
+    function ($scope, $location, $stateParams, $modal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral) {
         $scope.showPracticeButtons = true;
         $scope.isResend = false;
 
@@ -87,8 +86,7 @@ angular.module('registration')
                         showResultDialog();
                     },
                     function (failure) {
-                        $scope.alerts = [];//reset alerts array, because we need only one error message at a time. Pivotal's ticket #82268450.
-                        Alert.error($scope.alerts, 'Error: ' + failure.data.errors[0], true);
+                        Notification.error('Error: ' + failure.data.errors[0]);
                     }
                 )
             }
@@ -121,8 +119,7 @@ angular.module('registration')
                             console.log('registered a new account: ' + JSON.stringify(success));
                         },
                         function(fail){
-                            $scope.alerts = [];
-                            Alert.error($scope.alerts, fail.data, true);
+                            Notification.error(fail.data);
 
                         });
                 },
@@ -150,8 +147,6 @@ angular.module('registration')
 
         $scope.checkEmail = function (email){
 
-            $scope.alerts = [];
-
             ProviderInvitation.validate({email: email, all: true}, function(success){
                 $scope.form.email.$invalid = false;
                 $scope.form.email.$valid = true;
@@ -162,11 +157,11 @@ angular.module('registration')
 
                 if(failure.data.status == 'registered'){
                     $scope.isResend = false;
-                    Alert.error($scope.alerts, 'invitation.email.register', true);
+                    Notification.error('invitation.email.register');
                 } else if(failure.data.status == 'invited') {
                     $scope.isResend = true;
                     $scope.resendProvider = failure.data;
-                    Alert.error($scope.alerts, 'invitation.email.invited', true);
+                    Notification.error('invitation.email.invited');
                 }
             });
         };
@@ -179,8 +174,7 @@ angular.module('registration')
                 });
                 ModalHandler.set(modalInstance);
             }, function(failure){
-                $scope.alerts = [];
-                Alert.error($scope.alerts, failure.data.message[0], true);
+                Notification.error( failure.data.message[0]);
             });
         };
 
@@ -189,16 +183,11 @@ angular.module('registration')
             $scope.showPracticeButtons = true;
         };
 
-        $scope.closeAlert = function (index) {
-            Alert.close($scope.alerts, index);
-        };
-
         $scope.initInvitation();
     }])
 // Only for users invited to the same practice
-    .controller('NewUserController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Alert', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Logger',
-    function ($scope, $location, $stateParams, $modal, $state, Alert, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Logger) {
-        $scope.alerts = [];
+    .controller('NewUserController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Notification', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Logger',
+    function ($scope, $location, $stateParams, $modal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Logger) {
 
         $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
             function (invitation) {
@@ -211,7 +200,7 @@ angular.module('registration')
                 });
             },
             function (failure) {
-                Alert.error($scope.alerts, 'invitation.invalid', true);
+                Notification.error('invitation.invalid');
             }
         );
 
@@ -235,12 +224,9 @@ angular.module('registration')
                     showResultDialog();
                 },
                 function (failure) {
-                    Alert.error($scope.alerts, failure.data.errors[0], true);
+                    Notification.error(failure.data.errors[0]);
                 }
             )
         };
 
-        $scope.closeAlert = function (index) {
-            Alert.close($scope.alerts, index);
-        };
     }]);

@@ -1,11 +1,8 @@
 angular.module('createReferrals')
-    .controller('ReviewReferralsController', ['$scope', '$state', 'currentReferral', 'Alert', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'ReferralHelper', 'User', 'message',
-    function ($scope, $state, currentReferral, Alert, Auth, Procedure, Referral, UnsavedChanges, ReferralHelper, User, message) {
+    .controller('ReviewReferralsController', ['$scope', '$state', 'currentReferral', 'Notification', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'ReferralHelper', 'User', 'message',
+    function ($scope, $state, currentReferral, Notification, Auth, Procedure, Referral, UnsavedChanges, ReferralHelper, User, message) {
 
         var auth = $scope.auth =  Auth.get() || {};
-
-        $scope.alerts = [];
-        $scope.attachment_alerts = [];
 
         $scope.model = {referral: currentReferral};
         $scope.patient = currentReferral.patient;
@@ -16,7 +13,7 @@ angular.module('createReferrals')
         $scope.userIsAux = auth.roles.indexOf('aux') >= 0;
 
         if(message){
-            Alert.error($scope.attachment_alerts, message);
+            Notification.error(message);
         }
 
         Procedure.practiceTypes().$promise.then(function (types) {
@@ -32,14 +29,6 @@ angular.module('createReferrals')
         }
         $scope.practiceSearchText = $scope.destinationPractice.name;
 
-        $scope.closeAlert = function (index) {
-            Alert.close($scope.alerts, index);
-        };
-
-        $scope.closeAttachmentAlert = function (index) {
-            Alert.close($scope.attachment_alerts, index);
-        };
-
         $scope.onPracticeSelected = ReferralHelper.onPracticeSelected($scope, auth);
 
         ReferralHelper.watchProviders($scope);
@@ -47,14 +36,14 @@ angular.module('createReferrals')
         $scope.saveTemplate = function (model) {
             var resultHandlers = {
                 success: function (success) {
-                    Alert.success($scope.alerts, 'Template was saved successfully!');
+                    Notification.success('Template was saved successfully!');
                     ReferralHelper.uploadAttachments($scope, success.id, function () {
                         UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
                         //$state.go('reviewReferral', {referral_id: success.id}, {reload: false});
                     });
 
                 }, failure: function (failure) {
-                    Alert.error($scope.alerts, 'An error occurred during referral template creation...');
+                    Notification.error('An error occurred during referral template creation...');
 
                 }};
             ReferralHelper.prepareSubmit($scope, model.referral);
@@ -64,14 +53,14 @@ angular.module('createReferrals')
         $scope.createReferral = function (model) {
             var resultHandlers = {
                 success: function (referral) {
-                    Alert.success($scope.alerts, 'Referral was sent successfully!');
+                    Notification.success('Referral was sent successfully!');
                     ReferralHelper.uploadAttachments($scope, referral.id, function (message) {
                         UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
                         $state.go('viewReferral', {message: message, referral_id: referral.id});
                     });
                 },
                 failure: function (failure) {
-                    Alert.error($scope.alerts, 'An error occurred during referral creation...');
+                    Notification.error('An error occurred during referral creation...');
                 }
             };
             ReferralHelper.prepareSubmit($scope, model.referral);
@@ -85,7 +74,7 @@ angular.module('createReferrals')
                 function (success) {
                     $state.go('history');
                 }, function (failure) {
-                    Alert.error($scope.alerts, 'An error occurred during template removal. Please try again later.');
+                    Notification.error('An error occurred during template removal. Please try again later.');
                 });
         };
 
