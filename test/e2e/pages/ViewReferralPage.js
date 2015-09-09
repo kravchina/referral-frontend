@@ -51,6 +51,28 @@ var ViewReferralPage = function() {
         return getInputCheckState(element.all(by.css('input[type="checkbox"]')).get(index));
     };
     
+    // TODO [ak] create re-usable methods like "get button by ng-click", "get modal dialog by smth"
+    
+    this.getButtonAddNoteElement = function() {
+        return element(by.css('button[ng-click="noteDialog()"]'));
+    };
+    
+    this.getNoteDialogElement = function() {
+        return element(by.css('div.modal-dialog form#formNewNote'));
+    };
+    
+    this.getNoteDialogNoteTextAreaElement = function() {
+        return element(by.css('form#formNewNote textarea[name="note"]'));
+    };
+    
+    this.getNoteDialogSaveButtonElement = function() {
+        return element(by.css('form#formNewNote div.modal-footer button[ng-click="ok(note)"]')); // TODO [ak] re-usable method "get dialog footer button"
+    };
+    
+    this.getLastNoteText = function() {
+        return element.all(by.css('div.notes-wrapper li.note-block span.note-content')).last().getText();
+    };
+    
 };
 
 module.exports = new ViewReferralPage();
