@@ -299,35 +299,27 @@ angular.module('dentalLinksServices')
 
 .factory('Notification', ['$timeout', function ($timeout) {
     var notification = {message: undefined, type: undefined, promise: undefined};
-    var closePromise = $timeout(function () {
-        notification.message = undefined;
-    }, 10000);
     return {
         info: function(message) {
             notification.message = message;
             notification.type = 'info';
-            notification.promise = closePromise;
         },
         success: function(message) {
             notification.message = message;
             notification.type = 'success';
-            notification.promise = closePromise;
         },
         warning: function(message) {
             notification.message = message;
             notification.type = 'warning';
-            notification.promise = closePromise;
         },
         error: function(message) {
             notification.message = message;
             notification.type = 'error';
-            notification.promise = closePromise;
         },
         get: function() {
             return notification;
         },
         close: function() {
-            $timeout.cancel(notification.promise); //cancel automatic removal
             notification.message = undefined;
         }
 
