@@ -122,9 +122,7 @@ angular.module('admin')
 
         // in Admin, unsaved changes should depend on forms from all tabs
         UnsavedChanges.setCbHaveUnsavedChanges(function () {
-            var narrowedScope = $scope.$$childHead.$$nextSibling; // TODO [ak] dangerous and non-documented. Find something better
-            console.log(narrowedScope.practiceForm);
-            return narrowedScope.practiceForm.$dirty;
+            return $scope.practiceForm.$dirty;
         });
 
     }]);

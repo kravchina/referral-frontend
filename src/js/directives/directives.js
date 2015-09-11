@@ -3,7 +3,6 @@ angular.module('dentalLinksDirectives')
 // Only for example
 .directive('access', [ 'Auth', function (Auth) {
     return {
-        scope: true,
         restrict: 'A',
         link: function (scope, $element, attrs) {
             var prevDisp = $element.css('display');
