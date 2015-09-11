@@ -14,14 +14,14 @@ var CommonExpects = function() {
     
     this.expectCurrentUrlToBe = function(pageUrl, doneCallback) {
         // refactored to using then() after URL mismatches from time to time
-        browser.getLocationAbsUrl().then(function(url) {
+        browser.getCurrentUrl().then(function(url) {
             expect(url).toEqual(browser.baseUrl + pageUrl);
             if (doneCallback != undefined) doneCallback();
         });
     };
     
     this.expectCurrentUrlToContain = function(pageUrl) {
-        expect(browser.getLocationAbsUrl()).toContain(browser.baseUrl + pageUrl);
+        expect(browser.getCurrentUrl()).toContain(browser.baseUrl + pageUrl);
     };
 
     this.expectErrorNotificationShown = function(){
