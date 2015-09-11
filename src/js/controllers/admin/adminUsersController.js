@@ -43,6 +43,7 @@ angular.module('admin')
                 modalInstance = $modal.open({
                     templateUrl: 'partials/edit_nologin_user_form.html',
                     controller: 'EditNoLoginUserModalController',
+                    backdrop: 'static',
                     resolve: {
                         editUser: function () {
                             return editUser;

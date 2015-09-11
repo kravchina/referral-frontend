@@ -329,6 +329,7 @@ angular.module('modals')
         $scope.user = editUser;
         $scope.alerts = [];
         $scope.cancel = function () {
+            $scope.user.email = undefined; //reset user email if modal is closed
             ModalHandler.dismiss($modalInstance);
         };
         $scope.ok = function (user) {
