@@ -4,14 +4,14 @@
         <div class="block-title">
             <h2>Attachments</h2>
             <label class="btn btn-orange btn-toggle" data-toggle="tooltip" data-placement="top" title="Add Attachment">
-                <input ng-file-select type="file" style="display: none;" multiple>
+                <input nv-file-select uploader="uploader" type="file" style="display: none;" multiple>
                 <span class="dlicons-plus"></span>
             </label>
 
         </div>
 
         <div class="attachments-wrapper">
-            <div class="my-drop-zone" ng-file-drop ng-file-over="another-file-over-class">
+            <div class="my-drop-zone" nv-file-drop uploader="uploader" nv-file-over="another-file-over-class">
                 <ul>
                     <!-- Attachments on server -->
                     <li class="attachment-block" ng-repeat="attachment in attachments">
@@ -32,7 +32,7 @@
                     <li class="attachment-block" ng-repeat="item in uploader.queue">
                         <button type="button" class="close delete-button-margin" aria-label="Close" title="Delete file" ng-click="deleteAttachment(item)">&times;</button>
                         <div class="attachment-thumb" ng-show="uploader.isHTML5"
-                             ng-thumb="{ file: item.file, longEdgeSize:80 }">
+                             ng-thumb="{ file: item._file, longEdgeSize:80 }">
                             <!-- no img, canvas is automatically generated here -->
                         </div>
                         <div class="attachment-details" >

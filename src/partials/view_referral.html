@@ -178,13 +178,13 @@
         <div class="block-title">
             <h2>Attachments</h2>
             <label class="btn btn-orange btn-toggle" data-toggle="tooltip" data-placement="top" title="Add Attachment">
-                <input ng-file-select type="file" style="display: none;" multiple>
+                <input nv-file-select uploader="uploader" type="file" style="display: none;" multiple>
                 <span class="dlicons-plus"></span>
             </label>
         </div>
 
         <div class="attachments-wrapper">
-            <div class="my-drop-zone" ng-file-drop ng-file-over="another-file-over-class">
+            <div class="my-drop-zone" nv-file-drop uploader="uploader" nv-file-over="another-file-over-class">
                 <ul>
 
                     <!-- Attachment block -->

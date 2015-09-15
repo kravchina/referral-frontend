@@ -1,4 +1,4 @@
-angular.module('admin', ['ui.bootstrap', 'angularPayments']);
+angular.module('admin', ['ui.bootstrap', 'angular-stripe', 'credit-cards']);
 angular.module('history', ['ui.bootstrap', 'infinite-scroll']);
 angular.module('login', []);
 angular.module('passwords', []);
