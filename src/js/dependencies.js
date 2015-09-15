@@ -14,6 +14,7 @@ require('localize');
 require('istevenMultiSelect');
 require('moment');
 require('daterangepicker');
+require('jqueryPlaceholder');
 
 require('jsPDFaddimage');
 require('jsPDFcell');

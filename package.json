@@ -36,7 +36,8 @@
     "jsPDFfromhtml": "./src/js/lib/jspdf.plugin.from_html.js",
     "jsPDFsplittext": "./src/js/lib/jspdf.plugin.split_text_to_size.js",
     "jsPDFfonts": "./src/js/lib/jspdf.plugin.standard_fonts_metrics.js",
-    "ng-infinite-scroll": "./src/js/lib/ng-infinite-scroll.min.js"
+    "ng-infinite-scroll": "./src/js/lib/ng-infinite-scroll.min.js",
+    "jqueryPlaceholder": "./src/js/lib/jquery.placeholder.js"
   },
   "browserify-shim": {
     "angularPayments": "angularPayments",
