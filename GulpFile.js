@@ -14,7 +14,8 @@ var gulp = require('gulp'),
     browserify = require('browserify'),
     buffer = require('vinyl-buffer'),
     source = require('vinyl-source-stream'),
-    through = require('through2');
+    through = require('through2')
+    gutil = require('gutil');
 
 var environmentName = argv.env ? argv.env : 'local',
     environment = config.environment[environmentName],
@@ -61,7 +62,7 @@ gulp.task('build-js', function() {
                         content = 
                             content.replace('{{' + key + '}}', value);
                     }
-                    
+
                     this.push(content, gulp.cwd);
                     next();
                 }
@@ -72,52 +73,15 @@ gulp.task('build-js', function() {
     process = process.bundle()
         .pipe(source('app.js'))
         .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true}))
-            //.pipe(uglify())
-            //.on('error', gutil.log)
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(buildPath));
-
-
-    return process;
-
-    var process = gulp.src([
-            'src/js/lib/ui-router-tabs.js',
-            'src/js/lib/localize.js',
-            'src/js/lib/ng-infinite-scroll.min.js',
-            'src/js/lib/angular-file-upload.js',
-            'src/js/lib/jspdf.js',
-            'src/js/lib/jspdf.plugin.addimage.js',
-            'src/js/lib/jspdf.plugin.cell.js',
-            'src/js/lib/jspdf.plugin.from_html.js',
-            'src/js/lib/jspdf.plugin.split_text_to_size.js',
-            'src/js/lib/jspdf.plugin.standard_fonts_metrics.js',
-            'src/js/lib/FileSaver.min.js',
-            'src/js/lib/mask.js',
-            'src/js/lib/angular-payments.js',
-            'src/js/lib/jquery.placeholder.js', 
-            'src/js/lib/bootstrap.min.js', 
-            'src/js/lib/bootstrap-tabcollapse.js', 
-            'src/js/lib/moment.js', 
-            'src/js/lib/daterangepicker.js',
-            'src/js/lib/isteven-multi-select.js',
-            'src/js/app.js',
-            'src/js/controllers/**/*',
-            'src/js/directives/**/*',
-            'src/js/services/**/*']);
-
-    process = replaceEnvironmentVariables(process);
-
-    process = process
-        .pipe(sourcemaps.init())
-        .pipe(concat('app.js'));
+        .pipe(sourcemaps.init({loadMaps: true}));
 
     if(environment.minify) {
         process = process
-            .pipe(uglify());
+            .pipe(uglify())
+            .on('error', gutil.log);
     }
-    
-    process = process
+
+    process
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(buildPath));
 
