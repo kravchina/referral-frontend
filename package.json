@@ -37,12 +37,17 @@
     "jsPDFsplittext": "./src/js/lib/jspdf.plugin.split_text_to_size.js",
     "jsPDFfonts": "./src/js/lib/jspdf.plugin.standard_fonts_metrics.js",
     "ng-infinite-scroll": "./src/js/lib/ng-infinite-scroll.min.js",
-    "jqueryPlaceholder": "./src/js/lib/jquery.placeholder.js"
+    "jqueryPlaceholder": "./src/js/lib/jquery.placeholder.js",
+    "fileSaver": "./src/js/lib/FileSaver.min.js"
   },
   "browserify-shim": {
     "angularPayments": "angularPayments",
     "moment": "moment",
-    "jsPDF": "jsPDF",
+    "fileSaver":"fileSaver",
+    "jsPDF": {
+      "exports":"jsPDF",
+      "depends": "fileSaver:saveAs"
+    },
     "jsPDFaddimage": {
       "depends": "jsPDF:jsPDF"
     },
