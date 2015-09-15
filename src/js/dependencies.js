@@ -4,7 +4,6 @@ require('angular-ui-router');
 require('angular-ui-router-tabs');
 require('angular-cookies');
 require('angular-bootstrap-npm');
-require('angularPayments');
 require('ng-infinite-scroll');
 require('angularFileUpload');
 require('angular-resource');
@@ -20,10 +19,12 @@ require('jsPDFcell');
 require('jsPDFfromhtml');
 require('jsPDFsplittext');
 require('jsPDFfonts');
+require('angularStripe');
+require('angularCreditCards');
 
 angular.module('jsPDF', []).factory('jsPDF', function(){ return require('jsPDF');});
 
-angular.module('admin', ['ui.bootstrap', 'angularPayments']);
+angular.module('admin', ['ui.bootstrap', 'angular-stripe', 'credit-cards']);
 angular.module('history', ['ui.bootstrap', 'infinite-scroll']);
 angular.module('login', []);
 angular.module('passwords', []);

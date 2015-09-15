@@ -24,12 +24,11 @@
     ]
   },
   "browser": {
-    "angularPayments": "./src/js/lib/angular-payments.js",
     "localize": "./src/js/lib/localize.js",
     "istevenMultiSelect": "./src/js/lib/isteven-multi-select.js",
     "moment": "./src/js/lib/moment.js",
     "daterangepicker": "./src/js/lib/daterangepicker.js",
-    "angularFileUpload": "./src/js/lib/angular-file-upload.js",
+    "angularFileUpload": "./src/js/lib/angular-file-upload.min.js",
     "jsPDF": "./src/js/lib/jspdf.js",
     "jsPDFaddimage": "./src/js/lib/jspdf.plugin.addimage.js",
     "jsPDFcell": "./src/js/lib/jspdf.plugin.cell.js",
@@ -38,10 +37,11 @@
     "jsPDFfonts": "./src/js/lib/jspdf.plugin.standard_fonts_metrics.js",
     "ng-infinite-scroll": "./src/js/lib/ng-infinite-scroll.min.js",
     "jqueryPlaceholder": "./src/js/lib/jquery.placeholder.js",
-    "fileSaver": "./src/js/lib/FileSaver.min.js"
+    "fileSaver": "./src/js/lib/FileSaver.min.js",
+    "angularStripe": "./src/js/lib/angular-stripe.js",
+    "angularCreditCards": "./src/js/lib/angular-credit-cards.js"
   },
   "browserify-shim": {
-    "angularPayments": "angularPayments",
     "moment": "moment",
     "fileSaver":"fileSaver",
     "jsPDF": {

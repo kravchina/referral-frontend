@@ -1,6 +1,5 @@
-angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'Notification', 'Auth', '$fileUploader', 'Logger', 'API_ENDPOINT', 'Attachment', '$modal', 'ModalHandler',
-    function ($scope, Notification, Auth, $fileUploader, Logger, API_ENDPOINT, Attachment, $modal, ModalHandler) {
-
+angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'Notification', 'Auth', 'FileUploader', 'Logger', 'API_ENDPOINT', 'Attachment', '$modal', 'ModalHandler',
+    function ($scope, Notification, Auth, FileUploader, Logger, API_ENDPOINT, Attachment, $modal, ModalHandler) {
         $scope.now = function () {
             return Date.now();
         };
@@ -44,7 +43,7 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
             $scope.total_size += $scope.total_size + attachment.size;
         });
 
-        var uploader = $scope.uploader = $fileUploader.create({
+        var uploader = $scope.uploader = new FileUploader({
             scope: $scope,
             url: API_ENDPOINT + '/attachment/upload',
             alias: 'attach',
@@ -60,42 +59,45 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
         $scope.attachment_error = false;
 
 // Filters
-        uploader.filters.push(function (item /*{File|HTMLInputElement}*/) {
+        uploader.filters.push({
+            name: 'fileSizeFilter',
+            fn: function (item /*{File|HTMLInputElement}*/) {
 
-            if (item.size > each_file_size_limit) {
-                Notification.error('You can not upload a file with more than 50 MB size.');
-                return false;
+                if (item.size > each_file_size_limit) {
+                    Notification.error('You can not upload a file with more than 50 MB size.');
+                    return false;
+                }
+
+                if ($scope.total_size + item.size > total_file_size_limit) {
+                    Notification.error('You can not upload files with more than 100 MB size.');
+                    return false;
+                }
+
+                $scope.total_size = $scope.total_size + item.size;
+
+                return true;
             }
-
-            if ($scope.total_size + item.size > total_file_size_limit) {
-                Notification.error('You can not upload files with more than 100 MB size.');
-                return false;
-            }
-
-            $scope.total_size = $scope.total_size + item.size;
-
-            return true;
         });
 
 // REGISTER HANDLERS
 
-        uploader.bind('afteraddingfile', function (event, item) {
+        uploader.onAfterAddingFile = function(item){
             Logger.info('After adding a file', item);
             item.metadata = {last_modified: item.file.lastModifiedDate}; //workaround - we need writable property (File object has read-only File.lastModifiedDate) to be able to change the date of the file according to https://www.pivotaltracker.com/story/show/84423098
             item.formData.push(item.metadata);
-        });
+        };
 
-        uploader.bind('whenaddingfilefailed', function (event, item) {
+        uploader.onWhenAddingFileFailed = function(item) {
             Logger.info('When adding a file failed', item);
             Notification.error('Adding file failed. Please try again later.')
-        });
+        };
 
-        uploader.bind('afteraddingall', function (event, items) {
+        uploader.onAfterAddingAll = function(items) {
             Logger.info('After adding all files', items);
             $scope.form.$setDirty(); // for UnsavedChanges to notice attachments being changed
-        });
+        };
 
-        uploader.bind('beforeupload', function (event, item) {
+        uploader.onBeforeUploadItem = function(item) {
 
             Logger.debug('FORM DATA:', uploader.formData);
             Logger.debug('SCOPE DATA:', $scope.s3Credentials);
@@ -104,44 +106,45 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
             // show the loading indicator
             $scope.$parent.progressIndicatorStart()
 
-        });
+        };
 
-        uploader.bind('progress', function (event, item, progress) {
+        uploader.onProgressItem = function(item, progress){
             Logger.info('Progress: ' + progress, item);
-        });
+        };
 
-        uploader.bind('success', function (event, xhr, item, response) {
-            Logger.info('Success', xhr, item, response);
+        uploader.onSuccessItem = function(item, response, status, headers) {
+            Logger.info('Success', item, response);
             item.downloadUrl = response.attach_file_name;
-        });
+        };
 
-        uploader.bind('cancel', function (event, xhr, item) {
-            Logger.info('Cancel', xhr, item);
+        uploader.onCancelItem = function(item, response, status, headers) {
+            Logger.info('Cancel', response, item);
             Notification.info('Attachment was cancelled.')
-        });
+        };
 
-        uploader.bind('error', function (event, xhr, item, error) {
-            Logger.error('Error', xhr, item, error);
-            $scope.errorMessage = error.file[0]? error.file[0] : 'An error occurred during attachment upload. Please try again later.';
+        uploader.onErrorItem = function(item, response, status, headers) {
+            Logger.error('Error', response, item, status);
+            $scope.errorMessage = response.file[0]? response.file[0] : 'An error occurred during attachment upload. Please try again later.';
             Notification.error( $scope.errorMessage);
-        });
+        };
 
-        uploader.bind('complete', function (event, xhr, item, response) {
-            Logger.info('Complete', xhr, item, response);
-            if (xhr.status == 201 && $scope && $scope.attachments) {
+        uploader.onCompleteItem = function(item, response, status, headers){
+            Logger.info('Complete', status, item, response);
+            if (status.status == 201 && $scope && $scope.attachments) {
                 $scope.attachments.push(response);
             }
-        });
+        };
 
-        uploader.bind('progressall', function (event, progress) {
+        uploader.onProgressAll = function(progress) {
 
             Logger.info('Total progress: ' + progress);
 
             // show the loading indicator
             $scope.$parent.setProgress(progress)
-        });
+        };
 
-        uploader.bind('completeall', function (event, queue) {
+        uploader.onCompleteAll = function()  {//todo finish updating file upload component
+            var queue = uploader.queue;
             Logger.info('Complete all', queue);
             queue.length = 0; //empty uploader queue
 
@@ -149,6 +152,6 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
             $scope.$parent.progressIndicatorEnd();
             queue.redirectCallback($scope.errorMessage);
 
-        });
+        };
     }]
 );

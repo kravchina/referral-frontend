@@ -3,13 +3,13 @@
  */
 angular.module('dentalLinksServices')
 
-.factory('Auth', ['$cookieStore', '$location', 'USER_ROLES', function ($cookieStore, $location, USER_ROLES) {
+.factory('Auth', ['$cookies', '$location', 'USER_ROLES', function ($cookies, $location, USER_ROLES) {
     return {
         authorize: function (roles) {
             if (roles === undefined) {
                 return true;
             }
-            var auth = $cookieStore.get('auth') || {};
+            var auth = $cookies.getObject('auth') || {};
 
             // if (auth.roles) {
             //     for (var i = 0; i < roles.length; i++) {
@@ -35,10 +35,10 @@ angular.module('dentalLinksServices')
             return false;
         },
         get: function () {
-            return $cookieStore.get('auth');
+            return $cookies.getObject('auth');
         },
         getOrRedirect: function () {
-            var result = $cookieStore.get('auth');
+            var result = $cookies.getObject('auth');
             if (result) {
                 return result;
             }else{
@@ -46,10 +46,10 @@ angular.module('dentalLinksServices')
             }
         },
         set: function (value) {
-            $cookieStore.put('auth', value);
+            $cookies.putObject('auth', value);
         },
         remove: function () {
-            $cookieStore.remove('auth');
+            $cookies.remove('auth');
         }
     };
 }])
