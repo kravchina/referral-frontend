@@ -10,7 +10,10 @@ var gulp = require('gulp'),
     minifyCss = require('gulp-minify-css'),
     ngHtml2Js = require("gulp-ng-html2js"),
     webserver = require('gulp-webserver'),
-    replace = require('gulp-replace');
+    replace = require('gulp-replace'),
+    browserify = require('browserify'),
+    buffer = require('vinyl-buffer'),
+    source = require('vinyl-source-stream');
 
 var environmentName = argv.env ? argv.env : 'local',
     environment = config.environment[environmentName],
@@ -42,6 +45,23 @@ gulp.task('run', ['build', 'watch', 'server']);
 gulp.task('build', ['build-js','build-css', 'build-templates', 'copy-files']);
 
 gulp.task('build-js', function() {
+    var process = browserify({
+        entries: 'src/js/app.js',
+        debug: true
+    });
+
+    process = process.bundle()
+        .pipe(source('app.js'))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+            //.pipe(uglify())
+            //.on('error', gutil.log)
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest(buildPath));
+
+
+    return process;
+
     var process = gulp.src([
             'src/js/lib/ui-router-tabs.js',
             'src/js/lib/localize.js',
