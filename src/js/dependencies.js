@@ -48,6 +48,7 @@ require('./controllers/errorController.js');
 require('./controllers/historyController.js');
 require('./controllers/loginController.js');
 require('./controllers/passwordsController.js');
+require('./controllers/registrationController.js');
 require('./controllers/reviewReferralsController.js');
 require('./controllers/savePasswordsController.js');
 require('./controllers/viewReferralsController.js');
