@@ -35,7 +35,8 @@
     "jsPDFcell": "./src/js/lib/jspdf.plugin.cell.js",
     "jsPDFfromhtml": "./src/js/lib/jspdf.plugin.from_html.js",
     "jsPDFsplittext": "./src/js/lib/jspdf.plugin.split_text_to_size.js",
-    "jsPDFfonts": "./src/js/lib/jspdf.plugin.standard_fonts_metrics.js"
+    "jsPDFfonts": "./src/js/lib/jspdf.plugin.standard_fonts_metrics.js",
+    "ng-infinite-scroll": "./src/js/lib/ng-infinite-scroll.min.js"
   },
   "browserify-shim": {
     "angularPayments": "angularPayments",
@@ -84,7 +85,6 @@
     "angular-ui-router": "^0.2.15",
     "angular-ui-router-tabs": "git+https://github.com/kravchina/ui-router-tabs.git",
     "browserify-shim": "^3.8.10",
-    "jquery": "^2.1.4",
-    "ng-infinite-scroll": "git+https://github.com/sroze/ngInfiniteScroll.git"
+    "jquery": "^2.1.4"
   }
 }
