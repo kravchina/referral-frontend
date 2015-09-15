@@ -13,7 +13,8 @@ var gulp = require('gulp'),
     replace = require('gulp-replace'),
     browserify = require('browserify'),
     buffer = require('vinyl-buffer'),
-    source = require('vinyl-source-stream');
+    source = require('vinyl-source-stream'),
+    through = require('through2');
 
 var environmentName = argv.env ? argv.env : 'local',
     environment = config.environment[environmentName],
@@ -46,8 +47,26 @@ gulp.task('build', ['build-js','build-css', 'build-templates', 'copy-files']);
 
 gulp.task('build-js', function() {
     var process = browserify({
-        entries: 'src/js/app.js',
-        debug: true
+        entries: 'src/js/dependencies.js',
+        debug: true,
+        transform: [
+            function (file) {
+                return through(function (buf, enc, next) {
+                    var content = buf.toString('utf8');
+
+                    for(variable in environment) {
+                        var key = variable.toUpperCase(),
+                            value = environment[variable];
+
+                        content = 
+                            content.replace('{{' + key + '}}', value);
+                    }
+                    
+                    this.push(content, gulp.cwd);
+                    next();
+                }
+            )}
+        ]
     });
 
     process = process.bundle()

@@ -1,5 +1,6 @@
 angular.module('pdf')
-    .factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth', '$timeout', '$window', 'API_ENDPOINT', function ($filter, Spinner, ImageUtils, File, Auth, $timeout, $window, API_ENDPOINT) {
+    .factory('PDF', ['$filter', 'Spinner', 'ImageUtils', 'File', 'Auth', '$timeout', '$window', 'API_ENDPOINT', 'jsPDF',
+        function ($filter, Spinner, ImageUtils, File, Auth, $timeout, $window, API_ENDPOINT, jsPDF) {
     var jsPDFOrientation = 'p'; // portrait
     var jsPDFUnit = 'mm';
     var jsPDFFormat = 'letter';
