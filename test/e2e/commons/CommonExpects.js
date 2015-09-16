@@ -42,7 +42,55 @@ var CommonExpects = function() {
 
     this.expectGlobalNotificationHidden = function(){
         expect(element(by.css('div.global-notification')).isDisplayed()).toBe(false);
-    }
+    };
+
+    this.expectConsoleWithoutErrors = function(){
+        var browserName;
+        browser.getCapabilities().then(function (cap) {
+            browserName = cap.caps_.browserName;
+        });
+        if (browserName !== 'internet explorer'){
+        browser.manage().logs().get('browser').then(function (browserLog) {
+            var i = 0,
+                severWarnings = false;
+
+            for (i; i <= browserLog.length - 1; i++) {
+                if (browserLog[i].level.name === 'SEVERE') {
+                    console.log('\n' + browserLog[i].level.name);
+                    //print the error
+                    console.log('(Possibly exception) \n' + browserLog[i].message);
+                    console.log('Full log entry: \n' + require('util').inspect(browserLog));
+                    severWarnings = true;
+                }
+            }
+
+            expect(severWarnings).toBe(false);
+    });}
+    };
+
+    this.expectConsoleWithoutErrorsExcept401 = function(){
+        var browserName;
+        browser.getCapabilities().then(function (cap) {
+            browserName = cap.caps_.browserName;
+        });
+        if (browserName !== 'internet explorer'){
+        browser.manage().logs().get('browser').then(function (browserLog) {
+            var i = 0,
+                severWarnings = false;
+
+            for (i; i <= browserLog.length - 1; i++) {
+                if (browserLog[i].level.name === 'SEVERE' && !/\s401\s/.test(browserLog[i].message)) {
+                    console.log('\n' + browserLog[i].level.name);
+                    //print the error
+                    console.log('(Possibly exception) \n' + browserLog[i].message);
+
+                    severWarnings = true;
+                }
+            }
+
+            expect(severWarnings).toBe(false);
+        });
+    };}
 };
 
 module.exports = new CommonExpects();
