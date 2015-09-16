@@ -43,7 +43,7 @@
   },
   "browserify-shim": {
     "moment": "moment",
-    "fileSaver":"fileSaver",
+    "fileSaver":"saveAs",
     "jsPDF": {
       "exports":"jsPDF",
       "depends": "fileSaver:saveAs"
