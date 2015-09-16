@@ -14,7 +14,7 @@ var gulp = require('gulp'),
     browserify = require('browserify'),
     buffer = require('vinyl-buffer'),
     source = require('vinyl-source-stream'),
-    through = require('through2')
+    through = require('through2'),
     gutil = require('gutil');
 
 var environmentName = argv.env ? argv.env : 'local',
@@ -55,12 +55,14 @@ gulp.task('build-js', function() {
                 return through(function (buf, enc, next) {
                     var content = buf.toString('utf8');
 
-                    for(variable in environment) {
+                    for(var variable in environment) {
+                        if(environment.hasOwnProperty(variable)){
                         var key = variable.toUpperCase(),
                             value = environment[variable];
 
                         content = 
                             content.replace('{{' + key + '}}', value);
+                        }
                     }
 
                     this.push(content, gulp.cwd);
