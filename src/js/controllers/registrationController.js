@@ -40,6 +40,7 @@ angular.module('registration')
                 $scope.invitation.newPracticeId = practice.id;
                 $scope.invitation.practice = practice;
                 $scope.showPracticeButtons = false;
+                $scope.isNewPractice = true;
             });
         };
 
@@ -54,6 +55,7 @@ angular.module('registration')
                 $scope.invitation.practice = res.practice;
                 $scope.security_code = res.securitycode;
                 $scope.showPracticeButtons = false;
+                $scope.isJoinPractice = true;
             });
         };
 

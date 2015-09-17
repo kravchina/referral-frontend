@@ -24,7 +24,7 @@
                         <alert type="danger" ng-show="submitted && form.password.$invalid">Password is required and should have at least 8 characters</alert>
 
                         <div class="row">
-                            <div class="input-block col-md-6" ng-class="{'has-error': submitted || form.email.$invalid }">
+                            <div class="input-block col-md-6" ng-class="{'has-error': (submitted && form.email.$invalid) || form.email.$invalid }">
                                 <input type="email" name="email" class="form-control" ng-model="invitation.email" placeholder="Enter email &hellip;" ng-change="checkEmail(invitation.email)" ng-required="true">
                                 <label>Email</label>
                             </div>
@@ -82,7 +82,7 @@
 
 
                         <div ng-hide="promo">
-                            <alert type="danger" ng-show="submitted && (!invitation.practice.id && !invitation.newPracticeId)">Please join existing practice or create a new one.</alert>
+                            <alert type="danger" ng-show="submitted && (!isNewPractice && !isJoinPractice)">Please join existing practice or create a new one.</alert>
                             <div class="button-block">
                                 <button class="btn btn-green btn-lg" ng-click="joinPracticeDialog()" ng-show="showPracticeButtons">Join Existing Practice</button>
                                 <button class="btn btn-green btn-lg" ng-click="practiceDialog()" ng-show="showPracticeButtons">New Practice</button>
