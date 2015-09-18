@@ -209,7 +209,7 @@ angular.module('pdf')
 
                 caret += fontSizeMm;
                 var metadata = images[j].metadata;
-                pdf.text(pagePaddings.x, caret, extractFileName(metadata.attach_file_name) + (metadata.last_modified ? ' - ' + formatDate(metadata.last_modified) : '') + (metadata.author ? ' -  Added by: ' + metadata.author.first_name + ' ' + metadata.author.last_name : '')); // no fitString in here, assuming whole page width is always enough
+                pdf.text(pagePaddings.x, caret, extractFileName(metadata.attach_file_name) + (metadata.attach_updated_at ? ' - ' + formatDate(metadata.attach_updated_at) : '') + (metadata.author ? ' -  Added by: ' + metadata.author.first_name + ' ' + metadata.author.last_name : '')); // no fitString in here, assuming whole page width is always enough
 
                 caret += blocksPadding;
             }
@@ -261,9 +261,9 @@ angular.module('pdf')
                     pdf.addImage(image, 'JPEG', xCaret, currentY, thumbDimensions.width, thumbDimensions.height);
                     currentY += fontSizeMm;
                     pdf.text(currentX, currentY, fitString(extractFileName(metadata.attach_file_name), fontSizeMm, remainingWidth));
-                    if (metadata.last_modified) {
+                    if (metadata.attach_updated_at) {
                         currentY += fontSizeMm;
-                        pdf.text(currentX, currentY, formatDate(metadata.last_modified));
+                        pdf.text(currentX, currentY, formatDate(metadata.attach_updated_at));
                     }
                     if (metadata.author) {
                         currentY += fontSizeMm;
