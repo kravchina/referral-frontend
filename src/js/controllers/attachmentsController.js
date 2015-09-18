@@ -1,5 +1,5 @@
-angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'Notification', 'Auth', 'FileUploader', 'Logger', 'API_ENDPOINT', 'Attachment', '$modal', 'ModalHandler',
-    function ($scope, Notification, Auth, FileUploader, Logger, API_ENDPOINT, Attachment, $modal, ModalHandler) {
+angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'Notification', 'Auth', 'FileUploader', 'Logger', 'API_ENDPOINT', 'Attachment', '$modal', 'ModalHandler', 'ProgressIndicator',
+    function ($scope, Notification, Auth, FileUploader, Logger, API_ENDPOINT, Attachment, $modal, ModalHandler, ProgressIndicator) {
         $scope.now = function () {
             return Date.now();
         };
@@ -104,7 +104,7 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
             Logger.info('Before upload', item);
 
             // show the loading indicator
-            $scope.$parent.progressIndicatorStart()
+            ProgressIndicator.start();
 
         };
 
@@ -140,7 +140,7 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
             Logger.info('Total progress: ' + progress);
 
             // show the loading indicator
-            $scope.$parent.setProgress(progress)
+           ProgressIndicator.set(progress);
         };
 
         uploader.onCompleteAll = function()  {//todo finish updating file upload component
@@ -149,7 +149,7 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
             queue.length = 0; //empty uploader queue
 
             // show the loading indicator
-            $scope.$parent.progressIndicatorEnd();
+            ProgressIndicator.finish();
             queue.redirectCallback($scope.errorMessage);
 
         };

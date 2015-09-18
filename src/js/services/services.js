@@ -324,4 +324,22 @@ angular.module('dentalLinksServices')
         }
 
     }
-}]);
+}])
+    .factory('ProgressIndicator', function(){
+        var progress = {show: false, value: 0};
+        return {
+            start: function(){
+                progress.show = true;
+            },
+            set: function(value){
+                progress.value = value;
+            },
+            finish: function(){
+                progress.value = 0;
+                progress.show = false;
+            },
+            get: function(){
+                return progress;
+            }
+        }
+    });

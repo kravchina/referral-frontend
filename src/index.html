@@ -41,9 +41,9 @@
     <div class="bg"></div>
 </div>
 
-<div id="progressLoading" ng-if="loadingProgress">
+<div id="progressLoading" ng-if="progress.show" ng-cloak>
     <div class="loading-container">
-        <progressbar animate="true" value="progressValue" type="success"><b>{{progressValue}}%</b></progressbar><div>Uploading... please wait...</div></div>
+        <progressbar animate="true" value="progress.value" type="success"><b>{{progress.value}}%</b></progressbar><div>Uploading... please wait...</div></div>
     <div class="bg"></div>
 </div>
 

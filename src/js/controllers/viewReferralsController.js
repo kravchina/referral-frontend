@@ -1,6 +1,6 @@
 angular.module('viewReferrals')
-    .controller('ViewReferralsController', ['$scope', '$location', '$stateParams', 'FileUploader', '$timeout', '$anchorScroll', 'Notification', 'Referral', 'Practice', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message',
-    function ($scope, $location, $stateParams, FileUploader, $timeout, $anchorScroll, Notification, Referral, Practice, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message) {
+    .controller('ViewReferralsController', ['$scope', '$location', '$stateParams', 'FileUploader', '$timeout', '$anchorScroll', 'Notification', 'Referral', 'Practice', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message', 'ProgressIndicator',
+    function ($scope, $location, $stateParams, FileUploader, $timeout, $anchorScroll, Notification, Referral, Practice, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message, ProgressIndicator) {
         $scope.uploader = new FileUploader();
 
         $scope.total_size = 0;
@@ -122,7 +122,7 @@ angular.module('viewReferrals')
                 Logger.info('After adding a file', item);
 
                 // show the loading indicator
-                $scope.$parent.progressIndicatorStart();
+                ProgressIndicator.start();
                 item.formData.push({last_modified: item.file.lastModifiedDate});
                 item.upload();
 
@@ -166,7 +166,7 @@ angular.module('viewReferrals')
                 Notification.error(response.file[0] ? response.file[0] : 'An error occurred while adding attachment.' );
 
                 // show the loading indicator
-                $scope.$parent.progressIndicatorEnd()
+                ProgressIndicator.finish();
             };
 
             $scope.uploader.onCompleteItem = function(item, response, status, headers) {
@@ -177,15 +177,14 @@ angular.module('viewReferrals')
 
                 Logger.info('Total progress: ' + progress);
                 // show the loading indicator
-                $scope.$parent.setProgress(progress)
+                ProgressIndicator.set(progress);
             };
 
             $scope.uploader.onCompleteAll = function() {
                 Logger.info('Complete all');
 
                 // show the loading indicator
-                $scope.$parent.progressIndicatorEnd()
-
+                ProgressIndicator.finish();
             };
         });
 

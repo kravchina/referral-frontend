@@ -1,5 +1,5 @@
-angular.module('dentalLinks').controller('NavController', ['$scope', '$state', '$modal', 'Auth', 'Logger', 'Login', 'Spinner', 'UnsavedChanges', 'User', 'API_ENDPOINT', 'HTTP_ERROR_EVENTS', 'Notification',
-    function ($scope, $state, $modal, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT, HTTP_ERROR_EVENTS, Notification) {
+angular.module('dentalLinks').controller('NavController', ['$scope', '$state', '$modal', 'Auth', 'Logger', 'Login', 'Spinner', 'UnsavedChanges', 'User', 'API_ENDPOINT', 'HTTP_ERROR_EVENTS', 'Notification', 'ProgressIndicator',
+    function ($scope, $state, $modal, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT, HTTP_ERROR_EVENTS, Notification, ProgressIndicator) {
 
         $scope.env = 'unknown.';
         if (API_ENDPOINT.indexOf('dental-links-prod-1') > -1) $scope.env = '';
@@ -7,7 +7,7 @@ angular.module('dentalLinks').controller('NavController', ['$scope', '$state', '
         if (API_ENDPOINT.indexOf('referral-server') > -1) $scope.env = 'dev1.';
         if (API_ENDPOINT.indexOf('localhost') > -1) $scope.env = 'local.';
 
-        $scope.progressValue = 0;
+        $scope.progress = ProgressIndicator.get();
 
         $scope.loading = Spinner.loading();
 
@@ -37,24 +37,6 @@ angular.module('dentalLinks').controller('NavController', ['$scope', '$state', '
             });
         };
 
-        $scope.progressIndicatorStart = function(){
-            $scope.loadingProgress = true;
-            // $scope.$apply()
-        };
-
-        $scope.progressIndicatorEnd = function(){
-            $scope.loadingProgress = false;
-            $scope.progressValue = 0;
-            $scope.$apply()
-        };
-
-        $scope.setProgress = function(progress){
-            if ($scope.progressValue < progress){
-                $scope.progressValue = progress;
-                $scope.$apply()
-            }
-            
-        };
         $scope.title = function() {
             var current_user = Auth.current_user;
             return (current_user || {}).title;
