@@ -21,6 +21,9 @@ angular.module('registration')
                         function(success){
                             $scope.invitation.referrals_count = success.count;
                         });
+                        if(typeof($scope.invitation.roles_mask) === "undefined" || $scope.invitation.roles_mask === null){
+                            $scope.invitation.roles_mask = 2;
+                        }
                     },
                     function (failure) {
                         $state.go('signIn', {alreadyRegister: true});
