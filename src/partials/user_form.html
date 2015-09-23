@@ -37,7 +37,7 @@
         <div class="input-block"  ng-class="{ 'has-error': userForm.role.$dirty && userForm.role.$invalid }" >
             <select type="text"  name="role" class="form-control" ng-model="user.roles_mask" ng-required="true">
                 <option selected="selected" disabled="disabled" class="placeholder" value="" ng-show="isInvite">Select role</option>
-                <option value="2">Doctor</option>
+                <option value="2" ng-selected="!isInvite">Doctor</option>
                 <option value="1" ng-show="isInvite">Auxiliary</option>
             </select>
         </div>
