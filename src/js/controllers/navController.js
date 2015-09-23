@@ -52,6 +52,11 @@ angular.module('dentalLinks').controller('NavController', ['$scope', '$state', '
             return (current_user || {}).last_name;
         };
 
+        $scope.is_super_admin = function(){
+            var current_user = Auth.current_user;
+            return (current_user || {}).is_super_admin;
+        };
+
         $scope.logged = function () {
             return Auth.get() != undefined;
         };

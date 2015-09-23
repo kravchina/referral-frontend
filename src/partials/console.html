@@ -10,7 +10,7 @@
         <div class="responsive-tab-content">
 
             <!-- Nav Tabs -->
-            <tabset id="adminTabContent" justified="true">
+            <tabset id="consoleTabContent" justified="true">
                 <tab ng-repeat="tabData in tabsData" ui-sref="{{tabData.route}}" active="tabData.active" ng-click="onChangeTab()">
                     <tab-heading class="space-nowrap">
                         <span class="{{tabData.class}}"></span> {{tabData.heading}}
