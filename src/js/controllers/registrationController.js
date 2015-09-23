@@ -91,7 +91,7 @@ angular.module('registration')
                         showResultDialog();
                     },
                     function (failure) {
-                        Notification.error('Error: ' + failure.data.errors[0]);
+                        Notification.error(failure.data.errors.message[0]);
                     }
                 )
             }
@@ -124,7 +124,7 @@ angular.module('registration')
                             console.log('registered a new account: ' + JSON.stringify(success));
                         },
                         function(fail){
-                            Notification.error(fail.data);
+                            Notification.error(fail.data.message);
 
                         });
                 },
