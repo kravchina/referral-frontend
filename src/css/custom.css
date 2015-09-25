@@ -715,12 +715,17 @@ textarea.form-control {
 .attachment-details {
 	background-color: #fcfcfc;
 	border: 1px solid #f3f3f3;
-	height: 40px;
+	height: 140px;
 	margin-left: 40px;
 	padding: 3px 10px;
 }
 .attachment-details span {
 	display: block;
+}
+
+.attachment-details span span{
+	font-weight: normal;
+	text-transform: none;
 }
 
 .attachment-details span.inline{
@@ -1513,7 +1518,7 @@ td.cell-from .practice, td.cell-to .practice {
 		padding: 0 20px 20px;
 	}
 	.attachment-block {
-		height: 80px;
+		height: 140px;
 		margin-right: 20px;
 		margin-top: 20px;
 		width: 252px;
@@ -1523,7 +1528,7 @@ td.cell-from .practice, td.cell-to .practice {
 		width: 80px;
 	}
 	.attachment-details {
-		height: 80px;
+		height: 140px;
 		margin-left: 80px;
 		padding: 10px 20px;
 	}
