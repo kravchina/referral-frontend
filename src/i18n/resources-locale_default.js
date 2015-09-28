@@ -62,7 +62,7 @@
     },
     {
         "key":"user.exists",
-        "value":"Sorry an account with this email address already exists. If this is your email address please login into your existing account at www.dentallinks.org if you need further assistance please email us at info@dentallinks.org",
+        "value":"Sorry an account with this email address already exists. If you need further assistance please email us at info@dentallinks.org",
         "description":"Error message for when person is trying to register with an email that we already have as a registered user or an invitation"
     },
     {
