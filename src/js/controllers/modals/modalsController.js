@@ -41,7 +41,7 @@ angular.module('modals')
 
     $scope.alerts = [];
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
-    $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: patientForEdit.birthday, email: patientForEdit.email, phone: patientForEdit.phone};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
+    $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: new Date(patientForEdit.birthday), email: patientForEdit.email, phone: patientForEdit.phone};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
     $scope.ok = function (patient) {
         Patient.update({id: patientForEdit.id}, {patient: patient},
             function (success) {
@@ -216,7 +216,7 @@ angular.module('modals')
     };
 }])
 
-.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', 'Spinner', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id, Spinner) {
+.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', 'Spinner', 'stripe', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id, Spinner, stripe) {
     $scope.result = {};
     $scope.alerts = [];
     var currentYear = moment().year();
@@ -231,7 +231,8 @@ angular.module('modals')
     ServerSettings.getStripeApiPublicKey(function(success){
         if(success.key){
             //key could be null if it was not set in server's environment variables
-            $window.Stripe.setPublishableKey(success.key);
+             stripe.setPublishableKey(success.key);
+           // $window.Stripe.setPublishableKey(success.key);
         }else{
             handleError();
         }
@@ -239,7 +240,55 @@ angular.module('modals')
 
     $scope.ok = function (payment_info) {
         Spinner.show();
-        $window.Stripe.card.createToken({
+        return stripe.card.createToken({
+            number: payment_info.card_number,
+            cvc: payment_info.card_cvc,
+            exp_month: payment_info.card_exp_month,
+            exp_year: payment_info.card_exp_year
+        })
+            .then(function (token) {
+                console.log('token created for card ending in ', token.card.last4);
+                Logger.log(payment_info);
+                return Practice.subscribe({practiceId: practice_id}, {
+                        practice: {
+                            name_on_card: payment_info.name_on_card,
+                            stripe_token: token.id
+                        }
+                    },
+                    function (success) {
+                        Logger.log(success);
+                        Alert.success($scope.alerts, 'Thank you for upgrading to a Premium Account. Your automatic renewal date  is ' + moment(success.subscription_active_until).format('MM-DD-YY'), true);
+                        ModalHandler.close($modalInstance, success);
+                    },
+                    function (failure) {
+                        $scope.alerts = [];
+                        Alert.error($scope.alerts, 'An error occurred during account update: ' + failure.data.error, true)
+                    });
+
+            })
+            .then(function (payment) {
+                Spinner.hide();
+                console.log('successfully submitted payment for $', payment.amount);
+            })
+            .catch(function (err) {
+                if (err.type && /^Stripe/.test(err.type)) {
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, 'An error occurred during account update: ' + err.message, true);
+                    Spinner.hide();
+                }
+                else {
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, 'An error occurred during account update: ' + err.message, true)
+                }
+            });
+
+
+
+
+
+
+
+        /*$window.Stripe.card.createToken({
                     number: payment_info.card_number,
                     cvc: payment_info.card_cvc,
                     exp_month: payment_info.card_exp_month,
@@ -272,7 +321,7 @@ angular.module('modals')
                                     });
                         Spinner.hide();
                     }
-                });
+                }); */
     };
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);

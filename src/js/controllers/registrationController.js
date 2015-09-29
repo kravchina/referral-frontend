@@ -21,6 +21,9 @@ angular.module('registration')
                         function(success){
                             $scope.invitation.referrals_count = success.count;
                         });
+                        if(typeof($scope.invitation.roles_mask) === "undefined" || $scope.invitation.roles_mask === null){
+                            $scope.invitation.roles_mask = 2;
+                        }
                     },
                     function (failure) {
                         $state.go('signIn', {alreadyRegister: true});
@@ -40,6 +43,7 @@ angular.module('registration')
                 $scope.invitation.newPracticeId = practice.id;
                 $scope.invitation.practice = practice;
                 $scope.showPracticeButtons = false;
+                $scope.isNewPractice = true;
             });
         };
 
@@ -54,6 +58,7 @@ angular.module('registration')
                 $scope.invitation.practice = res.practice;
                 $scope.security_code = res.securitycode;
                 $scope.showPracticeButtons = false;
+                $scope.isJoinPractice = true;
             });
         };
 
@@ -86,7 +91,7 @@ angular.module('registration')
                         showResultDialog();
                     },
                     function (failure) {
-                        Notification.error('Error: ' + failure.data.errors[0]);
+                        Notification.error(failure.data.errors.message[0]);
                     }
                 )
             }
@@ -119,7 +124,7 @@ angular.module('registration')
                             console.log('registered a new account: ' + JSON.stringify(success));
                         },
                         function(fail){
-                            Notification.error(fail.data);
+                            Notification.error(fail.data.message);
 
                         });
                 },

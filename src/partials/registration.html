@@ -24,17 +24,16 @@
                         <alert type="danger" ng-show="submitted && form.password.$invalid">Password is required and should have at least 8 characters</alert>
 
                         <div class="row">
-                            <div class="input-block col-md-6" ng-class="{'has-error': submitted || form.email.$invalid }">
+                            <div class="input-block col-md-6" ng-class="{'has-error': (submitted || form.email.$dirty) && form.email.$invalid }">
                                 <input type="email" name="email" class="form-control" ng-model="invitation.email" placeholder="Enter email &hellip;" ng-change="checkEmail(invitation.email)" ng-required="true">
                                 <label>Email</label>
                             </div>
 
-                            <div class="input-block col-md-3" ng-class="{'has-error': submitted && form.password.$invalid }">
+                            <div class="input-block col-md-3" ng-class="{'has-error': (submitted || form.password.$dirty) && form.password.$invalid }">
                                 <input type="password" name="password" class="form-control" ng-model="invitation.password" placeholder="Enter password &hellip;" ng-minlength="8" ng-required="true">
                                 <label>Password</label>
                             </div>
-
-                            <div class="input-block col-md-3" ng-class="{'has-error': submitted && (form.confirmation.$invalid || invitation.password_confirmation !== invitation.password) }">
+                            <div class="input-block col-md-3" ng-class="{'has-error': (submitted || form.confirmation.$dirty) && (form.confirmation.$invalid || invitation.password_confirmation !== invitation.password) }">
                                 <input type="password" name="confirmation" class="form-control" ng-model="invitation.password_confirmation" placeholder="Enter password confirmation &hellip;"
                                        ng-minlength="8" ng-required="true">
                                 <label>Password confirmation</label>
@@ -73,16 +72,16 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="input-block">
-                                <label class="radio-inline"><input name="selectRole" type="radio" value="2" ng-value="2" ng-model="invitation.roles_mask" >Doctor</label>
-                                <label class="radio-inline"><input name='selectRole' type="radio" value="4" ng-value="4" ng-model="invitation.roles_mask" >Auxiliary</label>
+                            <div class="input-block" ng-class="{'has-error': submitted && form.selectRole.$invalid }">
+                                <label class="radio-inline"><input name="selectRole" type="radio" value="2" ng-value="2" ng-model="invitation.roles_mask" ng-required="true">Doctor</label>
+                                <label class="radio-inline"><input name='selectRole' type="radio" value="4" ng-value="4" ng-model="invitation.roles_mask" ng-required="true">Auxiliary</label>
                                 <label>Role</label>
                             </div>
                         </div>
 
 
                         <div ng-hide="promo">
-                            <alert type="danger" ng-show="submitted && (!invitation.practice.id && !invitation.newPracticeId)">Please join existing practice or create a new one.</alert>
+                            <alert type="danger" ng-show="submitted && (!isNewPractice && !isJoinPractice)">Please join existing practice or create a new one.</alert>
                             <div class="button-block">
                                 <button class="btn btn-green btn-lg" ng-click="joinPracticeDialog()" ng-show="showPracticeButtons">Join Existing Practice</button>
                                 <button class="btn btn-green btn-lg" ng-click="practiceDialog()" ng-show="showPracticeButtons">New Practice</button>

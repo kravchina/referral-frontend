@@ -1,39 +1,5 @@
-angular.module('admin', ['ui.bootstrap', 'angularPayments']);
-angular.module('history', ['ui.bootstrap', 'infinite-scroll']);
-angular.module('login', []);
-angular.module('passwords', []);
-angular.module('createReferrals', ['ui.bootstrap', 'angularFileUpload']);
-angular.module('viewReferrals', ['ui.bootstrap', 'angularFileUpload']);
-angular.module('modals', ['ui.bootstrap']);
-angular.module('pdf', []);
-angular.module('registration', []);
-angular.module('unsavedChanges', []);
-angular.module('dentalLinksServices', ['ngResource']);
-angular.module('dentalLinksDirectives', ['angularFileUpload']);
-angular.module('error', []);
 
-angular.module('dentalLinks', [
-    'ui.router',
-    'ui.router.tabs',
-    'ngCookies',
-    'admin',
-    'history',
-    'login',
-    'passwords',
-    'createReferrals',
-    'viewReferrals',
-    'modals',
-    'pdf',
-    'registration',
-    'unsavedChanges',
-    'dentalLinksServices',
-    'dentalLinksDirectives',
-    'ui.mask',
-    'localization',
-    'error',
-    'isteven-multi-select',
-    'dentalLinksPartials'
-])
+angular.module('dentalLinks')
 
 .constant('USER_ROLES', {
     public: 'public',

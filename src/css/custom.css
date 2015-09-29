@@ -242,6 +242,10 @@ textarea.form-control {
 .global-notification.error{
 	background-color: orangered;
 }
+.global-notification .container a{
+	color: mediumblue;
+	text-decoration: underline;
+}
 
 
 .radio-inline{

@@ -24,18 +24,11 @@
     <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!--[if gt IE 9]><!-->
-    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script>
-    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.2.js"></script>
-    <script src="//angular-ui.github.io/ui-router/release/angular-ui-router.js" type="text/javascript"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-resource.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-sanitize.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-cookies.js"></script>
 
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-
-    <script src="partials.js?_={{TIMESTAMP}}" type="text/javascript"></script>
+    
     <script src="app.js?_={{TIMESTAMP}}" type="text/javascript"></script>
+    <script src="partials.js?_={{TIMESTAMP}}" type="text/javascript"></script>
     <!--<![endif]-->
 
 </head>
@@ -48,9 +41,9 @@
     <div class="bg"></div>
 </div>
 
-<div id="progressLoading" ng-if="loadingProgress">
+<div id="progressLoading" ng-if="progress.show" ng-cloak>
     <div class="loading-container">
-        <progressbar animate="true" value="progressValue" type="success"><b>{{progressValue}}%</b></progressbar><div>Uploading... please wait...</div></div>
+        <progressbar animate="true" value="progress.value" type="success"><b>{{progress.value}}%</b></progressbar><div>Uploading... please wait...</div></div>
     <div class="bg"></div>
 </div>
 
@@ -65,18 +58,18 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">{{env}}<strong>Dental</strong>Links</a>
+            <a class="navbar-brand" ng-href="#/history">{{env}}<strong>Dental</strong>Links</a>
         </div>
         <!--<div class="navbar-collapse collapse">-->
 
             <ul class="nav navbar-nav navbar-right" ng-show="logged()">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">
+                <li class="dropdown" dropdown>
+                    <a href="" class="dropdown-toggle" dropdown-toggle>
                         <strong><span ng-bind="title()"></span> <span ng-bind="first_name()"></span> <span ng-bind="last_name()"></span></strong>
                         <b class="caret"></b>
                         <span class="dlicons-user avatar"></span>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" dropdown-menu>
                         <!--<li class="dropdown-header">admin</li>-->
                         <li><a href="#/history">History</a></li>
                         <li><a ui-sref="admin.practice">Account Settings</a></li>
@@ -90,7 +83,7 @@
         <!--</div>/.nav-collapse -->
     </div>
     <div class="global-notification" ng-class="notification.type" ng-show="notification.message" ng-controller="NotificationAreaController">
-        <div class="container">{{notification.message | i18n}}</div>
+        <div class="container" dynamic-html="notification.message | i18n"></div>
     </div>
 </nav>
 </div>
