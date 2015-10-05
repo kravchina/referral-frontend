@@ -5,7 +5,8 @@ angular.module('dentalLinks')
     public: 'public',
     doctor: 'doctor',
     admin: 'admin',
-    aux: 'aux'
+    aux: 'aux',
+    super: 'super'
 })
 
 .constant('FREE_TRIAL_PERIOD', 45)

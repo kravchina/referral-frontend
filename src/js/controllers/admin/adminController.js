@@ -34,6 +34,7 @@ angular.module('admin')
         $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4 ];
 
         var auth = $scope.auth = Auth.get();
+        $scope.auth.is_admin = Auth.hasRole('admin')
 
         $scope.active = function(route){
             return $state.is(route);

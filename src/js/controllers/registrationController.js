@@ -86,7 +86,7 @@ angular.module('registration')
                         skip_security_code: invitation.newPracticeId == invitation.practice_id
                     },
                     function (success) {
-                        Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
+                        Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
                         Auth.current_user = success;
                         showResultDialog();
                     },
@@ -115,7 +115,6 @@ angular.module('registration')
                                 token: success.user.authentication_token,
                                 email: success.user.email,
                                 roles: success.user.roles,
-                                is_admin: success.user.is_admin,
                                 id: success.user.id,
                                 practice_id: success.user.practice_id
                             });
@@ -224,7 +223,7 @@ angular.module('registration')
             user.practice_id = user.practice.id;
             Registration.save({user: user, invitation_token: $stateParams.invitation_token, security_code: $scope.security_code, skip_security_code: user.newPracticeId == user.practice_id},
                 function (success) {
-                    Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
+                    Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
                     Auth.current_user = success;
                     showResultDialog();
                 },

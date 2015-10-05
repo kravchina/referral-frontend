@@ -22,7 +22,7 @@
                         <td class="cell-user">{{user.first_name}} {{user.middle_initial}} {{user.last_name}}</td>
                         <td class="cell-username">{{user.email}}</td>
                         <td class="cell-role">
-                            <span>{{roleName(user.is_admin, user.roles_mask)}}</span>
+                            <span>{{roleName(user.roles_mask)}}</span>
                         </td>
                         <td class="cell-created">
                             <div ng-if="user.email != auth.email" access="admin" delete-button class="button-block btn-delete">

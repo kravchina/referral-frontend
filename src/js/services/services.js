@@ -3,7 +3,7 @@
  */
 angular.module('dentalLinksServices')
 
-.factory('Auth', ['$cookies', '$location', 'USER_ROLES', function ($cookies, $location, USER_ROLES) {
+.factory('Auth', ['$cookies', '$location', 'USER_ROLES', 'Role', function ($cookies, $location, USER_ROLES, Role) {
     return {
         authorize: function (roles) {
             if (roles === undefined) {
@@ -20,16 +20,7 @@ angular.module('dentalLinksServices')
             // }
 
             if(auth.email){
-                for(var i = 0; i < roles.length; i++){
-                    if(roles[i] == USER_ROLES.admin){
-                        if(auth.is_admin){
-                           return true; 
-                        }
-                    }else if (auth.roles.indexOf(roles[i]) >= 0) {
-                        return true;
-                    }
-
-                }
+                return Role.is(roles, Role.setToMask(auth.roles));
             }
 
             return false;
@@ -50,6 +41,9 @@ angular.module('dentalLinksServices')
         },
         remove: function () {
             $cookies.remove('auth');
+        },
+        hasRole: function(role){
+            return $cookies.getObject('auth').roles.indexOf(role) != -1;
         }
     };
 }])
@@ -325,21 +319,71 @@ angular.module('dentalLinksServices')
 
     }
 }])
-    .factory('ProgressIndicator', function(){
-        var progress = {show: false, value: 0};
-        return {
-            start: function(){
-                progress.show = true;
-            },
-            set: function(value){
-                progress.value = value;
-            },
-            finish: function(){
-                progress.value = 0;
-                progress.show = false;
-            },
-            get: function(){
-                return progress;
-            }
+.factory('ProgressIndicator', function(){
+    var progress = {show: false, value: 0};
+    return {
+        start: function(){
+            progress.show = true;
+        },
+        set: function(value){
+            progress.value = value;
+        },
+        finish: function(){
+            progress.value = 0;
+            progress.show = false;
+        },
+        get: function(){
+            return progress;
         }
-    });
+    }
+})
+.factory('Role', function(){
+    //Sequence should be the same at both the front-end and backend, new roles are added to the end of the array
+    var ROLES = ['admin', 'doctor', 'aux', 'super'];
+
+    var intersection = function(inputArray){
+        return inputArray.filter(function(n) {
+            return ROLES.indexOf(n) != -1;
+        });
+    };
+
+    var roleService = function(){
+        var that = this;
+
+        this.getFromMask = function(rolesMask){
+            return ROLES.filter(function(i){
+                return (rolesMask & Math.pow(2, ROLES.indexOf(i))) != 0 ? true : false;
+            });
+        };
+
+        this.setToMask = function(inputArray){
+            return intersection(inputArray)
+                .map(function(elem){
+                    return Math.pow(2, ROLES.indexOf(elem));
+                })
+                .reduce(function(a, b){ return a + b; });
+        };
+
+        this.getAllRoles = function(){
+            return ROLES.filter(function(value){
+                return value !== 'super';
+            });
+        };
+
+        this.is = function(roleName, rolesMask){
+            if(typeof(roleName) === 'string'){
+                return that.getFromMask(rolesMask).indexOf(roleName) != -1;
+            } else if(Array.isArray(roleName)){
+                return roleName.map(function(elem){
+                    return that.getFromMask(rolesMask).indexOf(elem) != -1;
+                })
+                .reduce(function(a, b){ return a || b; });
+            } else {
+                //throw 'Invalid type of "roleName"';
+                return false;
+            }
+        };
+    };
+
+    return new roleService();
+});

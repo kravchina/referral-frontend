@@ -6,6 +6,7 @@ angular.module('viewReferrals')
         $scope.total_size = 0;
 
         $scope.auth = Auth.get();
+        $scope.auth.is_admin = Auth.hasRole('admin');
         if(message){
             Notification.error(message);
         }

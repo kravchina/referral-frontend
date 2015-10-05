@@ -171,24 +171,52 @@ angular.module('modals')
     };
 }])
 
-.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger) {
+.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'Role', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, Role) {
     $scope.result = {};
     $scope.alerts = [];
     $scope.isInvite = true;
     $scope.user = {};
+    $scope.listInputRoles = Role.getAllRoles().map(function(role){
+        return {role_name: role, ticked: false, isDisabled: false};
+    });
+        console.log($scope.listInputRoles);
+    $scope.listOutputRoles = [];
 
     $scope.toggleRadio = function(user){
-        if($scope.isInvite){
-            user.roles_mask = '';
-        } else {
-            user.roles_mask = 2;
+        $scope.listInputRoles.map(function(elem){
+            if(!$scope.isInvite){
+                if(elem.role_name == 'doctor'){
+                    elem.ticked = true;
+                    elem.isDisabled = false;
+                } else {
+                    elem. ticked = false;
+                    elem.isDisabled = true;
+                }
+            } else {
+                elem.ticked = false;
+                elem.isDisabled = false;
+            }
+        });
+    };
+
+    $scope.onRoleSelect = function(selectedItem){
+        if((selectedItem.role_name == 'doctor' || selectedItem.role_name == 'aux') && $scope.isInvite){
+            $scope.listInputRoles.map(function(elem){
+                if(elem.role_name == 'aux' && selectedItem.role_name == 'doctor'){
+                    elem.isDisabled = !elem.isDisabled;
+                }
+                if(elem.role_name == 'doctor' && selectedItem.role_name == 'aux'){
+                    elem.isDisabled = !elem.isDisabled;
+                }
+            });
         }
     };
 
     $scope.ok = function (user) {
         user.practice_id = Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
-        
+        user.roles_mask = Role.setToMask($scope.listOutputRoles.map(function(elem){ return  elem.role_name; }));
+
         if($scope.isInvite){
             ProviderInvitation.saveUser({provider_invitation: user},
                 function (success) {
@@ -211,6 +239,7 @@ angular.module('modals')
                 });
         }
     };
+
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
     };
@@ -329,8 +358,8 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers',
-        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers) {
+    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'Role',
+        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, Role) {
     $scope.result = {};
     $scope.alerts = [];
     Logger.log(editUser.id);
@@ -367,6 +396,16 @@ angular.module('modals')
         });
         editUser.email_bindings = $scope.listOutputUsers;
     };
+
+
+    $scope.roleName = function(roles_mask){
+        var str = '';
+        Role.getFromMask(roles_mask).reverse().forEach(function(elem){
+            str += str == '' ? elem.charAt(0).toUpperCase() + elem.substr(1) : ', '+ elem.charAt(0).toUpperCase() + elem.substr(1)
+        });
+        return str;
+    };
+
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
         $scope.listInputUsers = [];
