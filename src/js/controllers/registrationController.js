@@ -13,6 +13,7 @@ angular.module('registration')
         $scope.initInvitation = function () {
             if ($scope.promo) {
                 $scope.invitation = {};
+                $scope.invitation = {roles_mask:  2, notification_preference: 2};
                 $scope.practice = {}
             } else {
                 $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
