@@ -1,0 +1,26 @@
+<header class="page-header">
+    <h1>Admin</h1>
+    <p class="page-subheader">Manage your account details.</p>
+</header><!-- .page-header -->
+
+<div class="box-white">
+
+    <div class="row">
+
+        <div class="responsive-tab-content">
+
+            <!-- Nav Tabs -->
+            <tabset id="adminTabContent" justified="true">
+                <tab ng-repeat="tabData in tabsData" ui-sref="{{tabData.route}}" active="tabData.active" ng-click="onChangeTab()">
+                    <tab-heading class="space-nowrap">
+                        <span class="{{tabData.class}}"></span> {{tabData.heading}}
+                    </tab-heading>
+                </tab>
+                <div ui-view class="tab-content"></div>
+            </tabset>
+
+        </div><!-- .responsive-tab-content -->
+
+    </div><!-- .row -->
+
+</div><!-- .box-white -->

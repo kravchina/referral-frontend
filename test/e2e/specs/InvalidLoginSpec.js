@@ -14,6 +14,7 @@ var InvalidLoginSpec = function() {
             it('shows error, keeps the email and erases the password', function() {
                 commonExpects.expectMenuHidden();
                 commonExpects.expectCurrentUrlToBe(signInPage.url);
+                commonExpects.expectErrorNotificationShown();
                 expect(signInPage.getEmail()).toEqual(browser.params.login.wrong.email);
                 expect(signInPage.getPass()).toEqual('');
             });

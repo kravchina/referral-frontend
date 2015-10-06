@@ -1,0 +1,114 @@
+<header class="page-header">
+    <h1>Referral</h1>
+    <p class="page-subheader">Fill out information for a new referral.</p>
+</header><!-- .page-header -->
+
+<!--<div ng-show="form.$dirty && form.$invalid" class="alert alert-danger">
+    <strong>Oops!</strong> Please fix the highlighted errors below.
+</div>-->
+
+
+<div class="form-wrapper">
+<form id="formCreateReferral" name="form" novalidate="novalidate">
+<div class="box-white box-padded">
+
+<!-- On behalf of block -->
+<div class="row" ng-if="userIsAux" >
+    <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.onbehalf.$dirty && form.onbehalf.$invalid }">
+        <div class="block-title">
+            <h2>On behalf of</h2>
+        </div>
+
+        <alert type="{{alert.type}}" ng-show="form.onbehalf.$dirty && form.behalf.$invalid">Please select provider</alert>
+        <select id="behalfProvider" name="onbehalf" class="form-control" ng-model="model.referral.orig_provider_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in currentPracticeProviders" ng-required="true">
+            <option selected="selected" class="placeholder" value="">Choose a provider &hellip;</option>
+        </select>
+
+    </div>
+</div>
+<!-- .row -->
+
+<!-- Patient block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.patient.$dirty && form.patient.$invalid }">
+        <div class="block-title">
+            <h2>Patient</h2>
+            <button ng-if="patient.id" type="button" ng-click="editPatientDialog()" class="btn btn-orange btn-toggle-shifted btn-toggle-modal-note" data-toggle="tooltip"
+                    data-placement="top" title="Edit Patient" >
+                <span class="dlicons-pencil"></span>
+            </button>
+            <button type="button" class="btn btn-orange btn-toggle" ng-click="patientDialog()" data-toggle="tooltip" data-placement="top"
+                    title="Create a New Patient Record" data-target="#modalPatient">
+                <span class="dlicons-user-add"></span>
+            </button>
+        </div>
+
+        <alert type="{{alert.type}}" ng-show="form.patient.$dirty && form.patient.$invalid">Please select existing or create a new patient record</alert>
+        <input type="text" class="form-control" name="patient" placeholder="Enter existing patient or add new with button on the right ..."
+               ng-model="patient" typeahead-editable="false"
+               typeahead="p as p.first_name +' ' +  p.last_name + (p.birthday ? ' (' + (p.birthday | date: 'shortDate') + ')' : '') for p in findPatient($viewValue)"
+               ng-required="true">
+
+    </div>
+</div><!-- .row -->
+
+<!-- Practice / Provider block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-6" ng-class="{'has-error': form.practice.$dirty && form.practice.$invalid }">
+        <div class="block-title">
+            <h2>Practice</h2>
+        </div>
+        <alert type="warning" ng-show="form.practice.$dirty && form.practice.$invalid">Please select existing practice or invite new provider</alert>
+        <input type="text" class="form-control" name="practice" placeholder="Enter existing practice/provider or add new provider with button on the right..."
+               ng-model="practiceSearchText" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
+               typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].first_name + ' ' + practice.users[0].last_name) : (practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '')) for practice in findPractice($viewValue) ">
+    </div>
+
+    <div class="input-block col-xs-12 col-sm-6" ng-class="{'has-error': (form.provider.$dirty && form.provider.$invalid) || form.provider.$error.userActive || form.provider_invited.$error.userActive }">
+        <div class="block-title">
+            <h2>Provider</h2>
+            <button type="button" class="btn btn-orange btn-toggle" ng-click="providerDialog()" data-toggle="tooltip" data-placement="top" title="Invite a New Provider" data-target="#modalProvider"><span class="dlicons-user-add"></span></button>
+        </div>
+        <select id="selectProvider" ng-if="!model.referral.dest_provider_invited_id" name="provider" class="form-control" ng-disabled="!destinationPractice" ng-model="model.referral.dest_provider_id" ng-options="u.id as (u.first_name + ' ' + u.last_name) for u in destinationPractice.users" ng-required="true">
+            <option selected="selected" class="placeholder" value="">Choose a provider &hellip;</option>
+        </select>
+        <select id="selectInvitedProvider" ng-if="model.referral.dest_provider_invited_id" name="provider_invited" class="form-control" ng-disabled="!destinationPractice" ng-model="model.referral.dest_provider_invited_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in destinationPractice.users" ng-required="true">
+        </select>
+    </div>
+</div><!-- .row -->
+
+<!-- Procedure block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-6" ng-class="{'has-error': form.practiceType.$dirty && form.practiceType.$invalid }">
+        <div class="block-title">
+            <h2>Referral type</h2>
+        </div>
+        <select id="selectRefType" class="form-control" name="practiceType" ng-model="practiceType"  ng-options="p as p.name for p in practiceTypes" ng-required="true">
+            <option selected="selected" class="placeholder" value="">Select type &hellip;</option>
+        </select>
+    </div>
+
+    <div class="input-block col-xs-12 col-sm-6" ng-class="{'has-error': form.procedure.$dirty && form.procedure.$invalid }">
+        <div class="block-title">
+            <h2>Procedure</h2>
+        </div>
+        <select id="selectProcedure" ng-disabled="!practiceType" name="procedure" class="form-control" ng-model="model.referral.procedure_id"  ng-options="p.id as p.name for p in practiceType.procedures" ng-required="true">
+            <option selected="selected" class="placeholder" value="">Select procedure &hellip;</option>
+        </select>
+    </div>
+</div><!-- .row -->
+
+<teeth-chart></teeth-chart>
+<attachments></attachments>
+<notes></notes>
+
+</div><!-- .box-white -->
+
+<div class="button-block">
+    <button class="btn btn-green btn-lg" ng-click="saveTemplate(model)" ng-disabled="form.$invalid">Save</button>
+    <button  class="btn btn-orange btn-lg" access="admin, doctor" ng-click="createReferral(model)" ng-disabled="form.$invalid">Sign &amp; Send</button>
+    <button class="btn btn-danger btn-lg" ng-click="discardTemplate(model.referral)" ng-show="model.referral.id">Discard draft</button>
+</div><!-- .button-block -->
+</form>
+</div><!-- .form-wrapper -->
+

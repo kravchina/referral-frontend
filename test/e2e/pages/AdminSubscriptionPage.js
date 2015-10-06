@@ -6,7 +6,7 @@ var AdminSubscriptionPage = function () {
     };
 
     this.clickUpgradeSubscription = function () {
-        element(by.buttonText('Upgrade to Premium Account')).click();
+        element(by.id('upgradeBtn')).click();
     };
 
     this.getSubscriptionDialogElement = function () {

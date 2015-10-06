@@ -129,20 +129,55 @@ For a single run:
 karma start karma.conf.js
 ```
 
-## Gulp
+## Automated task runner
 
-How to install and use:  
-1. Check the npm(node package manager) is already installed. If not, you should install Node.js, it included npm.  
-2. Run this to install the depended packages `npm install`  
-3. Rename the *GulpConfig.json.sample* to *GulpConfig.json* and replace inner keys on your.  
-4. Use command *gulp* and task name with params(if required), e.g.: `gulp taskname --taskarg=argval`  
+1. Install NPM and package dependencies
+2. Setup GulpConfig file
+3. Gulp tasks
+    * Build
+    * Run
+    * Publish
+
+### Install NPM and package dependencies
+
+First you should install NodeJS for your platform. That contains the node package manager (NPM), that we use for installation of developers libraries. After installing try to use it: type `npm` in console (Linux/Max) or in *Node.js command promt* in Start -> All programs -> Node.js (Windows). 
+
+For install developers dependencies you should go to the project directory. Run `npm install` for installation of dependencies from *package.json* file. Try to run `gulp` command. If this catches error (sometimes it happens), run `npm install gulp -g` in console.
+
+If someone of developers added new dependencies and you have got an error when you tried to run gulp, you should run `npm install` again.
+
+### Setup GulpConfig file
+
+Copy `GulpConfig.json.sample` file and rename to GulpConfig.json. This file contains settings and keys for aws publish, app environments and dev server config.
 
 ### Gulp tasks
 
-#### Publish to amazon aws
+#### Build
+
+Compile, minify and copy all the files to the `build` directory.
+
 Task format:
 ```Batchfile
-gulp publish --bucket=[bucket_name]
+gulp build --env=environment_name
 ```
-The *bucket* argument is not required, default value: *dev1.dentallinks.org*.  
-This task required an *accessKeyId* and *secretAccessKey*. You should be put it in *GulpConfig.json*
+
+The **env** argument is not required, default value is: **local**.
+
+#### Run
+
+This runs the `build` task and after that it runs developer web server and opens browser with index page.
+
+Task format:
+```Batchfile
+gulp run --env=environment_name
+```
+The **env** argument is not required, default value is: **local**.
+
+#### Publish
+
+This runs the `build` task and after that publish in amazon bucket.
+
+Task format:
+```Batchfile
+gulp publish --env=environment_name
+```

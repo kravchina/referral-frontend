@@ -1,0 +1,48 @@
+<!-- Attachments block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Attachments</h2>
+            <label class="btn btn-orange btn-toggle" data-toggle="tooltip" data-placement="top" title="Add Attachment">
+                <input nv-file-select uploader="uploader" type="file" style="display: none;" multiple>
+                <span class="dlicons-plus"></span>
+            </label>
+
+        </div>
+
+        <div class="attachments-wrapper">
+            <div class="my-drop-zone" nv-file-drop uploader="uploader" nv-file-over="another-file-over-class">
+                <ul>
+                    <!-- Attachments on server -->
+                    <li class="attachment-block" ng-repeat="attachment in attachments">
+                        <button type="button" class="close delete-button-margin" aria-label="Close" title="Delete file" ng-click="deleteAttachment(attachment)" ng-hide="{{current_user.id != attachment.author_id}}">&times;</button>
+                        <a href="{{attachment | authenticatableAttachmentDownloadUrl}}" target="_blank">
+                            <div class="attachment-thumb" attachment-thumb="{{attachment | attachmentDownloadUrl}}">
+
+                            </div>
+                            <div class="attachment-details">
+                                <span class="filename" title="{{attachment.attach_file_name | filename}}">{{attachment.attach_file_name | filename}}</span>
+                                <span class="datestamp" title="File Creation Date">{{attachment.last_modified | date: 'mediumDate'}}</span>
+                                <span class="filename" title="Added{{attachment.author.first_name? ' by ' : '' }}{{ attachment.author.first_name}}{{attachment.author.last_name? ' ': ''}}{{attachment.author.last_name}} on {{attachment.attach_updated_at | date: 'mediumDate'}}">Added {{attachment.author.first_name? 'by' : '' }} {{attachment.author.first_name}} {{attachment.author.last_name}} on {{attachment.attach_updated_at | date: 'mediumDate'}} </span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <!-- Attachments in the queue, no links -->
+                    <li class="attachment-block" ng-repeat="item in uploader.queue">
+                        <button type="button" class="close delete-button-margin" aria-label="Close" title="Delete file" ng-click="deleteAttachment(item)">&times;</button>
+                        <div class="attachment-thumb" ng-show="uploader.isHTML5"
+                             ng-thumb="{ file: item._file, longEdgeSize:80 }">
+                            <!-- no img, canvas is automatically generated here -->
+                        </div>
+                        <div class="attachment-details" >
+                            <span class="filename" title="{{item.file.name}}">{{ item.file.name }}</span>
+                            <span class="datestamp inline" title="Image Creation Date">{{item.metadata.last_modified | date: 'mediumDate'}}</span> <span class="dlicons-pencil inline" title="Change Date" ng-click="openDatePicker(item)"></span>
+                            <span class="filename" title="Added{{current_user.first_name? ' by ' : '' }}{{current_user.first_name}}{{current_user.last_name? ' ': ''}}{{current_user.last_name}} on {{ now() | date: 'mediumDate'}}">Added {{current_user.first_name? 'by' : '' }} {{current_user.first_name}} {{current_user.last_name}} on {{ now() | date: 'mediumDate'}}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div><!-- .attachments-wrapper -->
+    </div>
+</div><!-- .row -->

@@ -84,7 +84,7 @@ var CreateReferralPage = function() {
     };
     
     this.getProviderDialogEmailElement = function() {
-        return element(by.model('model.provider.email'));
+        return element(by.css('input[ng-model="model.provider.email"][ng-show="isProviderInvite"]'));
     };
     
     this.getProviderDialogSendButton = function() {

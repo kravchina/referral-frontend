@@ -1,0 +1,23 @@
+<div>
+    <form name="form" novalidate class="simple-form">
+        <br />
+
+        <div ng-class="{'has-error': form.email.$invalid && form.email.$dirty}">
+            <label>
+                E-Mail:
+                <input type="email" name="email" id="email" ng-model="user.email" ng-required="true" class="form-control login"/>
+            </label>
+        </div>
+
+        <div ng-class="{'has-error': form.password.$invalid && form.password.$dirty}">
+            <label>
+                Password:
+                <input type="password" name="password" id="password" focus-password ng-model="user.password" ng-required="true" class="form-control login"/>
+            </label>
+        </div>
+
+        <button ng-click="login(user)" ng-disabled="form.$invalid">Login</button>
+        <br />
+        <a href="#/reset_password">Forgot password?</a>
+    </form>
+</div>

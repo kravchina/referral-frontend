@@ -1,0 +1,258 @@
+<header class="page-header">
+    <h1>Shared Patient Chart</h1>
+
+    <p class="page-subheader">Attach post-op images and notes</p>
+
+    <alert ng-show="paymentNotification.showTrial" type="{{alert.type}}">It is always free to send referrals but you will need a premium membership to receive referrals after {{ paymentNotification.expirationDate | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
+    <alert ng-show="paymentNotification.showSubscriptionCancelled" type="{{alert.type}}">Your premium subscription will expire on {{paymentNotification.expirationDate | date: 'short' }}, you will need to enter new payment information for your premium account to stay active.</alert>
+</header><!-- .page-header -->
+
+<alert id="topAlert" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
+
+
+<div class="form-wrapper">
+<form id="formCreateReferral" name="viewReferralForm">
+<div class="box-white box-padded">
+
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12 text-right">
+        created: {{referral.created_at | date: 'mediumDate'}} |
+        updated: {{referral.updated_at | date: 'mediumDate'}}
+    </div>
+</div>
+
+<!-- Patient block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Patient</h2>
+            <button ng-if="(auth.is_admin && auth.practice_id == referral.orig_provider.practice.id) || (auth.id == referral.orig_provider.id && referral.status == 'new')" type="button" ng-click="editPatientDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-note" data-toggle="tooltip"
+                    data-placement="top" title="Edit Patient" ><span
+                    class="dlicons-pencil"></span></button>
+        </div>
+        <input type="text" class="form-control data1" value="{{referral.patient.first_name}} {{referral.patient.last_name}} ({{referral.patient.birthday | date: 'shortDate'}})" disabled="disabled">
+    </div>
+</div>
+<!-- .row -->
+
+<!-- From Provider, Practice / To Provider, Practice block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-6">
+        <div class="block-title">
+            <h2>From</h2>
+        </div>
+        <input type="text" class="form-control data1" value="{{referral.orig_provider.first_name}} {{referral.orig_provider.middle_initial}} {{referral.orig_provider.last_name}}" disabled="disabled">
+        <input type="text" class="form-control data2" value="{{referral.orig_provider.practice.name}}" disabled="disabled">
+    </div>
+
+    <div class="input-block col-xs-12 col-sm-6">
+        <div class="block-title">
+            <h2>To</h2>
+            <button ng-if="(auth.is_admin && auth.practice_id == referral.dest_practice_id)" type="button" ng-click="editDestProviderDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-note" data-toggle="tooltip"
+                    data-placement="top" title="Select provider"><span class="dlicons-pencil"></span></button>
+        </div>
+        <input type="text" class="form-control data1" value="{{referral.dest_provider.first_name}} {{referral.dest_provider.middle_initial}} {{referral.dest_provider.last_name}}" disabled="disabled">
+        <input type="text" class="form-control data2" value="{{referral.dest_practice.name}}" disabled="disabled">
+    </div>
+</div>
+<!-- .row -->
+
+<!-- Procedure block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-6">
+        <div class="block-title">
+            <h2>Referral Type</h2>
+        </div>
+        <input type="text" class="form-control data1" value="{{referral.procedure.practice_type.name}}" disabled="disabled">
+    </div>
+
+
+    <div class="input-block col-xs-12 col-sm-6">
+        <div class="block-title">
+            <h2>Procedure</h2>
+        </div>
+        <input type="text" class="form-control data1" value="{{referral.procedure.name}}" disabled="disabled">
+    </div>
+</div>
+<!-- .row -->
+
+<!-- Tooth Chart block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Tooth Chart</h2>
+        </div>
+
+        <div class="toothchart-wrapper">
+            <div id="toothchart">
+                <div class="upper-chart">
+
+                    <!-- Baby tooth A-E -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['A','B','C','D','E'].reverse()">
+                            <input type="checkbox" disabled="disabled" ng-checked="referral.teethChart && referral.teethChart.indexOf(item)!= -1">
+                            <label class="tooth-label-view">{{item}}</label>
+                        </li>
+
+                    </ul>
+
+                    <!-- Baby tooth F-J -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['F','G','H','I','J']">
+                            <input type="checkbox" disabled="disabled" ng-checked="referral.teethChart && referral.teethChart.indexOf(item)!= -1">
+                            <label class="tooth-label-view">{{item}}</label>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="upper-chart horizontal-chart-line">
+
+                    <!-- Tooth 1-8 -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['1','2','3','4','5','6','7','8'].reverse()">
+                            <input type="checkbox" disabled="disabled" ng-checked="referral.teethChart && referral.teethChart.indexOf(item)!= -1">
+                            <label class="tooth-label-view">{{item}}</label>
+                        </li>
+
+                    </ul>
+
+                    <!-- Tooth 9-16 -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['9','10','11','12','13','14','15','16']">
+                            <input type="checkbox" disabled="disabled" ng-checked="referral.teethChart && referral.teethChart.indexOf(item)!= -1">
+                            <label class="tooth-label-view">{{item}}</label>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="lower-chart">
+
+                    <!-- Tooth 17-24 -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['17','18','19','20','21','22','23','24'].reverse()">
+                            <input type="checkbox" disabled="disabled" ng-checked="referral.teethChart && referral.teethChart.indexOf(item)!= -1">
+                            <label class="tooth-label-view">{{item}}</label>
+                        </li>
+                    </ul>
+
+                    <!-- Tooth 25-32 -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['25','26','27','28','29','30','31','32']">
+                            <input type="checkbox" disabled="disabled" ng-checked="referral.teethChart && referral.teethChart.indexOf(item)!= -1">
+                            <label class="tooth-label-view">{{item}}</label>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="lower-chart">
+
+                    <!-- Baby tooth O-K -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['K','L','M','N','O'].reverse()">
+                            <input type="checkbox" disabled="disabled" ng-checked="referral.teethChart && referral.teethChart.indexOf(item)!= -1">
+                            <label class="tooth-label-view">{{item}}</label>
+                        </li>
+                    </ul>
+
+                    <!-- Baby tooth T-P -->
+                    <ul>
+                        <li class="tooth-button" ng-repeat="item in ['P','Q','R','S','T']">
+                            <input type="checkbox" disabled="disabled" ng-checked="referral.teethChart && referral.teethChart.indexOf(item)!= -1">
+                            <label class="tooth-label-view">{{item}}</label>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+            <!-- #toothchart -->
+        </div>
+        <!-- .toothchart-wrapper -->
+
+    </div>
+</div>
+<!-- .row -->
+
+<!-- Attachments block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Attachments</h2>
+            <label class="btn btn-orange btn-toggle" data-toggle="tooltip" data-placement="top" title="Add Attachment">
+                <input nv-file-select uploader="uploader" type="file" style="display: none;" multiple>
+                <span class="dlicons-plus"></span>
+            </label>
+        </div>
+
+        <div class="attachments-wrapper">
+            <div class="my-drop-zone" nv-file-drop uploader="uploader" nv-file-over="another-file-over-class">
+                <ul>
+
+                    <!-- Attachment block -->
+                    <li class="attachment-block" ng-repeat="attachment in referral.attachments"
+                        title="Added{{attachment.author.first_name? ' by ' : '' }}{{ attachment.author.first_name}}{{attachment.author.last_name? ' ': ''}}{{attachment.author.last_name}} on {{attachment.attach_updated_at | date: 'mediumDate'}}">
+                        <button type="button" class="close delete-button-margin" aria-label="Close" title="Delete file" ng-click="deleteAttachment(attachment)" ng-hide="{{auth.id != attachment.author_id}}">&times;</button>
+                        <a ng-href="{{attachment | authenticatableAttachmentDownloadUrl}}" target="_blank">
+                            <div class="attachment-thumb" pdf-photos access="admin, doctor, aux" attachment-thumb="{{attachment | attachmentDownloadUrl}}">
+
+                            </div>
+                            <div class="attachment-details">
+                                <!--<span class="filename">{{attachment.filename | filename}}</span>-->
+                                <!--<span class="datestamp" title="Attachment Uploaded Date">{{attachment.created_at | date: 'mediumDate'}}</span>-->
+                                <span class="datestamp inline">{{attachment.attach_updated_at | date: 'mediumDate'}}</span> <span ng-show="attachment.recentlyAdded" class="dlicons-pencil inline" title="Change Date" stop-event="click" ng-click="openDatePicker(attachment)"></span>
+                                <span class="filename">{{attachment.author.first_name? 'Added by:' : '' }}<br/> {{attachment.author.first_name}} {{attachment.author.last_name}}</span>
+                                <!--on {{attachment.created_at | date: 'mediumDate'}}-->
+                            </div>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- .attachments-wrapper -->
+    </div>
+</div>
+<!-- .row -->
+
+<!-- Notes block -->
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12">
+        <div class="block-title">
+            <h2>Notes</h2>
+            <button type="button" ng-click="noteDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-note" data-toggle="tooltip"
+                    data-placement="top" title="Add New Note" data-target="#modalNote"><span
+                    class="dlicons-plus"></span></button>
+        </div>
+
+        <div class="notes-wrapper">
+            <ul>
+
+                <!-- Note block -->
+                <li class="note-block" expand-note ng-repeat="note in referral.notes">
+                    <span class="note-user">{{note.user.first_name}} {{note.user.last_name}}</span>
+                    <span class="note-content">{{note.message}}</span>
+                    <span class="note-expand more">See more</span>
+                    <span class="note-expand less">See less</span>
+                    <span class="datestamp">{{note.created_at | date: 'short' }}</span>
+                </li>
+
+            </ul>
+        </div>
+        <!-- .notes-wrapper -->
+    </div>
+</div>
+<!-- .row -->
+
+</div>
+<!-- .box-white -->
+
+<div class="button-block">
+
+        <button type="button" ng-show="referral.status == 'completed' && userBelongsToDestPractice()" ng-click="rejectReferral(referral)" class="btn btn-danger">Undo Completion</button>
+        <button type="button" access="doctor,admin" ng-show="referral.status == 'active' && userBelongsToDestPractice()" ng-click="completeReferral(referral)" class="btn btn-success">Complete Referral</button>
+
+    <button id="downloadPdf" type="button" ng-click="savePdf()" class="btn btn-orange btn-lg">Download PDF</button>
+    <button type="button" ng-click="savePatientPdf()" class="btn btn-orange btn-lg">Download patient copy</button>
+</div>
+<!-- .button-block -->
+</form>
+</div><!-- .form-wrapper -->

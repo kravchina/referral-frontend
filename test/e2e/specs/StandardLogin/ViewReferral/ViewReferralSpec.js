@@ -61,7 +61,23 @@ var ViewReferralSpec = function() {
             it('shows patient copy button on the page', function() {
                 expect(element(by.css('button[ng-click="savePatientPdf()"]')).isPresent()).toBe(true);
             });
-
+            
+            describe('when user adds a note', function() {
+                var noteText = "note @ " + new Date();
+                
+                beforeEach(function() {
+                    viewReferralPage.getButtonAddNoteElement().click();
+                    expect(viewReferralPage.getNoteDialogElement().isDisplayed()).toBe(true);
+                    viewReferralPage.getNoteDialogNoteTextAreaElement().sendKeys(noteText);
+                    viewReferralPage.getNoteDialogSaveButtonElement().click();
+                    expect(viewReferralPage.getNoteDialogElement().isPresent()).toBe(false);
+                });
+                
+                it('shows the new note at the bottom of the list', function() {
+                    expect(viewReferralPage.getLastNoteText()).toEqual(noteText);
+                });
+            });
+            
             // it('| show error when not real provider has been selected', function(){
                 // expect(element(by.css('button[ng-click="editDestProviderDialog()"]')).isPresent()).toBe(true);
                 // element(by.css('button[ng-click="editDestProviderDialog()"]')).click();
