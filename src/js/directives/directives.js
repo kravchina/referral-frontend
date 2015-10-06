@@ -357,7 +357,7 @@ angular.module('dentalLinksDirectives')
     }
 }])
 
-.directive('dynamicHtml', function ($compile) {
+.directive('dynamicHtml', ['$compile', function ($compile) {
   return {
     restrict: 'A',
     replace: true,
@@ -368,7 +368,7 @@ angular.module('dentalLinksDirectives')
       });
     }
   };
-})
+}])
 
 .directive('phoneFormatter', ['$compile', function($compile){
     return {
