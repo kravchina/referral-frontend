@@ -45,11 +45,7 @@ var CommonExpects = function() {
     };
 
     this.expectConsoleWithoutErrors = function(){
-        var browserName;
-        browser.getCapabilities().then(function (cap) {
-            browserName = cap.caps_.browserName;
-        });
-        if (browserName !== 'internet explorer'){
+        if (browser.currentRunBrowserName !== 'internet explorer'){
         browser.manage().logs().get('browser').then(function (browserLog) {
             var i = 0,
                 severWarnings = false;
@@ -69,11 +65,7 @@ var CommonExpects = function() {
     };
 
     this.expectConsoleWithoutErrorsExcept401 = function(){
-        var browserName;
-        browser.getCapabilities().then(function (cap) {
-            browserName = cap.caps_.browserName;
-        });
-        if (browserName !== 'internet explorer'){
+        if (browser.currentRunBrowserName !== 'internet explorer'){
         browser.manage().logs().get('browser').then(function (browserLog) {
             var i = 0,
                 severWarnings = false;
