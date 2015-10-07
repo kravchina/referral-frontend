@@ -51,7 +51,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-orange" ng-click="ok(user)" ng-disabled="userForm.$invalid || (user.password != user.passwordConfirm)">Send</button>
+        <button ng-show="isInvite" type="submit" class="btn btn-orange" ng-click="ok(user)" ng-disabled="userForm.$invalid || (user.password != user.passwordConfirm)">Send</button>
+        <button ng-show="!isInvite" type="submit" class="btn btn-orange" ng-click="ok(user)" ng-disabled="userForm.$invalid || (user.password != user.passwordConfirm)">Save</button>
         <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Discard</button>
     </div>
 </form>
