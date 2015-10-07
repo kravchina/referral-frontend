@@ -10,7 +10,12 @@ var gulp = require('gulp'),
     minifyCss = require('gulp-minify-css'),
     ngHtml2Js = require("gulp-ng-html2js"),
     webserver = require('gulp-webserver'),
-    replace = require('gulp-replace');
+    replace = require('gulp-replace'),
+    browserify = require('browserify'),
+    buffer = require('vinyl-buffer'),
+    source = require('vinyl-source-stream'),
+    through = require('through2'),
+    gutil = require('gutil');
 
 var environmentName = argv.env ? argv.env : 'local',
     environment = config.environment[environmentName],
@@ -42,43 +47,43 @@ gulp.task('run', ['build', 'watch', 'server']);
 gulp.task('build', ['build-js','build-css', 'build-templates', 'copy-files']);
 
 gulp.task('build-js', function() {
-    var process = gulp.src([
-            'src/js/lib/ui-router-tabs.js',
-            'src/js/lib/localize.js',
-            'src/js/lib/ng-infinite-scroll.min.js',
-            'src/js/lib/angular-file-upload.js',
-            'src/js/lib/jspdf.js',
-            'src/js/lib/jspdf.plugin.addimage.js',
-            'src/js/lib/jspdf.plugin.cell.js',
-            'src/js/lib/jspdf.plugin.from_html.js',
-            'src/js/lib/jspdf.plugin.split_text_to_size.js',
-            'src/js/lib/jspdf.plugin.standard_fonts_metrics.js',
-            'src/js/lib/FileSaver.min.js',
-            'src/js/lib/mask.js',
-            'src/js/lib/angular-payments.js',
-            'src/js/lib/jquery.placeholder.js', 
-            'src/js/lib/bootstrap.min.js', 
-            'src/js/lib/bootstrap-tabcollapse.js', 
-            'src/js/lib/moment.js', 
-            'src/js/lib/daterangepicker.js',
-            'src/js/lib/isteven-multi-select.js',
-            'src/js/app.js',
-            'src/js/controllers/**/*',
-            'src/js/directives/**/*',
-            'src/js/services/**/*']);
+    var process = browserify({
+        entries: 'src/js/dependencies.js',
+        debug: true,
+        transform: [
+            function (file) {
+                return through(function (buf, enc, next) {
+                    var content = buf.toString('utf8');
 
-    process = replaceEnvironmentVariables(process);
+                    for(var variable in environment) {
+                        if(environment.hasOwnProperty(variable)){
+                        var key = variable.toUpperCase(),
+                            value = environment[variable];
 
-    process = process
-        .pipe(sourcemaps.init())
-        .pipe(concat('app.js'));
+                        content = 
+                            content.replace('{{' + key + '}}', value);
+                        }
+                    }
+
+                    this.push(content, gulp.cwd);
+                    next();
+                }
+            )}
+        ]
+    });
+
+    process = process.bundle()
+        .pipe(source('app.js'))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}));
 
     if(environment.minify) {
         process = process
-            .pipe(uglify());
+            .pipe(uglify())
+            .on('error', gutil.log);
     }
-    
-    process = process
+
+    process
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(buildPath));
 

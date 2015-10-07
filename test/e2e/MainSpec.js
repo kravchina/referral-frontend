@@ -23,12 +23,28 @@ describe('when user navigates to Sign In page', function() {
       expect(signInPage.getEmail()).toEqual('');
       expect(signInPage.getPass()).toEqual('');
     });
-    
-    invalidLoginSpec.run();
-    standardLoginSpec.run();
-    createReferralAndInvitationSpec.run();
-    adminPracticePremiumSpec.run();
-    adminPracticeNonPremiumSpec.run();
-    adminSubscriptionPremiumSpec.run();
-    
+
+    describe('and user tries to login with incorrect credentials', function(){
+        invalidLoginSpec.run();
+        afterEach(function(){
+            commonExpects.expectConsoleWithoutErrorsExcept401();
+        });
+
+
+    });
+
+    describe('and user tries to login with correct credentials', function(){
+        standardLoginSpec.run();
+        createReferralAndInvitationSpec.run();
+        adminPracticePremiumSpec.run();
+        adminPracticeNonPremiumSpec.run();
+        adminSubscriptionPremiumSpec.run();
+        afterEach(function(){
+            commonExpects.expectConsoleWithoutErrors();
+        });
+
+
+    });
+
 });
+

@@ -3,7 +3,6 @@ angular.module('dentalLinksDirectives')
 // Only for example
 .directive('access', [ 'Auth', function (Auth) {
     return {
-        scope: true,
         restrict: 'A',
         link: function (scope, $element, attrs) {
             var prevDisp = $element.css('display');
@@ -358,7 +357,7 @@ angular.module('dentalLinksDirectives')
     }
 }])
 
-.directive('dynamicHtml', function ($compile) {
+.directive('dynamicHtml', ['$compile', function ($compile) {
   return {
     restrict: 'A',
     replace: true,
@@ -369,7 +368,7 @@ angular.module('dentalLinksDirectives')
       });
     }
   };
-})
+}])
 
 .directive('phoneFormatter', ['$compile', function($compile){
     return {

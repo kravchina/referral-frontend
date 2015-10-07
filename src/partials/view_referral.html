@@ -4,7 +4,7 @@
     <p class="page-subheader">Attach post-op images and notes</p>
 
     <alert ng-show="paymentNotification.showTrial" type="{{alert.type}}">It is always free to send referrals but you will need a premium membership to receive referrals after {{ paymentNotification.expirationDate | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
-    <alert ng-show="paymentNotification.showSubscriptionCancelled" type="{{alert.type}}">Your premium subscription will expire on {{paymentNotification.expirationDate | date: 'short' }}, you will need to enter new payment information for your premium account to stay activated.</alert>
+    <alert ng-show="paymentNotification.showSubscriptionCancelled" type="{{alert.type}}">Your premium subscription will expire on {{paymentNotification.expirationDate | date: 'short' }}, you will need to enter new payment information for your premium account to stay active.</alert>
 </header><!-- .page-header -->
 
 <alert id="topAlert" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
@@ -178,13 +178,13 @@
         <div class="block-title">
             <h2>Attachments</h2>
             <label class="btn btn-orange btn-toggle" data-toggle="tooltip" data-placement="top" title="Add Attachment">
-                <input ng-file-select type="file" style="display: none;" multiple>
+                <input nv-file-select uploader="uploader" type="file" style="display: none;" multiple>
                 <span class="dlicons-plus"></span>
             </label>
         </div>
 
         <div class="attachments-wrapper">
-            <div class="my-drop-zone" ng-file-drop ng-file-over="another-file-over-class">
+            <div class="my-drop-zone" nv-file-drop uploader="uploader" nv-file-over="another-file-over-class">
                 <ul>
 
                     <!-- Attachment block -->
@@ -197,8 +197,8 @@
                             </div>
                             <div class="attachment-details">
                                 <!--<span class="filename">{{attachment.filename | filename}}</span>-->
-                                <!--<span class="datestamp" title="Attachment Uploaded Date">{{attachment.created_at | date: 'mediumDate'}}</span>-->
-                                <span class="datestamp inline">{{attachment.attach_updated_at | date: 'mediumDate'}}</span> <span ng-show="attachment.recentlyAdded" class="dlicons-pencil inline" title="Change Date" stop-event="click" ng-click="openDatePicker(attachment)"></span>
+                                <span class="datestamp" title="Created:"><span>Created:</span>{{attachment.last_modified | date: 'mediumDate'}}</span>
+                                <span class="datestamp inline"><span>Uploaded:</span>{{attachment.attach_updated_at | date: 'mediumDate'}}</span> <span ng-show="attachment.recentlyAdded" class="dlicons-pencil inline" title="Change Date" stop-event="click" ng-click="openDatePicker(attachment)"></span>
                                 <span class="filename">{{attachment.author.first_name? 'Added by:' : '' }}<br/> {{attachment.author.first_name}} {{attachment.author.last_name}}</span>
                                 <!--on {{attachment.created_at | date: 'mediumDate'}}-->
                             </div>

@@ -18,8 +18,55 @@
   "bugs": {
     "url": "https://github.com/kravchina/referral-frontend/issues"
   },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browser": {
+    "localize": "./src/js/lib/localize.js",
+    "istevenMultiSelect": "./src/js/lib/isteven-multi-select.js",
+    "moment": "./src/js/lib/moment.js",
+    "daterangepicker": "./src/js/lib/daterangepicker.js",
+    "angularFileUpload": "./src/js/lib/angular-file-upload.min.js",
+    "jsPDF": "./src/js/lib/jspdf.js",
+    "jsPDFaddimage": "./src/js/lib/jspdf.plugin.addimage.js",
+    "jsPDFcell": "./src/js/lib/jspdf.plugin.cell.js",
+    "jsPDFfromhtml": "./src/js/lib/jspdf.plugin.from_html.js",
+    "jsPDFsplittext": "./src/js/lib/jspdf.plugin.split_text_to_size.js",
+    "jsPDFfonts": "./src/js/lib/jspdf.plugin.standard_fonts_metrics.js",
+    "ng-infinite-scroll": "./src/js/lib/ng-infinite-scroll.min.js",
+    "jqueryPlaceholder": "./src/js/lib/jquery.placeholder.js",
+    "fileSaver": "./src/js/lib/FileSaver.min.js",
+    "angularStripe": "./src/js/lib/angular-stripe.js",
+    "angularCreditCards": "./src/js/lib/angular-credit-cards.js"
+  },
+  "browserify-shim": {
+    "moment": "moment",
+    "fileSaver": "saveAs",
+    "jsPDF": {
+      "exports": "jsPDF",
+      "depends": "fileSaver:saveAs"
+    },
+    "jsPDFaddimage": {
+      "depends": "jsPDF:jsPDF"
+    },
+    "jsPDFcell": {
+      "depends": "jsPDF:jsPDF"
+    },
+    "jsPDFfromhtml": {
+      "depends": "jsPDF:jsPDF"
+    },
+    "jsPDFsplittext": {
+      "depends": "jsPDF:jsPDF"
+    },
+    "jsPDFfonts": {
+      "depends": "jsPDF:jsPDF"
+    }
+  },
   "homepage": "https://github.com/kravchina/referral-frontend",
   "devDependencies": {
+    "browserify": "^11.1.0",
     "concurrent-transform": "^1.0.0",
     "gulp": "^3.9.0",
     "gulp-awspublish": "^2.0.2",
@@ -30,7 +77,23 @@
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "gulp-webserver": "^0.9.1",
+    "gutil": "^1.6.4",
     "read-config": "^1.5.0",
+    "through2": "^2.0.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
     "yargs": "^3.15.0"
+  },
+  "dependencies": {
+    "angular": "^1.4.5",
+    "angular-bootstrap-npm": "^0.13.3",
+    "angular-cookies": "^1.4.5",
+    "angular-resource": "^1.4.5",
+    "angular-sanitize": "^1.4.5",
+    "angular-ui-mask": "git+https://github.com/angular-ui/ui-mask.git",
+    "angular-ui-router": "^0.2.15",
+    "angular-ui-router-tabs": "git+https://github.com/kravchina/ui-router-tabs.git",
+    "browserify-shim": "^3.8.10",
+    "jquery": "^2.1.4"
   }
 }
