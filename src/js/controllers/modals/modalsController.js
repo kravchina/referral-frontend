@@ -171,13 +171,13 @@ angular.module('modals')
     };
 }])
 
-.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'Role', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, Role) {
+.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
     $scope.result = {};
     $scope.alerts = [];
     $scope.isInvite = true;
     $scope.user = {};
     $scope.listInputRoles = Role.getAllRoles().map(function(role){
-        return {role_name: role, ticked: false, isDisabled: false};
+        return {id: role.id, mask: role.mask, name: role.name, ticked: false, isDisabled: false};
     });
         console.log($scope.listInputRoles);
     $scope.listOutputRoles = [];
@@ -185,7 +185,7 @@ angular.module('modals')
     $scope.toggleRadio = function(user){
         $scope.listInputRoles.map(function(elem){
             if(!$scope.isInvite){
-                if(elem.role_name == 'doctor'){
+                if(elem.id == USER_ROLES.doctor.id){
                     elem.ticked = true;
                     elem.isDisabled = false;
                 } else {
@@ -200,12 +200,12 @@ angular.module('modals')
     };
 
     $scope.onRoleSelect = function(selectedItem){
-        if((selectedItem.role_name == 'doctor' || selectedItem.role_name == 'aux') && $scope.isInvite){
+        if((selectedItem.id == USER_ROLES.doctor.id || selectedItem.id == USER_ROLES.aux.id) && $scope.isInvite){
             $scope.listInputRoles.map(function(elem){
-                if(elem.role_name == 'aux' && selectedItem.role_name == 'doctor'){
+                if(elem.id == USER_ROLES.aux.id && selectedItem.id == USER_ROLES.doctor.id){
                     elem.isDisabled = !elem.isDisabled;
                 }
-                if(elem.role_name == 'doctor' && selectedItem.role_name == 'aux'){
+                if(elem.id == USER_ROLES.doctor.id && selectedItem.id == USER_ROLES.aux.id){
                     elem.isDisabled = !elem.isDisabled;
                 }
             });
@@ -215,7 +215,7 @@ angular.module('modals')
     $scope.ok = function (user) {
         user.practice_id = Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
-        user.roles_mask = Role.setToMask($scope.listOutputRoles.map(function(elem){ return  elem.role_name; }));
+        user.roles_mask = Role.convertRolesToMask($scope.listOutputRoles);
 
         if($scope.isInvite){
             ProviderInvitation.saveUser({provider_invitation: user},
@@ -358,8 +358,8 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'Role',
-        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, Role) {
+    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'USER_ROLES', 'Role',
+        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, USER_ROLES, Role) {
     $scope.result = {};
     $scope.alerts = [];
     Logger.log(editUser.id);
@@ -401,7 +401,7 @@ angular.module('modals')
     $scope.roleName = function(roles_mask){
         var str = '';
         Role.getFromMask(roles_mask).reverse().forEach(function(elem){
-            str += str == '' ? elem.charAt(0).toUpperCase() + elem.substr(1) : ', '+ elem.charAt(0).toUpperCase() + elem.substr(1)
+            str += str == '' ? elem.name : ', ' + elem.name;
         });
         return str;
     };

@@ -73,8 +73,11 @@
                         </div>
                         <div class="row">
                             <div class="input-block" ng-class="{'has-error': submitted && form.selectRole.$invalid }">
-                                <label class="radio-inline"><input name="selectRole" type="radio" value="2" ng-value="2" ng-model="invitation.roles_mask" ng-required="true">Doctor</label>
-                                <label class="radio-inline"><input name='selectRole' type="radio" value="4" ng-value="4" ng-model="invitation.roles_mask" ng-required="true">Auxiliary</label>
+                                <label class="radio-inline" ng-repeat="role in roles">
+                                    <input name="selectRole" type="radio" ng-value="{{role.mask}}"
+                                           ng-model="invitation.roles_mask" ng-required="true">
+                                    {{role.name}}
+                                </label>
                                 <label>Role</label>
                             </div>
                         </div>

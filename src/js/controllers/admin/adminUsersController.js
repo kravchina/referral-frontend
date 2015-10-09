@@ -1,6 +1,6 @@
 angular.module('admin')
-    .controller('AdminUsersController', ['$scope',  '$modal',  'Notification', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'FREE_TRIAL_PERIOD', 'Logger', 'Role',
-    function ($scope, $modal, Notification, ModalHandler, Practice, ProviderInvitation, User, FREE_TRIAL_PERIOD, Logger, Role) {
+    .controller('AdminUsersController', ['$scope',  '$modal',  'Notification', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'FREE_TRIAL_PERIOD', 'Logger', 'USER_ROLES', 'Role',
+    function ($scope, $modal, Notification, ModalHandler, Practice, ProviderInvitation, User, FREE_TRIAL_PERIOD, Logger, USER_ROLES, Role) {
         
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function(practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
@@ -105,7 +105,7 @@ angular.module('admin')
         $scope.roleName = function(roles_mask){
             var str = '';
             Role.getFromMask(roles_mask).reverse().forEach(function(elem){
-                str += str == '' ? elem.charAt(0).toUpperCase() + elem.substr(1) : ', '+ elem.charAt(0).toUpperCase() + elem.substr(1)
+                str += str == '' ? elem.name : ', ' + elem.name;
             });
             return str;
         };

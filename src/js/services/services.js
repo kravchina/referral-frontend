@@ -4,23 +4,20 @@
 angular.module('dentalLinksServices')
 
 .factory('Auth', ['$cookies', '$location', 'USER_ROLES', 'Role', function ($cookies, $location, USER_ROLES, Role) {
+    var auth;
     return {
         authorize: function (roles) {
             if (roles === undefined) {
                 return true;
+            } else if(Array.isArray(roles) && typeof(roles[0]) === 'string'){
+                roles = Role.getRolesByNames(roles);
             }
-            var auth = $cookies.getObject('auth') || {};
+            auth = $cookies.getObject('auth') || {};
 
-            // if (auth.roles) {
-            //     for (var i = 0; i < roles.length; i++) {
-            //         if (auth.roles.indexOf(roles[i]) >= 0) {
-            //             return true;
-            //         }
-            //     }
-            // }
+            auth.roles = Role.getRolesByNames(auth.roles);
 
             if(auth.email){
-                return Role.is(roles, Role.setToMask(auth.roles));
+                return Role.hasRoles(roles, auth.roles);
             }
 
             return false;
@@ -37,13 +34,19 @@ angular.module('dentalLinksServices')
             }
         },
         set: function (value) {
+            auth = value;
             $cookies.putObject('auth', value);
         },
         remove: function () {
+            auth = {};
             $cookies.remove('auth');
         },
         hasRole: function(role){
-            return $cookies.getObject('auth').roles.indexOf(role) != -1;
+            if(Array.isArray(role) && typeof(roles[0]) === 'string'){
+                role = Role.getRolesByNames(role);
+            }
+
+            return Role.hasRoles([role], auth.roles);
         }
     };
 }])
@@ -337,53 +340,63 @@ angular.module('dentalLinksServices')
         }
     }
 })
-.factory('Role', function(){
-    //Sequence should be the same at both the front-end and backend, new roles are added to the end of the array
-    var ROLES = ['admin', 'doctor', 'aux', 'super'];
+.factory('Role', ['USER_ROLES', function(USER_ROLES){
+    var ROLES = [];
 
-    var intersection = function(inputArray){
-        return inputArray.filter(function(n) {
-            return ROLES.indexOf(n) != -1;
-        });
-    };
+    for(var prop in USER_ROLES){
+        if(USER_ROLES.hasOwnProperty(prop)){
+           ROLES.push(USER_ROLES[prop]);
+        }
+    }
 
-    var roleService = function(){
-        var that = this;
-
-        this.getFromMask = function(rolesMask){
-            return ROLES.filter(function(i){
-                return (rolesMask & Math.pow(2, ROLES.indexOf(i))) != 0 ? true : false;
+    return {
+        getFromMask: function(rolesMask){
+            return ROLES.filter(function(role){
+                return (rolesMask & role.mask) != 0 ? true : false;
             });
-        };
+        },
+        convertRolesToMask: function(inputArray){
+            var mask = 0;
 
-        this.setToMask = function(inputArray){
-            return intersection(inputArray)
+            inputArray
                 .map(function(elem){
-                    return Math.pow(2, ROLES.indexOf(elem));
-                })
-                .reduce(function(a, b){ return a + b; });
-        };
+                    if(typeof(elem) === 'object') {
+                        mask = mask | elem.mask;
+                    } else if(typeof(elem) === 'string'){
+                        mask = mask | ROLES.find(function(role){return role.id == elem;}).mask;
+                    }
+                });
 
-        this.getAllRoles = function(){
-            return ROLES.filter(function(value){
-                return value !== 'super';
+            return mask;
+        },
+        getAllRoles: function(){
+            return ROLES.filter(function(role){
+                return role.id !== 'super' && role.id !== 'public';
             });
-        };
+        },
+        getRolesByNames: function(names){
+            return names.map(function(name){
+                return ROLES.find(function(role){
+                    if(role.id === name){
+                        return true;
+                    }
+                    return false;
+                });
+            });
+        },
+        hasRoles: function(requiredRoles, userRoles){
+            var hasRole = false;
 
-        this.is = function(roleName, rolesMask){
-            if(typeof(roleName) === 'string'){
-                return that.getFromMask(rolesMask).indexOf(roleName) != -1;
-            } else if(Array.isArray(roleName)){
-                return roleName.map(function(elem){
-                    return that.getFromMask(rolesMask).indexOf(elem) != -1;
-                })
-                .reduce(function(a, b){ return a || b; });
-            } else {
-                //throw 'Invalid type of "roleName"';
-                return false;
-            }
-        };
+            requiredRoles.forEach(function(requiredRole){
+                userRoles.forEach(function(userRole){
+                    if(requiredRole.mask === userRole.mask){
+                        hasRole = true;
+                    }
+                });
+            });
+
+            return hasRole;
+        }
     };
 
-    return new roleService();
-});
+}]);

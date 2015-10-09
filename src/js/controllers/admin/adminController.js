@@ -1,7 +1,7 @@
 
 angular.module('admin')
-.controller('AdminController', ['$scope', '$state', '$modal', 'Auth', 'Practice',
-    function ($scope, $state, $modal, Auth,  Practice) {
+.controller('AdminController', ['$scope', '$state', '$modal', 'Auth', 'Practice', 'USER_ROLES',
+    function ($scope, $state, $modal, Auth,  Practice, USER_ROLES) {
         if($state.is('admin')){
             $state.go('admin.practice')
         }
@@ -34,7 +34,7 @@ angular.module('admin')
         $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4 ];
 
         var auth = $scope.auth = Auth.get();
-        $scope.auth.is_admin = Auth.hasRole('admin')
+        $scope.auth.is_admin = Auth.hasRole(USER_ROLES.admin);
 
         $scope.active = function(route){
             return $state.is(route);
