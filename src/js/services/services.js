@@ -145,7 +145,9 @@ angular.module('dentalLinksServices')
         verify_security_code: {method: 'GET', url: API_ENDPOINT + '/verify_security_code/:code'},
         create_user: {method: 'POST', url: API_ENDPOINT + '/register_without_invite'},
         create_no_login_user: {method: 'POST', url: API_ENDPOINT + '/register_no_login_user'},
-        register_with_promo: {method: 'POST', url: API_ENDPOINT + '/register_with_promo'}
+        register_with_promo: {method: 'POST', url: API_ENDPOINT + '/register_with_promo'},
+        confirmEmail: {method: 'POST', url: API_ENDPOINT + '/confirm_email'},
+        sendEmailVerification: {method: 'POST', url: API_ENDPOINT + '/request_email_update'}
     })
 }])
 
