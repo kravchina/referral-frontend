@@ -197,8 +197,8 @@
                             </div>
                             <div class="attachment-details">
                                 <!--<span class="filename">{{attachment.filename | filename}}</span>-->
-                                <!--<span class="datestamp" title="Attachment Uploaded Date">{{attachment.created_at | date: 'mediumDate'}}</span>-->
-                                <span class="datestamp inline">{{attachment.attach_updated_at | date: 'mediumDate'}}</span> <span ng-show="attachment.recentlyAdded" class="dlicons-pencil inline" title="Change Date" stop-event="click" ng-click="openDatePicker(attachment)"></span>
+                                <span class="datestamp" title="Created:"><span>Created:</span>{{attachment.last_modified | date: 'mediumDate'}}</span>
+                                <span class="datestamp inline"><span>Uploaded:</span>{{attachment.attach_updated_at | date: 'mediumDate'}}</span> <span ng-show="attachment.recentlyAdded" class="dlicons-pencil inline" title="Change Date" stop-event="click" ng-click="openDatePicker(attachment)"></span>
                                 <span class="filename">{{attachment.author.first_name? 'Added by:' : '' }}<br/> {{attachment.author.first_name}} {{attachment.author.last_name}}</span>
                                 <!--on {{attachment.created_at | date: 'mediumDate'}}-->
                             </div>

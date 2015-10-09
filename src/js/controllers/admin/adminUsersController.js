@@ -50,6 +50,10 @@ angular.module('admin')
                         }
                     }
                 });
+                ModalHandler.set(modalInstance);
+                modalInstance.result.then(function (data) {
+                    Notification.success('A verification email has been sent to ' + data.email + '. After the address is verified the provider will be able to login.');
+                });
             } else {
                 modalInstance = $modal.open({
                     templateUrl: 'partials/edit_user_form.html',
@@ -76,7 +80,7 @@ angular.module('admin')
             if (user.status) {
                 ProviderInvitation.delete({id: user.id}, function (success) {
                         if(success.msg){
-                            Notification.error( success.msg)
+                            Notification.error( success.msg);
                         }else{
                             $scope.invitedUsers.splice($scope.invitedUsers.indexOf(user), 1);
                         }
