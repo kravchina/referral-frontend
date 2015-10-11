@@ -352,7 +352,7 @@ angular.module('dentalLinksServices')
     return {
         getFromMask: function(rolesMask){
             return ROLES.filter(function(role){
-                return (rolesMask & role.mask) != 0 ? true : false;
+                return (rolesMask & role.mask) != 0;
             });
         },
         convertRolesToMask: function(inputArray){
