@@ -312,45 +312,6 @@ angular.module('modals')
             });
 
 
-
-
-
-
-
-        /*$window.Stripe.card.createToken({
-                    number: payment_info.card_number,
-                    cvc: payment_info.card_cvc,
-                    exp_month: payment_info.card_exp_month,
-                    exp_year: payment_info.card_exp_year
-                }, function(status, response){
-                    Logger.log(response);
-                    if(response.error) {
-                        // there was an error. Fix it.
-                        $scope.alerts = [];
-                        Alert.error($scope.alerts, 'An error occurred during account update: '+ response.error.message, true);
-                        Spinner.hide();
-                    } else {
-                        // got stripe token, now charge it or smt
-                        payment_info.stripe_token = response.id;
-                        Logger.log(payment_info);
-                        Practice.subscribe({practiceId: practice_id}, {
-                                        practice: {
-                                            name_on_card: payment_info.name_on_card,
-                                            stripe_token: payment_info.stripe_token
-                                        }
-                            },
-                                    function (success) {
-                                        Logger.log(success);
-                                        Alert.success($scope.alerts, 'Thank you for upgrading to a Premium Account. Your automatic renewal date  is ' + moment(success.subscription_active_until).format('MM-DD-YY'), true);
-                                        ModalHandler.close($modalInstance,success);
-                                    },
-                                    function (failure) {
-                                        $scope.alerts = [];
-                                        Alert.error($scope.alerts, 'An error occurred during account update: '+ failure.data.error, true)
-                                    });
-                        Spinner.hide();
-                    }
-                }); */
     };
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
@@ -358,58 +319,75 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'USER_ROLES', 'Role',
-        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, USER_ROLES, Role) {
-    $scope.result = {};
-    $scope.alerts = [];
-    Logger.log(editUser.id);
-    $scope.user = editUser;//for now we need only is_admin property to be set
-    $scope.auth = Auth.get();
-    $scope.listInputUsers = practiceUsers.map(function(inputUser){
-        inputUser = angular.copy(inputUser);
-        editUser.email_bindings.forEach(function(checkedUser){
-            if(inputUser.id == checkedUser.id) {
-                inputUser.ticked = true;
-            }
-        });
-        return inputUser;
-    });
-    $scope.listOutputUsers = [];
+    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role',
+        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, Registration, ProviderInvitation, Notification, USER_ROLES, Role) {
+            $scope.result = {};
+            $scope.alerts = [];
+            Logger.log(editUser.id);
+            $scope.user = editUser;//for now we need only is_admin property to be set
+            var initialEmail = editUser.email;
 
-    $scope.ok = function (user) {
-        if(user.password != user.password_confirmation){
-            Alert.error($scope.alerts, 'Error: Password does not match');
-            return;
-        }
-
-        User.update({id: editUser.id}, {user: user, email_relations: $scope.listOutputUsers}, function (success) {
-            Logger.log(success);
-            ModalHandler.close($modalInstance,success);
-        },  function (failure) {
-            Logger.log(failure);
-            if(failure.data.password){
-                Alert.error($scope.alerts, 'Error: Password ' + failure.data.password[0]);
-            }else{
-                Alert.error($scope.alerts, 'Error: ' + failure.data.message);
-            }
-            
-        });
-        editUser.email_bindings = $scope.listOutputUsers;
-    };
+            $scope.auth = Auth.get();
+            $scope.listInputUsers = practiceUsers.map(function (inputUser) {
+                inputUser = angular.copy(inputUser);
+                editUser.email_bindings.forEach(function (checkedUser) {
+                    if (inputUser.id == checkedUser.id) {
+                        inputUser.ticked = true;
+                    }
+                });
+                return inputUser;
+            });
+            $scope.listOutputUsers = [];
 
 
-    $scope.roleName = function(roles_mask){
-        var str = '';
-        Role.getFromMask(roles_mask).reverse().forEach(function(elem){
-            str += str == '' ? elem.name : ', ' + elem.name;
-        });
-        return str;
-    };
+            $scope.checkEmail = function (email) {
+                ProviderInvitation.validate({email: email, all: true}, function (success) {
+                    $scope.userForm.email.$setValidity('email', true);
+                }, function (failure) {
+                    $scope.userForm.email.$setValidity('email', false);
+                    Alert.error($scope.alerts, 'user.exists');
+                });
+            };
 
-    $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
-        $scope.listInputUsers = [];
-    };
+
+            $scope.ok = function (user) {
+                if (user.password != user.password_confirmation) {
+                    Alert.error($scope.alerts, 'Error: Password does not match');
+                    return;
+                }
+                if (initialEmail !== user.email) {
+                    Registration.sendEmailVerification({email: user.email}).$promise.then(function(){
+                        Notification.success('Confirmation letter was sent to your new email address. Your email will be changed right after confirmation.');
+                    });
+                }
+                User.update({id: editUser.id}, {user: user, email_relations: $scope.listOutputUsers}, function (success) {
+                    Logger.log(success);
+                    ModalHandler.close($modalInstance,success);
+                },  function (failure) {
+                    Logger.log(failure);
+                    if(failure.data.password){
+                        Alert.error($scope.alerts, 'Error: Password ' + failure.data.password[0]);
+                    }else{
+                        Alert.error($scope.alerts, 'Error: ' + failure.data.message);
+                    }
+                    
+                });
+                editUser.email_bindings = $scope.listOutputUsers;
+            };
+
+
+            $scope.roleName = function(roles_mask){
+                var str = '';
+                Role.getFromMask(roles_mask).reverse().forEach(function(elem){
+                    str += str == '' ? elem.name : ', ' + elem.name;
+                });
+                return str;
+            };
+
+            $scope.cancel = function () {
+                ModalHandler.dismiss($modalInstance);
+                $scope.listInputUsers = [];
+            };
 }])
 
 .controller('EditNoLoginUserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser',
@@ -452,6 +430,13 @@ angular.module('modals')
 
 .controller('RegistrationResultController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
     $scope.resultMessage = 'Thank you for registering your account on Dental Links. Your account is waiting to start sending HIPAA Compliant referrals for free! You can log in from any browser at www.dentallinks.org using your username (email address) and password.';
+    $scope.ok = function(){
+        ModalHandler.close($modalInstance);
+    }
+}])
+
+    .controller('EmailChangeResultController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
+    $scope.resultMessage = 'Your email was changed. Please login with your new credentials';
     $scope.ok = function(){
         ModalHandler.close($modalInstance);
     }
