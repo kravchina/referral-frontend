@@ -1,7 +1,7 @@
 angular.module('registration')
 // Just for invited providers to some existing practice or to a new practice
-    .controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Notification', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Referral',
-    function ($scope, $location, $stateParams, $modal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral) {
+    .controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Notification', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Referral', 'USER_ROLES',
+    function ($scope, $location, $stateParams, $modal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral, USER_ROLES) {
         $scope.showPracticeButtons = true;
         $scope.isResend = false;
 
@@ -9,10 +9,14 @@ angular.module('registration')
 
         $scope.practiceTypes = Procedure.practiceTypes();
 
+        $scope.roles = [
+            USER_ROLES.doctor,
+            USER_ROLES.aux];
+
 
         $scope.initInvitation = function () {
             if ($scope.promo) {
-                $scope.invitation = {};
+                $scope.invitation = { roles_mask: USER_ROLES.doctor.mask};
                 $scope.practice = {}
             } else {
                 $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
@@ -22,7 +26,7 @@ angular.module('registration')
                             $scope.invitation.referrals_count = success.count;
                         });
                         if(typeof($scope.invitation.roles_mask) === "undefined" || $scope.invitation.roles_mask === null){
-                            $scope.invitation.roles_mask = 2;
+                            $scope.invitation.roles_mask = USER_ROLES.doctor.mask;
                         }
                     },
                     function (failure) {
@@ -86,7 +90,7 @@ angular.module('registration')
                         skip_security_code: invitation.newPracticeId == invitation.practice_id
                     },
                     function (success) {
-                        Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
+                        Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
                         Auth.current_user = success;
                         showResultDialog();
                     },
@@ -115,7 +119,6 @@ angular.module('registration')
                                 token: success.user.authentication_token,
                                 email: success.user.email,
                                 roles: success.user.roles,
-                                is_admin: success.user.is_admin,
                                 id: success.user.id,
                                 practice_id: success.user.practice_id
                             });
@@ -224,7 +227,7 @@ angular.module('registration')
             user.practice_id = user.practice.id;
             Registration.save({user: user, invitation_token: $stateParams.invitation_token, security_code: $scope.security_code, skip_security_code: user.newPracticeId == user.practice_id},
                 function (success) {
-                    Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, is_admin: success.is_admin, id: success.id, practice_id: success.practice_id});
+                    Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
                     Auth.current_user = success;
                     showResultDialog();
                 },

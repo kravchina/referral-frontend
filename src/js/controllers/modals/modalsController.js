@@ -171,24 +171,52 @@ angular.module('modals')
     };
 }])
 
-.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger) {
+.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
     $scope.result = {};
     $scope.alerts = [];
     $scope.isInvite = true;
     $scope.user = {};
+    $scope.listInputRoles = Role.getAllRoles().map(function(role){
+        return {id: role.id, mask: role.mask, name: role.name, ticked: false, isDisabled: false};
+    });
+        console.log($scope.listInputRoles);
+    $scope.listOutputRoles = [];
 
     $scope.toggleRadio = function(user){
-        if($scope.isInvite){
-            user.roles_mask = '';
-        } else {
-            user.roles_mask = 2;
+        $scope.listInputRoles.map(function(elem){
+            if(!$scope.isInvite){
+                if(elem.id == USER_ROLES.doctor.id){
+                    elem.ticked = true;
+                    elem.isDisabled = false;
+                } else {
+                    elem. ticked = false;
+                    elem.isDisabled = true;
+                }
+            } else {
+                elem.ticked = false;
+                elem.isDisabled = false;
+            }
+        });
+    };
+
+    $scope.onRoleSelect = function(selectedItem){
+        if((selectedItem.id == USER_ROLES.doctor.id || selectedItem.id == USER_ROLES.aux.id) && $scope.isInvite){
+            $scope.listInputRoles.map(function(elem){
+                if(elem.id == USER_ROLES.aux.id && selectedItem.id == USER_ROLES.doctor.id){
+                    elem.isDisabled = !elem.isDisabled;
+                }
+                if(elem.id == USER_ROLES.doctor.id && selectedItem.id == USER_ROLES.aux.id){
+                    elem.isDisabled = !elem.isDisabled;
+                }
+            });
         }
     };
 
     $scope.ok = function (user) {
         user.practice_id = Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
-        
+        user.roles_mask = Role.convertRolesToMask($scope.listOutputRoles);
+
         if($scope.isInvite){
             ProviderInvitation.saveUser({provider_invitation: user},
                 function (success) {
@@ -211,6 +239,7 @@ angular.module('modals')
                 });
         }
     };
+
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
     };
@@ -290,8 +319,8 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'Registration', 'ProviderInvitation', 'Notification',
-        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, Registration, ProviderInvitation, Notification) {
+    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role',
+        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, Registration, ProviderInvitation, Notification, USER_ROLES, Role) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
@@ -333,20 +362,28 @@ angular.module('modals')
                 }
                 User.update({id: editUser.id}, {user: user, email_relations: $scope.listOutputUsers}, function (success) {
                     Logger.log(success);
-                    ModalHandler.close($modalInstance, success);
-                }, function (failure) {
+                    ModalHandler.close($modalInstance,success);
+                },  function (failure) {
                     Logger.log(failure);
-                    if (failure.data.password) {
+                    if(failure.data.password){
                         Alert.error($scope.alerts, 'Error: Password ' + failure.data.password[0]);
-                    } else {
+                    }else{
                         Alert.error($scope.alerts, 'Error: ' + failure.data.message);
                     }
-
+                    
                 });
-
-
                 editUser.email_bindings = $scope.listOutputUsers;
             };
+
+
+            $scope.roleName = function(roles_mask){
+                var str = '';
+                Role.getFromMask(roles_mask).reverse().forEach(function(elem){
+                    str += str == '' ? elem.name : ', ' + elem.name;
+                });
+                return str;
+            };
+
             $scope.cancel = function () {
                 ModalHandler.dismiss($modalInstance);
                 $scope.listInputUsers = [];
