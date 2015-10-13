@@ -169,17 +169,20 @@ angular.module('dentalLinks')
         state('console.practice', {
             url: '/practice',
             templateUrl: 'partials/console_practice.html',
-            controller: 'PracticeConsoleController'
+            controller: 'PracticeConsoleController',
+            access: [USER_ROLES.super]
         }).
         state('console.reports', {
             url: '/reports',
             templateUrl: 'partials/console_reports.html',
-            controller: 'ReportsConsoleController'
+            controller: 'ReportsConsoleController',
+            access: [USER_ROLES.super]
         }).
         state('console.utilities', {
             url: '/utilities',
             templateUrl: 'partials/console_utilities.html',
-            controller: 'UtilitiesConsoleController'
+            controller: 'UtilitiesConsoleController',
+            access: [USER_ROLES.super]
         }).
         state('faq', {
             url: '/faq',

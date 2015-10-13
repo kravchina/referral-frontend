@@ -14,9 +14,8 @@ angular.module('dentalLinksServices')
             }
             auth = $cookies.getObject('auth') || {};
 
-            auth.roles = Role.getRolesByNames(auth.roles);
-
             if(auth.email){
+                auth.roles = Role.getRolesByNames(auth.roles);
                 return Role.hasRoles(roles, auth.roles);
             }
 
