@@ -1,6 +1,6 @@
 angular.module('createReferrals')
-    .controller('CreateReferralsController', ['$scope', '$state','Notification', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper', 'User',
-    function ($scope, $state, Notification, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User) {
+    .controller('CreateReferralsController', ['$scope', '$state','Notification', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper', 'User', 'USER_ROLES',
+    function ($scope, $state, Notification, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User, USER_ROLES) {
 
         var auth = $scope.auth = Auth.get() || {};
 
@@ -9,7 +9,7 @@ angular.module('createReferrals')
         $scope.currentPracticeProviders = User.getOtherProviders({practice_id: auth.practice_id});
         $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
 
-        $scope.userIsAux = auth.roles.indexOf('aux') >= 0;
+        $scope.userIsAux = Auth.hasRole(USER_ROLES.aux);
 
         $scope.onPracticeSelected = ReferralHelper.onPracticeSelected($scope, auth);
 

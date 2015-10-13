@@ -1,11 +1,12 @@
 angular.module('viewReferrals')
-    .controller('ViewReferralsController', ['$scope', '$location', '$stateParams', 'FileUploader', '$timeout', '$anchorScroll', 'Notification', 'Referral', 'Practice', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message', 'ProgressIndicator',
-    function ($scope, $location, $stateParams, FileUploader, $timeout, $anchorScroll, Notification, Referral, Practice, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message, ProgressIndicator) {
+    .controller('ViewReferralsController', ['$scope', '$location', '$stateParams', 'FileUploader', '$timeout', '$anchorScroll', 'Notification', 'Referral', 'Practice', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message', 'ProgressIndicator', 'USER_ROLES',
+    function ($scope, $location, $stateParams, FileUploader, $timeout, $anchorScroll, Notification, Referral, Practice, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message, ProgressIndicator, USER_ROLES) {
         $scope.uploader = new FileUploader();
 
         $scope.total_size = 0;
 
         $scope.auth = Auth.get();
+        $scope.auth.is_admin = Auth.hasRole(USER_ROLES.admin);
         if(message){
             Notification.error(message);
         }
@@ -57,14 +58,14 @@ angular.module('viewReferrals')
                 controller: 'DatePickerModalController',
                 resolve: {
                     currentDate: function(){
-                        return attachment.last_modified;
+                        return attachment.attach_updated_at;
                     }
                 }
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (date) {
-                Attachment.update({id:attachment.id}, {last_modified: date}, function(success){
-                    attachment.last_modified = date;
+                Attachment.update({id:attachment.id}, {attach_updated_at: date}, function(success){
+                    attachment.attach_updated_at = date;
                 });
             });
         };

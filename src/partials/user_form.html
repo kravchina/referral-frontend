@@ -34,19 +34,25 @@
         <div class="input-block" ng-class="{ 'has-error': userForm.email.$dirty && userForm.email.$invalid }" ng-show="isInvite">
             <input type="email" class="form-control" name="email" ng-model="user.email" placeholder="Enter user's email address &hellip;" ng-required="isInvite">
         </div>
-        <div class="input-block"  ng-class="{ 'has-error': userForm.role.$dirty && userForm.role.$invalid }" >
-            <select type="text"  name="role" class="form-control" ng-model="user.roles_mask" ng-required="true">
-                <option selected="selected" disabled="disabled" class="placeholder" value="" ng-show="isInvite">Select role</option>
-                <option value="2">Doctor</option>
-                <option value="1" ng-show="isInvite">Auxiliary</option>
-            </select>
-        </div>
-        <div class="input-block" ng-class="" ng-if="isInvite">
-            &nbsp;<input type="checkbox" name="is_admin" ng-model="user.is_admin">&nbsp;Admin?
+        <label>Select user roles:</label>
+        <div class="input-block">
+            <div isteven-multi-select
+                    input-model = "listInputRoles"
+                    output-model = "listOutputRoles"
+                    button-label = "name"
+                    item-label = "name"
+                    tick-property = "ticked"
+                    disable-property = "isDisabled"
+                    on-item-click = "onRoleSelect(data)"
+                    helper-elements = ""
+                    >
+            </div>
+            <input type="text" ng-model="listOutputRoles" name="rolesValidate" style="display:none" required />
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-orange" ng-click="ok(user)" ng-disabled="userForm.$invalid || (user.password != user.passwordConfirm)">Send</button>
+        <button ng-show="isInvite" type="submit" class="btn btn-orange" ng-click="ok(user)" ng-disabled="userForm.$invalid || (user.password != user.passwordConfirm)">Send</button>
+        <button ng-show="!isInvite" type="submit" class="btn btn-orange" ng-click="ok(user)" ng-disabled="userForm.$invalid || (user.password != user.passwordConfirm)">Save</button>
         <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Discard</button>
     </div>
 </form>

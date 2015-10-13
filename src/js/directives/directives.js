@@ -1,7 +1,7 @@
 angular.module('dentalLinksDirectives')
 // Angular File Upload module does not include this directive
 // Only for example
-.directive('access', [ 'Auth', function (Auth) {
+.directive('access', [ 'Auth', 'USER_ROLES', function (Auth, USER_ROLES) {
     return {
         restrict: 'A',
         link: function (scope, $element, attrs) {
@@ -14,7 +14,7 @@ angular.module('dentalLinksDirectives')
     }
 }])
 
-.directive('accessEnable', [ 'Auth', function (Auth) {
+.directive('accessEnable', [ 'Auth', 'USER_ROLES', function (Auth, USER_ROLES) {
     return {
         scope: true,
         restrict: 'A',
@@ -357,7 +357,7 @@ angular.module('dentalLinksDirectives')
     }
 }])
 
-.directive('dynamicHtml', function ($compile) {
+.directive('dynamicHtml', ['$compile', function ($compile) {
   return {
     restrict: 'A',
     replace: true,
@@ -368,7 +368,7 @@ angular.module('dentalLinksDirectives')
       });
     }
   };
-})
+}])
 
 .directive('phoneFormatter', ['$compile', function($compile){
     return {
