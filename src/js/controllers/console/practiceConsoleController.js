@@ -1,4 +1,6 @@
 angular.module('console')
-    .controller('PracticeConsoleController', ['$scope', function($scope){
+    .controller('PracticeConsoleController', ['$scope', 'Auth', function($scope, Auth){
+
+        $scope.auth = Auth.get() || {};
 
     }]);
