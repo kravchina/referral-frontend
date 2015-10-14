@@ -160,6 +160,30 @@ angular.module('dentalLinks')
             controller: 'AdminSubscriptionController',
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
+        state('console', {
+            abstract: true,
+            url: '/console',
+            templateUrl: 'partials/console.html',
+            controller: 'ConsoleController'
+        }).
+        state('console.practice', {
+            url: '/practice',
+            templateUrl: 'partials/console_practice.html',
+            controller: 'PracticeConsoleController',
+            access: [USER_ROLES.super]
+        }).
+        state('console.reports', {
+            url: '/reports',
+            templateUrl: 'partials/console_reports.html',
+            controller: 'ReportsConsoleController',
+            access: [USER_ROLES.super]
+        }).
+        state('console.utilities', {
+            url: '/utilities',
+            templateUrl: 'partials/console_utilities.html',
+            controller: 'UtilitiesConsoleController',
+            access: [USER_ROLES.super]
+        }).
         state('faq', {
             url: '/faq',
             templateUrl: 'partials/faq.html'

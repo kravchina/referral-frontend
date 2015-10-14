@@ -16,15 +16,10 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // TODO [ak] would be very good to autogenerate these dependencies somehow
-      'http://code.jquery.com/jquery-2.1.1.min.js',
-      'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js',
-      'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-mocks.js',
-      'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-cookies.js',
-      'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-resource.js',
-      'http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.2.js',
-      'http://angular-ui.github.io/ui-router/release/angular-ui-router.js',
-      'build/**/*.js', // it will find our test specs there
+      'https://js.stripe.com/v2/',
+      'build/local/**/*.js', // it will find our test specs there
       'test/unit/**/*.js', // it will find our test specs there
+      'http://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-mocks.js',
     ],
 
 
