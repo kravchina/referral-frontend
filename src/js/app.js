@@ -2,11 +2,11 @@
 angular.module('dentalLinks')
 
 .constant('USER_ROLES', {
-        admin: {id: 'admin', name: 'Administrator', mask: 1},
-        doctor: {id: 'doctor', name: 'Dental Services Provider', mask: 2},
-        aux: {id: 'aux', name: 'Auxiliary', mask: 4},
-        super: {id: 'super', name: 'God of DentalLinks', mask: 8},
-        public: {id: 'public', name: 'Public Access', mask: 16}
+        admin: {id: 'admin', name: 'Admin', desc: 'Administrator', mask: 1},
+        doctor: {id: 'doctor', name: 'Doctor', desc: 'Dental Services Provider', mask: 2},
+        aux: {id: 'aux', name: 'Aux',desc: 'Auxiliary', mask: 4},
+        super: {id: 'super', name: 'Super', desc: 'God of DentalLinks', mask: 8},
+        public: {id: 'public', name: 'Public', desc: 'Public Access', mask: 16}
 })
 
 .constant('FREE_TRIAL_PERIOD', 45)
