@@ -239,6 +239,11 @@ angular.module('dentalLinksDirectives')
         link: function (scope, $element, attrs) {
 
             $element.on('click', function () {
+                angular.element('.btn-delete.active').each(function(key, value){
+                    if($element.get(0) != angular.element(value).get(0)) {
+                        angular.element(value).toggleClass('active');
+                    }
+                });
                 $element.toggleClass('active');
             });
         }
