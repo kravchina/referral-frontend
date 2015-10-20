@@ -61,6 +61,7 @@ require('./controllers/viewReferralsController.js');
 require('./directives/directives.js');
 require('./services/pdf.js');
 require('./services/referralHelper.js');
+require('./services/consoleHelper.js');
 require('./services/services.js');
 require('./services/unsavedChanges.js');
 
