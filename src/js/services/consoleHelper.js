@@ -13,7 +13,7 @@ angular.module('console')
             onPracticeSelected: function(scope){
                 return function(selectedPractice){
                     scope.destinationPractice = selectedPractice;
-                    scope.destinationPractice.users = User.getAllProviders({practice_id: selectedPractice.id}, function(users){
+                    scope.destinationPractice.users = User.getAllUsers({practice_id: selectedPractice.id}, function(users){
                         return users;
 
                     });

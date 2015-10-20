@@ -183,7 +183,7 @@ angular.module('dentalLinksServices')
 .factory('User', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/users/:id', {}, {
         getInvitees: {method: 'GET', url: API_ENDPOINT + '/invitees/:user_id', isArray: true},
-        getAllProviders: {method: 'GET', url: API_ENDPOINT + '/all_providers', isArray: true},
+        getAllUsers: {method: 'GET', url: API_ENDPOINT + '/all_users', isArray: true},
         getOtherProviders: {method: 'GET', url: API_ENDPOINT + '/other_providers', isArray: true},
         getProviders: {method: 'GET', url: API_ENDPOINT + '/providers', isArray: true},
         update: {method: 'PUT' },
