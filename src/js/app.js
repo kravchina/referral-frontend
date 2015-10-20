@@ -5,7 +5,7 @@ angular.module('dentalLinks')
         admin: {id: 'admin', name: 'Admin', desc: 'Administrator', mask: 1},
         doctor: {id: 'doctor', name: 'Doctor', desc: 'Dental Services Provider', mask: 2},
         aux: {id: 'aux', name: 'Aux',desc: 'Auxiliary', mask: 4},
-        super: {id: 'super', name: 'Super', desc: 'God of DentalLinks', mask: 8},
+        super: {id: 'super', name: 'Super', desc: 'Super User', mask: 8},
         public: {id: 'public', name: 'Public', desc: 'Public Access', mask: 16}
 })
 
