@@ -4,12 +4,15 @@
         <h4 class="modal-title" id="myModalLabel">Edit user</h4>
     </div>
     <div class="modal-body">
-        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message | i18n}}</alert>
         <div class="input-block">
             <input type="text" name="userName" class="form-control" ng-value="user.first_name +' '+ user.last_name" ng-disabled="true">
         </div>
         <div class="input-block">
-            <input type="text" name="userRole" class="form-control" ng-value="user.roles_mask == 2 ? 'Doctor' : 'Aux'" ng-disabled="true">
+            <input type="email" name="email" class="form-control" ng-model="user.email" ng-change="checkEmail(user.email)" ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }">
+        </div>
+        <div class="input-block">
+            <input type="text" name="userRole" class="form-control" ng-value="roleName(user.roles_mask)" ng-disabled="true">
         </div>
         <div class="input-block" ng-class="{ 'has-error': userForm.password.$dirty && userForm.password.$invalid }">
             <input type="password" name="password" class="form-control" ng-model="user.password" placeholder="Enter Password &hellip;" ng-minlength="8"  ng-required="userForm.password.$dirty">
@@ -18,12 +21,6 @@
             <input type="password" name="password_confirmation" class="form-control" ng-model="user.password_confirmation" placeholder="Enter Password Again &hellip;" ng-minlength="8" ng-required="userForm.password.$dirty">
         </div>
         <alert type="warning">Users with Admin privileges are allowed to create and edit users, allows auxiliary to sign and send referrals and to set referrals complete</alert>
-        <div ng-if="auth.is_admin" class="input-block" ng-class="{'has-error': userForm.is_admin.$dirty && userForm.is_admin.$invalid }">
-            <label>
-                <input type="checkbox" name="is_admin" ng-model="user.is_admin">
-                Admin?
-            </label>
-        </div>
         <label>Notification preference:</label>
         <div class="radio">
             <label>

@@ -25,6 +25,7 @@ require('angularCreditCards');
 angular.module('jsPDF', []).factory('jsPDF', function(){ return require('jsPDF');});
 
 angular.module('admin', ['ui.bootstrap', 'angular-stripe', 'credit-cards']);
+angular.module('console', ['ui.bootstrap']);
 angular.module('history', ['ui.bootstrap', 'infinite-scroll']);
 angular.module('login', []);
 angular.module('passwords', []);
@@ -43,6 +44,10 @@ require('./controllers/admin/adminInviteController.js');
 require('./controllers/admin/adminPracticeController.js');
 require('./controllers/admin/adminSubscriptionController.js');
 require('./controllers/admin/adminUsersController.js');
+require('./controllers/console/consoleController.js');
+require('./controllers/console/practiceConsoleController.js');
+require('./controllers/console/reportsConsoleController.js');
+require('./controllers/console/utilitiesConsoleController.js');
 require('./controllers/modals/modalsController.js');
 require('./controllers/createReferralsController.js');
 require('./controllers/errorController.js');
@@ -56,6 +61,7 @@ require('./controllers/viewReferralsController.js');
 require('./directives/directives.js');
 require('./services/pdf.js');
 require('./services/referralHelper.js');
+require('./services/consoleHelper.js');
 require('./services/services.js');
 require('./services/unsavedChanges.js');
 
@@ -64,6 +70,7 @@ angular.module('dentalLinks', [
     'ui.router.tabs',
     'ngCookies',
     'admin',
+    'console',
     'history',
     'login',
     'passwords',

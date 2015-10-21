@@ -2,10 +2,11 @@
 angular.module('dentalLinks')
 
 .constant('USER_ROLES', {
-    public: 'public',
-    doctor: 'doctor',
-    admin: 'admin',
-    aux: 'aux'
+        admin: {id: 'admin', name: 'Admin', desc: 'Administrator', mask: 1},
+        doctor: {id: 'doctor', name: 'Doctor', desc: 'Dental Services Provider', mask: 2},
+        aux: {id: 'aux', name: 'Aux',desc: 'Auxiliary', mask: 4},
+        super: {id: 'super', name: 'Super', desc: 'Super User', mask: 8},
+        public: {id: 'public', name: 'Public', desc: 'Public Access', mask: 16}
 })
 
 .constant('FREE_TRIAL_PERIOD', 45)
@@ -159,6 +160,30 @@ angular.module('dentalLinks')
             controller: 'AdminSubscriptionController',
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
+        state('console', {
+            abstract: true,
+            url: '/console',
+            templateUrl: 'partials/console.html',
+            controller: 'ConsoleController'
+        }).
+        state('console.practice', {
+            url: '/practice',
+            templateUrl: 'partials/console_practice.html',
+            controller: 'PracticeConsoleController',
+            access: [USER_ROLES.super]
+        }).
+        state('console.reports', {
+            url: '/reports',
+            templateUrl: 'partials/console_reports.html',
+            controller: 'ReportsConsoleController',
+            access: [USER_ROLES.super]
+        }).
+        state('console.utilities', {
+            url: '/utilities',
+            templateUrl: 'partials/console_utilities.html',
+            controller: 'UtilitiesConsoleController',
+            access: [USER_ROLES.super]
+        }).
         state('faq', {
             url: '/faq',
             templateUrl: 'partials/faq.html'
@@ -166,6 +191,33 @@ angular.module('dentalLinks')
         state('license', {
             url: '/license',
             templateUrl: 'partials/license.html'
+        }).
+    state('confirmEmail', {
+            url: '/confirm_email/:token',
+            onEnter: ['$state', '$stateParams', 'Registration', 'Notification', '$modal', 'ModalHandler', function($state, $stateParams, Registration, Notification, $modal, ModalHandler) {
+                Registration.confirmEmail({confirmation_token: $stateParams.token}).$promise
+                    .then(function(){
+                        // confirmation token is valid, show login page
+                        var modalInstance = $modal.open({
+                            templateUrl: 'partials/change_email_result.html',
+                            controller: 'EmailChangeResultController'
+                        });
+                        ModalHandler.set(modalInstance);
+                        modalInstance.result.then(function () {
+                         $state.go('signIn');
+                        });
+
+                    }, function(response){
+                        if(response.status === 404) {
+                            $state.go('error_page', {error_key: 'confirmation_token.not.found'});
+                        }
+                        if(response.status === 422) {
+                            $state.go('error_page', {error_key: 'confirmation_token.invalid'});
+                        }
+                    });
+            }],
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+
         });
     $urlRouterProvider.otherwise('/sign_in');
 }])

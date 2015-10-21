@@ -3,33 +3,20 @@
  */
 angular.module('dentalLinksServices')
 
-.factory('Auth', ['$cookies', '$location', 'USER_ROLES', function ($cookies, $location, USER_ROLES) {
+.factory('Auth', ['$cookies', '$location', 'USER_ROLES', 'Role', function ($cookies, $location, USER_ROLES, Role) {
+    var auth;
     return {
         authorize: function (roles) {
             if (roles === undefined) {
                 return true;
+            } else if(Array.isArray(roles) && typeof(roles[0]) === 'string'){
+                roles = Role.getRolesByNames(roles);
             }
-            var auth = $cookies.getObject('auth') || {};
-
-            // if (auth.roles) {
-            //     for (var i = 0; i < roles.length; i++) {
-            //         if (auth.roles.indexOf(roles[i]) >= 0) {
-            //             return true;
-            //         }
-            //     }
-            // }
+            auth = $cookies.getObject('auth') || {};
 
             if(auth.email){
-                for(var i = 0; i < roles.length; i++){
-                    if(roles[i] == USER_ROLES.admin){
-                        if(auth.is_admin){
-                           return true; 
-                        }
-                    }else if (auth.roles.indexOf(roles[i]) >= 0) {
-                        return true;
-                    }
-
-                }
+                auth.roles = Role.getRolesByNames(auth.roles);
+                return Role.hasRoles(roles, auth.roles);
             }
 
             return false;
@@ -46,10 +33,19 @@ angular.module('dentalLinksServices')
             }
         },
         set: function (value) {
+            auth = value;
             $cookies.putObject('auth', value);
         },
         remove: function () {
+            auth = {};
             $cookies.remove('auth');
+        },
+        hasRole: function(role){
+            if(Array.isArray(role) && typeof(roles[0]) === 'string'){
+                role = Role.getRolesByNames(role);
+            }
+
+            return Role.hasRoles([role], auth.roles);
         }
     };
 }])
@@ -145,7 +141,9 @@ angular.module('dentalLinksServices')
         verify_security_code: {method: 'GET', url: API_ENDPOINT + '/verify_security_code/:code'},
         create_user: {method: 'POST', url: API_ENDPOINT + '/register_without_invite'},
         create_no_login_user: {method: 'POST', url: API_ENDPOINT + '/register_no_login_user'},
-        register_with_promo: {method: 'POST', url: API_ENDPOINT + '/register_with_promo'}
+        register_with_promo: {method: 'POST', url: API_ENDPOINT + '/register_with_promo'},
+        confirmEmail: {method: 'POST', url: API_ENDPOINT + '/confirm_email'},
+        sendEmailVerification: {method: 'POST', url: API_ENDPOINT + '/request_email_update'}
     })
 }])
 
@@ -185,6 +183,7 @@ angular.module('dentalLinksServices')
 .factory('User', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/users/:id', {}, {
         getInvitees: {method: 'GET', url: API_ENDPOINT + '/invitees/:user_id', isArray: true},
+        getAllUsers: {method: 'GET', url: API_ENDPOINT + '/all_users', isArray: true},
         getOtherProviders: {method: 'GET', url: API_ENDPOINT + '/other_providers', isArray: true},
         getProviders: {method: 'GET', url: API_ENDPOINT + '/providers', isArray: true},
         update: {method: 'PUT' },
@@ -325,21 +324,81 @@ angular.module('dentalLinksServices')
 
     }
 }])
-    .factory('ProgressIndicator', function(){
-        var progress = {show: false, value: 0};
-        return {
-            start: function(){
-                progress.show = true;
-            },
-            set: function(value){
-                progress.value = value;
-            },
-            finish: function(){
-                progress.value = 0;
-                progress.show = false;
-            },
-            get: function(){
-                return progress;
-            }
+.factory('ProgressIndicator', function(){
+    var progress = {show: false, value: 0};
+    return {
+        start: function(){
+            progress.show = true;
+        },
+        set: function(value){
+            progress.value = value;
+        },
+        finish: function(){
+            progress.value = 0;
+            progress.show = false;
+        },
+        get: function(){
+            return progress;
         }
-    });
+    }
+})
+.factory('Role', ['USER_ROLES', function(USER_ROLES){
+    var ROLES = [];
+
+    for(var prop in USER_ROLES){
+        if(USER_ROLES.hasOwnProperty(prop)){
+           ROLES.push(USER_ROLES[prop]);
+        }
+    }
+
+    return {
+        getFromMask: function(rolesMask){
+            return ROLES.filter(function(role){
+                return (rolesMask & role.mask) != 0;
+            });
+        },
+        convertRolesToMask: function(inputArray){
+            var mask = 0;
+
+            inputArray
+                .map(function(elem){
+                    if(typeof(elem) === 'object') {
+                        mask = mask | elem.mask;
+                    } else if(typeof(elem) === 'string'){
+                        mask = mask | ROLES.find(function(role){return role.id == elem;}).mask;
+                    }
+                });
+
+            return mask;
+        },
+        getAllRoles: function(){
+            return ROLES.filter(function(role){
+                return role.id !== 'super' && role.id !== 'public';
+            });
+        },
+        getRolesByNames: function(names){
+            return names.map(function(name){
+                return ROLES.find(function(role){
+                    if(role.id === name){
+                        return true;
+                    }
+                    return false;
+                });
+            });
+        },
+        hasRoles: function(requiredRoles, userRoles){
+            var hasRole = false;
+
+            requiredRoles.forEach(function(requiredRole){
+                userRoles.forEach(function(userRole){
+                    if(requiredRole.mask === userRole.mask){
+                        hasRole = true;
+                    }
+                });
+            });
+
+            return hasRole;
+        }
+    };
+
+}]);

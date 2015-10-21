@@ -58,7 +58,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" ng-href="#/history">{{env}}<strong>Dental</strong>Links</a>
+            <a class="navbar-brand" ng-href="#/history">{{env}}<strong>Dental</strong>Care<strong>Links</strong></a>
         </div>
         <!--<div class="navbar-collapse collapse">-->
 
@@ -73,6 +73,7 @@
                         <!--<li class="dropdown-header">admin</li>-->
                         <li><a href="#/history">History</a></li>
                         <li><a ui-sref="admin.practice">Account Settings</a></li>
+                        <li><a access="super" ui-sref="console.practice">Admin Console</a></li>
                         <li><a href="#/faq">FAQ</a></li>
                         <li><a href="#/license">License Agreement</a></li>
                         <li class="divider"></li>
@@ -98,7 +99,7 @@
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', '{{GOOGLE_ANALYTICS_KEY}}', '{{SITE_URL}}');
+    ga('create', '{{GOOGLE_ANALYTICS_KEY}}', 'auto');
 </script>
 <div class="update-ie">Dental Links has detected that you are using an unsupported version of Internet Explorer. Please upgrade to IE 10+ or use Google Chrome or Firefox</div>
 </body>

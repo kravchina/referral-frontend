@@ -1,7 +1,7 @@
 angular.module('dentalLinksDirectives')
 // Angular File Upload module does not include this directive
 // Only for example
-.directive('access', [ 'Auth', function (Auth) {
+.directive('access', [ 'Auth', 'USER_ROLES', function (Auth, USER_ROLES) {
     return {
         restrict: 'A',
         link: function (scope, $element, attrs) {
@@ -14,7 +14,7 @@ angular.module('dentalLinksDirectives')
     }
 }])
 
-.directive('accessEnable', [ 'Auth', function (Auth) {
+.directive('accessEnable', [ 'Auth', 'USER_ROLES', function (Auth, USER_ROLES) {
     return {
         scope: true,
         restrict: 'A',
@@ -239,6 +239,11 @@ angular.module('dentalLinksDirectives')
         link: function (scope, $element, attrs) {
 
             $element.on('click', function () {
+                angular.element('.btn-delete.active').each(function(key, value){
+                    if($element.get(0) != angular.element(value).get(0)) {
+                        angular.element(value).toggleClass('active');
+                    }
+                });
                 $element.toggleClass('active');
             });
         }

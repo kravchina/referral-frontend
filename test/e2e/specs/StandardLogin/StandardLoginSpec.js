@@ -8,6 +8,9 @@ var adminPracticeSpec = require('./Admin/AdminPracticeSpec');
 var adminUsersSpec = require('./Admin/AdminUsersSpec');
 var adminInviteSpec = require('./Admin/AdminInviteSpec');
 var adminSubscriptionSpec = require('./Admin/AdminSubscriptionSpec');
+var consolePracticeSpec = require('./Console/ConsolePracticeSpec');
+var consoleReportsSpec = require('./Console/ConsoleReportsSpec');
+var consoleUtilitiesSpec = require('./Console/ConsoleUtilitiesSpec');
 var createReferralSpec = require('./CreateReferral/CreateReferralSpec');
 var viewReferralSpec = require('./ViewReferral/ViewReferralSpec');
 
@@ -30,6 +33,9 @@ var StandardLoginSpec = function() {
             adminUsersSpec.run();
             adminInviteSpec.run();
             adminSubscriptionSpec.run();
+            consolePracticeSpec.run();
+            consoleReportsSpec.run();
+            consoleUtilitiesSpec.run();
             createReferralSpec.run();
             viewReferralSpec.run();
             
