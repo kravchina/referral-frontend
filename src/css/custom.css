@@ -1747,3 +1747,27 @@ label.tooth-label-view{
 	text-decoration: underline;
 	cursor: pointer;
 }
+
+@media screen and (max-width: 1199px)  {
+	.btn-delete.active + .btn-change-password{
+		display: none;
+	}
+}
+
+@media screen and (min-width: 992px) and (max-width: 1199px)  {
+	.btn-delete.active{
+		right: 20px !important;
+	}
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+	.btn-delete.active{
+		right: 10px !important;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.btn-delete.active{
+		right: 0px !important;
+	}
+}
