@@ -325,6 +325,7 @@ angular.module('modals')
             $scope.alerts = [];
             Logger.log(editUser.id);
             $scope.user = editUser;//for now we need only is_admin property to be set
+            $scope.user.is_admin = Role.hasRoles([USER_ROLES.admin], Role.getFromMask($scope.user.roles_mask));
             var initialEmail = editUser.email;
 
             $scope.auth = Auth.get();
@@ -351,6 +352,11 @@ angular.module('modals')
 
 
             $scope.ok = function (user) {
+                if(Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && !user.is_admin) {
+                    user.roles_mask -= USER_ROLES.admin.mask;
+                } else if(!Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && user.is_admin) {
+                    user.roles_mask += USER_ROLES.admin.mask;
+                }
                 if (user.password != user.password_confirmation) {
                     Alert.error($scope.alerts, 'Error: Password does not match');
                     return;
