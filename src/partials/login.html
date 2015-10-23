@@ -1,6 +1,6 @@
 <div>
     <form name="form" novalidate class="simple-form">
-        <br />
+        <br/>
 
         <div ng-class="{'has-error': form.email.$invalid && form.email.$dirty}">
             <label>
@@ -17,7 +17,16 @@
         </div>
 
         <button ng-click="login(user)" ng-disabled="form.$invalid">Login</button>
-        <br />
-        <a href="#/reset_password">Forgot password?</a>
+        <p>
+            <a href="#/reset_password">Forgot password?</a>
+        </p>
+
+        <p>
+            <a ng-href="#/register/promo/getstarted">Register</a>
+        </p>
+
+        <p style="text-align: center">
+            <a href="http://www.dentalcarelinks.com/home"><img src="img/promo.jpg"></a>
+        </p>
     </form>
 </div>
