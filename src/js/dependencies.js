@@ -94,6 +94,7 @@ require('./controllers/attachmentsController.js');
 require('./controllers/navController.js');
 require('./controllers/teethController.js');
 require('./controllers/notesController.js');
+require('./controllers/rolesSelectorController.js');
 require('./controllers/notificationAreaController.js');
 require('./services/imageUtils.js');
 require('./services/logger.js');
