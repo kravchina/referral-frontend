@@ -34,21 +34,7 @@
         <div class="input-block" ng-class="{ 'has-error': userForm.email.$dirty && userForm.email.$invalid }" ng-show="isInvite">
             <input type="email" class="form-control" name="email" ng-model="user.email" placeholder="Enter user's email address &hellip;" ng-required="isInvite">
         </div>
-        <label>Select user roles:</label>
-        <div class="input-block">
-            <div isteven-multi-select
-                    input-model = "listInputRoles"
-                    output-model = "listOutputRoles"
-                    button-label = "name"
-                    item-label = "name"
-                    tick-property = "ticked"
-                    disable-property = "isDisabled"
-                    on-item-click = "onRoleSelect(data)"
-                    helper-elements = ""
-                    >
-            </div>
-            <input type="text" ng-model="listOutputRoles" name="rolesValidate" style="display:none" required />
-        </div>
+        <div roles-selector default-roles="defaultRoles" show-roles="showRoles" input-mask="user.roles_mask"></div>
     </div>
     <div class="modal-footer">
         <button ng-show="isInvite" type="submit" class="btn btn-orange" ng-click="ok(user)" ng-disabled="userForm.$invalid || (user.password != user.passwordConfirm)">Send</button>
