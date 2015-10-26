@@ -359,7 +359,7 @@ angular.module('dentalLinksDirectives')
         transclude: true,
         templateUrl: 'partials/notes.html',
         controller: 'NotesController'
-    }
+    };
 }])
 
 .directive('dynamicHtml', ['$compile', function ($compile) {
@@ -373,6 +373,20 @@ angular.module('dentalLinksDirectives')
       });
     }
   };
+}])
+
+.directive('rolesSelector', ['$compile', function ($compile) {
+    return {
+        restrict: 'A',
+        replace: true,
+        scope: {
+            inputMask : '=',
+            defaultRoles : '=',
+            showRoles : '='
+        },
+        templateUrl: 'partials/roles_selector.html',
+        controller: 'RolesSelectorController'
+    };
 }])
 
 .directive('phoneFormatter', ['$compile', function($compile){

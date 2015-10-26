@@ -9,6 +9,9 @@
             <input type="text" name="userName" class="form-control" ng-value="user.first_name +' '+ user.last_name" ng-disabled="true">
         </div>
         <div class="input-block">
+            <input type="email" name="email" class="form-control" ng-model="user.email" ng-change="checkEmail(user.email)" ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }">
+        </div>
+        <div class="input-block">
             <input type="text" name="userRole" class="form-control" ng-value="roleName(user.roles_mask)" ng-disabled="true">
         </div>
         <div class="input-block" ng-class="{ 'has-error': userForm.password.$dirty && userForm.password.$invalid }">
@@ -18,6 +21,12 @@
             <input type="password" name="password_confirmation" class="form-control" ng-model="user.password_confirmation" placeholder="Enter Password Again &hellip;" ng-minlength="8" ng-required="userForm.password.$dirty">
         </div>
         <alert type="warning">Users with Admin privileges are allowed to create and edit users, allows auxiliary to sign and send referrals and to set referrals complete</alert>
+        <div access="admin" class="input-block">
+            <label>
+                <input type="checkbox" name="is_admin" ng-model="user.is_admin">
+                Admin?
+            </label>
+        </div>
         <label>Notification preference:</label>
         <div class="radio">
             <label>
@@ -25,7 +34,7 @@
                 All email notifications for practice
             </label>
         </div>
-        <div class="radio" ng-show="user.roles_mask == 1">
+        <div class="radio" access="aux">
             <label>
                 <input type="radio" ng-model="user.notification_preference" value="1" ng-checked="user.notification_preference == 1 ? true : false">
                 Email notifications from:
@@ -41,7 +50,7 @@
                     >
             </div>
         </div>
-        <div class="radio" ng-show="user.roles_mask != 1">
+        <div class="radio" access="doctor,admin,super">
             <label>
                 <input type="radio" ng-model="user.notification_preference" value="1" ng-checked="user.notification_preference == 1 ? true : false">
                 Email notifications for me only

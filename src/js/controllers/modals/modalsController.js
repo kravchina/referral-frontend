@@ -176,46 +176,23 @@ angular.module('modals')
     $scope.alerts = [];
     $scope.isInvite = true;
     $scope.user = {};
-    $scope.listInputRoles = Role.getAllRoles().map(function(role){
-        return {id: role.id, mask: role.mask, name: role.name, ticked: false, isDisabled: false};
-    });
-        console.log($scope.listInputRoles);
-    $scope.listOutputRoles = [];
+    $scope.user.roles_mask = 0;
+    $scope.defaultRoles = [USER_ROLES.aux];
+    $scope.showRoles = [USER_ROLES.aux, USER_ROLES.doctor, USER_ROLES.admin];
 
     $scope.toggleRadio = function(user){
-        $scope.listInputRoles.map(function(elem){
-            if(!$scope.isInvite){
-                if(elem.id == USER_ROLES.doctor.id){
-                    elem.ticked = true;
-                    elem.isDisabled = false;
-                } else {
-                    elem. ticked = false;
-                    elem.isDisabled = true;
-                }
-            } else {
-                elem.ticked = false;
-                elem.isDisabled = false;
-            }
-        });
-    };
-
-    $scope.onRoleSelect = function(selectedItem){
-        if((selectedItem.id == USER_ROLES.doctor.id || selectedItem.id == USER_ROLES.aux.id) && $scope.isInvite){
-            $scope.listInputRoles.map(function(elem){
-                if(elem.id == USER_ROLES.aux.id && selectedItem.id == USER_ROLES.doctor.id){
-                    elem.isDisabled = !elem.isDisabled;
-                }
-                if(elem.id == USER_ROLES.doctor.id && selectedItem.id == USER_ROLES.aux.id){
-                    elem.isDisabled = !elem.isDisabled;
-                }
-            });
+        if(!$scope.isInvite) {
+            $scope.defaultRoles = [USER_ROLES.doctor];
+            $scope.showRoles = [USER_ROLES.doctor];
+        }else {
+            $scope.defaultRoles = [USER_ROLES.aux];
+            $scope.showRoles = [USER_ROLES.doctor, USER_ROLES.aux, USER_ROLES.admin];
         }
     };
 
     $scope.ok = function (user) {
         user.practice_id = Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
-        user.roles_mask = Role.convertRolesToMask($scope.listOutputRoles);
 
         if($scope.isInvite){
             ProviderInvitation.saveUser({provider_invitation: user},
@@ -325,6 +302,7 @@ angular.module('modals')
             $scope.alerts = [];
             Logger.log(editUser.id);
             $scope.user = editUser;//for now we need only is_admin property to be set
+            $scope.user.is_admin = Role.hasRoles([USER_ROLES.admin], Role.getFromMask($scope.user.roles_mask));
             var initialEmail = editUser.email;
 
             $scope.auth = Auth.get();
@@ -351,6 +329,11 @@ angular.module('modals')
 
 
             $scope.ok = function (user) {
+                if(Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && !user.is_admin) {
+                    user.roles_mask -= USER_ROLES.admin.mask;
+                } else if(!Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && user.is_admin) {
+                    user.roles_mask += USER_ROLES.admin.mask;
+                }
                 if (user.password != user.password_confirmation) {
                     Alert.error($scope.alerts, 'Error: Password does not match');
                     return;

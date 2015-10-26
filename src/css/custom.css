@@ -255,8 +255,8 @@ textarea.form-control {
 
 }
 
-.radio-inline input{
-	margin-left: 0!important;
+.radio-inline input, .checkbox-inline input{
+	margin-left: 0 !important;
 
 }
 /* Buttons */
@@ -1770,4 +1770,17 @@ label.tooth-label-view{
 	.btn-delete.active{
 		right: 0px !important;
 	}
+}
+.roles-selector .row{
+	margin-left: 0px;
+}
+
+.roles-selector input{
+	margin-left: -13px !important;
+}
+
+.roles-selector label.checkbox, .roles-selector label.radio {
+	font-weight: 400;
+	margin-top: 0px;
+	margin-bottom: 5px;
 }

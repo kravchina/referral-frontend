@@ -22,7 +22,20 @@ var AdminUsersSpec = function() {
                 element.all(by.css('[delete-button] .link-orange')).last().click();
                 expect(element.all(by.css('[delete-button].active')).count()).toBe(0);
             });
-            
+
+            it('check is_admin checkbox is present on edit user dialog', function() {
+                element.all(by.css('[ng-repeat="user in practice.users.concat(invitedUsers)"]')).filter(function (item) {
+                    return item.all(by.css('td')).get(1).getText().then(function (text) {
+                        return text == browser.params.login.correct.email;
+                    });
+                }).then(function (rows) {
+                    rows[0].element(by.css('.dlicons-pencil')).click();
+                    element(by.css('.modal-dialog')).isDisplayed().then(function () {
+                        expect(element(by.css('.modal-dialog input[name="is_admin"]'))).toBeTruthy();
+                        element(by.css('.modal-dialog button[ng-click="cancel()"]')).click();
+                    });
+                });
+            });
         });
     };
 };

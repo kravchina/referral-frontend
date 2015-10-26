@@ -58,14 +58,14 @@ angular.module('viewReferrals')
                 controller: 'DatePickerModalController',
                 resolve: {
                     currentDate: function(){
-                        return attachment.attach_updated_at;
+                        return attachment.last_modified;
                     }
                 }
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (date) {
-                Attachment.update({id:attachment.id}, {attach_updated_at: date}, function(success){
-                    attachment.attach_updated_at = date;
+                Attachment.update({id:attachment.id}, {last_modified: date}, function(success){
+                    attachment.last_modified = date;
                 });
             });
         };
