@@ -21,6 +21,12 @@
             <input type="password" name="password_confirmation" class="form-control" ng-model="user.password_confirmation" placeholder="Enter Password Again &hellip;" ng-minlength="8" ng-required="userForm.password.$dirty">
         </div>
         <alert type="warning">Users with Admin privileges are allowed to create and edit users, allows auxiliary to sign and send referrals and to set referrals complete</alert>
+        <div access="admin" class="input-block">
+            <label>
+                <input type="checkbox" name="is_admin" ng-model="user.is_admin">
+                Admin?
+            </label>
+        </div>
         <label>Notification preference:</label>
         <div class="radio">
             <label>
