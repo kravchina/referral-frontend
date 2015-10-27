@@ -15,10 +15,10 @@
             <input type="text" name="userRole" class="form-control" ng-value="roleName(user.roles_mask)" ng-disabled="true">
         </div>
         <div class="input-block" ng-class="{ 'has-error': userForm.password.$dirty && userForm.password.$invalid }">
-            <input type="password" name="password" class="form-control" ng-model="user.password" placeholder="Enter Password &hellip;" ng-minlength="8"  ng-required="userForm.password.$dirty">
+            <input type="password" name="password" class="form-control" ng-model="user.password" placeholder="New Password &hellip;" ng-minlength="8"  ng-required="userForm.password.$dirty">
         </div>
         <div class="input-block" ng-class="{ 'has-error': userForm.password_confirmation.$dirty && (userForm.password_confirmation.$invalid  || user.password_confirmation !== user.password) }">
-            <input type="password" name="password_confirmation" class="form-control" ng-model="user.password_confirmation" placeholder="Enter Password Again &hellip;" ng-minlength="8" ng-required="userForm.password.$dirty">
+            <input type="password" name="password_confirmation" class="form-control" ng-model="user.password_confirmation" placeholder="Confirm New Password &hellip;" ng-minlength="8" ng-required="userForm.password.$dirty">
         </div>
         <alert type="warning">Users with Admin privileges are allowed to create and edit users, allows auxiliary to sign and send referrals and to set referrals complete</alert>
         <div access="admin" class="input-block">
