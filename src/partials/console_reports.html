@@ -1,1 +1,93 @@
-<h3>Reports tab</h3>
+<div class="row">
+    <div class="col-sm-4">
+        <div class="alert alert-success">
+            <h3>Invitations</h3>
+            <div class="row">
+                <div class="col-sm-4 text-center">
+                    Day: <span class="badge">{{invitations.day.length}}</span>
+                </div>
+                <div class="col-sm-4 text-center">
+                    Week: <span class="badge">{{invitations.week.length}}</span>
+                </div>
+                <div class="col-sm-4 text-center">
+                    YTD: <span class="badge">{{invitations.ytd.length}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="alert alert-success">
+            <h3>Practices</h3>
+            <div class="row">
+                <div class="col-sm-4 text-center">
+                    Day: <span class="badge">{{practices.day.length}}</span>
+                </div>
+                <div class="col-sm-4 text-center">
+                    Week: <span class="badge">{{practices.week.length}}</span>
+                </div>
+                <div class="col-sm-4 text-center">
+                    YTD: <span class="badge">{{practices.ytd.length}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="alert alert-success">
+            <h3>Users</h3>
+            <div class="row">
+                <div class="col-sm-4 text-center">
+                    Day: <span class="badge">{{users.day.length}}</span>
+                </div>
+                <div class="col-sm-4 text-center">
+                    Week: <span class="badge">{{users.week.length}}</span>
+                </div>
+                <div class="col-sm-4 text-center">
+                    YTD: <span class="badge">{{users.ytd.length}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="input-block col-sm-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">Invitations</div>
+            <div class="panel-body">
+                <accordion close-others="false">
+                    <accordion-group heading="{{$index+1}}) {{invitation.first_name}} {{invitation.last_name}}" ng-repeat="invitation in invitations.day">
+                        <label>Email</label>
+                        <input type="text" class="form-control" value="{{invitation.email}}" disabled>
+                        <label>Status</label>
+                        <input type="text" class="form-control" value="{{invitation.status}}" disabled>
+                    </accordion-group>
+                </accordion>
+            </div>
+        </div>
+    </div>
+    <div class="input-block col-sm-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">Practices</div>
+            <div class="panel-body">
+                <accordion close-others="false">
+                    <accordion-group heading="{{$index+1}}) {{practice.name}}" ng-repeat="practice in practices.day">
+
+                    </accordion-group>
+                </accordion>
+            </div>
+        </div>
+    </div>
+    <div class="input-block col-sm-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">Users</div>
+            <div class="panel-body">
+                <accordion close-others="false">
+                    <accordion-group heading="{{$index+1}}) {{user.title}} {{user.first_name}} {{user.last_name}}" ng-repeat="user in users.day">
+                        <label>Email</label>
+                        <input type="text" class="form-control" value="{{user.email}}" disabled>
+                    </accordion-group>
+                </accordion>
+            </div>
+        </div>
+    </div>
+</div>
