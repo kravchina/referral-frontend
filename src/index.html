@@ -81,6 +81,11 @@
                     </ul>
                 </li>
             </ul>
+                 Notification: {{notification.message}}
+        <div class="alert global-notification-bar"  ng-class="notification.type" ng-show="notification.message" ng-controller="NotificationAreaController" >
+            <div><span dynamic-html="notification.message | i18n"></span></div>
+        </div>
+
         <!--</div>/.nav-collapse -->
     </div>
     <div class="global-notification" ng-class="notification.type" ng-show="notification.message" ng-controller="NotificationAreaController">
@@ -88,7 +93,6 @@
     </div>
 </nav>
 </div>
-
 <section ui-view class="container">
 
 </section> <!-- /container -->
