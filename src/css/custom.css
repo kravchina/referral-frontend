@@ -1802,7 +1802,7 @@ label.tooth-label-view{
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
 	.btn-delete.active{
-		right: 10px !important;
+		right:5px !important;
 	}
 }
 
