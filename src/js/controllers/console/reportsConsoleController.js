@@ -6,6 +6,5 @@ angular.module('console')
             $scope.invitations = success.invitations;
             $scope.practices = success.practices;
             $scope.users = success.users;
-            console.log(success);
         });
     }]);
