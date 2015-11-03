@@ -5,6 +5,7 @@ var signInPage = require('./pages/SignInPage');
 
 var invalidLoginSpec = require('./specs/InvalidLoginSpec');
 var standardLoginSpec = require('./specs/StandardLogin/StandardLoginSpec');
+var superUserLoginSpec = require('./specs/SuperUserLogin/SuperUserLoginSpec');
 var adminPracticePremiumSpec = require('./specs/AdminPracticePremiumSpec');
 var adminPracticeNonPremiumSpec = require('./specs/AdminPracticeNonPremiumSpec');
 var adminSubscriptionPremiumSpec = require('./specs/AdminSubscriptionPremiumSpec');
@@ -35,6 +36,7 @@ describe('when user navigates to Sign In page', function() {
 
     describe('and user tries to login with correct credentials', function(){
         standardLoginSpec.run();
+        superUserLoginSpec.run();
         createReferralAndInvitationSpec.run();
         adminPracticePremiumSpec.run();
         adminPracticeNonPremiumSpec.run();

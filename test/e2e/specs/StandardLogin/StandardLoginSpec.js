@@ -8,9 +8,6 @@ var adminPracticeSpec = require('./Admin/AdminPracticeSpec');
 var adminUsersSpec = require('./Admin/AdminUsersSpec');
 var adminInviteSpec = require('./Admin/AdminInviteSpec');
 var adminSubscriptionSpec = require('./Admin/AdminSubscriptionSpec');
-var consolePracticeSpec = require('./Console/ConsolePracticeSpec');
-var consoleReportsSpec = require('./Console/ConsoleReportsSpec');
-var consoleUtilitiesSpec = require('./Console/ConsoleUtilitiesSpec');
 var createReferralSpec = require('./CreateReferral/CreateReferralSpec');
 var viewReferralSpec = require('./ViewReferral/ViewReferralSpec');
 
@@ -28,14 +25,18 @@ var StandardLoginSpec = function() {
                 commonExpects.expectMenuShown();
                 commonExpects.expectCurrentUrlToBe(historyPage.url);
             });
+
+            it('expect Admin Console not shown for the standart login user', function(){
+                commonExpects.expectMenuShown();
+                commonActions.openMenu();
+                expect(element(by.css('a[ui-sref="console.practice"]')).isDisplayed()).toBe(false);
+                commonActions.openMenu();
+            });
             
             adminPracticeSpec.run();
             adminUsersSpec.run();
             adminInviteSpec.run();
             adminSubscriptionSpec.run();
-            consolePracticeSpec.run();
-            consoleReportsSpec.run();
-            consoleUtilitiesSpec.run();
             createReferralSpec.run();
             viewReferralSpec.run();
             

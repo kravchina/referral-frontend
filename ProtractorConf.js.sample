@@ -16,6 +16,17 @@ exports.config = {
                     name: 'MainSeedPracticeName'
                 }
             },
+            // valid credentials for SuperUser logging in, field roles_mask must be a multiple of 8
+            super_user: {
+                email: 'SuperUser@example.com',
+                pass: 'password',
+                firstName: 'SuperUserName',
+                middleInitial: 'SuperUserMiddleInitial',
+                lastName: 'SuperUserLastName',
+                practice: {
+                    name: 'SuperUserPractice'
+                }
+            },
             // invalid credentials for logging in (should cause login error)
             wrong: {
                 email: 'user@example.com',
