@@ -11,7 +11,9 @@ var ConsoleReportsSpec = function() {
             });
 
             it('shows Reports page', function() {
-                expect(element(by.css('.tab-content h3')).isDisplayed()).toBe(true);
+                expect(element(by.cssContainingText('h3', 'Invitations')).isDisplayed()).toBe(true);
+                expect(element(by.cssContainingText('h3', 'Practices')).isDisplayed()).toBe(true);
+                expect(element(by.cssContainingText('h3', 'Users')).isDisplayed()).toBe(true);
             });
 
         });
