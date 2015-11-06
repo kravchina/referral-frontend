@@ -9,7 +9,7 @@ var CommonExpects = function() {
     };
     
     this.expectMenuHidden = function() {
-        expect(element(by.css('ul.nav.navbar-nav.navbar-right.ng-hide')).isPresent()).toBe(true);
+        expect(element(by.css('ul.nav.navbar-nav.navbar-right')).isPresent()).toBe(false);
     };
     
     this.expectCurrentUrlToBe = function(pageUrl, doneCallback) {
