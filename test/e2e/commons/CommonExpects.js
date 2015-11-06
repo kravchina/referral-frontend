@@ -25,23 +25,23 @@ var CommonExpects = function() {
     };
 
     this.expectErrorNotificationShown = function(){
-        expect(element(by.css('div.global-notification.error')).isDisplayed()).toBe(true);
+        expect(element(by.css('div.global-notification-bar.alert-danger')).isDisplayed()).toBe(true);
     };
 
     this.expectSuccessNotificationShown = function(){
-        expect(element(by.css('div.global-notification.success')).isDisplayed()).toBe(true);
+        expect(element(by.css('div.global-notification-bar.alert-success')).isDisplayed()).toBe(true);
     };
 
     this.expectWarningNotificationShown = function(){
-        expect(element(by.css('div.global-notification.warning')).isDisplayed()).toBe(true);
+        expect(element(by.css('div.global-notification-bar.alert-warning')).isDisplayed()).toBe(true);
     };
 
     this.expectInfoNotificationShown = function(){
-        expect(element(by.css('div.global-notification.info')).isDisplayed()).toBe(true);
+        expect(element(by.css('div.global-notification-bar.alert-info')).isDisplayed()).toBe(true);
     };
 
     this.expectGlobalNotificationHidden = function(){
-        expect(element(by.css('div.global-notification')).isDisplayed()).toBe(false);
+        expect(element(by.css('div.global-notification-bar')).isDisplayed()).toBe(false);
     };
 
     this.expectConsoleWithoutErrors = function(){

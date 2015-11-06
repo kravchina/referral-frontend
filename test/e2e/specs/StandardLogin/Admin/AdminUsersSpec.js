@@ -15,12 +15,12 @@ var AdminUsersSpec = function() {
             });
 
             it('check delete user action', function(){
-                element.all(by.css('[delete-button]')).each(function(item){
+                adminUsersPage.getAllDeleteButtons().each(function(item){
                     item.click();
-                    expect(element.all(by.css('[delete-button].active')).count()).toBe(1);
+                    expect(adminUsersPage.getAllActiveDeleteButtons().count()).toBe(1);
                 });
-                element.all(by.css('[delete-button] .link-orange')).last().click();
-                expect(element.all(by.css('[delete-button].active')).count()).toBe(0);
+                adminUsersPage.getLastActiveNoButton().click();
+                expect(adminUsersPage.getAllActiveDeleteButtons().count()).toBe(0);
             });
 
             it('check is_admin checkbox is present on edit user dialog', function() {
@@ -31,8 +31,8 @@ var AdminUsersSpec = function() {
                 }).then(function (rows) {
                     rows[0].element(by.css('.dlicons-pencil')).click();
                     element(by.css('.modal-dialog')).isDisplayed().then(function () {
-                        expect(element(by.css('.modal-dialog input[name="is_admin"]'))).toBeTruthy();
-                        element(by.css('.modal-dialog button[ng-click="cancel()"]')).click();
+                        expect(adminUsersPage.getEditModalIsAdminCheckbox()).toBeTruthy();
+                        adminUsersPage.getEditModalDiscardButton().click();
                     });
                 });
             });
