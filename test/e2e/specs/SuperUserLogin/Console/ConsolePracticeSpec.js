@@ -11,7 +11,8 @@ var ConsolePracticeSpec = function() {
             });
 
             it('shows Practice page', function() {
-                expect(element(by.css('.tab-content h3')).isDisplayed()).toBe(true);
+                expect(element(by.css('input[name=practice]')).isDisplayed()).toBe(true);
+                expect(element(by.css('select[name=user]')).isDisplayed()).toBe(true);
             });
 
         });

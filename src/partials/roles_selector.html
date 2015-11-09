@@ -1,0 +1,19 @@
+<div class="roles-selector">
+    <label>Select roles:</label>
+    <div class="row">
+        <div class="col-sm-{{colSize}}" ng-repeat="item in radios">
+            <label class="radio">
+                <input type="radio" ng-model="selected.radio" ng-value="item" ng-change="onChangeRole()">
+                {{item.name}}
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-{{colSize}}" ng-repeat="item in checkboxes">
+            <label class="checkbox">
+                <input type="checkbox" ng-model="selected.checkbox[item.id]" ng-change="onChangeRole()">
+                {{item.name}}
+            </label>
+        </div>
+    </div>
+</div>
