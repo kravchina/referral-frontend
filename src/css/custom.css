@@ -224,25 +224,14 @@ textarea.form-control {
 .space-nowrap{
     white-space: nowrap;
 }
-.global-notification{
-	height: 30px;
-	line-height: 30px;
-	font-size: larger;
+
+.global-notification-bar{
+	position: absolute;
+	display: table-cell;
+	padding: 5px 10px;
 }
 
-.global-notification.info{
-	background-color: aqua;
-}
-.global-notification.success{
-	background-color: lime;
-}
-.global-notification.warning{
-	background-color: yellow;
-}
-.global-notification.error{
-	background-color: orangered;
-}
-.global-notification .container a{
+.global-notification-bar .container a{
 	color: mediumblue;
 	text-decoration: underline;
 }
@@ -1260,8 +1249,24 @@ td.cell-from .practice, td.cell-to .practice {
 
 
 /* RESPONSIVE CSS */
+@media (min-width: 450px){
+	.page-header{
+		padding-top: 60px;
+	}
+}
+
 /* Mobile devices (mobile, 540px and up) */
 @media (min-width: 540px) {
+	.page-header{
+		padding-top: 50px;
+	}
+
+	.global-notification-bar{
+		margin-top: 5px;
+		padding: 5px 10px;
+
+	}
+
 	.toothchart-wrapper {
 		overflow-x: hidden;
 	}
@@ -1272,6 +1277,16 @@ td.cell-from .practice, td.cell-to .practice {
 }
 /* Mobile devices (mobile, 620px and up) */
 @media (min-width: 620px) {
+	.page-header{
+		padding-top: 50px;
+	}
+
+	.global-notification-bar{
+		margin-top: 5px;
+		padding: 5px 10px;
+
+	}
+
 	.table-container {
 		overflow-x: hidden;
 	}
@@ -1282,6 +1297,15 @@ td.cell-from .practice, td.cell-to .practice {
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+
+	.global-notification-bar{
+		margin-top: 7px;
+		margin-left: 175px;
+		max-width: 370px;
+		min-width: 370px;
+		padding: 5px 10px;
+	}
+
 	.navbar-nav {
 		margin: 0;
 		position: absolute;
@@ -1429,6 +1453,14 @@ td.cell-from .practice, td.cell-to .practice {
 		font-size: 36px;
 		font-size: 3.6rem;
 	}
+
+	.global-notification-bar{
+		margin-top: 15px;
+		margin-left: 250px;
+		max-width: 470px;
+		min-width: 470px;
+	}
+
 	.form-control {
 		font-size: 14px;
 		font-size: 1.4rem;
@@ -1609,6 +1641,14 @@ td.cell-from .practice, td.cell-to .practice {
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
+
+	.global-notification-bar{
+		margin-top: 15px;
+		margin-left: 250px;
+		max-width: 670px;
+		min-width: 670px;
+	}
+
 	.attachment-block {
 		width: 235px;
 	}
@@ -1762,7 +1802,7 @@ label.tooth-label-view{
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
 	.btn-delete.active{
-		right: 10px !important;
+		right:5px !important;
 	}
 }
 

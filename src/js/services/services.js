@@ -313,7 +313,7 @@ angular.module('dentalLinksServices')
         },
         error: function(message) {
             notification.message = message;
-            notification.type = 'error';
+            notification.type = 'danger';
         },
         get: function() {
             return notification;
