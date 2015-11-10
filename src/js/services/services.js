@@ -324,6 +324,7 @@ angular.module('dentalLinksServices')
 
     }
 }])
+
 .factory('ProgressIndicator', function(){
     var progress = {show: false, value: 0};
     return {
@@ -342,6 +343,11 @@ angular.module('dentalLinksServices')
         }
     }
 })
+
+.factory('Report', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/report');
+}])
+
 .factory('Role', ['USER_ROLES', function(USER_ROLES){
     var ROLES = [];
 

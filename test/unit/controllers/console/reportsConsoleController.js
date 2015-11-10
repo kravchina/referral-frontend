@@ -1,21 +1,45 @@
 describe("Testing Reports Console Controller", function() {
     var controller;
-    var $scope, $state;
+    var $scope;
+
+    var dataMock = {
+        invitations: {day: [], week: [], ytd: []},
+        practices: {day: [], week: [], ytd: []},
+        users: {day: [], week: [], ytd: []}
+    };
 
     beforeEach(function(){
         module('ui.router');
         module('console');
 
-        inject(function($injector) {
-            $state = $injector.get('$state');
-            $rootScope = $injector.get('$rootScope');
+        module(function($provide){
+            $provide.service('Report', function(){
+                return {
+                    get: function(callback){
+                        callback(dataMock);
+                    }
+                }
+            });
+        });
+        inject(function($rootScope, $controller, _Report_) {
             $scope = $rootScope.$new();
-            controller = $injector.get('$controller')('ReportsConsoleController', { $scope: $scope, $state: $state});
+            controller = $controller('ReportsConsoleController', { $scope: $scope, Report: _Report_});
         });
     });
 
     it('should have a ReportsConsoleController', function() {
         expect(controller).not.toBe(null);
+        expect(controller).toBeDefined();
+    });
+
+    it('check to set data on scope', function(){
+        expect($scope.invitations).toBeDefined();
+        expect($scope.practices).toBeDefined();
+        expect($scope.users).toBeDefined();
+
+        expect($scope.invitations).toBe(dataMock.invitations);
+        expect($scope.practices).toBe(dataMock.practices);
+        expect($scope.users).toBe(dataMock.users);
     });
 
 });

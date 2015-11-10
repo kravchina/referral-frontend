@@ -11,8 +11,25 @@ var ConsolePracticeSpec = function() {
             });
 
             it('shows Practice page', function() {
-                expect(element(by.css('input[name=practice]')).isDisplayed()).toBe(true);
-                expect(element(by.css('select[name=user]')).isDisplayed()).toBe(true);
+                expect(consolePracticePage.getPractice().isDisplayed()).toBe(true);
+                expect(consolePracticePage.getUser().isDisplayed()).toBe(true);
+            });
+
+            it('fill input fields and check output data', function(){
+                var userFullName = browser.params.login.super_user.firstName + ' ' + browser.params.login.super_user.lastName;
+                //practice fields
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
+                consolePracticePage.setPractice(browser.params.login.super_user.practice.name);
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(true);
+                consolePracticePage.getPracticeDropDownFirstRowElement().click();
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
+                expect(consolePracticePage.getPracticeName().getAttribute('value')).toMatch(browser.params.login.super_user.practice.name);
+
+                //user fields
+                consolePracticePage.getUser().click();
+                expect(consolePracticePage.getUserOptionByName(userFullName).isDisplayed()).toBe(true);
+                consolePracticePage.getUserOptionByName(userFullName).click();
+                expect(consolePracticePage.getUserEmail().getAttribute('value')).toMatch(browser.params.login.super_user.email);
             });
 
         });
