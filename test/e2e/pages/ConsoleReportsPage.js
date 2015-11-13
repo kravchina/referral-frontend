@@ -53,6 +53,10 @@ var ConsoleReportsPage = function() {
         return element.all(by.css('.report-user span.badge')).get(2);
     };
 
+    this.getListOfRemindersTable = function(){
+        return element(by.css('.list-of-reminders'));
+    };
+
 };
 
 module.exports = new ConsoleReportsPage();
