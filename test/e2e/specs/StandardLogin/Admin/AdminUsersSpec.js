@@ -19,6 +19,7 @@ var AdminUsersSpec = function() {
                     item.click();
                     expect(adminUsersPage.getAllActiveDeleteButtons().count()).toBe(1);
                 });
+                browser.sleep(100);
                 adminUsersPage.getLastActiveNoButton().click();
                 expect(adminUsersPage.getAllActiveDeleteButtons().count()).toBe(0);
             });
