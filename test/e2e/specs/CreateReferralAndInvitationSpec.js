@@ -17,7 +17,8 @@ var CreateReferralAndInvitationSpec = function() {
             patientPart: "M",
             // referralType == newPractice.type
             procedure: "Follow-up Care",
-            selectedTooth: 22
+            selectedTooth: 22,
+            practice: "David Wolf, DDS, PC (Milford, MA)"
         };
         var newProvider = {
             salutation: "Mr.",
@@ -172,7 +173,7 @@ var CreateReferralAndInvitationSpec = function() {
                 expect(viewReferralPage.getFromUserValue()).toEqual(
                     browser.params.login.correct.firstName + ' ' + browser.params.login.correct.middleInitial + ' ' + browser.params.login.correct.lastName
                 ); // yeah, View Referral page displays two spaces if there's no middle :)
-                expect(viewReferralPage.getFromPracticeValue()).toEqual(browser.params.login.correct.practice.name);
+                expect(viewReferralPage.getFromPracticeValue()).toEqual(referral.practice);
                 expect(viewReferralPage.getToUserValue()).toEqual(
                     newProvider.firstName + ' ' + newProvider.middleInitial + ' ' + newProvider.lastName
                 ); // yeah, View Referral page displays two spaces if there's no middle :)

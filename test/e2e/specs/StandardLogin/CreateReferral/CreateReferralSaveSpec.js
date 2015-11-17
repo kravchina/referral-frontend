@@ -6,7 +6,7 @@ var CreateReferralSaveSpec = function() {
         var referral = {
             patient: "Marty McFly (1/1/68)",
             patientPart: "Marty",
-            practice: "David Wolf, DDS, PC",
+            practice: "David Wolf, DDS, PC (Milford, MA)",
             practicePart: "David",
             provider: "Doctor Another",
             referralType: "General Dentistry",
