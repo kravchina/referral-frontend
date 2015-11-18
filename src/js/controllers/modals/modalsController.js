@@ -152,7 +152,7 @@ angular.module('modals')
 .controller('JoinPracticeModalController', ['$scope', '$modalInstance', 'Registration', 'ModalHandler','Alert', 'Practice', 'Spinner', function ($scope, $modalInstance, Registration, ModalHandler, Alert, Practice) {
     $scope.alerts = [];
     $scope.findPractice = function (searchValue) {
-        return Practice.searchPractice({search: searchValue }).$promise;
+        return Practice.publicSearchPractice({search: searchValue }).$promise;
     };
 
     $scope.ok = function (practice, securitycode) {
