@@ -118,6 +118,9 @@ gulp.task('copy-files', function(){
 
     gulp.src('src/fonts/**/*')
         .pipe(gulp.dest(buildPath + '/fonts'));
+
+    gulp.src('src/docs/**/*')
+        .pipe(gulp.dest(buildPath + '/docs'));
 });
 
 gulp.task('build-templates', function(){
