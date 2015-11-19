@@ -17,7 +17,9 @@ var ConsoleReportsSpec = function() {
                 expect(consoleReportsPage.getPracticeHeader().getText()).toMatch('PRACTICES');
                 expect(consoleReportsPage.getUserHeader().isDisplayed()).toBe(true);
                 expect(consoleReportsPage.getUserHeader().getText()).toMatch('USERS');
+            });
 
+            it('check report invitations', function(){
                 expect(consoleReportsPage.getInvitationDay().getText()).not.toBe(null);
                 expect(consoleReportsPage.getInvitationWeek().getText()).not.toBe(null);
                 expect(consoleReportsPage.getInvitationYTD().getText()).not.toBe(null);
@@ -29,6 +31,10 @@ var ConsoleReportsSpec = function() {
                 expect(consoleReportsPage.getUserDay().getText()).not.toBe(null);
                 expect(consoleReportsPage.getUserWeek().getText()).not.toBe(null);
                 expect(consoleReportsPage.getUserYTD().getText()).not.toBe(null);
+            });
+
+            it('check list of reminders', function(){
+                expect(consoleReportsPage.getListOfRemindersTable().isDisplayed()).toBe(true);
             });
 
         });
