@@ -85,6 +85,11 @@ angular.module('dentalLinksServices')
                 'Pragma': 'no-cache',
                 'Expires': '0'
             }, skipSpinner: true},
+            publicSearchPractice: {method: 'GET', url: API_ENDPOINT + '/practices/public_search', isArray: true, headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }, skipSpinner: true},
             subscribe: {method: 'PUT', url: API_ENDPOINT + '/practices/:practiceId/subscribe'},
             cancelSubscription: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/cancel_subscription'},
             update: {method: 'PUT'}
