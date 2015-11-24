@@ -95,6 +95,22 @@ angular.module('modals')
 
 }])
 
+.controller('EditNoteModalController', ['$scope', '$modalInstance', 'ModalHandler', 'noteData', function ($scope, $modalInstance, ModalHandler, noteData) {
+    $scope.note = angular.copy(noteData);
+
+    $scope.ok = function (note) {
+        if (note == undefined){
+            ModalHandler.dismiss($modalInstance);
+        }else{
+            ModalHandler.close($modalInstance, $scope.note);
+        }
+    };
+    $scope.cancel = function () {
+        ModalHandler.dismiss($modalInstance);
+    };
+
+}])
+
 .controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', 'Spinner', 'sendEmailNotification', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth, Spinner, sendEmailNotification) {
     $scope.alerts = [];
     $scope.model = {};

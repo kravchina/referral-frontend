@@ -4,6 +4,7 @@ angular.module('createReferrals')
 
         var auth = $scope.auth =  Auth.get() || {};
 
+        $scope.saveNoteInModel = false;
         $scope.model = {referral: currentReferral};
         $scope.patient = currentReferral.patient;
         $scope.attachments = currentReferral.attachments;
