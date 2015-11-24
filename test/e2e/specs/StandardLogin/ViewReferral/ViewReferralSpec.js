@@ -77,6 +77,20 @@ var ViewReferralSpec = function() {
                     expect(viewReferralPage.getLastNoteText()).toEqual(noteText);
                 });
             });
+
+            describe('when user edit a note', function(){
+
+                it('select the last note and edit it', function(){
+                    var testText = 'Test Note Edit';
+
+                    viewReferralPage.getEditNoteButton(viewReferralPage.getLastNote()).click();
+                    expect(viewReferralPage.getEditNoteDialogElement().isDisplayed()).toBe(true);
+                    viewReferralPage.getEditNoteDialogNoteTextAreaElement().clear();
+                    viewReferralPage.getEditNoteDialogNoteTextAreaElement().sendKeys(testText);
+                    viewReferralPage.getEditNoteDialogSaveButtonElement().click();
+                    expect(viewReferralPage.getLastNoteText()).toEqual(testText);
+                });
+            });
             
             // it('| show error when not real provider has been selected', function(){
                 // expect(element(by.css('button[ng-click="editDestProviderDialog()"]')).isPresent()).toBe(true);

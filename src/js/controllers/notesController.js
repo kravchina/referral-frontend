@@ -14,7 +14,9 @@ angular.module('dentalLinks')
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (message) {
                 if($scope.saveOnlyInModel){
-                    $scope.$parent.form.$setDirty(); // for UnsavedChanges to notice notes being changed
+                    if(typeof $scope.$parent.form !== 'undefined' && $scope.$parent.form !== null) {
+                        $scope.$parent.form.$setDirty(); // for UnsavedChanges to notice notes being changed
+                    }
                     var note = {message: message, created_at: Date.now(), user_id: $scope.auth.id, user: {first_name: Auth.current_user.first_name, last_name: Auth.current_user.last_name}};
                     $scope.inputModel.notes = $scope.inputModel.notes || [];
                     $scope.inputModel.notes_attributes = $scope.inputModel.notes_attributes || [];
@@ -42,12 +44,16 @@ angular.module('dentalLinks')
             });
             modalInstance.result.then(function (note) {
                 if($scope.saveOnlyInModel){
-                    $scope.$parent.form.$setDirty();
+                    if(typeof $scope.$parent.form !== 'undefined' && $scope.$parent.form !== null) {
+                        $scope.$parent.form.$setDirty();
+                    }
                     $scope.inputModel.notes[index] = note;
                     $scope.inputModel.notes_attributes[index] = note;
                 } else {
                     Note.update({id: note.id}, {note: note}, function(success){
                         $scope.inputModel.notes[index] = success;
+                    }, function(failure){
+                        Notification.error('Something went wrong, note was not updated.');
                     });
                 }
             });
