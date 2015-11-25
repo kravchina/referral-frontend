@@ -389,12 +389,12 @@ angular.module('dentalLinksServices')
         },
         getRolesByNames: function(names){
             return names.map(function(name){
-                return ROLES.find(function(role){
-                    if(role.id === name){
-                        return true;
+                for(var i = 0; i < ROLES.length; i++){
+                    if(ROLES[i].id === name){
+                        return ROLES[i];
                     }
-                    return false;
-                });
+                }
+                return name;
             });
         },
         hasRoles: function(requiredRoles, userRoles){
