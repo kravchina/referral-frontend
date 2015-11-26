@@ -19,7 +19,7 @@ angular.module('registration')
                 $scope.invitation = { roles_mask: USER_ROLES.doctor.mask};
                 $scope.practice = {}
             } else {
-                $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token, type: 'user'},
+                $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token, invitation_type: 'user'},
                     function (success) {
                         Referral.countByInvited({id: $scope.invitation.id},
                         function(success){
@@ -197,7 +197,7 @@ angular.module('registration')
     .controller('NewUserController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Notification', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Logger',
     function ($scope, $location, $stateParams, $modal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Logger) {
 
-        $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token, type: 'colleguae'},
+        $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token, invitation_type: 'colleguae'},
             function (invitation) {
                 invitation.newPracticeId = invitation.practice_id; // in case of user invitation - needs this in order to hide security code field
 
