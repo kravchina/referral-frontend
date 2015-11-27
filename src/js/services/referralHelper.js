@@ -191,7 +191,7 @@ angular.module('createReferrals')
                     // this triggers refresh of items in provider dropdown
                     scope.destinationPractice = selectedItem;
 
-                    scope.practiceSearchText = scope.destinationPractice.name;
+                    scope.practiceSearchText = scope.destinationPractice.name + (scope.destinationPractice.address ? ' (' + scope.destinationPractice.address.city + ', ' + scope.destinationPractice.address.state + ')' : '');
 
                     if (selectedItem.isInvitation) {
                         scope.model.referral.dest_provider_invited_id = selectedItem.users[0].id;

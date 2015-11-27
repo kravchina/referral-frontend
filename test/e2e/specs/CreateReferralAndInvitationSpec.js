@@ -172,7 +172,9 @@ var CreateReferralAndInvitationSpec = function() {
                 expect(viewReferralPage.getFromUserValue()).toEqual(
                     browser.params.login.correct.firstName + ' ' + browser.params.login.correct.middleInitial + ' ' + browser.params.login.correct.lastName
                 ); // yeah, View Referral page displays two spaces if there's no middle :)
-                expect(viewReferralPage.getFromPracticeValue()).toEqual(browser.params.login.correct.practice.name);
+                expect(viewReferralPage.getFromPracticeValue()).toEqual(
+                    browser.params.login.correct.practice.name + ' (' + browser.params.login.correct.practice.city + ', ' + browser.params.login.correct.practice.state + ')'
+                );
                 expect(viewReferralPage.getToUserValue()).toEqual(
                     newProvider.firstName + ' ' + newProvider.middleInitial + ' ' + newProvider.lastName
                 ); // yeah, View Referral page displays two spaces if there's no middle :)
