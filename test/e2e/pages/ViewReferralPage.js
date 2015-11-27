@@ -72,7 +72,26 @@ var ViewReferralPage = function() {
     this.getLastNoteText = function() {
         return element.all(by.css('div.notes-wrapper li.note-block span.note-content')).last().getText();
     };
-    
+
+    this.getLastNote = function(){
+        return element.all(by.css('div.notes-wrapper li.note-block')).last();
+    };
+
+    this.getEditNoteButton = function(elem){
+        return elem.element(by.css('span.edit'));
+    };
+
+    this.getEditNoteDialogElement = function() {
+        return element(by.css('div.modal-dialog form#formEditNote'));
+    };
+
+    this.getEditNoteDialogNoteTextAreaElement = function() {
+        return element(by.css('form#formEditNote textarea[name="note"]'));
+    };
+
+    this.getEditNoteDialogSaveButtonElement = function() {
+        return element(by.css('form#formEditNote div.modal-footer button[ng-click="ok(note)"]'));
+    };
 };
 
 module.exports = new ViewReferralPage();

@@ -211,36 +211,9 @@
         <!-- .attachments-wrapper -->
     </div>
 </div>
-<!-- .row -->
 
 <!-- Notes block -->
-<div class="row">
-    <div class="input-block col-xs-12 col-sm-12">
-        <div class="block-title">
-            <h2>Notes</h2>
-            <button type="button" ng-click="noteDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-note" data-toggle="tooltip"
-                    data-placement="top" title="Add New Note" data-target="#modalNote"><span
-                    class="dlicons-plus"></span></button>
-        </div>
-
-        <div class="notes-wrapper">
-            <ul>
-
-                <!-- Note block -->
-                <li class="note-block" expand-note ng-repeat="note in referral.notes">
-                    <span class="note-user">{{note.user.first_name}} {{note.user.last_name}}</span>
-                    <span class="note-content">{{note.message}}</span>
-                    <span class="note-expand more">See more</span>
-                    <span class="note-expand less">See less</span>
-                    <span class="datestamp">{{note.created_at | date: 'short' }}</span>
-                </li>
-
-            </ul>
-        </div>
-        <!-- .notes-wrapper -->
-    </div>
-</div>
-<!-- .row -->
+<notes input-model="referral" immediate-update="true"></notes>
 
 </div>
 <!-- .box-white -->

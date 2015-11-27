@@ -9,9 +9,14 @@
         <div class="notes-wrapper">
             <ul>
                 <!-- Note block -->
-                <li class="note-block" expand-note ng-repeat="note in model.referral.notes">
+                <li class="note-block" expand-note ng-repeat="note in inputModel.notes">
                     <span class="note-user">{{note.user.first_name}} {{note.user.last_name}}</span>
                     <span class="note-content">{{note.message}}</span>
+                    <span class="note-expand more">See more</span>
+                    <span class="note-expand less">See less</span>
+                    <span class="edit" ng-click="editNote(note, $index)" ng-hide="auth.id != note.user_id">
+                        <span class="dlicons-pencil" title="Edit note"></span>
+                    </span>
                     <span class="datestamp">{{note.created_at | date: 'short' }}</span>
                 </li>
 

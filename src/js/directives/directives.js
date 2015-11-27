@@ -356,7 +356,10 @@ angular.module('dentalLinksDirectives')
 .directive('notes', [function () {
     return {
         restrict: 'E',
-        transclude: true,
+        scope: {
+            inputModel : '=',
+            immediateUpdate : '='
+        },
         templateUrl: 'partials/notes.html',
         controller: 'NotesController'
     };

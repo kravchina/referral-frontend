@@ -1387,7 +1387,7 @@ td.cell-from .practice, td.cell-to .practice {
 	}
 	.note-block .datestamp {
 		margin-left: 2%;
-		width: 10%;
+		width: 10.5%;
 	}
 	.filter-controls-block {
 		padding: 20px 40px;
@@ -1760,6 +1760,10 @@ label.tooth-label-view{
 	height: 250px;
 }
 
+#formEditNote textarea{
+	height: 250px;
+}
+
 .select-padding {
 	padding-right: 25px !important;
 }
@@ -1783,6 +1787,19 @@ label.tooth-label-view{
 	display: none;
 }
 
+.note-block.expand .less ~ .edit {
+	margin-left: 1.9%
+}
+
+.note-block .edit{
+	cursor: pointer;
+	margin-left: 1%;
+}
+
+.note-block .edit.ng-hide + .datestamp {
+	margin-left: 4.7% !important;
+}
+
 .resend-link{
 	text-decoration: underline;
 }
@@ -1802,11 +1819,17 @@ label.tooth-label-view{
 	.btn-delete.active{
 		right: 20px !important;
 	}
+	.note-block .datestamp {
+		width: 10%;
+	}
 }
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
 	.btn-delete.active{
 		right:5px !important;
+	}
+	.note-block .datestamp {
+		width: 9%;
 	}
 }
 
