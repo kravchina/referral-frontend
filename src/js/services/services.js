@@ -378,7 +378,13 @@ angular.module('dentalLinksServices')
                     if(typeof(elem) === 'object') {
                         mask = mask | elem.mask;
                     } else if(typeof(elem) === 'string'){
-                        mask = mask | ROLES.find(function(role){return role.id == elem;}).mask;
+                        var role = {};
+                        for(var i = 0; i < ROLES.length; i++){
+                            if(ROLES[i].id === elem){
+                                role = ROLES[i];
+                            }
+                        }
+                        mask = mask | role.mask;
                     }
                 });
 
@@ -390,14 +396,15 @@ angular.module('dentalLinksServices')
             });
         },
         getRolesByNames: function(names){
-            return names.map(function(name){
-                return ROLES.find(function(role){
-                    if(role.id === name){
-                        return true;
+            var outputRoles = [];
+            names.forEach(function(name){
+                for(var i = 0; i < ROLES.length; i++){
+                    if(ROLES[i].id === name){
+                        outputRoles.push(ROLES[i]);
                     }
-                    return false;
-                });
+                }
             });
+            return outputRoles;
         },
         hasRoles: function(requiredRoles, userRoles){
             var hasRole = false;
