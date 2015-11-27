@@ -13,7 +13,13 @@ angular.module('dentalLinks')
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (message) {
-                if($scope.saveOnlyInModel){
+                if($scope.immediateUpdate){
+                    Note.save({note: {message: message, referral_id: $scope.inputModel.id, user_id: $scope.auth.id}}, function (success) {
+                        $scope.inputModel.notes.push(success);
+                    }, function (failure) {
+                        Notification.error('Something went wrong, note was not saved.');
+                    });
+                } else {
                     if(typeof $scope.$parent.form !== 'undefined' && $scope.$parent.form !== null) {
                         $scope.$parent.form.$setDirty(); // for UnsavedChanges to notice notes being changed
                     }
@@ -22,12 +28,6 @@ angular.module('dentalLinks')
                     $scope.inputModel.notes_attributes = $scope.inputModel.notes_attributes || [];
                     $scope.inputModel.notes.push(note);
                     $scope.inputModel.notes_attributes.push(note);
-                } else {
-                    Note.save({note: {message: message, referral_id: $scope.inputModel.id, user_id: $scope.auth.id}}, function (success) {
-                        $scope.inputModel.notes.push(success);
-                    }, function (failure) {
-                        Notification.error('Something went wrong, note was not saved.');
-                    });
                 }
             });
         };
@@ -43,18 +43,18 @@ angular.module('dentalLinks')
                 }
             });
             modalInstance.result.then(function (note) {
-                if($scope.saveOnlyInModel){
-                    if(typeof $scope.$parent.form !== 'undefined' && $scope.$parent.form !== null) {
-                        $scope.$parent.form.$setDirty();
-                    }
-                    $scope.inputModel.notes[index] = note;
-                    $scope.inputModel.notes_attributes[index] = note;
-                } else {
+                if($scope.immediateUpdate){
                     Note.update({id: note.id}, {note: note}, function(success){
                         $scope.inputModel.notes[index] = success;
                     }, function(failure){
                         Notification.error('Something went wrong, note was not updated.');
                     });
+                } else {
+                    if(typeof $scope.$parent.form !== 'undefined' && $scope.$parent.form !== null) {
+                        $scope.$parent.form.$setDirty();
+                    }
+                    $scope.inputModel.notes[index] = note;
+                    $scope.inputModel.notes_attributes[index] = note;
                 }
             });
         };

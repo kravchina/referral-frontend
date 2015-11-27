@@ -358,7 +358,7 @@ angular.module('dentalLinksDirectives')
         restrict: 'E',
         scope: {
             inputModel : '=',
-            saveOnlyInModel : '='
+            immediateUpdate : '='
         },
         templateUrl: 'partials/notes.html',
         controller: 'NotesController'

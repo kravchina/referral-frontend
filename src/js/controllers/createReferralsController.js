@@ -4,7 +4,7 @@ angular.module('createReferrals')
 
         var auth = $scope.auth = Auth.get() || {};
 
-        $scope.saveNoteInModel = true;
+        $scope.immediateUpdate = false;
         $scope.procedures = Procedure.query();
         $scope.practiceTypes = Procedure.practiceTypes();
         $scope.currentPracticeProviders = User.getOtherProviders({practice_id: auth.practice_id});

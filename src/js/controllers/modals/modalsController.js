@@ -82,7 +82,7 @@ angular.module('modals')
 .controller('NoteModalController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
     $scope.ok = function (note) {
         //nothing to do, we cant save note right here because at this stage referral doesn't exist. We can only add new note to the list on the parent page (create referral) and save simultaneously with referral.
-        if (note == undefined){
+        if (note == undefined || note.match(/^\s*$/)){
             ModalHandler.dismiss($modalInstance);
         }else{
             ModalHandler.close($modalInstance,note);
@@ -99,7 +99,7 @@ angular.module('modals')
     $scope.note = angular.copy(noteData);
 
     $scope.ok = function (note) {
-        if (note == undefined){
+        if (note == undefined || note.message.match(/^\s*$/)){
             ModalHandler.dismiss($modalInstance);
         }else{
             ModalHandler.close($modalInstance, $scope.note);
