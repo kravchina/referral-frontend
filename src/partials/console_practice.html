@@ -8,7 +8,7 @@
                 <i class="glyphicon glyphicon-remove"></i> No Results Found
             </div>
         </div>
-        <input type="text" class="form-control" name="practice" placeholder="Enter existing practice..."
+        <input type="text" class="form-control" name="practice" placeholder="Enter existing practice..." ng-model-options="{ debounce: 400 }"
                ng-model="practiceSearch" typeahead-loading="loadingPractices" typeahead-no-results="noResults" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
                typeahead="practice as practice.name for practice in findPractice($viewValue)">
     </div>

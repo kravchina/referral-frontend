@@ -26,7 +26,8 @@ exports.config = {
                 middleInitial: 'SuperUserMiddleInitial',
                 lastName: 'SuperUserLastName',
                 practice: {
-                    name: 'SuperUserPractice'
+                    name: 'SuperUserPractice',
+                    searchText: 'SuperUserPracticeSearchText'
                 }
             },
             // invalid credentials for logging in (should cause login error)
