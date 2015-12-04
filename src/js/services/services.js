@@ -355,6 +355,12 @@ angular.module('dentalLinksServices')
     return $resource(API_ENDPOINT + '/report');
 }])
 
+.factory('Activity', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/activities/:id', {id: '@id'}, {
+        find: {method: 'GET', url: API_ENDPOINT + '/activities', isArray: false}
+    });
+}])
+
 .factory('Role', ['USER_ROLES', function(USER_ROLES){
     var ROLES = [];
 
