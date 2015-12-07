@@ -3,6 +3,7 @@ var createReferralPage = require('../../../pages/CreateReferralPage');
 
 var createReferralNoSaveSpec = require('./CreateReferralNoSaveSpec.js');
 var createReferralSaveSpec = require('./CreateReferralSaveSpec.js');
+var createReferralFrontDeskSpec = require('./CreateReferralFrontDeskSpec.js');
 
 var CreateReferralSpec = function() {
     this.run = function() {
@@ -34,6 +35,7 @@ var CreateReferralSpec = function() {
             
             createReferralNoSaveSpec.run();
             createReferralSaveSpec.run();
+            createReferralFrontDeskSpec.run();
             
         });
     };
