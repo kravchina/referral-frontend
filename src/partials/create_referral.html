@@ -60,8 +60,8 @@
         </div>
         <alert type="warning" ng-show="form.practice.$dirty && form.practice.$invalid">Please select existing practice or invite new provider</alert>
         <input type="text" class="form-control" name="practice" placeholder="Enter existing practice/provider or add new provider with button on the right..."
-               ng-model="practiceSearchText" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
-               typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].first_name + ' ' + practice.users[0].last_name) : (practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '')) for practice in findPractice($viewValue) ">
+               ng-model="practiceSearchText" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)" ng-model-options="{ debounce: 300 }"
+               typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].last_name == null && practice.users[0].first_name == null ? practice.users[0].email : (practice.users[0].first_name + ' ' + practice.users[0].last_name)) : (practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '')) for practice in findPractice($viewValue) ">
     </div>
 
     <div class="input-block col-xs-12 col-sm-6" ng-class="{'has-error': (form.provider.$dirty && form.provider.$invalid) || form.provider.$error.userActive || form.provider_invited.$error.userActive }">
@@ -72,7 +72,7 @@
         <select id="selectProvider" ng-if="!model.referral.dest_provider_invited_id" name="provider" class="form-control" ng-disabled="!destinationPractice" ng-model="model.referral.dest_provider_id" ng-options="u.id as (u.first_name + ' ' + u.last_name) for u in destinationPractice.users" ng-required="true">
             <option selected="selected" class="placeholder" value="">Choose a provider &hellip;</option>
         </select>
-        <select id="selectInvitedProvider" ng-if="model.referral.dest_provider_invited_id" name="provider_invited" class="form-control" ng-disabled="!destinationPractice" ng-model="model.referral.dest_provider_invited_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in destinationPractice.users" ng-required="true">
+        <select id="selectInvitedProvider" ng-if="model.referral.dest_provider_invited_id" name="provider_invited" class="form-control" ng-disabled="!destinationPractice" ng-model="model.referral.dest_provider_invited_id" ng-options="p.id as p.first_name && p.last_name ? 'Dr. ' + p.first_name + ' ' + p.last_name : p.email for p in destinationPractice.users" ng-required="true">
         </select>
     </div>
 </div><!-- .row -->
