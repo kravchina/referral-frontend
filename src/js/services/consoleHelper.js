@@ -14,7 +14,7 @@ angular.module('console')
                     return $q.all([providersPromise, invitationsPromise]).then(function(results){
                         var practices = results[0];
                         var invitations = results[1].map(function(elem){
-                            return {users: [elem], name: elem.first_name + ' ' + elem.last_name + ' (pending registration)', isInvitation: true};
+                            return {users: [elem], name: '-- pending registration --', isInvitation: true};
                         });
                         return practices.concat(invitations);
                     });
