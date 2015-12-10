@@ -1,5 +1,5 @@
 angular.module('activity')
-    .controller('ActivityController', ['$scope', 'Auth', 'Activity', 'Logger', 'Practice', function ($scope, Auth, Activity, Logger, Practice) {
+    .controller('ActivityController', ['$scope', 'Activity', 'Practice', function ($scope, Activity, Practice) {
         $scope.limitTo = 20;
         $scope.activities = [];
         $scope.trackableType = null;
@@ -11,7 +11,6 @@ angular.module('activity')
             $scope.busy = true;
             Activity.find({practice_id: $scope.practice.id, start_date: start.toISOString(), end_date: end.toISOString(), activity_type: $scope.action? $scope.action : null, trackable_type: $scope.trackableType ? $scope.trackableType : null, limit: $scope.limitTo},
                 function(data){
-                    Logger.log(data);
                     $scope.activities = data.activities;
                     $scope.activities_total_count = data.activities_total_count;
                     $scope.busy = false;
@@ -19,7 +18,6 @@ angular.module('activity')
         };
 
         $scope.findActivitiesByAction = function () {
-            Logger.log($scope.query);
             $scope.busy = true;
             Activity.find({practice_id: $scope.practice.id, start_date: $scope.start_date.toISOString(), end_date: $scope.end_date.toISOString(), activity_type: $scope.action? $scope.action : null, trackable_type: $scope.trackableType ? $scope.trackableType : null, limit: $scope.limitTo},
                 function(data){
