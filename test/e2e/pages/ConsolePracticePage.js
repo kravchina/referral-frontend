@@ -37,6 +37,14 @@ var ConsolePracticePage = function() {
         return element.all(by.css('div[ng-show="practiceUsers"] .form-group input')).get(1);
     };
 
+    this.getUserEditButton = function(){
+        return element(by.css('div[ng-click="editDialog(practiceUsers)"]'));
+    };
+
+    this.getUserDeleteButton = function(){
+        return element(by.css('div.btn-delete'));
+    };
+
 };
 
 module.exports = new ConsolePracticePage();
