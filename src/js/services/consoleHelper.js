@@ -26,7 +26,7 @@ angular.module('console')
                     if(typeof selectedPractice.isInvitation !== 'undefined' && selectedPractice.isInvitation){
                         scope.destinationPractice = selectedPractice;
                         scope.destinationPractice.name = '-- pending registration --';
-                        scope.practiceUsers = selectedPractice.users[0].id;
+                        scope.practiceUsers = selectedPractice.users[0];
                     } else {
                         scope.destinationPractice = selectedPractice;
                         scope.destinationPractice.users = User.getAllUsers({practice_id: selectedPractice.id}, function(users){
