@@ -30,6 +30,8 @@ var ConsolePracticeSpec = function() {
                 expect(consolePracticePage.getUserOptionByName(userFullName).isDisplayed()).toBe(true);
                 consolePracticePage.getUserOptionByName(userFullName).click();
                 expect(consolePracticePage.getUserEmail().getAttribute('value')).toMatch(browser.params.login.super_user.email);
+                expect(consolePracticePage.getUserDeleteButton().isPresent()).toBe(true);
+                expect(consolePracticePage.getUserEditButton().isPresent()).toBe(true);
             });
 
         });
