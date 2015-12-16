@@ -15,9 +15,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      // TODO [ak] would be very good to autogenerate these dependencies somehow
       'https://js.stripe.com/v2/',
-      'build/local/**/*.js', // it will find our test specs there
+      'build/local/**/*.js', // our dependencies
       'test/unit/**/*.js', // it will find our test specs there
       'http://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-mocks.js',
     ],
