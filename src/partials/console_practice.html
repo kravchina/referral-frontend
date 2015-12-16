@@ -117,7 +117,7 @@
                 <div delete-button class="button-block btn-delete">
                     <span class="dlicons-remove"></span> Delete this user? <a ng-click="deleteUser(practiceUsers)" class="link-green">Yes</a> | <a  class="link-orange">No</a>
                 </div>
-                <div ng-click="editDialog(practiceUsers)" class="button-block btn-change-password" ng-hide="practiceUsers.first_name === null && practiceUsers.last_name === null">
+                <div ng-click="editDialog(practiceUsers)" class="button-block btn-change-password" ng-hide="(practiceUsers.first_name === null && practiceUsers.last_name === null) || practiceUsers.email_bindings === undefined">
                     <span class="dlicons-pencil" title="Edit user"></span>
                 </div>
             </div>

@@ -50,7 +50,8 @@ angular.module('console')
                         if(success.msg){
                             Notification.error( success.msg);
                         }else{
-                            $scope.destinationPractice.users.splice($scope.destinationPractice.users.indexOf(user), 1);
+                            $scope.destinationPractice = {};
+                            $scope.practiceSearch = '';
                         }
 
                     },
