@@ -127,19 +127,15 @@ var CreateReferralAndInvitationSpec = function() {
                 
                 registrationPage.getMiddleInitialElement().sendKeys(newProvider.middleInitial);
                 
-                // creating new practice in a dialog
-                registrationPage.getNewPracticeButtonElement().click();
-                expect(registrationPage.getPracticeDialogElement().isDisplayed()).toBe(true);
-                registrationPage.getPracticeDialogPracticeNameElement().sendKeys(newPractice.name);
-                registrationPage.getPracticeDialogPracticeTypeElement().element(by.cssContainingText("option", newPractice.type)).click();
-                registrationPage.getPracticeDialogPracticeAddressStreetElement().sendKeys(newPractice.address.street1);
-                registrationPage.getPracticeDialogPracticeAddressCityElement().sendKeys(newPractice.address.city);
-                registrationPage.getPracticeDialogPracticeAddressStateElement().element(by.cssContainingText("option", newPractice.address.state)).click();
-                registrationPage.getPracticeDialogPracticeAddressZipElement().sendKeys(newPractice.address.zip);
-                registrationPage.getPracticeDialogPracticeAddressPhoneElement().sendKeys(newPractice.address.phone);
-                registrationPage.getPracticeDialogPracticeAddressWebsiteElement().sendKeys(newPractice.address.website);
-                registrationPage.getPracticeDialogSaveButtonElement().click();
-                expect(registrationPage.getPracticeDialogElement().isPresent()).toBe(false);
+                // creating new practice
+                registrationPage.getPracticeNameElement().sendKeys(newPractice.name);
+                registrationPage.getPracticeTypeElement().element(by.cssContainingText("option", newPractice.type)).click();
+                registrationPage.getPracticeAddressStreetElement().sendKeys(newPractice.address.street1);
+                registrationPage.getPracticeAddressCityElement().sendKeys(newPractice.address.city);
+                registrationPage.getPracticeAddressStateElement().element(by.cssContainingText("option", newPractice.address.state)).click();
+                registrationPage.getPracticeAddressZipElement().sendKeys(newPractice.address.zip);
+                registrationPage.getPracticeAddressPhoneElement().sendKeys(newPractice.address.phone);
+                registrationPage.getPracticeAddressWebsiteElement().sendKeys(newPractice.address.website);
                 
                 // email already filled in
                 expect(registrationPage.getEmailElement().getAttribute('value')).toEqual(newProvider.email);

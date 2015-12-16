@@ -26,50 +26,38 @@ var RegistrationPage = function() {
     
     // practice
     
-    this.getNewPracticeButtonElement = function() {
-        return element(by.css('button[ng-click="practiceDialog()"]'));
-    };
-    
-    this.getPracticeDialogElement = function() {
-        return element(by.css('div.modal-dialog form#formNewPatient'));
-    };
-    
-    this.getPracticeDialogPracticeNameElement = function() {
+    this.getPracticeNameElement = function() {
         return element(by.model('practice.name'));
     };
     
-    this.getPracticeDialogPracticeTypeElement = function() {
+    this.getPracticeTypeElement = function() {
         return element(by.model('practice.practice_type_id'));
     };
     
-    this.getPracticeDialogPracticeAddressStreetElement = function() {
-        return element(by.model('address.street_line_1'));
+    this.getPracticeAddressStreetElement = function() {
+        return element(by.model('practice.addresses_attributes[0].street_line_1'));
     };
     
-    this.getPracticeDialogPracticeAddressCityElement = function() {
-        return element(by.model('address.city'));
+    this.getPracticeAddressCityElement = function() {
+        return element(by.model('practice.addresses_attributes[0].city'));
     };
     
-    this.getPracticeDialogPracticeAddressStateElement = function() {
-        return element(by.model('address.state'));
+    this.getPracticeAddressStateElement = function() {
+        return element(by.model('practice.addresses_attributes[0].state'));
     };
     
-    this.getPracticeDialogPracticeAddressZipElement = function() {
-        return element(by.model('address.zip'));
+    this.getPracticeAddressZipElement = function() {
+        return element(by.model('practice.addresses_attributes[0].zip'));
     };
     
-    this.getPracticeDialogPracticeAddressPhoneElement = function() {
-        return element(by.model('address.phone'));
+    this.getPracticeAddressPhoneElement = function() {
+        return element(by.model('practice.addresses_attributes[0].phone'));
     };
     
-    this.getPracticeDialogPracticeAddressWebsiteElement = function() {
-        return element(by.model('address.website'));
+    this.getPracticeAddressWebsiteElement = function() {
+        return element(by.model('practice.addresses_attributes[0].website'));
     };
-    
-    this.getPracticeDialogSaveButtonElement = function() {
-        return element(by.css('button[ng-click="ok(practice)"]'));
-    };
-    
+
     // access details
     
     this.getEmailElement = function() {
@@ -91,7 +79,7 @@ var RegistrationPage = function() {
     // final buttons
     
     this.getRegisterButtonElement = function() {
-        return element(by.css('button[ng-click="register(invitation)"]'));
+        return element(by.css('button[ng-click="register(practice, invitation)"]'));
     };
     
     // post-final dialog
