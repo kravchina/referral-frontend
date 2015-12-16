@@ -113,6 +113,16 @@ npm install -g karma-firefox-launcher
 npm install -g karma-ie-launcher
 ```
 
+Check the version of karma-jasmine:
+
+```Batchfile
+npm list -g karma-jasmine
+```
+
+It should output something like "karma-jasmine@0.3.6", NOT "karma-jasmine@0.1.6".
+
+Note: if after these commands you don't have karma-jasmine at all, add `npm install -g karma-jasmine` above and run it yourself.
+
 Check presense of karma executable:
 
 ```Batchfile
