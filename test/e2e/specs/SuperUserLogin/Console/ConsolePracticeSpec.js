@@ -19,7 +19,7 @@ var ConsolePracticeSpec = function() {
                 var userFullName = browser.params.login.super_user.firstName + ' ' + browser.params.login.super_user.lastName;
                 //practice fields
                 expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
-                consolePracticePage.setPractice(browser.params.login.super_user.practice.name);
+                consolePracticePage.setPractice(browser.params.login.super_user.practice.searchText);
                 expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(true);
                 consolePracticePage.getPracticeDropDownFirstRowElement().click();
                 expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
@@ -30,6 +30,8 @@ var ConsolePracticeSpec = function() {
                 expect(consolePracticePage.getUserOptionByName(userFullName).isDisplayed()).toBe(true);
                 consolePracticePage.getUserOptionByName(userFullName).click();
                 expect(consolePracticePage.getUserEmail().getAttribute('value')).toMatch(browser.params.login.super_user.email);
+                expect(consolePracticePage.getUserDeleteButton().isPresent()).toBe(true);
+                expect(consolePracticePage.getUserEditButton().isPresent()).toBe(true);
             });
 
         });

@@ -76,7 +76,7 @@
                             <span class="practice">{{referral.dest_practice.name}}</span>
                         </td>
                         <td class="cell-to" ng-hide="referral.dest_provider">
-                            <span class="provider" ng-hide="referral.dest_provider_id < 0">{{referral.dest_provider_invited.first_name}} {{referral.dest_provider_invited.last_name}}</span>
+                            <span class="provider" ng-hide="referral.dest_provider_id < 0">{{referral.dest_provider_invited.first_name == null ? referral.dest_provider_invited.email : ''}}{{referral.dest_provider_invited.first_name}} {{referral.dest_provider_invited.last_name}}</span>
                             <span class="provider" ng-show="referral.dest_provider_id < 0">First Available</span>
                             <span class="practice">{{referral.dest_practice.name}}</span>
                         </td>

@@ -31,6 +31,11 @@ describe("Testing ConsoleHelper service", function() {
                     getFromMask: jasmine.createSpy('getFromMask').and.returnValue(outputData),
                 };
             });
+            $provide.service('ProviderInvitation', function($q){
+                return {
+                    searchProviderInvitation: jasmine.createSpy('getFromMask').and.returnValue($q.defer().promise),
+            };
+        });
         });
 
         inject(function($injector, _ConsoleHelper_, _User_, _Practice_, _Role_){

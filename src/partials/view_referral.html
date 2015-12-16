@@ -51,7 +51,7 @@
             <button ng-if="(auth.is_admin && auth.practice_id == referral.dest_practice_id)" type="button" ng-click="editDestProviderDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-note" data-toggle="tooltip"
                     data-placement="top" title="Select provider"><span class="dlicons-pencil"></span></button>
         </div>
-        <input type="text" class="form-control data1" value="{{referral.dest_provider.first_name}} {{referral.dest_provider.middle_initial}} {{referral.dest_provider.last_name}}" disabled="disabled">
+        <input type="text" class="form-control data1" value="{{referral.dest_provider.first_name == null ? referral.dest_provider.email : ''}}{{referral.dest_provider.first_name}} {{referral.dest_provider.middle_initial}} {{referral.dest_provider.last_name}}" disabled="disabled">
         <input type="text" class="form-control data2" value="{{referral.dest_practice.name}}" disabled="disabled">
     </div>
 </div>

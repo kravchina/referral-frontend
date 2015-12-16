@@ -6,11 +6,11 @@ var ConsolePracticePage = function() {
     };
 
     this.getPractice = function(){
-        return element(by.model('practiceSearchText'));
+        return element(by.model('practiceSearch'));
     };
 
     this.setPractice = function(practiceName){
-        element(by.model('practiceSearchText')).sendKeys(practiceName);
+        element(by.model('practiceSearch')).sendKeys(practiceName);
     };
 
     this.getPracticeDropDownElement = function() {
@@ -22,7 +22,7 @@ var ConsolePracticePage = function() {
     };
 
     this.getPracticeName = function(){
-        return element.all(by.css('div[ng-show="practiceSearchText"] .form-group input')).get(0);
+        return element.all(by.css('div[ng-show="practiceSearch"] .form-group input')).get(0);
     };
 
     this.getUser = function(){
@@ -35,6 +35,14 @@ var ConsolePracticePage = function() {
 
     this.getUserEmail = function(){
         return element.all(by.css('div[ng-show="practiceUsers"] .form-group input')).get(1);
+    };
+
+    this.getUserEditButton = function(){
+        return element(by.css('div[ng-click="editDialog(practiceUsers)"]'));
+    };
+
+    this.getUserDeleteButton = function(){
+        return element(by.css('div.btn-delete'));
     };
 
 };

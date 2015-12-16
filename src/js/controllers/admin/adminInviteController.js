@@ -41,6 +41,7 @@ angular.module('admin')
                 });
         };
 
+        //is not currently used, [#109317458] - Remove generate security code banner and button
         $scope.securityCodeDialog = function (user_id) {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/security_code.html',
