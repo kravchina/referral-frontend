@@ -109,6 +109,7 @@ angular.module('console')
                     Address.save({address: address}, function(success){
                         var index = $scope.practiceSearch.addresses.indexOf(address);
                         $scope.practiceSearch.addresses[index] = JSON.parse(JSON.stringify(success));
+                        $scope.practiceSearch.addresses[index]._isOpen = true;
                         Notification.success('Address create success');
                     }, function(failure){
                         Notification.success('Address create fail');

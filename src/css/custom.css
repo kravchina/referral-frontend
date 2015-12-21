@@ -1900,7 +1900,7 @@ label.tooth-label-view{
 #consoleTabContent .address-form .btn-delete{
 	top: 25%;
 	color: inherit;
-	right: 40px;
+	right: 40px !important;
 }
 
 #consoleTabContent .address-form .btn-delete.active{
