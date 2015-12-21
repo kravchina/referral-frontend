@@ -357,7 +357,8 @@ angular.module('dentalLinksServices')
 
 .factory('Activity', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/activities/:id', {id: '@id'}, {
-        find: {method: 'GET', url: API_ENDPOINT + '/activities', isArray: false}
+        find: {method: 'GET', url: API_ENDPOINT + '/activities', isArray: false},
+        patientsChanges: {method: 'GET', url: API_ENDPOINT + '/activities/patient', isArray: false}
     });
 }])
 
