@@ -146,6 +146,25 @@ angular.module('modals')
     };
 }])
 
+.controller('PracticeModalController', ['$scope', '$modalInstance', 'ModalHandler','Alert', 'Practice', 'Procedure', function ($scope, $modalInstance, ModalHandler, Alert, Practice, Procedure) {
+    $scope.alerts = [];
+    $scope.practice = {addresses_attributes: [{}]};
+    $scope.practiceTypes = Procedure.practiceTypes();
+    $scope.addAddress = function(){
+        $scope.practice.addresses_attributes.push({});
+    };
+    $scope.removeAddress = function(address){
+        $scope.practice.addresses_attributes.splice($scope.practice.addresses_attributes.indexOf(address), 1);
+    };
+    $scope.ok = function (practice) {
+        ModalHandler.close($modalInstance, practice);
+    };
+
+    $scope.cancel = function () {
+        ModalHandler.dismiss($modalInstance);
+    };
+}])
+
 .controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
     $scope.result = {};
     $scope.alerts = [];

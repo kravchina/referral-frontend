@@ -1907,8 +1907,28 @@ label.tooth-label-view{
 	width: 115px;
 }
 
-#consoleTabContent .btn-add-address{
+#consoleTabContent .btn-add-address {
 	margin-top: 15px;
+}
+
+#consoleTabContent .console-practice-btns .btn-toggle{
+	position: absolute;
+	top: 0px;
+	right: 20px;
+	border-radius: 0 4px 0 0;
+}
+
+#consoleTabContent .console-practice-btns .btn-delete{
+	right: 80px;
+}
+
+#consoleTabContent .console-practice-btns .btn-delete.active{
+	width: 110px;
+}
+
+#consoleTabContent .with-btn{
+	border-bottom: none;
+	padding: 11px 15px;
 }
 
 #sectPractice .input-block .btn-delete.active{

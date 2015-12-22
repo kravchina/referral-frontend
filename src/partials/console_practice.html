@@ -7,6 +7,9 @@
             <div ng-show="noResults" class="btn-toggle btn">
                 <i class="glyphicon glyphicon-remove"></i> No Results Found
             </div>
+            <button type="button" ng-click="createPractice()" class="btn btn-orange btn-toggle" data-toggle="tooltip" data-placement="top" title="Add practice">
+                <span class="dlicons-plus"></span>
+            </button>
         </div>
         <input type="text" class="form-control" name="practice" placeholder="Enter existing practice..." ng-model-options="{ debounce: 400 }"
                ng-model="practiceSearch" typeahead-loading="loadingPractices" typeahead-no-results="noResults" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
@@ -28,32 +31,43 @@
     <!-- Practice INFO -->
     <div class="input-block col-xs-12 col-sm-6" ng-show="practiceSearch" >
         <div class="panel panel-primary">
-            <div class="panel-heading">
+            <div class="panel-heading with-btn">
                 <h3 class="panel-title">Practice info:</h3>
             </div>
             <div class="panel-body">
-                <div class="form-group">
-                    <label>Practice name</label>
-                    <input type="text" class="form-control data1" value="{{practiceSearch.name}}" disabled="disabled">
-                </div>
-                <div class="form-group">
-                    <label>Owner</label>
-                    <input type="text" class="form-control data1" value="{{practiceSearch.owner.title}} {{practiceSearch.owner.first_name}} {{practiceSearch.owner.last_name}}" disabled="disabled">
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="text" class="form-control data1" value="{{practiceSearch.owner.email}}" disabled="disabled">
+                <form edit-form="destinationPractice" id="{{'formConsolePractice'}}" name="practiceForm" class="practice-form">
+                    <div class="console-practice-btns">
+                        <button type="button" toggle-edit class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
+                        <div delete-button class="button-block btn-delete hide" ng-show="practiceSearch.addresses.length > 1">
+                            <span class="dlicons-remove"></span> Delete? <a ng-click="removePractice(destinationPractice)" class="link-green">Yes</a> | <a class="link-orange">No</a>
+                        </div>
+                        <button type="button" ng-click='savePractice(practiceForm, destinationPractice)' class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes" ng-disabled="practiceForm.$invalid"><span class="dlicons-check"></span></button>
+                    </div>
+                    <div class="form-group">
+                        <label>Practice name</label>
+                        <input type="text" class="form-control data1" ng-class="{'has-error': practiceName.$invalid}" name="practiceName" ng-model="destinationPractice.name" disabled="disabled" ng-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label>Owner</label>
+                        <input type="text" class="form-control data1" value="{{destinationPractice.owner.title}} {{destinationPractice.owner.first_name}} {{destinationPractice.owner.last_name}}" disabled="disabled">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" class="form-control data1" value="{{destinationPractice.owner.email}}" disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group" ng-class="{'has-error': practiceType.$invalid}">
+                                <label>Practice type</label>
+                                <select class="form-control data1 select" name="practiceType" ng-model="destinationPractice.practice_type"  ng-options="p as p.name for p in practiceTypes track by p.id" disabled="disabled" ng-required="true">
+                                    <option class="placeholder" value="">Select type &hellip;</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Practice type</label>
-                            <input type="text" class="form-control data1" value="{{practiceSearch.practice_type.name}}" disabled="disabled">
-                        </div>
-                    </div>
-                </div>
+                </form>
 
                 <!--Accordion Address-->
                 <accordion close-others="false">

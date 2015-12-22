@@ -1,7 +1,7 @@
 angular.module('console')
-    .controller('PracticeConsoleController', ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', 'Address',
-    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, Address){
-
+    .controller('PracticeConsoleController', ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', 'Address', 'Procedure',
+    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, Address, Procedure){
+        $scope.practiceTypes = Procedure.practiceTypes();
         $scope.onPracticeSelected = ConsoleHelper.onPracticeSelected($scope);
 
         $scope.findPractice = ConsoleHelper.findPractice($scope);
@@ -117,6 +117,27 @@ angular.module('console')
                     });
                 }
             }
+        };
+
+        $scope.savePractice = function(practiceForm, destinationPractice){
+            console.log('practiceForm', practiceForm);
+            console.log('practice', destinationPractice);
+            console.log('types', $scope.practiceTypes);
+        };
+
+        $scope.removePractice = function(practice){
+            console.log(practice);
+        };
+
+        $scope.createPractice = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/practice_form.html',
+                controller: 'PracticeModalController'
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (practice) {
+                $scope.destinationPractice = $scope.practiceSearch = practice;
+            });
         };
 
     }]);
