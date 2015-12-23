@@ -1,7 +1,7 @@
 angular.module('console')
     .controller('PracticeConsoleController',
-    ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'ProviderInvitation', 'User', '$rootScope', 'Address',
-    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, ProviderInvitation, User, $rootScope, Address){
+    ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Notification',
+    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, ProviderInvitation, User, $rootScope, Address, Notification){
 
         $scope.onPracticeSelected = ConsoleHelper.onPracticeSelected($scope);
 
@@ -48,34 +48,35 @@ angular.module('console')
         };
 
         $scope.deleteUser = function (user) {
-            if (user.status) {
+            if (user.status && user.status === 'invited') {
                 ProviderInvitation.delete({id: user.id}, function (success) {
                         if(success.msg){
-                            Notification.error( success.msg);
+                            Notification.error(success.msg);
                         }else{
-                            $scope.destinationPractice = {};
-                            $scope.practiceSearch = '';
+                            if ($scope.destinationPractice.isInvitation) {
+                                $scope.destinationPractice = {};
+                                $scope.practiceSearch = '';
+                            } else {
+                                $scope.destinationPractice.users.splice($scope.destinationPractice.users.indexOf(user), 1);
+                            }
                         }
-
                     },
                     function (failure) {
                         Notification.error('An error occurred during invitation removal...')
                     });
 
-            } else {
+            } else if (user.status && user.status === 'registered') {
                 User.delete({id: user.id}, function (success) {
-                        if(success.msg){
+                        if (success.msg) {
                             Notification.error(success.msg)
-                        }else{
+                        } else {
                             $scope.destinationPractice.users.splice($scope.destinationPractice.users.indexOf(user), 1);
                         }
-
                     },
                     function (failure) {
                         Notification.error('An error occurred during user removal...');
                     });
             }
-
         };
 
         $scope.usersDialog = function () {
