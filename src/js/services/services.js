@@ -132,6 +132,7 @@ angular.module('dentalLinksServices')
             'Pragma': 'no-cache',
             'Expires': '0'
         }, skipSpinner: true},
+        practice: {method: 'GET', url: API_ENDPOINT + '/invitations/practice/:id', isArray: true},
         validate: {method: 'GET',  url: API_ENDPOINT + '/invitations/validate', skipSpinner: true},
         resend: {method: 'GET', url: API_ENDPOINT + '/invitations/resend/:id'},
         delete: {method: 'DELETE', url: API_ENDPOINT + '/invitations/:id'},

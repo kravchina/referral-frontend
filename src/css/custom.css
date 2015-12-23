@@ -1925,3 +1925,7 @@ label.tooth-label-view{
 #sectPractice .input-block .btn-delete.active{
 	width: 110px;
 }
+
+.invite-link-group{
+	overflow: hidden;
+}

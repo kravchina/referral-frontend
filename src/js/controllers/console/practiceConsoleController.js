@@ -1,12 +1,15 @@
 angular.module('console')
-    .controller('PracticeConsoleController', ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', 'Address',
-    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, Address){
+    .controller('PracticeConsoleController',
+    ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'ProviderInvitation', 'User', '$rootScope', 'Address',
+    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, ProviderInvitation, User, $rootScope, Address){
 
         $scope.onPracticeSelected = ConsoleHelper.onPracticeSelected($scope);
 
         $scope.findPractice = ConsoleHelper.findPractice($scope);
 
         $scope.showFullRole = ConsoleHelper.showFullRole();
+
+        $scope.showInviteLink = ConsoleHelper.showInviteLink();
 
         $scope.editDialog = function(editUser){
             var modalInstance;
@@ -73,6 +76,23 @@ angular.module('console')
                     });
             }
 
+        };
+
+        $scope.usersDialog = function () {
+            var scope = $rootScope.$new();
+            scope.params = {
+                practiceId: $scope.destinationPractice.id
+            };
+
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/user_form.html',
+                controller: 'UserModalController',
+                scope: scope
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (user) {
+                $scope.destinationPractice.users.push(user);
+            });
         };
 
         $scope.addAddress = function () {

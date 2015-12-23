@@ -146,7 +146,50 @@ angular.module('modals')
     };
 }])
 
-.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
+.controller('PracticeModalController', ['$scope', '$modalInstance', 'ModalHandler','Alert', 'Practice', 'Procedure', function ($scope, $modalInstance, ModalHandler, Alert, Practice, Procedure) {
+    $scope.alerts = [];
+    $scope.practice = {addresses_attributes: [{}]};
+    $scope.practiceTypes = Procedure.practiceTypes();
+    $scope.addAddress = function(){
+        $scope.practice.addresses_attributes.push({});
+    };
+    $scope.removeAddress = function(address){
+        $scope.practice.addresses_attributes.splice($scope.practice.addresses_attributes.indexOf(address), 1);
+    };
+    $scope.ok = function (practice) {
+        ModalHandler.close($modalInstance, practice);
+    };
+
+    $scope.cancel = function () {
+        ModalHandler.dismiss($modalInstance);
+    };
+}])
+
+.controller('JoinPracticeModalController', ['$scope', '$modalInstance', 'Registration', 'ModalHandler','Alert', 'Practice', 'Spinner', function ($scope, $modalInstance, Registration, ModalHandler, Alert, Practice) {
+    $scope.alerts = [];
+    $scope.findPractice = function (searchValue) {
+        return Practice.publicSearchPractice({search: searchValue }).$promise;
+    };
+
+    $scope.ok = function (practice, securitycode) {
+        Registration.verify_security_code({code: securitycode, practice_id: practice.id},
+            function(success){
+                $modalInstance.close({'practice': practice, 'securitycode': securitycode});
+        }, function(failure){
+                Alert.error($scope.alerts, 'Your security code was rejected. Please try another one.');
+
+            });
+
+    };
+
+    $scope.cancel = function () {
+        ModalHandler.dismiss($modalInstance);
+    };
+}])
+
+.controller('UserModalController',
+        ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role',
+        function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
     $scope.result = {};
     $scope.alerts = [];
     $scope.isInvite = true;
@@ -166,7 +209,7 @@ angular.module('modals')
     };
 
     $scope.ok = function (user) {
-        user.practice_id = Auth.getOrRedirect().practice_id;
+        user.practice_id = ($scope.params && $scope.params.practiceId) || Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
 
         if($scope.isInvite){

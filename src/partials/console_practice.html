@@ -8,16 +8,23 @@
                 <i class="glyphicon glyphicon-remove"></i> No Results Found
             </div>
         </div>
-        <input type="text" class="form-control" name="practice" placeholder="Enter existing practice..." ng-model-options="{ debounce: 400 }"
-               ng-model="practiceSearch" typeahead-loading="loadingPractices" typeahead-no-results="noResults" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
-               typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].last_name == null && practice.users[0].first_name == null ? practice.users[0].email : (practice.users[0].first_name + ' ' + practice.users[0].last_name)) : practice.name for practice in findPractice($viewValue)">
+        <input type="text" class="form-control" name="practice" placeholder="Enter existing practice..." ng-model-options="{ debounce: 300 }"
+               ng-model="practiceSearch" typeahead-loading="loadingPractices" typeahead-no-results="noResults" typeahead-editable="false"
+               typeahead-on-select="onPracticeSelected($item, $model, $label)"
+               typeahead="practice as (practice.name == '-- pending registration --') ?
+               (practice.users[0].last_name == null && practice.users[0].first_name == null ? practice.users[0].email :
+               (practice.users[0].first_name + ' ' + practice.users[0].last_name)) : practice.name for practice in findPractice($viewValue)">
     </div>
 
     <div class="input-block col-xs-12 col-sm-6">
         <div class="block-title">
             <h2>Users</h2>
+            <button ng-disabled="!destinationPractice || destinationPractice.isInvitation" type="button" ng-click="usersDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-user"
+                    data-toggle="tooltip" data-placement="top" title="Add a New User" data-target="#modalUser"><span class="dlicons-user-add"></span></button>
         </div>
-        <select id="selectUsers" name="user" class="form-control" ng-disabled="!destinationPractice" ng-model="practiceUsers" ng-options="u as u.first_name && u.last_name ? u.first_name + ' ' + u.last_name : u.email for u in destinationPractice.users" ng-required="true">
+        <select id="selectUsers" name="user" class="form-control" ng-disabled="!destinationPractice" ng-model="practiceUser"
+                ng-options="u as u.first_name && u.last_name ?
+                    u.first_name + ' ' + u.last_name : u.email for u in destinationPractice.users" ng-required="true">
             <option  class="placeholder" value="">Choose a user &hellip;</option>
         </select>
     </div>
@@ -126,51 +133,61 @@
     </div>
 
     <!-- Users INFO -->
-    <div class="input-block col-xs-12 col-sm-6" ng-show="practiceUsers">
+    <div class="input-block col-xs-12 col-sm-6" ng-show="practiceUser">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">User info:</h3>
                 <div delete-button class="button-block btn-delete">
-                    <span class="dlicons-remove"></span> Delete this user? <a ng-click="deleteUser(practiceUsers)" class="link-green">Yes</a> | <a  class="link-orange">No</a>
+                    <span class="dlicons-remove"></span> Delete this user? <a ng-click="deleteUser(practiceUser)" class="link-green">Yes</a> | <a  class="link-orange">No</a>
                 </div>
-                <div ng-click="editDialog(practiceUsers)" class="button-block btn-change-password" ng-hide="(practiceUsers.first_name === null && practiceUsers.last_name === null) || practiceUsers.email_bindings === undefined">
+                <div ng-click="editDialog(practiceUser)" class="button-block btn-change-password"
+                     ng-hide="(practiceUser.first_name === null && practiceUser.last_name === null) || practiceUser.status == 'invited'">
                     <span class="dlicons-pencil" title="Edit user"></span>
                 </div>
             </div>
             <div class="panel-body">
                 <div class="form-group">
                     <label>Full user name</label>
-                    <input type="text" class="form-control data1" value="{{practiceUsers.title}} {{practiceUsers.first_name}} {{practiceUsers.middle_initial}} {{practiceUsers.last_name}}" disabled="disabled">
+                    <input type="text" class="form-control data1" value="{{practiceUser.title}} {{practiceUser.first_name}}
+                        {{practiceUser.middle_initial}} {{practiceUser.last_name}}" disabled="disabled">
                 </div>
                 <div class="row">
                     <div class="col-sm-10">
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="text" class="form-control data1" value="{{practiceUsers.email}}" disabled="disabled">
+                            <input type="text" class="form-control data1" value="{{practiceUser.email}}" disabled="disabled">
                         </div>
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label>No login</label>
-                            <input type="checkbox" class="checkbox" ng-checked="practiceUsers.no_login" disabled="disabled">
+                            <input type="checkbox" class="checkbox" ng-checked="practiceUser.no_login" disabled="disabled">
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Role</label>
-                    <input type="text" class="form-control data1" value="{{showFullRole(practiceUsers.roles_mask)}}" disabled="disabled">
+                    <input type="text" class="form-control data1" value="{{showFullRole(practiceUser.roles_mask)}}" disabled="disabled">
+                </div>
+                <div class="form-group invite-link-group" ng-if="practiceUser.status == 'invited'">
+                    <label>Invite link</label>
+                    <p class="form-control-static">
+                        <a href="{{showInviteLink(practiceUser)}}" target="_blank">{{showInviteLink(practiceUser)}}</a>
+                    </p>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Create</label>
-                            <input type="text" class="form-control data1" value="{{practiceUsers.created_at | date: 'mediumDate'}}" disabled="disabled">
+                            <input type="text" class="form-control data1" value="{{practiceUser.created_at | date: 'mediumDate'}}"
+                                   disabled="disabled">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Update</label>
-                            <input type="text" class="form-control data1" value="{{practiceUsers.updated_at | date: 'mediumDate'}}" disabled="disabled">
+                            <input type="text" class="form-control data1" value="{{practiceUser.updated_at | date: 'mediumDate'}}"
+                                   disabled="disabled">
                         </div>
                     </div>
                 </div>
