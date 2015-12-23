@@ -263,17 +263,21 @@ angular.module('dentalLinksDirectives')
             var editButton = $element;
             var addAddressButton = $element.next();
             var saveButton = $element.next().next();
-            PracticeEditMode.init(editFormCtrl, formCtrl, editButton, addAddressButton, saveButton);
             // edit
             editButton.on('click', function (e) {
+                PracticeEditMode.init(editFormCtrl, formCtrl, editButton, addAddressButton, saveButton);
                 PracticeEditMode.on();
             });
 
             // save
             saveButton.on('click', function (e) {
+                PracticeEditMode.init(editFormCtrl, formCtrl, editButton, addAddressButton, saveButton);
                 PracticeEditMode.off();
             });
 
+            if(attrs.toggleEdit){
+                editButton.triggerHandler('click');
+            }
         }
     }
 

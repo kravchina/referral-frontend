@@ -3,6 +3,14 @@ var consolePracticePage = require('../../../pages/ConsolePracticePage');
 
 var ConsolePracticeSpec = function() {
     this.run = function() {
+        var address = {
+            street: 'Test street',
+            city: 'Test City',
+            phone: '9998887777',
+            state: 'DE',
+            zip: '666999',
+            website: 'www.testsite.com'
+        };
         describe('when user navigates to Console Practice', function() {
             beforeEach(function() {
                 consolePracticePage.open();
@@ -32,6 +40,33 @@ var ConsolePracticeSpec = function() {
                 expect(consolePracticePage.getUserEmail().getAttribute('value')).toMatch(browser.params.login.super_user.email);
                 expect(consolePracticePage.getUserDeleteButton().isPresent()).toBe(true);
                 expect(consolePracticePage.getUserEditButton().isPresent()).toBe(true);
+            });
+
+            it('check practice address add, edit, delete', function(){
+                consolePracticePage.setPractice(browser.params.login.super_user.practice.name);
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(true);
+                consolePracticePage.getPracticeDropDownFirstRowElement().click();
+
+                consolePracticePage.getAddAddressButton().click();
+                var lastAddress = consolePracticePage.getLastAddress();
+
+                consolePracticePage.getAddressStreetElement(lastAddress).sendKeys(address.street);
+                consolePracticePage.getAddressCityElement(lastAddress).sendKeys(address.city);
+                consolePracticePage.getAddressPhoneElement(lastAddress).sendKeys(address.phone);
+                consolePracticePage.getAddressStateElement(lastAddress).element(by.cssContainingText('option', address.state)).click();
+                consolePracticePage.getAddressZipElement(lastAddress).sendKeys(address.zip);
+                consolePracticePage.getAddressWebsiteElement(lastAddress).sendKeys(address.website);
+                consolePracticePage.getSaveAddressButton(lastAddress).click();
+                commonExpects.expectSuccessNotificationShown();
+                consolePracticePage.getEditAddressButton(lastAddress).click();
+                consolePracticePage.getAddressStreetElement(lastAddress).sendKeys(' update');
+                consolePracticePage.getSaveAddressButton(lastAddress).click();
+                commonExpects.expectSuccessNotificationShown();
+                consolePracticePage.getEditAddressButton(lastAddress).click();
+                consolePracticePage.getAddressDeleteButton(lastAddress).click();
+                browser.sleep(300);
+                consolePracticePage.getAddressDeleteYesButton(lastAddress).click();
+                commonExpects.expectSuccessNotificationShown();
             });
 
         });

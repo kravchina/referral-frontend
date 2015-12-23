@@ -64,53 +64,69 @@
 
                 <!--Accordion Address-->
                 <accordion close-others="false">
-                    <accordion-group  heading="{{'Address #' + ($index + 1)}}" ng-repeat="address in practiceSearch.addresses">
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <div class="form-group">
-                                    <label>Street</label>
-                                    <input type="text" class="form-control data1" value="{{address.street_line_1}}" disabled="disabled">
+                    <accordion-group  heading="{{'Address #' + ($index + 1)}}" is-open="address._isOpen" ng-repeat="address in practiceSearch.addresses">
+                        <form edit-form="address" id="{{'formConsolePracticeAddress' + $index}}" name="addressForm" class="address-form">
+                            <div class="console-address-btns">
+                                <button type="button" toggle-edit="{{address.new}}" class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
+                                <div delete-button class="button-block btn-delete hide" ng-show="practiceSearch.addresses.length > 1">
+                                    <span class="dlicons-remove"></span> Delete? <a ng-click="removeAddress(address)" class="link-green">Yes</a> | <a class="link-orange">No</a>
+                                </div>
+                                <button type="button" ng-click='saveAddress(addressForm, address)' class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes" ng-disabled="addressForm.$invalid"><span class="dlicons-check"></span></button>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="form-group" ng-class="{'has-error': addressForm.street.$invalid}">
+                                        <label ng-class="{hidden:!address.new}">Street</label>
+                                        <input type="text" class="form-control data1" name="street" ng-model="address.street_line_1" disabled="disabled" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group" ng-class="{'has-error': addressForm.city.$invalid}">
+                                        <label ng-class="{hidden:!address.new}">City</label>
+                                        <input type="text" class="form-control data1" name="city" ng-model="address.city" disabled="disabled" required>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label>City</label>
-                                    <input type="text" class="form-control data1" value="{{address.city}}" disabled="disabled">
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="form-group" ng-show="address.street_line_2">
-                            <label>Street 2</label>
-                            <input type="text" class="form-control data1" value="{{address.street_line_2}}" disabled="disabled">
-                        </div>
+                            <div class="form-group" ng-show="address.street_line_2">
+                                <label ng-class="{hidden:!address.new}">Street 2</label>
+                                <input type="text" class="form-control data1" ng-model="address.street_line_2" disabled="disabled">
+                            </div>
 
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Phone</label>
-                                    <input type="text" class="form-control data1" value="{{address.phone}}" disabled="disabled">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="form-group" ng-class="{'has-error': addressForm.phone.$invalid}">
+                                        <label ng-class="{hidden:!address.new}">Phone</label>
+                                        <input type="tel" class="form-control data1" name="phone" phone-formatter ng-model="address.phone" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group" ng-class="{'has-error': addressForm.state.$invalid}">
+                                        <label ng-class="{hidden:!address.new}">State</label>
+                                        <state-select class="{data1: !address.new}" name="state" address="address" disabled="{{!address.new}}"></state-select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group" ng-class="{'has-error': addressForm.zip.$invalid}">
+                                        <label ng-class="{hidden:!address.new}">Zip</label>
+                                        <input type="text" class="form-control data1" name="zip" ng-model="address.zip" disabled="disabled" required>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>State</label>
-                                    <input type="text" class="form-control data1" value="{{address.state}}" disabled="disabled">
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Zip</label>
-                                    <input type="text" class="form-control data1" value="{{address.zip}}" disabled="disabled">
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label>Website</label>
-                            <input type="text" class="form-control data1" value="{{address.website}}" disabled="disabled">
-                        </div>
+                            <div class="form-group">
+                                <label ng-class="{hidden:!address.new}">Website</label>
+                                <input type="text" class="form-control data1" name="website" ng-model="address.website" disabled="disabled">
+                            </div>
+                        </form>
                     </accordion-group>
+                    <div class="row">
+                        <div class="col-xs-offset-7 col-xs-5">
+                            <button type="button" ng-hide="practiceSearch.addresses.length >= 20" ng-click="addAddress()" class="btn btn-green btn-toggle-shifted btn-edit btn-add-address pull-right" data-toggle="tooltip" data-placement="top" title="Add practice address">
+                                <span class="dlicons-plus"></span> Add Address
+                            </button>
+                        </div>
+                    </div>
                 </accordion><!--Accordion end-->
             </div>
         </div>
