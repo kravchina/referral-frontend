@@ -35,6 +35,8 @@ describe("Testing Practice Console Controller", function() {
             $provide.service('ModalHandler', function(){});
             $provide.service('ProviderInvitation', function(){});
             $provide.service('User', function(){});
+            $provide.service('Notification', function(){});
+            $provide.service('Address', function(){});
         });
 
         inject(function($injector) {
@@ -61,6 +63,9 @@ describe("Testing Practice Console Controller", function() {
         expect($scope.showFullRole).toBeDefined();
         expect($scope.editDialog).toBeDefined();
         expect($scope.deleteUser).toBeDefined();
+        expect($scope.addAddress).toBeDefined();
+        expect($scope.removeAddress).toBeDefined();
+        expect($scope.saveAddress).toBeDefined();
     });
 
 });

@@ -1893,6 +1893,35 @@ label.tooth-label-view{
 	width: 20px;
 }
 
+#consoleTabContent .console-address-btns{
+	position: absolute;
+	right: 0;
+	top: -51px;
+}
+
+#consoleTabContent .address-form{
+	position: relative;
+}
+
+#consoleTabContent .console-address-btns button{
+	font-size: 1.2rem!important;
+	padding: 8px 10px!important;
+}
+
+#consoleTabContent .address-form .btn-delete{
+	top: 25%;
+	color: inherit;
+	right: 40px !important;
+}
+
+#consoleTabContent .address-form .btn-delete.active{
+	width: 115px;
+}
+
+#consoleTabContent .btn-add-address{
+	margin-top: 15px;
+}
+
 #sectPractice .input-block .btn-delete.active{
 	width: 110px;
 }
