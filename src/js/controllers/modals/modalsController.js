@@ -405,7 +405,7 @@ angular.module('modals')
                      ModalHandler.close($modalInstance,success);
                  },
                  function(failure){
-                    Alert.error($scope.alerts, failure.data);
+                    Alert.error($scope.alerts, failure.data.error);
                  });
         }
 

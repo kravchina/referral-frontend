@@ -771,6 +771,17 @@ textarea.form-control {
 .note-block > span {
 	display: block;
 }
+
+.read-only{
+	background-color: #ecf0f1;
+}
+.changes{
+	display: inline-block;
+}
+
+.changes > span{
+	display: block;
+}
 .note-block .note-content {
 	color: #34495e;
 	font-size: 12px;
