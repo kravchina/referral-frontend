@@ -187,7 +187,9 @@ angular.module('modals')
     };
 }])
 
-.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
+.controller('UserModalController',
+        ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role',
+        function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
     $scope.result = {};
     $scope.alerts = [];
     $scope.isInvite = true;
@@ -207,7 +209,7 @@ angular.module('modals')
     };
 
     $scope.ok = function (user) {
-        user.practice_id = Auth.getOrRedirect().practice_id;
+        user.practice_id = ($scope.params && $scope.params.practiceId) || Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
 
         if($scope.isInvite){
