@@ -82,12 +82,28 @@ angular.module('modals')
 .controller('NoteModalController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
     $scope.ok = function (note) {
         //nothing to do, we cant save note right here because at this stage referral doesn't exist. We can only add new note to the list on the parent page (create referral) and save simultaneously with referral.
-        if (note == undefined){
+        if (note == undefined || note.match(/^\s*$/)){
             ModalHandler.dismiss($modalInstance);
         }else{
             ModalHandler.close($modalInstance,note);
         }
         
+    };
+    $scope.cancel = function () {
+        ModalHandler.dismiss($modalInstance);
+    };
+
+}])
+
+.controller('EditNoteModalController', ['$scope', '$modalInstance', 'ModalHandler', 'noteData', function ($scope, $modalInstance, ModalHandler, noteData) {
+    $scope.note = angular.copy(noteData);
+
+    $scope.ok = function (note) {
+        if (note == undefined || note.message.match(/^\s*$/)){
+            ModalHandler.dismiss($modalInstance);
+        }else{
+            ModalHandler.close($modalInstance, $scope.note);
+        }
     };
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
@@ -152,7 +168,7 @@ angular.module('modals')
 .controller('JoinPracticeModalController', ['$scope', '$modalInstance', 'Registration', 'ModalHandler','Alert', 'Practice', 'Spinner', function ($scope, $modalInstance, Registration, ModalHandler, Alert, Practice) {
     $scope.alerts = [];
     $scope.findPractice = function (searchValue) {
-        return Practice.searchPractice({search: searchValue }).$promise;
+        return Practice.publicSearchPractice({search: searchValue }).$promise;
     };
 
     $scope.ok = function (practice, securitycode) {
@@ -171,7 +187,9 @@ angular.module('modals')
     };
 }])
 
-.controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
+.controller('UserModalController',
+        ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role',
+        function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
     $scope.result = {};
     $scope.alerts = [];
     $scope.isInvite = true;
@@ -191,7 +209,7 @@ angular.module('modals')
     };
 
     $scope.ok = function (user) {
-        user.practice_id = Auth.getOrRedirect().practice_id;
+        user.practice_id = ($scope.params && $scope.params.practiceId) || Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
 
         if($scope.isInvite){
@@ -387,7 +405,7 @@ angular.module('modals')
                      ModalHandler.close($modalInstance,success);
                  },
                  function(failure){
-                    Alert.error($scope.alerts, failure.data);
+                    Alert.error($scope.alerts, failure.data.error);
                  });
         }
 

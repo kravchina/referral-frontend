@@ -14,7 +14,7 @@
                         <th class="cell-user">Name</th>
                         <th class="cell-username">Email</th>
                         <th class="cell-role">Role</th>
-                        <th class="cell-created">Created on</th>
+                        <th class="cell-created"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -31,7 +31,6 @@
                             <div ng-click="editDialog(user)" ng-hide="user.status || (!auth.is_admin && auth.email != user.email)" class="button-block btn-change-password">
                                 <span class="dlicons-pencil" title="Edit user"></span>
                             </div>
-                            <span class="create-date">{{user.created_at | date: 'mediumDate'}}&nbsp;</span>
                         </td>
                     </tr>
                     </tbody>

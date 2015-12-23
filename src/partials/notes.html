@@ -3,15 +3,28 @@
     <div class="input-block col-xs-12 col-sm-12">
         <div class="block-title">
             <h2>Notes</h2>
-            <button type="button" class="btn btn-orange btn-toggle" ng-click="noteDialog()" data-toggle="tooltip" data-placement="top" title="Add New Note" data-target="#modalNote"><span class="dlicons-plus"></span></button>
+            <button type="button" class="btn btn-orange btn-toggle" ng-click="noteDialog()" data-toggle="tooltip"
+                    data-placement="top" title="Add New Note" data-target="#modalNote"><span
+                    class="dlicons-plus"></span></button>
         </div>
 
         <div class="notes-wrapper">
             <ul>
                 <!-- Note block -->
-                <li class="note-block" expand-note ng-repeat="note in model.referral.notes">
-                    <span class="note-user">{{note.user.first_name}} {{note.user.last_name}}</span>
-                    <span class="note-content">{{note.message}}</span>
+                <li class="note-block" ng-class="{'read-only': note.trackable_id}" expand-note ng-repeat="note in inputModel.notes | orderBy: created_at">
+                    <span class="note-user" ng-if="note.trackable_id">{{note.owner.first_name}} {{note.owner.last_name}}</span>
+                    <span class="note-user" ng-if="!note.trackable_id">{{note.user.first_name}} {{note.user.last_name}}</span>
+                    <span class="note-content changes" ng-if="note.trackable_id">Patient data was changed
+                    <span  class="note-content" ng-if="note.parameters.changes.first_name">- first name was changed from <b>{{note.parameters.changes.first_name[0]}}</b> to <b>{{note.parameters.changes.first_name[1]}}</b></span>
+                    <span  class="note-content" ng-if="note.parameters.changes.last_name">- last name was changed from <b>{{note.parameters.changes.last_name[0]}}</b> to <b>{{note.parameters.changes.last_name[1]}}</b></span>
+                    <span class="note-content" ng-if="note.parameters.changes.birthday">- birthday was changed from <b>{{note.parameters.changes.birthday[0]}}</b> to <b>{{note.parameters.changes.birthday[1]}}</b></span>
+                        </span>
+                        <span class="note-content" ng-if="!note.trackable_id">{{note.message}}</span>
+                    <span class="note-expand more">See more</span>
+                    <span class="note-expand less">See less</span>
+                    <span class="edit" ng-click="editNote(note, $index)" ng-if="!note.trackable_id" ng-hide="auth.id != note.user_id">
+                        <span class="dlicons-pencil" title="Edit note"></span>
+                    </span>
                     <span class="datestamp">{{note.created_at | date: 'short' }}</span>
                 </li>
 

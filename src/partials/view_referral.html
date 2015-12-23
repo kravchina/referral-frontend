@@ -42,7 +42,7 @@
             <h2>From</h2>
         </div>
         <input type="text" class="form-control data1" value="{{referral.orig_provider.first_name}} {{referral.orig_provider.middle_initial}} {{referral.orig_provider.last_name}}" disabled="disabled">
-        <input type="text" class="form-control data2" value="{{referral.orig_provider.practice.name}}" disabled="disabled">
+        <input type="text" class="form-control data2" value="{{referral.orig_provider.practice.name}} {{(referral.orig_provider.practice.addresses ? '(' + referral.orig_provider.practice.addresses[0].city + ', ' + referral.orig_provider.practice.addresses[0].state + ')' : '')}}" disabled="disabled">
     </div>
 
     <div class="input-block col-xs-12 col-sm-6">
@@ -51,7 +51,7 @@
             <button ng-if="(auth.is_admin && auth.practice_id == referral.dest_practice_id)" type="button" ng-click="editDestProviderDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-note" data-toggle="tooltip"
                     data-placement="top" title="Select provider"><span class="dlicons-pencil"></span></button>
         </div>
-        <input type="text" class="form-control data1" value="{{referral.dest_provider.first_name}} {{referral.dest_provider.middle_initial}} {{referral.dest_provider.last_name}}" disabled="disabled">
+        <input type="text" class="form-control data1" value="{{referral.dest_provider.first_name == null ? referral.dest_provider.email : ''}}{{referral.dest_provider.first_name}} {{referral.dest_provider.middle_initial}} {{referral.dest_provider.last_name}}" disabled="disabled">
         <input type="text" class="form-control data2" value="{{referral.dest_practice.name}}" disabled="disabled">
     </div>
 </div>
@@ -211,36 +211,9 @@
         <!-- .attachments-wrapper -->
     </div>
 </div>
-<!-- .row -->
 
 <!-- Notes block -->
-<div class="row">
-    <div class="input-block col-xs-12 col-sm-12">
-        <div class="block-title">
-            <h2>Notes</h2>
-            <button type="button" ng-click="noteDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-note" data-toggle="tooltip"
-                    data-placement="top" title="Add New Note" data-target="#modalNote"><span
-                    class="dlicons-plus"></span></button>
-        </div>
-
-        <div class="notes-wrapper">
-            <ul>
-
-                <!-- Note block -->
-                <li class="note-block" expand-note ng-repeat="note in referral.notes">
-                    <span class="note-user">{{note.user.first_name}} {{note.user.last_name}}</span>
-                    <span class="note-content">{{note.message}}</span>
-                    <span class="note-expand more">See more</span>
-                    <span class="note-expand less">See less</span>
-                    <span class="datestamp">{{note.created_at | date: 'short' }}</span>
-                </li>
-
-            </ul>
-        </div>
-        <!-- .notes-wrapper -->
-    </div>
-</div>
-<!-- .row -->
+<notes input-model="referral" immediate-update="true"></notes>
 
 </div>
 <!-- .box-white -->

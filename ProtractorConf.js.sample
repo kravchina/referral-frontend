@@ -13,7 +13,9 @@ exports.config = {
                 middleInitial: 'MainSeedMiddleInitial',
                 lastName: 'MainSeedUserLastName',
                 practice: {
-                    name: 'MainSeedPracticeName'
+                    name: 'MainSeedPracticeName',
+                    city: 'MainSeedPracticeCity',
+                    state: 'MainSeedPracticeState'
                 }
             },
             // valid credentials for SuperUser logging in, field roles_mask must be a multiple of 8
@@ -24,7 +26,8 @@ exports.config = {
                 middleInitial: 'SuperUserMiddleInitial',
                 lastName: 'SuperUserLastName',
                 practice: {
-                    name: 'SuperUserPractice'
+                    name: 'SuperUserPractice',
+                    searchText: 'SuperUserPracticeSearchText'
                 }
             },
             // invalid credentials for logging in (should cause login error)

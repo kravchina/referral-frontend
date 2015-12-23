@@ -85,6 +85,11 @@ angular.module('dentalLinksServices')
                 'Pragma': 'no-cache',
                 'Expires': '0'
             }, skipSpinner: true},
+            publicSearchPractice: {method: 'GET', url: API_ENDPOINT + '/practices/public_search', isArray: true, headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }, skipSpinner: true},
             subscribe: {method: 'PUT', url: API_ENDPOINT + '/practices/:practiceId/subscribe'},
             cancelSubscription: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/cancel_subscription'},
             update: {method: 'PUT'}
@@ -127,6 +132,7 @@ angular.module('dentalLinksServices')
             'Pragma': 'no-cache',
             'Expires': '0'
         }, skipSpinner: true},
+        practice: {method: 'GET', url: API_ENDPOINT + '/invitations/practice/:id', isArray: true},
         validate: {method: 'GET',  url: API_ENDPOINT + '/invitations/validate', skipSpinner: true},
         resend: {method: 'GET', url: API_ENDPOINT + '/invitations/resend/:id'},
         delete: {method: 'DELETE', url: API_ENDPOINT + '/invitations/:id'},
@@ -161,7 +167,9 @@ angular.module('dentalLinksServices')
 }])
 
 .factory('Note', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
-    return $resource(API_ENDPOINT + '/notes');
+    return $resource(API_ENDPOINT + '/notes/:id', {}, {
+        update: {method: 'PUT'}
+    });
 }])
 
 .factory('Attachment', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
@@ -177,7 +185,9 @@ angular.module('dentalLinksServices')
 }])
 
 .factory('Address', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
-    return $resource(API_ENDPOINT + '/addresses/:id');
+    return $resource(API_ENDPOINT + '/addresses/:id', {}, {
+        update: {method: 'PUT' }
+    });
 }])
 
 .factory('User', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
@@ -324,6 +334,7 @@ angular.module('dentalLinksServices')
 
     }
 }])
+
 .factory('ProgressIndicator', function(){
     var progress = {show: false, value: 0};
     return {
@@ -342,6 +353,18 @@ angular.module('dentalLinksServices')
         }
     }
 })
+
+.factory('Report', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/report');
+}])
+
+.factory('Activity', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/activities/:id', {id: '@id'}, {
+        find: {method: 'GET', url: API_ENDPOINT + '/activities', isArray: false},
+        patientsChanges: {method: 'GET', url: API_ENDPOINT + '/activities/patient', isArray: false}
+    });
+}])
+
 .factory('Role', ['USER_ROLES', function(USER_ROLES){
     var ROLES = [];
 
@@ -365,7 +388,13 @@ angular.module('dentalLinksServices')
                     if(typeof(elem) === 'object') {
                         mask = mask | elem.mask;
                     } else if(typeof(elem) === 'string'){
-                        mask = mask | ROLES.find(function(role){return role.id == elem;}).mask;
+                        var role = {};
+                        for(var i = 0; i < ROLES.length; i++){
+                            if(ROLES[i].id === elem){
+                                role = ROLES[i];
+                            }
+                        }
+                        mask = mask | role.mask;
                     }
                 });
 
@@ -377,14 +406,15 @@ angular.module('dentalLinksServices')
             });
         },
         getRolesByNames: function(names){
-            return names.map(function(name){
-                return ROLES.find(function(role){
-                    if(role.id === name){
-                        return true;
+            var outputRoles = [];
+            names.forEach(function(name){
+                for(var i = 0; i < ROLES.length; i++){
+                    if(ROLES[i].id === name){
+                        outputRoles.push(ROLES[i]);
                     }
-                    return false;
-                });
+                }
             });
+            return outputRoles;
         },
         hasRoles: function(requiredRoles, userRoles){
             var hasRole = false;

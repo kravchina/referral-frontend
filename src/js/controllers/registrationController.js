@@ -2,7 +2,7 @@ angular.module('registration')
 // Just for invited providers to some existing practice or to a new practice
     .controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Notification', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Referral', 'USER_ROLES',
     function ($scope, $location, $stateParams, $modal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral, USER_ROLES) {
-        $scope.showPracticeButtons = true;
+        $scope.practice = {};
         $scope.isResend = false;
 
         $scope.promo = $stateParams.promo;
@@ -11,15 +11,15 @@ angular.module('registration')
 
         $scope.roles = [
             USER_ROLES.doctor,
-            USER_ROLES.aux];
+            USER_ROLES.aux
+        ];
 
 
         $scope.initInvitation = function () {
             if ($scope.promo) {
                 $scope.invitation = { roles_mask: USER_ROLES.doctor.mask};
-                $scope.practice = {}
             } else {
-                $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
+                $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token, invitation_type: 'user'},
                     function (success) {
                         Referral.countByInvited({id: $scope.invitation.id},
                         function(success){
@@ -37,35 +37,6 @@ angular.module('registration')
 
         };
 
-        $scope.practiceDialog = function () {
-            var modalInstance = $modal.open({
-                templateUrl: 'partials/practice_form.html',
-                controller: 'PracticeModalController'
-            });
-            ModalHandler.set(modalInstance);
-            modalInstance.result.then(function (practice) {
-                $scope.invitation.newPracticeId = practice.id;
-                $scope.invitation.practice = practice;
-                $scope.showPracticeButtons = false;
-                $scope.isNewPractice = true;
-            });
-        };
-
-        $scope.joinPracticeDialog = function () {
-            var modalInstance = $modal.open({
-                templateUrl: 'partials/join_practice_form.html',
-                controller: 'JoinPracticeModalController'
-            });
-            ModalHandler.set(modalInstance);
-            modalInstance.result.then(function (res) {
-                $scope.invitation.practice_id = res.practice.id;
-                $scope.invitation.practice = res.practice;
-                $scope.security_code = res.securitycode;
-                $scope.showPracticeButtons = false;
-                $scope.isJoinPractice = true;
-            });
-        };
-
         var showResultDialog = function(){
             var modalInstance = $modal.open({
                 templateUrl: 'partials/registration_result.html',
@@ -78,16 +49,16 @@ angular.module('registration')
         };
 
         // this function is used in case of registration through an invitation
-        $scope.register = function (invitation) {
+        $scope.register = function (practice, invitation) {
             $scope.submitted = true;
-            if ($scope.form.$valid && ($scope.invitation.newPracticeId || $scope.invitation.practice)) {
-                invitation.practice_id = invitation.practice.id;
+            if ($scope.form.$valid) {
+                //invitation.practice_id = invitation.practice.id;
                 Registration.save({
                         user: invitation,
-                        practice: invitation.practice,
+                        practice: practice,
                         invitation_token: $stateParams.invitation_token,
-                        security_code: $scope.security_code,
-                        skip_security_code: invitation.newPracticeId == invitation.practice_id
+                        security_code: '',
+                        skip_security_code: true
                     },
                     function (success) {
                         Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
@@ -188,7 +159,6 @@ angular.module('registration')
 
         $scope.discard = function () {
             $scope.initInvitation();
-            $scope.showPracticeButtons = true;
         };
 
         $scope.initInvitation();
@@ -197,7 +167,7 @@ angular.module('registration')
     .controller('NewUserController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Notification', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Logger',
     function ($scope, $location, $stateParams, $modal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Logger) {
 
-        $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
+        $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token, invitation_type: 'colleguae'},
             function (invitation) {
                 invitation.newPracticeId = invitation.practice_id; // in case of user invitation - needs this in order to hide security code field
 

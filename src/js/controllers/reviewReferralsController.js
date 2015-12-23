@@ -4,6 +4,7 @@ angular.module('createReferrals')
 
         var auth = $scope.auth =  Auth.get() || {};
 
+        $scope.immediateUpdate = true;
         $scope.model = {referral: currentReferral};
         $scope.patient = currentReferral.patient;
         $scope.attachments = currentReferral.attachments;
@@ -27,7 +28,7 @@ angular.module('createReferrals')
         } else {
             $scope.destinationPractice = {users: [currentReferral.dest_provider_invited], name: '-- pending registration --'};
         }
-        $scope.practiceSearchText = $scope.destinationPractice.name;
+        $scope.practiceSearchText = $scope.destinationPractice.name + ($scope.destinationPractice.addresses ? ' (' + $scope.destinationPractice.addresses[0].city + ', ' + $scope.destinationPractice.addresses[0].state + ')' : '');
 
         $scope.onPracticeSelected = ReferralHelper.onPracticeSelected($scope, auth);
 

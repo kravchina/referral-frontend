@@ -1,0 +1,99 @@
+<header class="page-header">
+    <div class="row">
+        <div class="input-block col-xs-12 col-sm-4">
+            <h1>Audit trail</h1>
+
+            <p class="page-subheader">View activities on DentalCareLinks.</p>
+        </div>
+    </div>
+</header><!-- .page-header -->
+
+<div class="box-white">
+
+    <!-- Filter Controls block -->
+    <div class="row">
+        <div class="filter-controls-block">
+
+            <div class="date-range-picker col-xs-12 col-sm-4">
+                <div id="reportrange" date-range-picker="findActivitiesByDateRange(start, end)" style="">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                    <span></span> <b class="caret"></b>
+                </div>
+            </div>
+
+            <div access="super" class="col-sm-4" >
+                <input type="text" class="form-control" name="practice" placeholder="Search practice &hellip;"
+                       ng-model="practiceSearchText" typeahead-editable="false"
+                       typeahead-on-select="filterByPractice($item, $model, $label)"
+                       typeahead="practice as practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '') for practice in findPractice($viewValue) ">
+            </div>
+
+            <div class="col-sm-2">
+                <select class="form-control" ng-model="trackableType" ng-change="findActivitiesByModel()">
+                    <option value="">All Entities</option>
+                    <option value="Address">Address</option>
+                    <option value="Attachment">Attachment</option>
+                    <option value="Note">Note</option>
+                    <option value="Patient">Patient</option>
+                    <option value="PatientAddress">Patient Address</option>
+                    <option value="Practice">Practice</option>
+                    <option value="Promo">Promo</option>
+                    <option value="ProviderInvitation">Provider Invitation</option>
+                    <option value="Referral">Referral</option>
+                    <option value="User">User</option>
+                </select>
+            </div>
+
+            <div class="col-sm-2">
+                <select class="form-control" ng-model="action" ng-change="findActivitiesByAction()">
+                    <option value="">All Actions</option>
+                    <option value="create">Create</option>
+                    <option value="update">Update</option>
+                    <option value="destroy">Destroy</option>
+                </select>
+            </div>
+        </div>
+
+
+
+        <!-- .filter-controls-block -->
+    </div>
+    <!-- .row -->
+
+    <!-- Activity Table block -->
+    <div class="row">
+        <div class="table-wrapper">
+            <div class="table-container">
+                <table infinite-scroll="addMoreItems()" infinite-scroll-disabled="busy" class="table table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th class="cell-status"></th>
+                        <th class="cell-patient">Description</th>
+                        <th class="cell-datetime">Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr ng-repeat="activity in activities">
+                        <td class="cell-type">
+                            <span class="dlicons-pencil" title="Edit user"></span>
+                        </td>
+                        <td class="cell-from">
+                        <span class="provider">{{activity.owner.first_name}} {{activity.owner.middle_initial}} {{activity.owner.last_name}} {{ 'activity.' + activity.key | i18n}} <a ng-if='activity.trackable_type==="Referral"' ng-href="#/view_referral/{{activity.trackable_id}}">#{{activity.trackable_id}}</a></span>
+                            <span class="practice">{{activity.owner.practice.name}}</span>
+                        </td>
+                        <td class="cell-datetime">
+                            <span class="ref-date">{{activity.updated_at | date: 'mediumDate'}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- .table-wrapper -->
+    </div>
+    <!-- .row -->
+
+</div><!-- .box-white -->

@@ -3,7 +3,7 @@ describe("Testing Utilities Console Controller", function() {
     var $scope, $state;
 
     beforeEach(function(){
-        module('ui.router')
+        module('ui.router');
         module('console');
 
         inject(function($injector) {

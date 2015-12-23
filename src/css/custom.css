@@ -771,6 +771,17 @@ textarea.form-control {
 .note-block > span {
 	display: block;
 }
+
+.read-only{
+	background-color: #ecf0f1;
+}
+.changes{
+	display: inline-block;
+}
+
+.changes > span{
+	display: block;
+}
 .note-block .note-content {
 	color: #34495e;
 	font-size: 12px;
@@ -1023,7 +1034,7 @@ td.cell-from .practice, td.cell-to .practice {
 }
 
 .section-block .table td.cell-created{
-    min-width: 160px;
+    min-width: 50px;
 }
 
 .section-block .table tbody tr td.cell-created, .section-block .table tbody tr td.cell-invited {
@@ -1051,6 +1062,7 @@ td.cell-from .practice, td.cell-to .practice {
         -o-transition: all 0.3s ease;
 		-webkit-transition: all 0.3s ease;
 	width: 20px;
+	top: 25%;
 }
 
 .section-block .table .btn-change-password {
@@ -1067,6 +1079,7 @@ td.cell-from .practice, td.cell-to .practice {
         -o-transition: all 0.3s ease;
 		-webkit-transition: all 0.3s ease;
 	width: 20px;
+	top: 25%;
 }
 
 .section-block .table .btn-delete:hover, .input-block .btn-delete:hover {
@@ -1078,13 +1091,15 @@ td.cell-from .practice, td.cell-to .practice {
 		-webkit-transition: all 0.3s ease;
 }
 .section-block .table .btn-delete.active, .input-block .btn-delete.active {
+	position: absolute;
+	width: 182px;
+	background-color: inherit;
 	color: #7f8c8d;
 	transition: all 0.3s ease;
 		-moz-transition: all 0.3s ease;
         -ms-transition: all 0.3s ease;
         -o-transition: all 0.3s ease;
 		-webkit-transition: all 0.3s ease;
-	width: auto;
 }
 .section-block .table .btn-delete [class^="dlicons-"], .section-block .table .btn-delete [class*=" dlicons-"], .input-block .btn-delete [class^="dlicons-"], .input-block .btn-delete [class*="dlicons-"] {
 	font-size: 18px;
@@ -1092,7 +1107,7 @@ td.cell-from .practice, td.cell-to .practice {
 	vertical-align: middle;
 }
 
-.section-block .table .btn-change-password [class^="dlicons-"], .section-block .table .btn-change-password [class*=" dlicons-"] {
+.section-block .table .btn-change-password [class^="dlicons-"], .section-block .table .btn-change-password [class*=" dlicons-"], .input-block .btn-change-password [class^="dlicons-"], .input-block .btn-change-password [class*="dlicons-"] {
 	font-size: 18px;
 	font-size: 1.8rem;
 	vertical-align: middle;
@@ -1383,7 +1398,7 @@ td.cell-from .practice, td.cell-to .practice {
 	}
 	.note-block .datestamp {
 		margin-left: 2%;
-		width: 10%;
+		width: 10.5%;
 	}
 	.filter-controls-block {
 		padding: 20px 40px;
@@ -1756,6 +1771,10 @@ label.tooth-label-view{
 	height: 250px;
 }
 
+#formEditNote textarea{
+	height: 250px;
+}
+
 .select-padding {
 	padding-right: 25px !important;
 }
@@ -1779,6 +1798,19 @@ label.tooth-label-view{
 	display: none;
 }
 
+.note-block.expand .less ~ .edit {
+	margin-left: 1.9%
+}
+
+.note-block .edit{
+	cursor: pointer;
+	margin-left: 1%;
+}
+
+.note-block .edit.ng-hide + .datestamp {
+	margin-left: 4.7% !important;
+}
+
 .resend-link{
 	text-decoration: underline;
 }
@@ -1798,11 +1830,17 @@ label.tooth-label-view{
 	.btn-delete.active{
 		right: 20px !important;
 	}
+	.note-block .datestamp {
+		width: 10%;
+	}
 }
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
 	.btn-delete.active{
 		right:5px !important;
+	}
+	.note-block .datestamp {
+		width: 9%;
 	}
 }
 
@@ -1823,4 +1861,71 @@ label.tooth-label-view{
 	font-weight: 400;
 	margin-top: 0px;
 	margin-bottom: 5px;
+}
+
+.pagination {
+	margin: 0px;
+}
+
+#consoleTabContent .btn-delete{
+	top: 2.5%;
+	background-color: inherit;
+	color: #fff;
+	z-index: 1;
+}
+
+#consoleTabContent .btn-delete.active{
+	width: 155px;
+}
+
+#consoleTabContent .btn-delete:hover{
+	background-color: inherit;
+	color: #fff;
+	z-index: 1;
+}
+
+#consoleTabContent .btn-change-password{
+	cursor: pointer;
+	position: absolute;
+	right: 80px;
+	top: 2.5%;
+	height: 20px;
+	width: 20px;
+}
+
+#consoleTabContent .console-address-btns{
+	position: absolute;
+	right: 0;
+	top: -51px;
+}
+
+#consoleTabContent .address-form{
+	position: relative;
+}
+
+#consoleTabContent .console-address-btns button{
+	font-size: 1.2rem!important;
+	padding: 8px 10px!important;
+}
+
+#consoleTabContent .address-form .btn-delete{
+	top: 25%;
+	color: inherit;
+	right: 40px !important;
+}
+
+#consoleTabContent .address-form .btn-delete.active{
+	width: 115px;
+}
+
+#consoleTabContent .btn-add-address{
+	margin-top: 15px;
+}
+
+#sectPractice .input-block .btn-delete.active{
+	width: 110px;
+}
+
+.invite-link-group{
+	overflow: hidden;
 }

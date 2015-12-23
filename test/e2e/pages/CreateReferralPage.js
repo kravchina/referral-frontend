@@ -74,6 +74,10 @@ var CreateReferralPage = function() {
     this.getProviderDialogElement = function() {
         return element(by.css('div.modal-dialog form#formNewProvider'));
     };
+
+    this.getProviderDialogFrontDeskRadioButton = function(){
+        return element.all(by.model('isProviderInvite')).get(1);
+    };
     
     this.getProviderDialogFirstNameElement = function() {
         return element(by.model('model.provider.first_name'));
@@ -85,6 +89,10 @@ var CreateReferralPage = function() {
     
     this.getProviderDialogEmailElement = function() {
         return element(by.css('input[ng-model="model.provider.email"][ng-show="isProviderInvite"]'));
+    };
+
+    this.getFrontDeskDialogEmailElement = function() {
+        return element(by.css('input[ng-model="model.provider.email"][ng-show="!isProviderInvite"]'));
     };
     
     this.getProviderDialogSendButton = function() {

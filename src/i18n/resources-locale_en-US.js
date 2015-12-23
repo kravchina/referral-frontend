@@ -120,5 +120,75 @@
         "key": "email.exists",
         "value": "Your email is already registered. Please provide a new one.",
         "description": "Error is shown when user provides an email that already registered in our system"
+    },
+    {
+        "key": "activity.user.update",
+        "value": "updated user's account",
+        "description": ""
+    },
+    {
+        "key": "activity.user.create",
+        "value": "created user's account",
+        "description": ""
+    },
+    {
+        "key": "activity.user.destroy",
+        "value": "destroyed user's account",
+        "description": ""
+    },
+    {
+        "key": "activity.referral.update",
+        "value": "updated a referral",
+        "description": ""
+    },
+    {
+        "key": "activity.referral.create",
+        "value": "created new referral",
+        "description": ""
+    },
+    {
+        "key": "activity.referral.destroy",
+        "value": "removed a referral",
+        "description": ""
+    },
+    {
+        "key": "activity.note.destroy",
+        "value": "removed a note",
+        "description": ""
+    },
+    {
+        "key": "activity.note.update",
+        "value": "updated a note",
+        "description": ""
+    },
+    {
+        "key": "activity.note.create",
+        "value": "created a note",
+        "description": ""
+    },
+    {
+        "key": "activity.provider_invitation.create",
+        "value": "invited new provider",
+        "description": ""
+    },
+    {
+        "key": "activity.provider_invitation.update",
+        "value": "updated provider invitation",
+        "description": ""
+    },
+    {
+        "key": "activity.provider_invitation.destroy",
+        "value": "removed provider invitation",
+        "description": ""
+    },
+    {
+        "key": "activity.practice.create",
+        "value": "created practice",
+        "description": ""
+    },
+    {
+        "key": "activity.practice.update",
+        "value": "updated practice information",
+        "description": ""
     }
 ]

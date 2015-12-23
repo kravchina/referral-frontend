@@ -82,18 +82,7 @@
                             </div>
                         </div>
 
-
-                        <div ng-hide="promo">
-                            <alert type="danger" ng-show="submitted && (!isNewPractice && !isJoinPractice)">Please join existing practice or create a new one.</alert>
-                            <div class="button-block">
-                                <button class="btn btn-green btn-lg" ng-click="joinPracticeDialog()" ng-show="showPracticeButtons">Join Existing Practice</button>
-                                <button class="btn btn-green btn-lg" ng-click="practiceDialog()" ng-show="showPracticeButtons">New Practice</button>
-                            </div>
-
-                            <p ng-show="!showPracticeButtons && invitation.practice">You selected practice - <b>{{ invitation.practice.name }}</b></p>
-                        </div>
-
-                        <div ng-if="promo">
+                        <div>
                             <div class="row text-block">
                                 <h3>Practice</h3>
                             </div>
@@ -114,7 +103,7 @@
                             </div>
                         </div>
                         <div class="button-block" style="padding-top: 20px;">
-                            <button class="btn btn-green btn-lg" ng-click="register(invitation)" ng-hide="promo">Register</button>
+                            <button class="btn btn-green btn-lg" ng-click="register(practice, invitation)" ng-hide="promo">Register</button>
                             <button class="btn btn-green btn-lg" ng-click="createPracticeAndRegister(practice, invitation)" ng-show="promo" ng-disabled="form.$invalid || invitation.password_confirmation !== invitation.password || isResend">Register</button>
                             <button class="btn btn-green btn-lg" ng-click="discard()">Discard</button>
                         </div>

@@ -17,11 +17,6 @@ angular.module('admin')
             Practice.update({practiceId: $scope.practice.id}, {
                     practice: {
                         name: $scope.practice.name,
-                        salutation: $scope.practice.salutation,
-                        account_first_name: $scope.practice.account_first_name,
-                        account_middle_initial: $scope.practice.account_middle_initial,
-                        account_last_name: $scope.practice.account_last_name,
-                        account_email: $scope.practice.account_email,
                         addresses_attributes: $scope.practice.addresses
                     }
                 },
