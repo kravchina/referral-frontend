@@ -1926,6 +1926,7 @@ label.tooth-label-view{
 	width: 110px;
 }
 
-.invite-link-group{
+.invite-link-group {
 	overflow: hidden;
+    word-wrap: break-word;
 }
