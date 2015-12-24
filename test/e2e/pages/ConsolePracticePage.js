@@ -89,11 +89,11 @@ var ConsolePracticePage = function() {
     };
 
     this.getUserEmail = function(){
-        return element.all(by.css('div[ng-show="practiceUsers"] .form-group input')).get(1);
+        return element.all(by.css('div[ng-show="practiceUser"] .form-group input')).get(1);
     };
 
     this.getUserEditButton = function(){
-        return element(by.css('div[ng-click="editDialog(practiceUsers)"]'));
+        return element(by.css('div[ng-click="editDialog(practiceUser)"]'));
     };
 
     this.getUserDeleteButton = function(){
