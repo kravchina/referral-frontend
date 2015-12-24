@@ -136,7 +136,8 @@
     <div class="input-block col-xs-12 col-sm-6" ng-show="practiceUser">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">User info:</h3>
+                <h3 class="panel-title" ng-if="practiceUser.status == 'invited'">Invitation info:</h3>
+                <h3 class="panel-title" ng-if="practiceUser.status != 'invited'">User info:</h3>
                 <div delete-button class="button-block btn-delete">
                     <span class="dlicons-remove"></span> Delete this user? <a ng-click="deleteUser(practiceUser)" class="link-green">Yes</a> | <a  class="link-orange">No</a>
                 </div>
@@ -158,14 +159,14 @@
                             <input type="text" class="form-control data1" value="{{practiceUser.email}}" disabled="disabled">
                         </div>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-2" ng-if="practiceUser.status != 'invited'">
                         <div class="form-group">
                             <label>No login</label>
                             <input type="checkbox" class="checkbox" ng-checked="practiceUser.no_login" disabled="disabled">
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-if="practiceUser.status != 'invited'">
                     <label>Role</label>
                     <input type="text" class="form-control data1" value="{{showFullRole(practiceUser.roles_mask)}}" disabled="disabled">
                 </div>
