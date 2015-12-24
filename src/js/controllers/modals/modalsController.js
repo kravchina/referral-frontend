@@ -165,6 +165,46 @@ angular.module('modals')
     };
 }])
 
+.controller('PracticeDeleteModalController', ['$scope', '$modalInstance', 'ModalHandler', 'Alert', 'Practice', 'User', 'Referral', 'selectedPractice',
+    function($scope, $modalInstance, ModalHandler, Alert, Practice, User, Referral, selectedPractice){
+        $scope.practice = angular.copy(selectedPractice);
+        $scope.delete_type = 'delete_practice';
+        $scope.dest_practice = $scope.dest_user = {};
+
+        Referral.countByPractice({id: $scope.practice.id}, function(success){
+             $scope.referrals_count = success.count;
+        });
+
+        $scope.findPractice = function(searchValue){
+            $scope.dest_practice = {};
+            return Practice.publicSearchPractice({search: searchValue}).$promise;
+        };
+
+        $scope.onPracticeSelected = function(destPractice){
+            $scope.dest_practice = destPractice;
+            User.getAllUsers({practice_id: destPractice.id}, function(users){
+                $scope.dest_practice.users = [];
+                $scope.dest_practice.users.push({first_name: 'First', last_name: 'Available', id: -1});
+                $scope.dest_practice.users = $scope.dest_practice.users.concat(users);
+                console.log($scope.dest_practice);
+            });
+        };
+
+        $scope.deletePractice = function(){
+            if($scope.delete_type == 'delete_practice') {
+                Practice.delete({practiceId: $scope.practice.id});
+            } else if ($scope.delete_type == 'move_referrals') {
+                Practice.deleteAndMoveReferral({id: $scope.practice.id, dest_practice_id: $scope.dest_practice.id, dest_user_id: $scope.dest_user.id});
+            }
+
+            ModalHandler.close($modalInstance);
+        };
+        $scope.cancel = function () {
+            console.log($scope.dest_user);
+            ModalHandler.dismiss($modalInstance);
+        };
+    }])
+
 .controller('UserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
     $scope.result = {};
     $scope.alerts = [];

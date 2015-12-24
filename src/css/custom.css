@@ -1831,11 +1831,17 @@ label.tooth-label-view{
 	.note-block .datestamp {
 		width: 9%;
 	}
+	#consoleTabContent .console-practice-btns .btn-toggle{
+		right: 15px !important;
+	}
 }
 
 @media screen and (max-width: 767px) {
 	.btn-delete.active{
 		right: 0px !important;
+	}
+	#consoleTabContent .console-practice-btns .btn-toggle{
+		right: 15px !important;
 	}
 }
 .roles-selector .row{
@@ -1854,6 +1860,10 @@ label.tooth-label-view{
 
 .pagination {
 	margin: 0px;
+}
+
+#consoleTabContent .practice-search-status{
+	right: 40px;
 }
 
 #consoleTabContent .btn-delete{
@@ -1901,6 +1911,7 @@ label.tooth-label-view{
 	top: 25%;
 	color: inherit;
 	right: 40px !important;
+	background-color: #ffffff;
 }
 
 #consoleTabContent .address-form .btn-delete.active{
@@ -1916,10 +1927,15 @@ label.tooth-label-view{
 	top: 0px;
 	right: 20px;
 	border-radius: 0 4px 0 0;
+	font-size: 1.4rem!important;
+	padding: 10px 14px!important;
 }
 
 #consoleTabContent .console-practice-btns .btn-delete{
-	right: 80px;
+	top: 0px;
+	margin-top: 10px;
+	right: 80px !important;
+	background-color: #428bca;
 }
 
 #consoleTabContent .console-practice-btns .btn-delete.active{

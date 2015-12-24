@@ -1,6 +1,6 @@
 angular.module('console')
-    .controller('PracticeConsoleController', ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', 'Address', 'Procedure',
-    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, Address, Procedure){
+    .controller('PracticeConsoleController', ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', 'Address', 'Procedure', 'Practice',
+    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, Address, Procedure, Practice){
         $scope.practiceTypes = Procedure.practiceTypes();
         $scope.onPracticeSelected = ConsoleHelper.onPracticeSelected($scope);
 
@@ -120,13 +120,28 @@ angular.module('console')
         };
 
         $scope.savePractice = function(practiceForm, destinationPractice){
-            console.log('practiceForm', practiceForm);
-            console.log('practice', destinationPractice);
-            console.log('types', $scope.practiceTypes);
+            destinationPractice.practice_type_id = destinationPractice.practice_type.id;
+            destinationPractice.addresses = [];
+            Practice.update({practiceId: destinationPractice.id}, {practice: destinationPractice}, function(success){
+                $scope.destinationPractice = $scope.practiceSearch = success;
+                Notification.success('Practice update success');
+            }, function(failure){
+                Notification.success('Practice update fail');
+                console.log(failure);
+            });
         };
 
         $scope.removePractice = function(practice){
-            console.log(practice);
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/practice_delete_form.html',
+                controller: 'PracticeDeleteModalController',
+                resolve: {
+                    selectedPractice: function(){
+                        return practice;
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
         };
 
         $scope.createPractice = function() {
@@ -136,7 +151,14 @@ angular.module('console')
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (practice) {
-                $scope.destinationPractice = $scope.practiceSearch = practice;
+                Practice.save({practice: practice}, function(success){
+                    $scope.destinationPractice = $scope.practiceSearch = success;
+                    console.log(success);
+                    Notification.success('Practice create success');
+                }, function(failure){
+                    Notification.success('Practice create fail');
+                    console.log(failure);
+                });
             });
         };
 

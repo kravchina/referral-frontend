@@ -92,7 +92,8 @@ angular.module('dentalLinksServices')
             }, skipSpinner: true},
             subscribe: {method: 'PUT', url: API_ENDPOINT + '/practices/:practiceId/subscribe'},
             cancelSubscription: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/cancel_subscription'},
-            update: {method: 'PUT'}
+            update: {method: 'PUT'},
+            deleteAndMoveReferral: {method: 'POST', url: API_ENDPOINT + '/practices/delete_and_move_referral'}
         });
     }])
 
@@ -114,7 +115,8 @@ angular.module('dentalLinksServices')
         update: {method: 'PUT'},
         updateStatus: {method: 'PUT', url: API_ENDPOINT + '/referrals/:id/status'},
         findByPractice: {method: 'GET', url: API_ENDPOINT + '/referrals/practice/:id', isArray: false},
-        countByInvited: {method: 'GET', url: API_ENDPOINT + '/referrals/count/:id', isArray: false}
+        countByInvited: {method: 'GET', url: API_ENDPOINT + '/referrals/count/:id', isArray: false},
+        countByPractice: {method: 'GET', url: API_ENDPOINT + '/referrals/count_by_practice/:id', isArray: false}
     });
 }])
 

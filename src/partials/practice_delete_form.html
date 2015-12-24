@@ -1,0 +1,50 @@
+<form id="formPracticeDelete" name="practiceDeleteForm" class="input-block ">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Delete Practice Record</h4>
+    </div>
+    <div class="modal-body">
+
+        <alert type="danger">Attention! Delete practice cannot be undone</alert>
+
+        <div class="form-group">
+            <label>Delete practice Name</label>
+            <input type="text" name="name" class="form-control data1" ng-model="practice.name" placeholder="Practice name &hellip;">
+        </div>
+
+        <alert>{{referrals_count}} referrals are attached to practice that is being deleted.</alert>
+
+        <div class="form-group">
+            <label class="radio-inline">
+                <input type="radio" name="deleteType" value="delete_practice" ng-model="delete_type">
+                Delete referrals
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="deleteType" value="move_referrals" ng-model="delete_type">
+                Move referrals to:
+            </label>
+        </div>
+
+        <div class="form-group" ng-if="delete_type == 'move_referrals'">
+            <label>Dest practice name</label>
+            <input type="text" class="form-control" name="destPractice" placeholder="Enter existing practice..."
+                   ng-model-options="{ debounce: 400 }" ng-model="practiceSearch"
+                   typeahead-loading="loadingPractices" typeahead-no-results="noResults"
+                   typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
+                   typeahead="practice as practice.name for practice in findPractice($viewValue)" ng-required="true">
+        </div>
+
+        <div class="form-group" ng-if="dest_practice.users">
+            <label>Dest user</label>
+            <select id="selectUsers" name="user" class="form-control"  ng-model="dest_user"
+                    ng-options="u as u.first_name + ' ' + u.last_name for u in dest_practice.users" ng-required="true">
+                <option  class="placeholder" value="">Choose a user &hellip;</option>
+            </select>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-orange" ng-disabled="practiceDeleteForm.$invalid" ng-click="deletePractice()">Delete</button>
+        <button type="button" class="btn btn-grey" data-dismiss="modal" ng-click="cancel()">Discard</button>
+    </div>
+</form>
