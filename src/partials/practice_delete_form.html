@@ -12,7 +12,7 @@
             <input type="text" name="name" class="form-control data1" ng-model="practice.name" placeholder="Practice name &hellip;">
         </div>
 
-        <alert>{{referrals_count}} referrals are attached to practice that is being deleted.</alert>
+        <alert>{{referrals_count}} referral{{referrals_count > 1 ? 's are' : ' is'}} attached to practice that is being deleted.</alert>
 
         <div class="form-group">
             <label class="radio-inline">
@@ -25,20 +25,21 @@
             </label>
         </div>
 
-        <div class="form-group" ng-if="delete_type == 'move_referrals'">
+        <div class="form-group" ng-show="delete_type == 'move_referrals'" ng-class="{'has-error': practiceDeleteForm.destPractice.$invalid}">
             <label>Dest practice name</label>
             <input type="text" class="form-control" name="destPractice" placeholder="Enter existing practice..."
                    ng-model-options="{ debounce: 400 }" ng-model="practiceSearch"
                    typeahead-loading="loadingPractices" typeahead-no-results="noResults"
                    typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
-                   typeahead="practice as practice.name for practice in findPractice($viewValue)" ng-required="true">
+                   typeahead="practice as practice.name for practice in findPractice($viewValue)"
+                   ng-required="delete_type == 'move_referrals'">
         </div>
 
-        <div class="form-group" ng-if="dest_practice.users">
+        <div class="form-group" ng-show="dest_practice.users && delete_type == 'move_referrals'" ng-class="{'has-error': practiceDeleteForm.destUser.$invalid}">
             <label>Dest user</label>
-            <select id="selectUsers" name="user" class="form-control"  ng-model="dest_user"
-                    ng-options="u as u.first_name + ' ' + u.last_name for u in dest_practice.users" ng-required="true">
-                <option  class="placeholder" value="">Choose a user &hellip;</option>
+            <select name="destUser" class="form-control select" ng-model="dest_user"
+                    ng-options="u as u.first_name + ' ' + u.last_name for u in dest_practice.users" ng-required="delete_type == 'move_referrals'">
+                <option class="placeholder" value="">Choose a user &hellip;</option>
             </select>
         </div>
 

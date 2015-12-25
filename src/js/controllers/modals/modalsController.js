@@ -165,11 +165,12 @@ angular.module('modals')
     };
 }])
 
-.controller('PracticeDeleteModalController', ['$scope', '$modalInstance', 'ModalHandler', 'Alert', 'Practice', 'User', 'Referral', 'selectedPractice',
-    function($scope, $modalInstance, ModalHandler, Alert, Practice, User, Referral, selectedPractice){
+.controller('PracticeDeleteModalController', ['$scope', '$modalInstance', 'ModalHandler', 'Alert', 'Practice', 'User', 'Referral', 'selectedPractice', 'Notification',
+    function($scope, $modalInstance, ModalHandler, Alert, Practice, User, Referral, selectedPractice, Notification){
         $scope.practice = angular.copy(selectedPractice);
         $scope.delete_type = 'delete_practice';
-        $scope.dest_practice = $scope.dest_user = {};
+        $scope.dest_practice = {};
+        $scope.dest_user = '';
 
         Referral.countByPractice({id: $scope.practice.id}, function(success){
              $scope.referrals_count = success.count;
@@ -186,21 +187,28 @@ angular.module('modals')
                 $scope.dest_practice.users = [];
                 $scope.dest_practice.users.push({first_name: 'First', last_name: 'Available', id: -1});
                 $scope.dest_practice.users = $scope.dest_practice.users.concat(users);
-                console.log($scope.dest_practice);
             });
         };
 
         $scope.deletePractice = function(){
+            var error = {};
             if($scope.delete_type == 'delete_practice') {
-                Practice.delete({practiceId: $scope.practice.id});
+                Practice.delete({practiceId: $scope.practice.id}, function(success){
+                    Notification.success('Practice delete success');
+                }, function(failure){
+                    error = failure;
+                });
             } else if ($scope.delete_type == 'move_referrals') {
-                Practice.deleteAndMoveReferral({id: $scope.practice.id, dest_practice_id: $scope.dest_practice.id, dest_user_id: $scope.dest_user.id});
+                Practice.deleteAndMoveReferral({id: $scope.practice.id, dest_practice_id: $scope.dest_practice.id, dest_user_id: $scope.dest_user.id}, function(success){
+                    Notification.success('Practice delete success');
+                }, function(failure){
+                    error = failure;
+                });
             }
 
-            ModalHandler.close($modalInstance);
+            ModalHandler.close($modalInstance, error);
         };
         $scope.cancel = function () {
-            console.log($scope.dest_user);
             ModalHandler.dismiss($modalInstance);
         };
     }])

@@ -142,6 +142,10 @@ angular.module('console')
                 }
             });
             ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (error) {
+                $scope.destinationPractice = $scope.practiceSearch = '';
+                console.log(error);
+            });
         };
 
         $scope.createPractice = function() {
