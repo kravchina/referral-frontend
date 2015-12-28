@@ -133,7 +133,7 @@ gulp.task('build-templates', function(){
 
     process = replaceEnvironmentVariables(process);
     
-    process
+    return process
         .pipe(gulp.dest(buildPath));
 });
 
