@@ -1,12 +1,15 @@
 angular.module('console')
-    .controller('PracticeConsoleController', ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', 'Address', 'Procedure', 'Practice',
-    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, Address, Procedure, Practice){
+    .controller('PracticeConsoleController', 
+    ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Procedure', 'Practice',
+    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, $rootScope, Address, Procedure, Practice){
         $scope.practiceTypes = Procedure.practiceTypes();
         $scope.onPracticeSelected = ConsoleHelper.onPracticeSelected($scope);
 
         $scope.findPractice = ConsoleHelper.findPractice($scope);
 
         $scope.showFullRole = ConsoleHelper.showFullRole();
+
+        $scope.showInviteLink = ConsoleHelper.showInviteLink();
 
         $scope.editDialog = function(editUser){
             var modalInstance;
@@ -45,34 +48,52 @@ angular.module('console')
         };
 
         $scope.deleteUser = function (user) {
-            if (user.status) {
+            if (user.status && user.status === 'invited') {
                 ProviderInvitation.delete({id: user.id}, function (success) {
                         if(success.msg){
-                            Notification.error( success.msg);
+                            Notification.error(success.msg);
                         }else{
-                            $scope.destinationPractice = {};
-                            $scope.practiceSearch = '';
+                            if ($scope.destinationPractice.isInvitation) {
+                                $scope.destinationPractice = {};
+                                $scope.practiceSearch = '';
+                            } else {
+                                $scope.destinationPractice.users.splice($scope.destinationPractice.users.indexOf(user), 1);
+                            }
                         }
-
                     },
                     function (failure) {
                         Notification.error('An error occurred during invitation removal...')
                     });
 
-            } else {
+            } else if (user.status && user.status === 'registered') {
                 User.delete({id: user.id}, function (success) {
-                        if(success.msg){
+                        if (success.msg) {
                             Notification.error(success.msg)
-                        }else{
+                        } else {
                             $scope.destinationPractice.users.splice($scope.destinationPractice.users.indexOf(user), 1);
                         }
-
                     },
                     function (failure) {
                         Notification.error('An error occurred during user removal...');
                     });
             }
+        };
 
+        $scope.usersDialog = function () {
+            var scope = $rootScope.$new();
+            scope.params = {
+                practiceId: $scope.destinationPractice.id
+            };
+
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/user_form.html',
+                controller: 'UserModalController',
+                scope: scope
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (user) {
+                $scope.destinationPractice.users.push(user);
+            });
         };
 
         $scope.addAddress = function () {
@@ -121,12 +142,12 @@ angular.module('console')
 
         $scope.savePractice = function(practiceForm, destinationPractice){
             destinationPractice.practice_type_id = destinationPractice.practice_type.id;
-            destinationPractice.addresses = [];
+            destinationPractice.addresses_attributes = destinationPractice.addresses;
             Practice.update({practiceId: destinationPractice.id}, {practice: destinationPractice}, function(success){
                 $scope.destinationPractice = $scope.practiceSearch = success;
                 Notification.success('Practice update success');
             }, function(failure){
-                Notification.success('Practice update fail');
+                Notification.error('Practice update fail');
                 console.log(failure);
             });
         };

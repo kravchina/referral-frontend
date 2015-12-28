@@ -771,6 +771,17 @@ textarea.form-control {
 .note-block > span {
 	display: block;
 }
+
+.read-only{
+	background-color: #ecf0f1;
+}
+.changes{
+	display: inline-block;
+}
+
+.changes > span{
+	display: block;
+}
 .note-block .note-content {
 	color: #34495e;
 	font-size: 12px;
@@ -1918,7 +1929,7 @@ label.tooth-label-view{
 	width: 115px;
 }
 
-#consoleTabContent .btn-add-address {
+#consoleTabContent .btn-add-address{
 	margin-top: 15px;
 }
 
@@ -1949,4 +1960,9 @@ label.tooth-label-view{
 
 #sectPractice .input-block .btn-delete.active{
 	width: 110px;
+}
+
+.invite-link-group {
+	overflow: hidden;
+    word-wrap: break-word;
 }

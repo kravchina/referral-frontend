@@ -2,9 +2,17 @@
  * Created by TopaZ on 14.10.2014.
  */
 angular.module('dentalLinks')
-    .controller('NotesController', ['$scope', 'Auth', '$modal', 'ModalHandler', 'Note', 'Notification',
-    function ($scope,  Auth, $modal, ModalHandler, Note, Notification) {
+    .controller('NotesController', ['$scope', 'Auth', '$modal', 'ModalHandler', 'Note', 'Notification', 'Activity',
+    function ($scope,  Auth, $modal, ModalHandler, Note, Notification, Activity) {
         $scope.auth = Auth.get();
+        if($scope.inputModel.$promise){
+            $scope.inputModel.$promise.then(function(){
+                Activity.patientsChanges({patient_id: $scope.inputModel.patient_id, start_date: $scope.inputModel.created_at},
+                    function(data){
+                        $scope.inputModel.notes = $scope.inputModel.notes.concat(data.activities);
+                    });
+            });
+        }
 
         $scope.noteDialog = function () {
             var modalInstance = $modal.open({

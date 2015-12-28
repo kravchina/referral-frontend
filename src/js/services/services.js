@@ -134,6 +134,7 @@ angular.module('dentalLinksServices')
             'Pragma': 'no-cache',
             'Expires': '0'
         }, skipSpinner: true},
+        practice: {method: 'GET', url: API_ENDPOINT + '/invitations/practice/:id', isArray: true},
         validate: {method: 'GET',  url: API_ENDPOINT + '/invitations/validate', skipSpinner: true},
         resend: {method: 'GET', url: API_ENDPOINT + '/invitations/resend/:id'},
         delete: {method: 'DELETE', url: API_ENDPOINT + '/invitations/:id'},
@@ -361,7 +362,8 @@ angular.module('dentalLinksServices')
 
 .factory('Activity', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/activities/:id', {id: '@id'}, {
-        find: {method: 'GET', url: API_ENDPOINT + '/activities', isArray: false}
+        find: {method: 'GET', url: API_ENDPOINT + '/activities', isArray: false},
+        patientsChanges: {method: 'GET', url: API_ENDPOINT + '/activities/patient', isArray: false}
     });
 }])
 
