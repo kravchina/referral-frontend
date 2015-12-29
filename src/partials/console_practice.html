@@ -9,7 +9,8 @@
                     <i class="glyphicon glyphicon-remove"></i>No Results Found
                 </div>
             </div>
-            <button type="button" ng-click="createPractice()" class="btn btn-orange btn-toggle" data-toggle="tooltip" data-placement="top" title="Add practice">
+            <button type="button" ng-click="createPractice()" class="btn btn-orange btn-toggle" data-toggle="tooltip"
+                    data-placement="top" title="Add practice">
                 <span class="dlicons-plus"></span>
             </button>
         </div>
@@ -24,8 +25,11 @@
     <div class="input-block col-xs-12 col-sm-6">
         <div class="block-title">
             <h2>Users</h2>
-            <button ng-disabled="!destinationPractice || destinationPractice.isInvitation" type="button" ng-click="usersDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-user"
-                    data-toggle="tooltip" data-placement="top" title="Add a New User" data-target="#modalUser"><span class="dlicons-user-add"></span></button>
+            <button ng-disabled="!destinationPractice || destinationPractice.isInvitation" type="button"
+                    ng-click="usersDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-user"
+                    data-toggle="tooltip" data-placement="top" title="Add a New User" data-target="#modalUser">
+                <span class="dlicons-user-add"></span>
+            </button>
         </div>
         <select id="selectUsers" name="user" class="form-control" ng-disabled="!destinationPractice" ng-model="practiceUser"
                 ng-options="u as u.first_name && u.last_name ?
@@ -44,25 +48,33 @@
                 <h3 class="panel-title">Practice info:</h3>
             </div>
             <div class="panel-body">
-                <form edit-form="destinationPractice" show-labels="true" id="{{'formConsolePractice'}}" name="practiceForm" class="practice-form">
+                <form edit-form="destinationPractice" show-labels="true" id="{{'formConsolePractice'}}" name="practiceForm"
+                      class="practice-form">
                     <div class="console-practice-btns">
-                        <button ng-show="practiceSearch.id" type="button" toggle-edit class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section">
+                        <button ng-show="practiceSearch.id" type="button" toggle-edit class="btn btn-orange btn-toggle btn-edit"
+                                data-toggle="tooltip" data-placement="top" title="Edit this section">
                             <span class="dlicons-pencil"></span>
                         </button>
                         <div delete-button class="button-block btn-delete hide">
-                            <span class="dlicons-remove"></span> Delete? <a ng-click="removePractice(destinationPractice)" class="link-green">Yes</a> | <a class="link-orange">No</a>
+                            <span class="dlicons-remove"></span> Delete?
+                            <a ng-click="removePractice(destinationPractice)" class="link-green">Yes</a> |
+                            <a class="link-orange">No</a>
                         </div>
-                        <button type="button" ng-click='savePractice(practiceForm, destinationPractice)' class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes" ng-disabled="practiceForm.$invalid">
+                        <button type="button" ng-click='savePractice(practiceForm, destinationPractice)'
+                                class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top"
+                                title="Save changes" ng-disabled="practiceForm.$invalid">
                             <span class="dlicons-check"></span>
                         </button>
                     </div>
                     <div class="form-group" ng-class="{'has-error': practiceForm.practiceName.$invalid}">
                         <label>Practice name</label>
-                        <input type="text" class="form-control data1" name="practiceName" ng-model="destinationPractice.name" disabled="disabled" ng-required="true">
+                        <input type="text" class="form-control data1" name="practiceName" ng-model="destinationPractice.name"
+                               disabled="disabled" ng-required="true">
                     </div>
                     <div class="form-group">
                         <label>Owner</label>
-                        <input type="text" class="form-control data1" value="{{destinationPractice.owner.title}} {{destinationPractice.owner.first_name}} {{destinationPractice.owner.last_name}}" disabled="disabled">
+                        <input type="text" class="form-control data1"  disabled="disabled"
+                               value="{{destinationPractice.owner.title}} {{destinationPractice.owner.first_name}} {{destinationPractice.owner.last_name}}">
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
@@ -74,7 +86,8 @@
                         <div class="col-sm-6">
                             <div class="form-group" ng-class="{'has-error': practiceForm.practiceType.$invalid && practiceSearch.id}">
                                 <label>Practice type</label>
-                                <select class="form-control data1 select" name="practiceType" ng-model="destinationPractice.practice_type"  ng-options="p as p.name for p in practiceTypes track by p.id" disabled="disabled" ng-required="true">
+                                <select class="form-control data1 select" name="practiceType" ng-model="destinationPractice.practice_type"
+                                        ng-options="p as p.name for p in practiceTypes track by p.id" disabled="disabled" ng-required="true">
                                     <option class="placeholder" value="">Select type &hellip;</option>
                                 </select>
                             </div>
@@ -84,26 +97,39 @@
 
                 <!--Accordion Address-->
                 <accordion close-others="false">
-                    <accordion-group  heading="{{'Address #' + ($index + 1)}}" is-open="address._isOpen" ng-repeat="address in practiceSearch.addresses">
-                        <form edit-form="address" show-labels="true" id="{{'formConsolePracticeAddress' + $index}}" name="addressForm" class="address-form">
+                    <accordion-group  heading="{{'Address #' + ($index + 1)}}" is-open="address._isOpen"
+                                      ng-repeat="address in practiceSearch.addresses">
+                        <form edit-form="address" show-labels="true" id="{{'formConsolePracticeAddress' + $index}}"
+                              name="addressForm" class="address-form">
                             <div class="console-address-btns">
-                                <button type="button" toggle-edit="{{address.new}}" class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" data-placement="top" title="Edit this section"><span class="dlicons-pencil"></span></button>
+                                <button type="button" toggle-edit="{{address.new}}" class="btn btn-orange btn-toggle btn-edit"
+                                        data-toggle="tooltip" data-placement="top" title="Edit this section">
+                                    <span class="dlicons-pencil"></span>
+                                </button>
                                 <div delete-button class="button-block btn-delete hide" ng-show="practiceSearch.addresses.length > 1">
-                                    <span class="dlicons-remove"></span> Delete? <a ng-click="removeAddress(address)" class="link-green">Yes</a> | <a class="link-orange">No</a>
+                                    <span class="dlicons-remove"></span> Delete?
+                                    <a ng-click="removeAddress(address)" class="link-green">Yes</a> |
+                                    <a class="link-orange">No</a>
                                 </div>
-                                <button type="button" ng-click='saveAddress(addressForm, address)' class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top" title="Save changes" ng-disabled="addressForm.$invalid"><span class="dlicons-check"></span></button>
+                                <button type="button" ng-click='saveAddress(addressForm, address)'
+                                        class="btn btn-green btn-toggle btn-save hide" data-toggle="tooltip" data-placement="top"
+                                        title="Save changes" ng-disabled="addressForm.$invalid">
+                                    <span class="dlicons-check"></span>
+                                </button>
                             </div>
                             <div class="row">
                                 <div class="col-sm-8">
                                     <div class="form-group" ng-class="{'has-error': addressForm.street.$invalid}">
                                         <label>Street</label>
-                                        <input type="text" class="form-control data1" name="street" ng-model="address.street_line_1" disabled="disabled" required>
+                                        <input type="text" class="form-control data1" name="street" ng-model="address.street_line_1"
+                                               disabled="disabled" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group" ng-class="{'has-error': addressForm.city.$invalid}">
                                         <label>City</label>
-                                        <input type="text" class="form-control data1" name="city" ng-model="address.city" disabled="disabled" required>
+                                        <input type="text" class="form-control data1" name="city" ng-model="address.city"
+                                               disabled="disabled" required>
                                     </div>
                                 </div>
                             </div>
@@ -117,32 +143,38 @@
                                 <div class="col-sm-5">
                                     <div class="form-group" ng-class="{'has-error': addressForm.phone.$invalid}">
                                         <label>Phone</label>
-                                        <input type="tel" class="form-control data1" name="phone" phone-formatter ng-model="address.phone" disabled="disabled">
+                                        <input type="tel" class="form-control data1" name="phone" phone-formatter
+                                               ng-model="address.phone" disabled="disabled">
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group" ng-class="{'has-error': addressForm.state.$invalid}">
                                         <label>State</label>
-                                        <state-select class="{data1: !address.new}" name="state" address="address" disabled="{{!address.new}}"></state-select>
+                                        <state-select class="{data1: !address.new}" name="state" address="address"
+                                                      disabled="{{!address.new}}"></state-select>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group" ng-class="{'has-error': addressForm.zip.$invalid}">
                                         <label>Zip</label>
-                                        <input type="text" class="form-control data1" name="zip" ng-model="address.zip" disabled="disabled" required>
+                                        <input type="text" class="form-control data1" name="zip" ng-model="address.zip"
+                                               disabled="disabled" required>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label>Website</label>
-                                <input type="text" class="form-control data1" name="website" ng-model="address.website" disabled="disabled">
+                                <input type="text" class="form-control data1" name="website" ng-model="address.website"
+                                       disabled="disabled">
                             </div>
                         </form>
                     </accordion-group>
                     <div class="row">
                         <div class="col-xs-offset-7 col-xs-5">
-                            <button type="button" ng-hide="practiceSearch.addresses.length >= 20 || !practiceSearch.id" ng-click="addAddress()" class="btn btn-green btn-toggle-shifted btn-edit btn-add-address pull-right" data-toggle="tooltip" data-placement="top" title="Add practice address">
+                            <button type="button" ng-hide="practiceSearch.addresses.length >= 20 || !practiceSearch.id"
+                                    ng-click="addAddress()" class="btn btn-green btn-toggle-shifted btn-edit btn-add-address pull-right"
+                                    data-toggle="tooltip" data-placement="top" title="Add practice address">
                                 <span class="dlicons-plus"></span> Add Address
                             </button>
                         </div>

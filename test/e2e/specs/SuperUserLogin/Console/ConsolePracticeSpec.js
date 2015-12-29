@@ -11,6 +11,11 @@ var ConsolePracticeSpec = function() {
             zip: '666999',
             website: 'www.testsite.com'
         };
+        var practice = {
+            name: 'TestPracticeMock',
+            type: 'General Dentistry',
+            state: 'Hawaii'
+        };
         describe('when user navigates to Console Practice', function() {
             beforeEach(function() {
                 consolePracticePage.open();
@@ -67,6 +72,46 @@ var ConsolePracticeSpec = function() {
                 browser.sleep(300);
                 consolePracticePage.getAddressDeleteYesButton(lastAddress).click();
                 commonExpects.expectSuccessNotificationShown();
+            });
+
+            it('check create, edit, delete practice', function(){
+                consolePracticePage.getPracticeAddButton().click();
+                expect(consolePracticePage.getAddPracticeModal().isDisplayed()).toBe(true);
+
+                consolePracticePage.getNameModalElement().sendKeys(practice.name);
+                consolePracticePage.getPracticeTypeModalElement().element(by.cssContainingText('option', practice.type)).click();
+                consolePracticePage.getAddressModalElement().sendKeys(address.street);
+                consolePracticePage.getCityModalElement().sendKeys(address.city);
+                consolePracticePage.getStateModalElement().element(by.cssContainingText('option', practice.state)).click();
+                consolePracticePage.getZipModalElement().sendKeys(address.zip);
+                consolePracticePage.getPhoneModalElement().sendKeys(address.phone);
+                consolePracticePage.getWebsiteModalElement().sendKeys(address.website);
+                expect(consolePracticePage.getSaveButtonModalElement().isEnabled()).toBe(true);
+                consolePracticePage.getSaveButtonModalElement().click();
+                commonExpects.expectSuccessNotificationShown();
+
+                consolePracticePage.getEditPracticeButton().click();
+                consolePracticePage.getPracticeName().sendKeys('Edit');
+                consolePracticePage.getSavePracticeButton().click();
+                commonExpects.expectSuccessNotificationShown();
+
+                consolePracticePage.getPractice().clear();
+                consolePracticePage.setPractice(practice.name + 'Edit');
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(true);
+                consolePracticePage.getPracticeDropDownFirstRowElement().click();
+
+                expect(consolePracticePage.getPracticeName().getAttribute('value')).toEqual(practice.name + 'Edit');
+
+                consolePracticePage.getEditPracticeButton().click();
+                expect(consolePracticePage.getDeletePracticeButton().isDisplayed()).toBe(true);
+                consolePracticePage.getDeletePracticeButton().click();
+                browser.sleep(300);
+                consolePracticePage.getDeletePracticeYesButton().click();
+                expect(consolePracticePage.getDeletePracticeModal().isDisplayed()).toBe(true);
+                expect(consolePracticePage.getDeletePracticeNameModal().getAttribute('value')).toEqual(practice.name + 'Edit');
+                consolePracticePage.getDeleteButtonModal().click();
+                commonExpects.expectSuccessNotificationShown();
+
             });
 
         });

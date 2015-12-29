@@ -111,7 +111,6 @@ angular.module('console')
                     Notification.success('Address delete success');
                 }, function(failure){
                     Notification.success('Address delete fail');
-                    console.log(failure);
                 });
             }
         };
@@ -122,7 +121,6 @@ angular.module('console')
                     Address.update({id: address.id}, address, function(success){
                         Notification.success('Address save success');
                     }, function(failure){
-                        console.log(failure);
                         Notification.error(failure.error.message[0]);
                     });
                 } else {
@@ -134,22 +132,22 @@ angular.module('console')
                         Notification.success('Address create success');
                     }, function(failure){
                         Notification.success('Address create fail');
-                        console.log(failure);
                     });
                 }
             }
         };
 
         $scope.savePractice = function(practiceForm, destinationPractice){
-            destinationPractice.practice_type_id = destinationPractice.practice_type.id;
-            destinationPractice.addresses_attributes = destinationPractice.addresses;
-            Practice.update({practiceId: destinationPractice.id}, {practice: destinationPractice}, function(success){
-                $scope.destinationPractice = $scope.practiceSearch = success;
-                Notification.success('Practice update success');
-            }, function(failure){
-                Notification.error('Practice update fail');
-                console.log(failure);
-            });
+            if (practiceForm.$dirty && !practiceForm.$invalid) {
+                destinationPractice.practice_type_id = destinationPractice.practice_type.id;
+                destinationPractice.addresses_attributes = destinationPractice.addresses;
+                Practice.update({practiceId: destinationPractice.id}, {practice: destinationPractice}, function (success) {
+                    $scope.destinationPractice = $scope.practiceSearch = success;
+                    Notification.success('Practice update success');
+                }, function (failure) {
+                    Notification.error('Practice update fail');
+                });
+            }
         };
 
         $scope.removePractice = function(practice){
@@ -165,7 +163,6 @@ angular.module('console')
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (error) {
                 $scope.destinationPractice = $scope.practiceSearch = '';
-                console.log(error);
             });
         };
 
@@ -178,11 +175,9 @@ angular.module('console')
             modalInstance.result.then(function (practice) {
                 Practice.save({practice: practice}, function(success){
                     $scope.destinationPractice = $scope.practiceSearch = success;
-                    console.log(success);
                     Notification.success('Practice create success');
                 }, function(failure){
                     Notification.success('Practice create fail');
-                    console.log(failure);
                 });
             });
         };

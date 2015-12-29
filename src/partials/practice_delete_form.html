@@ -25,7 +25,8 @@
             </label>
         </div>
 
-        <div class="form-group" ng-show="delete_type == 'move_referrals'" ng-class="{'has-error': practiceDeleteForm.destPractice.$invalid}">
+        <div class="form-group" ng-show="delete_type == 'move_referrals'"
+             ng-class="{'has-error': practiceDeleteForm.destPractice.$invalid}">
             <label>Dest practice name</label>
             <input type="text" class="form-control" name="destPractice" placeholder="Enter existing practice..."
                    ng-model-options="{ debounce: 400 }" ng-model="practiceSearch"
@@ -35,10 +36,12 @@
                    ng-required="delete_type == 'move_referrals'">
         </div>
 
-        <div class="form-group" ng-show="dest_practice.users && delete_type == 'move_referrals'" ng-class="{'has-error': practiceDeleteForm.destUser.$invalid}">
+        <div class="form-group" ng-show="dest_practice.users && delete_type == 'move_referrals'"
+             ng-class="{'has-error': practiceDeleteForm.destUser.$invalid}">
             <label>Dest user</label>
             <select name="destUser" class="form-control select" ng-model="dest_user"
-                    ng-options="u as u.first_name + ' ' + u.last_name for u in dest_practice.users" ng-required="delete_type == 'move_referrals'">
+                    ng-options="u as u.first_name + ' ' + u.last_name for u in dest_practice.users"
+                    ng-required="delete_type == 'move_referrals'">
                 <option class="placeholder" value="">Choose a user &hellip;</option>
             </select>
         </div>
