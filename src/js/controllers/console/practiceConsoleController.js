@@ -1,8 +1,8 @@
 angular.module('console')
-    .controller('PracticeConsoleController',
-    ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Notification',
-    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, ProviderInvitation, User, $rootScope, Address, Notification){
-
+    .controller('PracticeConsoleController', 
+    ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Procedure', 'Practice',
+    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, $rootScope, Address, Procedure, Practice){
+        $scope.practiceTypes = Procedure.practiceTypes();
         $scope.onPracticeSelected = ConsoleHelper.onPracticeSelected($scope);
 
         $scope.findPractice = ConsoleHelper.findPractice($scope);
@@ -111,7 +111,6 @@ angular.module('console')
                     Notification.success('Address delete success');
                 }, function(failure){
                     Notification.success('Address delete fail');
-                    console.log(failure);
                 });
             }
         };
@@ -122,7 +121,6 @@ angular.module('console')
                     Address.update({id: address.id}, address, function(success){
                         Notification.success('Address save success');
                     }, function(failure){
-                        console.log(failure);
                         Notification.error(failure.error.message[0]);
                     });
                 } else {
@@ -134,10 +132,54 @@ angular.module('console')
                         Notification.success('Address create success');
                     }, function(failure){
                         Notification.success('Address create fail');
-                        console.log(failure);
                     });
                 }
             }
+        };
+
+        $scope.savePractice = function(practiceForm, destinationPractice){
+            if (practiceForm.$dirty && !practiceForm.$invalid) {
+                destinationPractice.practice_type_id = destinationPractice.practice_type.id;
+                destinationPractice.addresses_attributes = destinationPractice.addresses;
+                Practice.update({practiceId: destinationPractice.id}, {practice: destinationPractice}, function (success) {
+                    $scope.destinationPractice = $scope.practiceSearch = success;
+                    Notification.success('Practice update success');
+                }, function (failure) {
+                    Notification.error('Practice update fail');
+                });
+            }
+        };
+
+        $scope.removePractice = function(practice){
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/practice_delete_form.html',
+                controller: 'PracticeDeleteModalController',
+                resolve: {
+                    selectedPractice: function(){
+                        return practice;
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (error) {
+                $scope.destinationPractice = $scope.practiceSearch = '';
+            });
+        };
+
+        $scope.createPractice = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/practice_form.html',
+                controller: 'PracticeModalController'
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (practice) {
+                Practice.save({practice: practice}, function(success){
+                    $scope.destinationPractice = $scope.practiceSearch = success;
+                    Notification.success('Practice create success');
+                }, function(failure){
+                    Notification.success('Practice create fail');
+                });
+            });
         };
 
     }]);

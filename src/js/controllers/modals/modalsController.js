@@ -165,31 +165,57 @@ angular.module('modals')
     };
 }])
 
-.controller('JoinPracticeModalController', ['$scope', '$modalInstance', 'Registration', 'ModalHandler','Alert', 'Practice', 'Spinner', function ($scope, $modalInstance, Registration, ModalHandler, Alert, Practice) {
-    $scope.alerts = [];
-    $scope.findPractice = function (searchValue) {
-        return Practice.publicSearchPractice({search: searchValue }).$promise;
-    };
+.controller('PracticeDeleteModalController', ['$scope', '$modalInstance', 'ModalHandler', 'Alert', 'Practice', 'User', 'Referral', 'selectedPractice', 'Notification',
+    function($scope, $modalInstance, ModalHandler, Alert, Practice, User, Referral, selectedPractice, Notification){
+        $scope.practice = angular.copy(selectedPractice);
+        $scope.delete_type = 'delete_practice';
+        $scope.dest_practice = {};
+        $scope.dest_user = '';
 
-    $scope.ok = function (practice, securitycode) {
-        Registration.verify_security_code({code: securitycode, practice_id: practice.id},
-            function(success){
-                $modalInstance.close({'practice': practice, 'securitycode': securitycode});
-        }, function(failure){
-                Alert.error($scope.alerts, 'Your security code was rejected. Please try another one.');
+        Referral.countByPractice({id: $scope.practice.id}, function(success){
+             $scope.referrals_count = success.count;
+        });
 
+        $scope.findPractice = function(searchValue){
+            $scope.dest_practice = {};
+            return Practice.publicSearchPractice({search: searchValue}).$promise;
+        };
+
+        $scope.onPracticeSelected = function(destPractice){
+            $scope.dest_practice = destPractice;
+            User.getAllUsers({practice_id: destPractice.id}, function(users){
+                $scope.dest_practice.users = [];
+                $scope.dest_practice.users.push({first_name: 'First', last_name: 'Available', id: -1});
+                $scope.dest_practice.users = $scope.dest_practice.users.concat(users);
             });
+        };
 
-    };
+        $scope.deletePractice = function(){
+            var error = {};
+            if($scope.delete_type == 'delete_practice') {
+                Practice.delete({practiceId: $scope.practice.id}, function(success){
+                    Notification.success('Practice delete success');
+                }, function(failure){
+                    error = failure;
+                });
+            } else if ($scope.delete_type == 'move_referrals') {
+                Practice.deleteAndMoveReferral({id: $scope.practice.id, dest_practice_id: $scope.dest_practice.id, dest_user_id: $scope.dest_user.id}, function(success){
+                    Notification.success('Practice delete success');
+                }, function(failure){
+                    error = failure;
+                });
+            }
 
-    $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
-    };
-}])
+            ModalHandler.close($modalInstance, error);
+        };
+        $scope.cancel = function () {
+            ModalHandler.dismiss($modalInstance);
+        };
+    }])
 
 .controller('UserModalController',
-        ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role',
-        function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
+    ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role',
+    function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
     $scope.result = {};
     $scope.alerts = [];
     $scope.isInvite = true;

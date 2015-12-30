@@ -14,6 +14,16 @@ describe("Testing Practice Console Controller", function() {
             "no_login":false,"add_password_token":null,"last_request_at":null}
     ];
 
+    var practiceTypesMock = [
+        {"id":10,"code":"lab","name":"Dental Lab","created_at":"2015-12-11T09:18:45.711Z","updated_at":"2015-12-11T09:18:45.711Z",
+            "procedures":[{"id":70,"code":"new_prescription","name":"New Prescription","practice_type_id":10,"created_at":"2015-12-11T09:18:45.713Z","updated_at":"2015-12-11T09:18:45.715Z","order_pos":1},{"id":71,"code":"follow_up","name":"Follow-up","practice_type_id":10,"created_at":"2015-12-11T09:18:45.717Z","updated_at":"2015-12-11T09:18:45.719Z","order_pos":2},{"id":72,"code":"other","name":"Other","practice_type_id":10,"created_at":"2015-12-11T09:18:45.721Z","updated_at":"2015-12-11T09:18:45.723Z","order_pos":3}]},
+        {"id":6,"code":"general_dentistry","name":"General Dentistry","created_at":"2015-12-11T09:18:45.636Z","updated_at":"2015-12-11T09:18:45.636Z",
+            "procedures":[{"id":54,"code":"new_patient_consultation","name":"New Patient Consultation","practice_type_id":6,"created_at":"2015-12-11T09:18:45.639Z","updated_at":"2015-12-11T09:18:45.641Z","order_pos":1},{"id":55,"code":"emergency_care","name":"Emergency Care","practice_type_id":6,"created_at":"2015-12-11T09:18:45.643Z","updated_at":"2015-12-11T09:18:45.645Z","order_pos":2},{"id":56,"code":"follow_up_care","name":"Follow-up Care","practice_type_id":6,"created_at":"2015-12-11T09:18:45.648Z","updated_at":"2015-12-11T09:18:45.650Z","order_pos":3},{"id":57,"code":"other","name":"Other","practice_type_id":6,"created_at":"2015-12-11T09:18:45.652Z","updated_at":"2015-12-11T09:18:45.654Z","order_pos":4}]},
+        {"id":7,"code":"oral_pathology","name":"Oral Pathology","created_at":"2015-12-11T09:18:45.656Z","updated_at":"2015-12-11T09:18:45.656Z",
+            "procedures":[{"id":58,"code":"consultation","name":"Consultation","practice_type_id":7,"created_at":"2015-12-11T09:18:45.658Z","updated_at":"2015-12-11T09:18:45.660Z","order_pos":1},{"id":59,"code":"biopsy","name":"Biopsy","practice_type_id":7,"created_at":"2015-12-11T09:18:45.662Z","updated_at":"2015-12-11T09:18:45.664Z","order_pos":2},{"id":60,"code":"other","name":"Other","practice_type_id":7,"created_at":"2015-12-11T09:18:45.666Z","updated_at":"2015-12-11T09:18:45.668Z","order_pos":3}]},
+        {"id":8,"code":"tmd_sleep_apnea","name":"TMD/Sleep Apnea","created_at":"2015-12-11T09:18:45.670Z","updated_at":"2015-12-11T09:18:45.670Z",
+            "procedures":[{"id":61,"code":"consultation","name":"Consultation","practice_type_id":8,"created_at":"2015-12-11T09:18:45.673Z","updated_at":"2015-12-11T09:18:45.675Z","order_pos":1},{"id":62,"code":"tmd_treatment","name":"TMD Treatment","practice_type_id":8,"created_at":"2015-12-11T09:18:45.677Z","updated_at":"2015-12-11T09:18:45.678Z","order_pos":2},{"id":63,"code":"sleep_apnea_appliance","name":"Sleep Apnea Appliance","practice_type_id":8,"created_at":"2015-12-11T09:18:45.681Z","updated_at":"2015-12-11T09:18:45.683Z","order_pos":3},{"id":64,"code":"other","name":"Other","practice_type_id":8,"created_at":"2015-12-11T09:18:45.685Z","updated_at":"2015-12-11T09:18:45.687Z","order_pos":4}]}];
+
     beforeEach(function(){
         module('ui.router')
         module('console');
@@ -47,11 +57,17 @@ describe("Testing Practice Console Controller", function() {
                     }
                 };
             }]);
+            $provide.service('Procedure', ['$q', function($q){
+                return {
+                    practiceTypes: jasmine.createSpy('practiceTypes').and.returnValue({$promise: $q.when(practiceTypesMock)}),
+                };
+            }]);
             $provide.service('ModalHandler', function(){});
             $provide.service('ProviderInvitation', function(){});
             $provide.service('User', function(){});
             $provide.service('Notification', function(){});
             $provide.service('Address', function(){});
+            $provide.service('Practice', function(){});
         });
 
         inject(function($injector) {
@@ -83,6 +99,9 @@ describe("Testing Practice Console Controller", function() {
         expect($scope.addAddress).toBeDefined();
         expect($scope.removeAddress).toBeDefined();
         expect($scope.saveAddress).toBeDefined();
+        expect($scope.savePractice).toBeDefined();
+        expect($scope.removePractice).toBeDefined();
+        expect($scope.createPractice).toBeDefined();
     });
 
 });
