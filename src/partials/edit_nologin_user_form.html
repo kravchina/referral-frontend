@@ -4,7 +4,7 @@
         <h4 class="modal-title" id="myModalLabel">Edit user</h4>
     </div>
     <div class="modal-body">
-        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message | i18n}}</alert>
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.message | i18n}}</alert>
         <alert type="warning">If you would like to allow this user to login please enter an email address to send them an invite</alert>
         <div class="input-block">
             <input type="text" name="userName" class="form-control" ng-value="user.first_name +' '+ user.last_name" ng-disabled="true">
