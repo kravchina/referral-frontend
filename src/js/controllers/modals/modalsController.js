@@ -48,7 +48,8 @@ angular.module('modals')
                 ModalHandler.close($modalInstance, success);
             },
             function (failure) {
-                Alert.error($scope.alerts, 'Error occurred during patient update.');
+                $scope.alerts = [];
+                Alert.error($scope.alerts, 'Error occurred during patient update.', true);
             });
     };
     $scope.cancel = function () {
@@ -245,7 +246,7 @@ angular.module('modals')
                 }, function (failure) {
                     Logger.log(failure);
                     $scope.alerts = [];//reset alerts list because we need only one alert at a time
-                    Alert.error($scope.alerts, failure.data.message[0]);
+                    Alert.error($scope.alerts, failure.data.message[0], true);
                     Logger.log($scope.alerts);
                 });
         } else {
@@ -255,7 +256,7 @@ angular.module('modals')
                 },function(failure){
                     Logger.log(failure);
                     $scope.alerts = [];//reset alerts list because we need only one alert at a time
-                    Alert.error($scope.alerts, failure.data.message[0]);
+                    Alert.error($scope.alerts, failure.data.message[0], true);
                     Logger.log($scope.alerts);
                 });
         }
@@ -275,7 +276,7 @@ angular.module('modals')
     $scope.stripe_subscription_id = stripe_subscription_id;
     Logger.log($scope.stripe_subscription_id);
     var handleError = function(failure){
-        Alert.error($scope.alerts, 'Error: can\'t access to payment system. Please try again later.');
+        Alert.error($scope.alerts, 'Error: can\'t access to payment system. Please try again later.', true);
         $scope.disableForm = true;
     };
     ServerSettings.getStripeApiPublicKey(function(success){
@@ -367,7 +368,8 @@ angular.module('modals')
                     $scope.userForm.email.$setValidity('email', true);
                 }, function (failure) {
                     $scope.userForm.email.$setValidity('email', false);
-                    Alert.error($scope.alerts, 'user.exists');
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, 'user.exists', true);
                 });
             };
 
@@ -379,7 +381,8 @@ angular.module('modals')
                     user.roles_mask += USER_ROLES.admin.mask;
                 }
                 if (user.password != user.password_confirmation) {
-                    Alert.error($scope.alerts, 'Error: Password does not match');
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, 'Error: Password does not match', true);
                     return;
                 }
                 if (initialEmail !== user.email) {
@@ -393,9 +396,9 @@ angular.module('modals')
                 },  function (failure) {
                     Logger.log(failure);
                     if(failure.data.password){
-                        Alert.error($scope.alerts, 'Error: Password ' + failure.data.password[0]);
+                        Alert.error($scope.alerts, 'Error: Password ' + failure.data.password[0], true);
                     }else{
-                        Alert.error($scope.alerts, 'Error: ' + failure.data.message);
+                        Alert.error($scope.alerts, 'Error: ' + failure.data.message, true);
                     }
                     
                 });
@@ -431,7 +434,8 @@ angular.module('modals')
                      ModalHandler.close($modalInstance,success);
                  },
                  function(failure){
-                    Alert.error($scope.alerts, failure.data.error);
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, failure.data.error, true);
                  });
         }
 
@@ -488,7 +492,8 @@ angular.module('modals')
                 ModalHandler.close($modalInstance);
             },
             function (failure) {
-                Alert.error($scope.alerts, 'An error occurred during invitation resend...')
+                $scope.alerts = [];
+                Alert.error($scope.alerts, 'An error occurred during invitation resend...', true)
             });
     }
 }])
