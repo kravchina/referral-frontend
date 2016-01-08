@@ -185,7 +185,7 @@ angular.module('pdf')
             pdf.setTextColor(auxiliaryFontColor.r, auxiliaryFontColor.g, auxiliaryFontColor.b);
             pdf.setFontType('italic');
             caret += auxiliaryFontSizeMm; // assuming we're not at EOP yet and can output one line
-            pdf.text(pagePaddings.x, caret, pdf.splitTextToSize('See full-size attachments on subsequent pages. Also, visit www.dentallinks.org for more information', fullSizeColWidth));
+            pdf.text(pagePaddings.x, caret, pdf.splitTextToSize('See full-size attachments on subsequent pages. Also, visit www.dentalcarelinks.com for more information', fullSizeColWidth));
 
             for (var j = 0; j < images.length; j++) {
 
@@ -386,7 +386,7 @@ angular.module('pdf')
     };
 
     var appendBottomText = function (pdf, caret) {
-        var str = 'Visit www.dentallinks.org to see referral documents';
+        var str = 'Visit www.dentalcarelinks.com to see referral documents';
         pdf.setTextColor(auxiliaryFontColor.r, auxiliaryFontColor.g, auxiliaryFontColor.b);
         pdf.setFontType('italic');
         pdf.setFontSize(auxiliaryFontSize);
