@@ -31,7 +31,7 @@
     },
     {
         "key":"promotion.expired",
-        "value":"This promo code has expired. If you are interested in registering a Dental Links account, please contact us at <a href='mailto:info@dentallinks.org'>info@dentallinks.org</a>",
+        "value":"This promo code has expired. If you are interested in registering a Dental Links account, please contact us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
         "description":"Error message for the case when promo code was expired"
     },
     {
@@ -41,7 +41,7 @@
     },
     {
         "key":"promotion.not.found",
-        "value":"Your promo code is not found. If you are interested in registering a Dental Links account, please contact us at <a href='mailto:info@dentallinks.org'>info@dentallinks.org</a>",
+        "value":"Your promo code is not found. If you are interested in registering a Dental Links account, please contact us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
         "description":"Error message for the case when promo code was not found"
     },
     {
@@ -57,12 +57,12 @@
     },
     {
         "key":"has an extension that does not match its contents",
-        "value":"We do not currently support this file type, but if you believe it should be supported, let us know by sending a message to info@dentallinks.org",
+        "value":"We do not currently support this file type, but if you believe it should be supported, let us know by sending a message to info@dentalcarelinks.com",
         "description":"Error message for the case when attachment file is not supported"
     },
     {
         "key":"user.exists",
-        "value":"Sorry an account with this email address already exists. If this is your email address please login into your existing account at www.dentallinks.org if you need further assistance please email us at info@dentallinks.org",
+        "value":"Sorry an account with this email address already exists. If this is your email address please login into your existing account at www.dentalcarelinks.com if you need further assistance please email us at info@dentalcarelinks.com",
         "description":"Error message for when person is trying to register with an email that we already have as a registered user or an invitation"
     },
     {

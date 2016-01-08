@@ -460,7 +460,7 @@ angular.module('modals')
 }])
 
 .controller('RegistrationResultController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
-    $scope.resultMessage = 'Thank you for registering your account on Dental Links. Your account is waiting to start sending HIPAA Compliant referrals for free! You can log in from any browser at www.dentallinks.org using your username (email address) and password.';
+    $scope.resultMessage = 'Thank you for registering your account on Dental Links. Your account is waiting to start sending HIPAA Compliant referrals for free! You can log in from any browser at www.dentalcarelinks.com using your username (email address) and password.';
     $scope.ok = function(){
         ModalHandler.close($modalInstance);
     }
