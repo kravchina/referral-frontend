@@ -214,19 +214,27 @@ angular.module('dentalLinksDirectives')
     return {
         restrict: 'A',
         scope: {
-            source: '=editForm'
+            source: '=editForm',
+            showLabels: '='
         },
         controller: ['$scope', '$element', function ($scope, $element) {
+            if(typeof $scope.showLabels === 'undefined') {
+                $scope.showLabels = false;
+            }
             //we now can't store pre-found input and select elements as a variables because of ng-repeat directive for multiple addresses (it doesn't find elements inside ng-repeat)
             this.enableControls = function () {
                 $element.find('input').removeClass('data1').removeAttr('disabled');
                 $element.find('select').removeClass('data1').removeAttr('disabled');
-                $element.find('label').removeClass('hidden');
+                if(!$scope.showLabels) {
+                    $element.find('label').removeClass('hidden');
+                }
             };
             this.disableControls = function () {
                 $element.find('input').addClass('data1').attr('disabled', 'disabled');
                 $element.find('select').addClass('data1').attr('disabled', 'disabled');
-                $element.find('label').addClass('hidden');
+                if(!$scope.showLabels) {
+                    $element.find('label').addClass('hidden');
+                }
             };
         }]
     }

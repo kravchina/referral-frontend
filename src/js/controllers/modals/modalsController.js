@@ -48,7 +48,8 @@ angular.module('modals')
                 ModalHandler.close($modalInstance, success);
             },
             function (failure) {
-                Alert.error($scope.alerts, 'Error occurred during patient update.');
+                $scope.alerts = [];
+                Alert.error($scope.alerts, 'Error occurred during patient update.', true);
             });
     };
     $scope.cancel = function () {
@@ -165,31 +166,57 @@ angular.module('modals')
     };
 }])
 
-.controller('JoinPracticeModalController', ['$scope', '$modalInstance', 'Registration', 'ModalHandler','Alert', 'Practice', 'Spinner', function ($scope, $modalInstance, Registration, ModalHandler, Alert, Practice) {
-    $scope.alerts = [];
-    $scope.findPractice = function (searchValue) {
-        return Practice.publicSearchPractice({search: searchValue }).$promise;
-    };
+.controller('PracticeDeleteModalController', ['$scope', '$modalInstance', 'ModalHandler', 'Alert', 'Practice', 'User', 'Referral', 'selectedPractice', 'Notification',
+    function($scope, $modalInstance, ModalHandler, Alert, Practice, User, Referral, selectedPractice, Notification){
+        $scope.practice = angular.copy(selectedPractice);
+        $scope.delete_type = 'delete_practice';
+        $scope.dest_practice = {};
+        $scope.dest_user = '';
 
-    $scope.ok = function (practice, securitycode) {
-        Registration.verify_security_code({code: securitycode, practice_id: practice.id},
-            function(success){
-                $modalInstance.close({'practice': practice, 'securitycode': securitycode});
-        }, function(failure){
-                Alert.error($scope.alerts, 'Your security code was rejected. Please try another one.');
+        Referral.countByPractice({id: $scope.practice.id}, function(success){
+             $scope.referrals_count = success.count;
+        });
 
+        $scope.findPractice = function(searchValue){
+            $scope.dest_practice = {};
+            return Practice.publicSearchPractice({search: searchValue}).$promise;
+        };
+
+        $scope.onPracticeSelected = function(destPractice){
+            $scope.dest_practice = destPractice;
+            User.getAllUsers({practice_id: destPractice.id}, function(users){
+                $scope.dest_practice.users = [];
+                $scope.dest_practice.users.push({first_name: 'First', last_name: 'Available', id: -1});
+                $scope.dest_practice.users = $scope.dest_practice.users.concat(users);
             });
+        };
 
-    };
+        $scope.deletePractice = function(){
+            var error = {};
+            if($scope.delete_type == 'delete_practice') {
+                Practice.delete({practiceId: $scope.practice.id}, function(success){
+                    Notification.success('Practice delete success');
+                }, function(failure){
+                    error = failure;
+                });
+            } else if ($scope.delete_type == 'move_referrals') {
+                Practice.deleteAndMoveReferral({id: $scope.practice.id, dest_practice_id: $scope.dest_practice.id, dest_user_id: $scope.dest_user.id}, function(success){
+                    Notification.success('Practice delete success');
+                }, function(failure){
+                    error = failure;
+                });
+            }
 
-    $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
-    };
-}])
+            ModalHandler.close($modalInstance, error);
+        };
+        $scope.cancel = function () {
+            ModalHandler.dismiss($modalInstance);
+        };
+    }])
 
 .controller('UserModalController',
-        ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role',
-        function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
+    ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role',
+    function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
     $scope.result = {};
     $scope.alerts = [];
     $scope.isInvite = true;
@@ -219,7 +246,7 @@ angular.module('modals')
                 }, function (failure) {
                     Logger.log(failure);
                     $scope.alerts = [];//reset alerts list because we need only one alert at a time
-                    Alert.error($scope.alerts, failure.data.message[0]);
+                    Alert.error($scope.alerts, failure.data.message[0], true);
                     Logger.log($scope.alerts);
                 });
         } else {
@@ -229,7 +256,7 @@ angular.module('modals')
                 },function(failure){
                     Logger.log(failure);
                     $scope.alerts = [];//reset alerts list because we need only one alert at a time
-                    Alert.error($scope.alerts, failure.data.message[0]);
+                    Alert.error($scope.alerts, failure.data.message[0], true);
                     Logger.log($scope.alerts);
                 });
         }
@@ -249,7 +276,7 @@ angular.module('modals')
     $scope.stripe_subscription_id = stripe_subscription_id;
     Logger.log($scope.stripe_subscription_id);
     var handleError = function(failure){
-        Alert.error($scope.alerts, 'Error: can\'t access to payment system. Please try again later.');
+        Alert.error($scope.alerts, 'Error: can\'t access to payment system. Please try again later.', true);
         $scope.disableForm = true;
     };
     ServerSettings.getStripeApiPublicKey(function(success){
@@ -341,7 +368,8 @@ angular.module('modals')
                     $scope.userForm.email.$setValidity('email', true);
                 }, function (failure) {
                     $scope.userForm.email.$setValidity('email', false);
-                    Alert.error($scope.alerts, 'user.exists');
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, 'user.exists', true);
                 });
             };
 
@@ -353,7 +381,8 @@ angular.module('modals')
                     user.roles_mask += USER_ROLES.admin.mask;
                 }
                 if (user.password != user.password_confirmation) {
-                    Alert.error($scope.alerts, 'Error: Password does not match');
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, 'Error: Password does not match', true);
                     return;
                 }
                 if (initialEmail !== user.email) {
@@ -367,9 +396,9 @@ angular.module('modals')
                 },  function (failure) {
                     Logger.log(failure);
                     if(failure.data.password){
-                        Alert.error($scope.alerts, 'Error: Password ' + failure.data.password[0]);
+                        Alert.error($scope.alerts, 'Error: Password ' + failure.data.password[0], true);
                     }else{
-                        Alert.error($scope.alerts, 'Error: ' + failure.data.message);
+                        Alert.error($scope.alerts, 'Error: ' + failure.data.message, true);
                     }
                     
                 });
@@ -405,7 +434,8 @@ angular.module('modals')
                      ModalHandler.close($modalInstance,success);
                  },
                  function(failure){
-                    Alert.error($scope.alerts, failure.data.error);
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, failure.data.error, true);
                  });
         }
 
@@ -430,7 +460,7 @@ angular.module('modals')
 }])
 
 .controller('RegistrationResultController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
-    $scope.resultMessage = 'Thank you for registering your account on Dental Links. Your account is waiting to start sending HIPAA Compliant referrals for free! You can log in from any browser at www.dentallinks.org using your username (email address) and password.';
+    $scope.resultMessage = 'Thank you for registering your account on Dental Links. Your account is waiting to start sending HIPAA Compliant referrals for free! You can log in from any browser at www.dentalcarelinks.com using your username (email address) and password.';
     $scope.ok = function(){
         ModalHandler.close($modalInstance);
     }
@@ -462,7 +492,8 @@ angular.module('modals')
                 ModalHandler.close($modalInstance);
             },
             function (failure) {
-                Alert.error($scope.alerts, 'An error occurred during invitation resend...')
+                $scope.alerts = [];
+                Alert.error($scope.alerts, 'An error occurred during invitation resend...', true)
             });
     }
 }])

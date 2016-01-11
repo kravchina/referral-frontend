@@ -26,6 +26,88 @@ var ConsolePracticePage = function() {
         return element.all(by.css('div[ng-show="practiceSearch"] .form-group input')).get(0);
     };
 
+    this.getPracticeAddButton = function(){
+        return element(by.css('button[ng-click="createPractice()"]'));
+    };
+
+    this.getEditPracticeButton = function(){
+        return element(by.css('#formConsolePractice .btn-edit'));
+    };
+
+    this.getSavePracticeButton = function(){
+        return element(by.css('#formConsolePractice button[ng-click="savePractice(practiceForm, destinationPractice)"]'));
+    };
+
+    this.getDeletePracticeButton = function(){
+        return element(by.css('#formConsolePractice .btn-delete'));
+    };
+
+    this.getDeletePracticeYesButton = function(){
+        return element(by.css('#formConsolePractice .btn-delete a[ng-click="removePractice(destinationPractice)"]'));
+    };
+
+    //delete practice modal
+    this.getDeletePracticeModal = function(){
+        return element(by.css('#formPracticeDelete'));
+    };
+
+    this.getDeletePracticeNameModal = function(){
+        return element(by.css('#formPracticeDelete input[name="name"]'));
+    };
+
+    this.getDeleteButtonModal = function(){
+        return element(by.css('#formPracticeDelete button[ng-click="deletePractice()"]'));
+    };
+
+    this.getDiscardButtonModal = function(){
+        return element(by.css('#formPracticeDelete button[ng-click="cancel()"]'));
+    };
+
+    //add practice modal
+    this.getAddPracticeModal = function(){
+        return element(by.css('#formNewPractice'));
+    };
+
+    this.getNameModalElement = function(){
+        return element(by.css('#formNewPractice input[name="name"]'));
+    };
+
+    this.getPracticeTypeModalElement = function(){
+        return element(by.css('#formNewPractice select[name="practiceType"]'));
+    };
+
+    this.getAddressModalElement = function(){
+        return element(by.css('#formNewPractice input[name="address"]'));
+    };
+
+    this.getCityModalElement = function(){
+        return element(by.css('#formNewPractice input[name="city"]'));
+    };
+
+    this.getStateModalElement = function(){
+        return element(by.css('#formNewPractice select[name="state"]'));
+    };
+
+    this.getZipModalElement = function(){
+        return element(by.css('#formNewPractice input[name="zip"]'));
+    };
+
+    this.getPhoneModalElement = function(){
+        return element(by.css('#formNewPractice input[name="phone"]'));
+    };
+
+    this.getWebsiteModalElement = function(){
+        return element(by.css('#formNewPractice input[name="website"]'));
+    };
+
+    this.getSaveButtonModalElement = function(){
+        return element(by.css('#formNewPractice button[ng-click="ok(practice)"]'));
+    };
+
+    this.getDiscardButtonModalElement = function(){
+        return element(by.css('#formNewPractice button[ng-click="cancel()"]'));
+    };
+
     //address
     this.getAddAddressButton = function(){
         return element(by.css('button[ng-click="addAddress()"]'));
@@ -89,11 +171,11 @@ var ConsolePracticePage = function() {
     };
 
     this.getUserEmail = function(){
-        return element.all(by.css('div[ng-show="practiceUsers"] .form-group input')).get(1);
+        return element.all(by.css('div[ng-show="practiceUser"] .form-group input')).get(1);
     };
 
     this.getUserEditButton = function(){
-        return element(by.css('div[ng-click="editDialog(practiceUsers)"]'));
+        return element(by.css('div[ng-click="editDialog(practiceUser)"]'));
     };
 
     this.getUserDeleteButton = function(){
