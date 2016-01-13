@@ -182,7 +182,7 @@ angular.module('dentalLinksServices')
 
 .factory('Procedure', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/procedures', {}, {
-        practiceTypes: {method: 'GET', url: API_ENDPOINT + '/practice_types', isArray: true}
+        practiceTypes: {method: 'GET', url: API_ENDPOINT + '/practice_types', params: {'include_procedures': true}, isArray: true}
     })
 }])
 

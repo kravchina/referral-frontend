@@ -341,11 +341,12 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role',
-        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, Registration, ProviderInvitation, Notification, USER_ROLES, Role) {
+    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'multiSpecialty', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
+        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, multiSpecialty, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
+            $scope.practiceTypes = Procedure.practiceTypes({'include_procedures': false});
             $scope.user = editUser;//for now we need only is_admin property to be set
             $scope.user.is_admin = Role.hasRoles([USER_ROLES.admin], Role.getFromMask($scope.user.roles_mask));
             var initialEmail = editUser.email;
@@ -412,6 +413,10 @@ angular.module('modals')
                     str += str == '' ? elem.name : ', ' + elem.name;
                 });
                 return str;
+            };
+
+            $scope.is_multispecialty = function(){
+                return Role.hasRoles([USER_ROLES.doctor], Role.getFromMask($scope.user.roles_mask)) && multiSpecialty;
             };
 
             $scope.cancel = function () {

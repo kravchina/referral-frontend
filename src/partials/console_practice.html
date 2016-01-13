@@ -71,10 +71,16 @@
                         <input type="text" class="form-control data1" name="practiceName" ng-model="destinationPractice.name"
                                disabled="disabled" ng-required="true">
                     </div>
-                    <div class="form-group">
-                        <label>Owner</label>
-                        <input type="text" class="form-control data1"  disabled="disabled"
-                               value="{{destinationPractice.owner.title}} {{destinationPractice.owner.first_name}} {{destinationPractice.owner.last_name}}">
+                    <div class="row">
+                        <div class="form-group col-sm-9">
+                            <label>Owner</label>
+                            <input type="text" class="form-control data1"  disabled="disabled"
+                                   value="{{destinationPractice.owner.title}} {{destinationPractice.owner.first_name}} {{destinationPractice.owner.last_name}}">
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label>Multi-specialty</label>
+                            <input type="checkbox" class="data1" ng-model="destinationPractice.multi_specialty" name="practiceMultispecialty" disabled="disabled">
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
@@ -218,9 +224,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group" ng-if="practiceUser.status != 'invited'">
-                    <label>Role</label>
-                    <input type="text" class="form-control data1" value="{{showFullRole(practiceUser.roles_mask)}}" disabled="disabled">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group" ng-if="practiceUser.status != 'invited'">
+                            <label>Role</label>
+                            <input type="text" class="form-control data1" value="{{showFullRole(practiceUser.roles_mask)}}" disabled="disabled">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group" ng-if="destinationPractice.multi_specialty">
+                            <label>Specialty</label>
+                            <input type="text" class="form-control data1" value="{{showUserSpecialty(practiceUser.specialty_type_id)}}" disabled="disabled">
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group invite-link-group" ng-if="practiceUser.status == 'invited'">
                     <label>Invite link</label>
