@@ -115,26 +115,47 @@ describe("Testing Practice Console Controller", function() {
             $provide.service('ProviderInvitation', function(){});
             $provide.service('User', ['$q', function($q){
                 return {
-                    delete: function(callback){
-                        callback();
+                    delete: function(id, callback){
+                        callback({});
                     }
                 };
             }]);
-            $provide.service('Notification', function(){});
-            $provide.service('Address', function(){});
-            $provide.service('Practice', function(){});
+            $provide.service('Notification', function(){
+                return {
+                    success: function(message){
+                        return message;
+                    }
+                };
+            });
+            $provide.service('Address', [function(){
+                return {
+                    delete: function(id, callback){
+                        callback({});
+                    },
+                    update: function(id, address, callback){
+                        callback({});
+                    },
+                    save: function(address, callback){
+                        callback({id: 10, name: 'New Address'});
+                    }
+                };
+            }]);
+            $provide.service('Practice', [function(){
+                return {
+                    update: function(id, practice, callback){
+                        callback(practiceMock);
+                    }
+                };
+            }]);
         });
 
         inject(function($injector) {
             $rootScope = $injector.get('$rootScope');
             $scope = $rootScope.$new();
-            //$consoleHelper = $injector.get('ConsoleHelper');
             controller = $injector.get('$controller');
-            //spyOn($consoleHelper,'findPractice').and.callThrough();
             controller('PracticeConsoleController', {
                 $scope: $scope,
-                Auth: {},
-                //ConsoleHelper: $consoleHelper
+                Auth: {}
             });
         });
     });
@@ -158,6 +179,75 @@ describe("Testing Practice Console Controller", function() {
         expect($scope.savePractice).toBeDefined();
         expect($scope.removePractice).toBeDefined();
         expect($scope.createPractice).toBeDefined();
+    });
+
+    it('test editDialog function', function(){
+        $scope.destinationPractice = practiceMock;
+        $scope.destinationPractice.users = userMock;
+
+        $scope.editDialog(userMock[0]);
+    });
+
+    it('test deleteUser function', function(){
+        $scope.destinationPractice = practiceMock;
+        $scope.destinationPractice.users = userMock;
+
+        $scope.deleteUser(userMock[1]);
+        expect($scope.destinationPractice.users).toEqual([userMock[0]]);
+    });
+
+    it('test addAddress function', function(){
+        $scope.practiceSearch = {
+            addresses: []
+        };
+
+        $scope.addAddress();
+        expect($scope.practiceSearch.addresses).toEqual([{new: true, _isOpen: true}]);
+    });
+
+    it('test removeAddress function', function(){
+        $scope.practiceSearch = angular.copy(practiceMock);
+
+        $scope.addAddress();
+        expect($scope.practiceSearch.addresses.length).toEqual(2);
+
+        $scope.removeAddress({new: true, _isOpen: true});
+        expect($scope.practiceSearch.addresses.length).toEqual(1);
+
+        $scope.removeAddress($scope.practiceSearch.addresses[0]);
+        expect($scope.practiceSearch.addresses.length).toEqual(0);
+    });
+
+    it('test saveAddress function', function(){
+        var addressFormMock = {
+            $dirty: true,
+            $invalid: false
+        };
+        $scope.practiceSearch = angular.copy(practiceMock);
+
+        $scope.saveAddress(addressFormMock, $scope.practiceSearch.addresses[0]);
+
+        $scope.addAddress();
+
+        $scope.saveAddress(addressFormMock, $scope.practiceSearch.addresses[1]);
+        expect($scope.practiceSearch.addresses[1].id).toEqual(10);
+        expect($scope.practiceSearch.addresses[1].name).toEqual('New Address');
+
+    });
+
+    it('test savePractice function', function(){
+        var practiceFormMock = {
+            $dirty: true,
+            $invalid: false
+        };
+
+        var destinationPracticeMock = {
+            practice_type: {id: 11},
+            addresses: [{}]
+        };
+
+        $scope.savePractice(practiceFormMock, destinationPracticeMock);
+        expect($scope.destinationPractice).toEqual($scope.practiceSearch);
     });
 
 });
