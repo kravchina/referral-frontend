@@ -114,6 +114,22 @@ var ConsolePracticeSpec = function() {
 
             });
 
+            it('check multi specialty practice and user', function(){
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
+                consolePracticePage.setPractice(browser.params.login.correct.practice.name);
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(true);
+                consolePracticePage.getPracticeDropDownFirstRowElement().click();
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
+
+                expect(consolePracticePage.getPracticeMultispecialtyCheckbox().isDisplayed()).toBe(true);
+                expect(consolePracticePage.getPracticeMultispecialtyCheckbox()).toBeTruthy();
+
+                consolePracticePage.getUser().click();
+                expect(consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).isDisplayed()).toBe(true);
+                consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).click();
+                expect(consolePracticePage.getUserSpecialty().isDisplayed()).toBe(true);
+            });
+
         });
     };
 };

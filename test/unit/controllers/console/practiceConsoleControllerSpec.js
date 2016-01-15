@@ -6,13 +6,50 @@ describe("Testing Practice Console Controller", function() {
         {"id":1,"title":"Dr.","first_name":"Alexei","middle_initial":"","last_name":"Vidmich","password":null,"practice_id":1,
             "created_at":"2015-07-02T00:00:00.000Z","updated_at":"2015-10-26T13:37:19.600Z","email":"alexei@vidmich.com",
             "authentication_token":"FtKY-UwkdE_A4uVT89TJ","roles_mask":11,"removed_at":null,"notification_preference":0,
-            "no_login":false,"add_password_token":null,"last_request_at":"2015-10-26T13:37:19.587Z"},
+            "no_login":false,"add_password_token":null,"last_request_at":"2015-10-26T13:37:19.587Z", "status": "registered"},
 
         {"id":26,"title":"","first_name":"Test","middle_initial":null,"last_name":"Test","password":null,"practice_id":1,
             "created_at":"2015-07-10T00:00:00.000Z","updated_at":"2015-10-21T12:00:21.074Z","email":"slavakravchina@gmail.com",
             "authentication_token":"HG8tEVkgmYJdHNyNjiSz","roles_mask":3,"removed_at":null,"notification_preference":1,
-            "no_login":false,"add_password_token":null,"last_request_at":null}
+            "no_login":false,"add_password_token":null,"last_request_at":null, "status": "registered"}
     ];
+
+    var practiceMock = {
+        addresses: [
+            {
+                city: "Milford",
+                created_at: "2016-01-14T14:28:13.244Z",
+                id: 1,
+                phone: "508-473-4999",
+                practice_id: 1,
+                state: "MA",
+                street_line_1: "100 Medway Rd, STE 203",
+                street_line_2: null,
+                updated_at: "2016-01-14T14:28:13.244Z",
+                website: "www.davidwolfdds.com",
+                zip: "01757"
+            }
+        ],
+        created_at: "2016-01-14T14:28:13.197Z",
+        description: null,
+        id: 1,
+        last_4_digits: null,
+        multi_specialty: true,
+        name: "David Wolf, DDS, PC",
+        owner: {},
+        practice_type: {},
+        practice_type_id: 6,
+        promo_id: null,
+        removed_at: null,
+        status: null,
+        stripe_customer_id: null,
+        stripe_subscription_id: null,
+        stripe_token: null,
+        subscription_active_until: "2016-02-28T14:28:13.203Z",
+        trial_period: true,
+        updated_at: "2016-01-14T14:28:13.197Z",
+        users: [],
+    };
 
     var practiceTypesMock = [
         {"id":10,"code":"lab","name":"Dental Lab","created_at":"2015-12-11T09:18:45.711Z","updated_at":"2015-12-11T09:18:45.711Z",
@@ -54,6 +91,11 @@ describe("Testing Practice Console Controller", function() {
                         return function(user){
                             return 'http://localhost/register/token'
                         };
+                    },
+                    showUserSpecialty: function(practiceTypes){
+                        return function(specialtyId){
+                            return 'Specialty Name';
+                        };
                     }
                 };
             }]);
@@ -62,9 +104,22 @@ describe("Testing Practice Console Controller", function() {
                     practiceTypes: jasmine.createSpy('practiceTypes').and.returnValue({$promise: $q.when(practiceTypesMock)}),
                 };
             }]);
-            $provide.service('ModalHandler', function(){});
+            $provide.service('ModalHandler', [function(){
+                var modalInstance;
+                return {
+                    set: function (modal) {
+                        modalInstance = modal;
+                    }
+                };
+            }]);
             $provide.service('ProviderInvitation', function(){});
-            $provide.service('User', function(){});
+            $provide.service('User', ['$q', function($q){
+                return {
+                    delete: function(callback){
+                        callback();
+                    }
+                };
+            }]);
             $provide.service('Notification', function(){});
             $provide.service('Address', function(){});
             $provide.service('Practice', function(){});
@@ -73,13 +128,13 @@ describe("Testing Practice Console Controller", function() {
         inject(function($injector) {
             $rootScope = $injector.get('$rootScope');
             $scope = $rootScope.$new();
-            $consoleHelper = $injector.get('ConsoleHelper');
+            //$consoleHelper = $injector.get('ConsoleHelper');
             controller = $injector.get('$controller');
-            spyOn($consoleHelper,'findPractice').and.callThrough();
+            //spyOn($consoleHelper,'findPractice').and.callThrough();
             controller('PracticeConsoleController', {
                 $scope: $scope,
                 Auth: {},
-                ConsoleHelper: $consoleHelper
+                //ConsoleHelper: $consoleHelper
             });
         });
     });
@@ -93,6 +148,7 @@ describe("Testing Practice Console Controller", function() {
         expect($scope.onPracticeSelected).toBeDefined();
         expect($scope.showFullRole).toBeDefined();
         expect($scope.showInviteLink).toBeDefined();
+        expect($scope.showUserSpecialty).toBeDefined();
         expect($scope.usersDialog).toBeDefined();
         expect($scope.editDialog).toBeDefined();
         expect($scope.deleteUser).toBeDefined();

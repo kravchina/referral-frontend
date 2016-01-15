@@ -46,6 +46,10 @@ var ConsolePracticePage = function() {
         return element(by.css('#formConsolePractice .btn-delete a[ng-click="removePractice(destinationPractice)"]'));
     };
 
+    this.getPracticeMultispecialtyCheckbox = function(){
+        return element(by.css('input[name="practiceMultispecialty"]'));
+    };
+
     //delete practice modal
     this.getDeletePracticeModal = function(){
         return element(by.css('#formPracticeDelete'));
@@ -172,6 +176,10 @@ var ConsolePracticePage = function() {
 
     this.getUserEmail = function(){
         return element.all(by.css('div[ng-show="practiceUser"] .form-group input')).get(1);
+    };
+
+    this.getUserSpecialty = function(){
+        return element(by.css('input[name="userSpecialty"]'));
     };
 
     this.getUserEditButton = function(){
