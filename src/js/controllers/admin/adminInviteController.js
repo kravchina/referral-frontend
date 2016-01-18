@@ -31,16 +31,6 @@ angular.module('admin')
             });
         };
 
-        $scope.deleteProviderInvitation = function (provider) {
-            ProviderInvitation.delete({id: provider.id},
-                function (success) {
-                    $scope.invitedColleagues.splice($scope.invitedColleagues.indexOf(provider), 1);
-                },
-                function (failure) {
-                    Notification.error('An error occurred during provider removal...')
-                });
-        };
-
         //is not currently used, [#109317458] - Remove generate security code banner and button
         $scope.securityCodeDialog = function (user_id) {
             var modalInstance = $modal.open({

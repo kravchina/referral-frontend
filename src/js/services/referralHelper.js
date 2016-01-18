@@ -85,9 +85,9 @@ angular.module('createReferrals')
                             }
                             if(scope.destinationPractice.multi_specialty) {
                                 var selectedProvider = findProvider(currentScope.model.referral.dest_provider_id);
-                                if(selectedProvider.specialty_type_id) {
+                                if(currentScope.practiceTypes && selectedProvider.specialty_type_id) {
                                    self.updatePracticeType(currentScope, selectedProvider.specialty_type_id);
-                                } else if(scope.practiceType.id != scope.destinationPractice.practice_type_id) {
+                                } else if(scope.practiceType && scope.practiceType.id != scope.destinationPractice.practice_type_id) {
                                     self.updatePracticeType(currentScope, scope.destinationPractice.practice_type_id);
                                 }
                             }
