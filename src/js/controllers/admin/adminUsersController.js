@@ -64,6 +64,9 @@ angular.module('admin')
                         },
                         practiceUsers: function() {
                             return $scope.practice.users;
+                        },
+                        multiSpecialty: function(){
+                            return $scope.practice.multi_specialty;
                         }
                     }
                 });

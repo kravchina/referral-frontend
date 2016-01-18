@@ -24,6 +24,7 @@ angular.module('createReferrals')
             },
 
             watchProviders: function (scope) {
+                var self = this;
                 var findProvider = function (id) {
                     if (!scope.destinationPractice || !scope.destinationPractice.users){
                         return {};
@@ -81,6 +82,14 @@ angular.module('createReferrals')
                         if (newVal) {
                             if(currentScope.form.provider){
                                 currentScope.form.provider.$setValidity('userActive', findProvider(newVal).removed_at ? false : true );
+                            }
+                            if(scope.destinationPractice.multi_specialty) {
+                                var selectedProvider = findProvider(currentScope.model.referral.dest_provider_id);
+                                if(selectedProvider.specialty_type_id) {
+                                   self.updatePracticeType(currentScope, selectedProvider.specialty_type_id);
+                                } else if(scope.practiceType.id != scope.destinationPractice.practice_type_id) {
+                                    self.updatePracticeType(currentScope, scope.destinationPractice.practice_type_id);
+                                }
                             }
                             currentScope.model.referral.dest_provider_invited_id = null; //if dest_provider_id is set (user selected existing referral from the dropdown), we need to remove 'dest_provider_invited_id'
                         }

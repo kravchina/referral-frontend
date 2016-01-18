@@ -57,6 +57,15 @@ angular.module('console')
                     return str;
                 };
             },
+            showUserSpecialty: function(practiceTypes){
+                return function(specialtyId){
+                    for(var i = 0; i < practiceTypes.length; i++) {
+                        if(practiceTypes[i].id == specialtyId) {
+                            return practiceTypes[i].name;
+                        }
+                    }
+                };
+            },
             showInviteLink: function() {
                 return function(user){
                     return $location.protocol() + '://' + $location.host() +

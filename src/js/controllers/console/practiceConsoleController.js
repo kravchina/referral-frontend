@@ -9,6 +9,8 @@ angular.module('console')
 
         $scope.showFullRole = ConsoleHelper.showFullRole();
 
+        $scope.showUserSpecialty = ConsoleHelper.showUserSpecialty($scope.practiceTypes);
+
         $scope.showInviteLink = ConsoleHelper.showInviteLink();
 
         $scope.editDialog = function(editUser){
@@ -38,6 +40,9 @@ angular.module('console')
                         },
                         practiceUsers: function() {
                             return $scope.destinationPractice.users;
+                        },
+                        multiSpecialty: function(){
+                            return $scope.destinationPractice.multi_specialty;
                         }
                     }
                 });

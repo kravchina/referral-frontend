@@ -17,6 +17,7 @@ angular.module('admin')
             Practice.update({practiceId: $scope.practice.id}, {
                     practice: {
                         name: $scope.practice.name,
+                        multi_specialty: $scope.practice.multi_specialty,
                         addresses_attributes: $scope.practice.addresses
                     }
                 },

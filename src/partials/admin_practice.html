@@ -17,6 +17,12 @@
                         <label class="hidden">Practice name</label>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="input-block col-sm-4">
+                        <input type="checkbox" class="multispecialty-checkbox data1" ng-model="practice.multi_specialty" name="practiceMultispecialty" ng-disabled="true">
+                        Multi-specialty
+                    </div>
+                </div>
             </div>
 
             <div class="section-block" ng-repeat="address in practice.addresses">
