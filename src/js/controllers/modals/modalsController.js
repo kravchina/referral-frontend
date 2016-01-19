@@ -425,16 +425,20 @@ angular.module('modals')
             };
 }])
 
-.controller('EditNoLoginUserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser',
-    function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser) {
-        $scope.user = editUser;
+.controller('EditNoLoginUserModalController',
+    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'multiSpecialty', 'Procedure',
+    function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, multiSpecialty, Procedure) {
+        $scope.user = angular.copy(editUser);
         $scope.alerts = [];
+        $scope.practiceTypes = Procedure.practiceTypes({'include_procedures': false});
+
         $scope.cancel = function () {
             $scope.user.email = undefined; //reset user email if modal is closed
             ModalHandler.dismiss($modalInstance);
         };
+
         $scope.ok = function (user) {
-             User.sendPasswordInvitation({id: user.id}, {email: user.email},
+             User.sendPasswordInvitation({id: user.id}, {email: user.email, specialty_type_id: user.specialty_type_id},
                  function(success){
                      ModalHandler.close($modalInstance,success);
                  },
@@ -442,7 +446,20 @@ angular.module('modals')
                     $scope.alerts = [];
                     Alert.error($scope.alerts, failure.data.error, true);
                  });
-        }
+        };
+
+        $scope.save = function(user){
+            User.update({id: user.id}, {user: {specialty_type_id: user.specialty_type_id}}, function(success){
+                ModalHandler.dismiss($modalInstance);
+            }, function(failure){
+                $scope.alerts = [];
+                Alert.error($scope.alerts, failure.data.error, true);
+            });
+        };
+
+        $scope.is_multispecialty = function(){
+            return multiSpecialty;
+        };
 
 }])
 

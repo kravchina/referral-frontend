@@ -47,6 +47,9 @@ angular.module('admin')
                     resolve: {
                         editUser: function () {
                             return editUser;
+                        },
+                        multiSpecialty: function(){
+                            return $scope.practice.multi_specialty;
                         }
                     }
                 });
