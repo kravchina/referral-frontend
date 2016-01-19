@@ -146,13 +146,6 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-sm-5">
-                                    <div class="form-group" ng-class="{'has-error': addressForm.phone.$invalid}">
-                                        <label>Phone</label>
-                                        <input type="tel" class="form-control data1" name="phone" phone-formatter
-                                               ng-model="address.phone" disabled="disabled">
-                                    </div>
-                                </div>
                                 <div class="col-sm-3">
                                     <div class="form-group" ng-class="{'has-error': addressForm.state.$invalid}">
                                         <label>State</label>
@@ -165,6 +158,13 @@
                                         <label>Zip</label>
                                         <input type="text" class="form-control data1" name="zip" ng-model="address.zip"
                                                disabled="disabled" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="form-group" ng-class="{'has-error': addressForm.phone.$invalid}">
+                                        <label>Phone</label>
+                                        <input type="tel" class="form-control data1" name="phone" phone-formatter
+                                               ng-model="address.phone" disabled="disabled">
                                     </div>
                                 </div>
                             </div>
