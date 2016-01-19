@@ -23,6 +23,9 @@ angular.module('console')
                     resolve: {
                         editUser: function () {
                             return editUser;
+                        },
+                        multiSpecialty: function(){
+                            return $scope.destinationPractice.multi_specialty;
                         }
                     }
                 });
