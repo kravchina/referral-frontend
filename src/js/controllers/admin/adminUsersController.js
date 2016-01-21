@@ -15,7 +15,7 @@ angular.module('admin')
 
         $scope.invitedUsers = [];
         $scope.invitedColleagues = [];
-        User.getInvitees({user_id: $scope.$parent.auth.id}, function(allInvitees) {
+        User.getInvitees({user_id: $scope.$parent.auth.id, practice_id: $scope.$parent.auth.practice_id }, function(allInvitees) {
             allInvitees.map(function(invitation) {
                 if (invitation.roles_mask) {  // criteria to tell user invitations apart from colleague invitations
                     $scope.invitedUsers.push(invitation);
