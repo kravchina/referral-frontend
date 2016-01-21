@@ -1,9 +1,13 @@
 angular.module('admin')
-    .controller('AdminPracticeController', ['$scope', '$modal', 'ModalHandler', 'Notification', 'Address', 'Practice', 'FREE_TRIAL_PERIOD', 'UnsavedChanges', 'Logger', 'PracticeEditMode',
-    function ($scope, $modal, ModalHandler, Notification, Address, Practice, FREE_TRIAL_PERIOD, UnsavedChanges, Logger, PracticeEditMode) {
+    .controller('AdminPracticeController', ['$scope', '$modal', 'ModalHandler', 'Notification', 'Address', 'Practice', 'FREE_TRIAL_PERIOD', 'UnsavedChanges', 'Logger', 'PracticeEditMode', 'Procedure',
+    function ($scope, $modal, ModalHandler, Notification, Address, Practice, FREE_TRIAL_PERIOD, UnsavedChanges, Logger, PracticeEditMode, Procedure) {
 
+        $scope.showWarning = false;
+        $scope.currentPracticeType = {};
+        $scope.practiceTypes = Procedure.practiceTypes({'include_procedures': false});
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function (practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
+            $scope.currentPracticeType = practice.practice_type;
             $scope.practiceLocationsNumber = practice.addresses.length;
         });
 
@@ -17,12 +21,14 @@ angular.module('admin')
             Practice.update({practiceId: $scope.practice.id}, {
                     practice: {
                         name: $scope.practice.name,
-                        multi_specialty: $scope.practice.multi_specialty,
+                        practice_type_id: $scope.practice.practice_type.id,
                         addresses_attributes: $scope.practice.addresses
                     }
                 },
                 function (success) {
                     form.$setPristine();
+                    $scope.currentPracticeType = $scope.practice.practice_type;
+                    $scope.showWarning = false;
                     $scope.practiceLocationsNumber = success.addresses.length;
                     $scope.practice.addresses = success.addresses;
                     // no UnsavedChanges operations here, we stay on page, callback stays the same, form is now pristine
@@ -35,6 +41,14 @@ angular.module('admin')
         };
         var prorate_required = function () {
             return $scope.practice.stripe_subscription_id && $scope.practice.addresses.length != $scope.practiceLocationsNumber;
+        };
+
+        $scope.changePracticeType = function(newValue){
+            if($scope.currentPracticeType.code == 'multi_specialty' && newValue.code != 'multi_specialty') {
+                $scope.showWarning = true;
+            } else {
+                $scope.showWarning = false;
+            }
         };
 
         $scope.savePractice = function (form) {

@@ -48,8 +48,8 @@ angular.module('admin')
                         editUser: function () {
                             return editUser;
                         },
-                        multiSpecialty: function(){
-                            return $scope.practice.multi_specialty;
+                        practiceType: function(){
+                            return $scope.practice.practice_type;
                         }
                     }
                 });
@@ -68,8 +68,8 @@ angular.module('admin')
                         practiceUsers: function() {
                             return $scope.practice.users;
                         },
-                        multiSpecialty: function(){
-                            return $scope.practice.multi_specialty;
+                        practiceType: function(){
+                            return $scope.practice.practice_type;
                         }
                     }
                 });

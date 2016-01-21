@@ -341,8 +341,8 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'multiSpecialty', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
-        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, multiSpecialty, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
+    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
+        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
@@ -416,7 +416,7 @@ angular.module('modals')
             };
 
             $scope.is_multispecialty = function(){
-                return Role.hasRoles([USER_ROLES.doctor], Role.getFromMask($scope.user.roles_mask)) && multiSpecialty;
+                return Role.hasRoles([USER_ROLES.doctor], Role.getFromMask($scope.user.roles_mask)) && practiceType.code == 'multi_specialty';
             };
 
             $scope.cancel = function () {
@@ -426,9 +426,9 @@ angular.module('modals')
 }])
 
 .controller('EditNoLoginUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'multiSpecialty', 'Procedure',
-    function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, multiSpecialty, Procedure) {
-        $scope.user = angular.copy(editUser);
+    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure',
+    function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure) {
+        $scope.user = editUser;
         $scope.alerts = [];
         $scope.practiceTypes = Procedure.practiceTypes({'include_procedures': false});
 
@@ -458,7 +458,7 @@ angular.module('modals')
         };
 
         $scope.is_multispecialty = function(){
-            return multiSpecialty;
+            return practiceType.code == 'multi_specialty';
         };
 
 }])
