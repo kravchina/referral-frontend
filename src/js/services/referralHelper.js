@@ -83,7 +83,7 @@ angular.module('createReferrals')
                             if(currentScope.form.provider){
                                 currentScope.form.provider.$setValidity('userActive', findProvider(newVal).removed_at ? false : true );
                             }
-                            if(scope.destinationPractice.practice_type.code == 'multi_specialty') {
+                            if(scope.destinationPractice.practice_type && scope.destinationPractice.practice_type.code === 'multi_specialty') {
                                 var selectedProvider = findProvider(currentScope.model.referral.dest_provider_id);
                                 if(currentScope.practiceTypes && selectedProvider.specialty_type_id) {
                                     self.updatePracticeType(currentScope, selectedProvider.specialty_type_id);

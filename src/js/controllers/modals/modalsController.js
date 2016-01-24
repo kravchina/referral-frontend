@@ -458,7 +458,7 @@ angular.module('modals')
         };
 
         $scope.is_multispecialty = function(){
-            return practiceType.code == 'multi_specialty';
+            return practiceType.code === 'multi_specialty';
         };
 
 }])

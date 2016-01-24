@@ -44,7 +44,7 @@ angular.module('admin')
         };
 
         $scope.changePracticeType = function(newValue){
-            if($scope.currentPracticeType.code == 'multi_specialty' && newValue.code != 'multi_specialty') {
+            if($scope.currentPracticeType.code === 'multi_specialty' && newValue.code !== 'multi_specialty') {
                 $scope.showWarning = true;
             } else {
                 $scope.showWarning = false;

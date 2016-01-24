@@ -46,8 +46,8 @@ var ConsolePracticePage = function() {
         return element(by.css('#formConsolePractice .btn-delete a[ng-click="removePractice(destinationPractice)"]'));
     };
 
-    this.getPracticeMultispecialtyCheckbox = function(){
-        return element(by.css('input[name="practiceMultispecialty"]'));
+    this.getPracticeTypeSelect = function(){
+        return element(by.css('#formConsolePractice select[name="practiceType"]'));
     };
 
     //delete practice modal

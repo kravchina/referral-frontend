@@ -121,8 +121,9 @@ var ConsolePracticeSpec = function() {
                 consolePracticePage.getPracticeDropDownFirstRowElement().click();
                 expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
 
-                expect(consolePracticePage.getPracticeMultispecialtyCheckbox().isDisplayed()).toBe(true);
-                expect(consolePracticePage.getPracticeMultispecialtyCheckbox()).toBeTruthy();
+                consolePracticePage.getEditPracticeButton().click();
+                consolePracticePage.getPracticeTypeSelect().element(by.cssContainingText('option', 'Multi-Specialty')).click();
+                consolePracticePage.getSavePracticeButton().click();
 
                 consolePracticePage.getUser().click();
                 expect(consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).isDisplayed()).toBe(true);
