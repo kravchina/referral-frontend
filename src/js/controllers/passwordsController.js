@@ -6,7 +6,7 @@ angular.module('passwords')
                 Notification.success('Success! Please check your email for password reset instructions.');
             },
             function (failure) {
-                Notification.error('Error: can\'t change your password. Please try again later.');
+                Notification.error(failure.data.error);
             })
     };
     $scope.initial = true;

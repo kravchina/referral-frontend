@@ -175,6 +175,11 @@
         "key": "activity.provider_invitation.update",
         "value": "updated provider invitation",
         "description": ""
+    },
+    {
+        "key": "email.not.found",
+        "value": "This email is not registered",
+        "description": "Message shown in case of non-existing email during request password reset (forgot password feature "
     }
 
 ]
