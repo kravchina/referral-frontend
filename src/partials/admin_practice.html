@@ -17,10 +17,22 @@
                         <label class="hidden">Practice name</label>
                     </div>
                 </div>
+                <div class="row" ng-show="showWarning">
+                    <div class="col-sm-6">
+                        <alert type="warning">
+                            <p>Attention!</p>
+                            This will reset all doctors in the practice to the type being selected
+                        </alert>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="input-block col-sm-4">
-                        <input type="checkbox" class="multispecialty-checkbox data1" ng-model="practice.multi_specialty" name="practiceMultispecialty" ng-disabled="true">
-                        Multi-specialty
+                        <select class="form-control data1 select" name="practiceType" ng-model="practice.practice_type"
+                                ng-change="changePracticeType(practice.practice_type)"
+                                ng-options="p as p.name for p in practiceTypes track by p.id" disabled="disabled" ng-required="true">
+                            <option class="placeholder" value="">Select type &hellip;</option>
+                        </select>
+                        <label class="hidden">Practice type</label>
                     </div>
                 </div>
             </div>

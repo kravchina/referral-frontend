@@ -24,8 +24,8 @@ angular.module('console')
                         editUser: function () {
                             return editUser;
                         },
-                        multiSpecialty: function(){
-                            return $scope.destinationPractice.multi_specialty;
+                        practiceType: function(){
+                            return $scope.destinationPractice.practice_type;
                         }
                     }
                 });
@@ -44,8 +44,8 @@ angular.module('console')
                         practiceUsers: function() {
                             return $scope.destinationPractice.users;
                         },
-                        multiSpecialty: function(){
-                            return $scope.destinationPractice.multi_specialty;
+                        practiceType: function(){
+                            return $scope.destinationPractice.practice_type;
                         }
                     }
                 });

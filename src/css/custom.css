@@ -1966,11 +1966,3 @@ label.tooth-label-view{
 	overflow: hidden;
     word-wrap: break-word;
 }
-
-input[type="checkbox"].multispecialty-checkbox.data1{
-	margin-left: 15px;
-}
-
-input[type="checkbox"].multispecialty-checkbox{
-	margin-left: 0px;
-}
