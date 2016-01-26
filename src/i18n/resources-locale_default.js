@@ -178,7 +178,7 @@
     },
     {
         "key": "email.not.found",
-        "value": "This email is not registered",
+        "value": "Error: This email address is not found in our database.",
         "description": "Message shown in case of non-existing email during request password reset (forgot password feature "
     }
 
