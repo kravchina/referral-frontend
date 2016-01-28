@@ -2,6 +2,7 @@ angular.module('console')
     .controller('ReportsConsoleController', ['$scope', 'Report', function($scope, Report){
         var eventLogs = [];
         $scope.invitations = $scope.practices = $scope.users = $scope.eventLogs = {};
+        $scope.invitationsRadio = $scope.practicesRadio = $scope.usersRadio = 'day';
         $scope.currentPage = 1;
         $scope.itemsPerPage = 10;
         $scope.totalItems = 0;
@@ -12,9 +13,8 @@ angular.module('console')
         };
 
         Report.get(function(success){
-            $scope.invitations = success.invitations;
-            $scope.practices = success.practices;
-            $scope.users = success.users;
+            $scope.info = success;
+
             $scope.totalItems = success.event_logs.length;
             success.event_logs.forEach(function(item){
                 item.event_name = item.type_event.split('_').map(function(item){
@@ -23,7 +23,28 @@ angular.module('console')
 
                 eventLogs.push(item);
             });
+            $scope.toggleInvitations('day');
+            $scope.togglePractices('day');
+            $scope.toggleUsers('day');
             $scope.changeEventPage();
         });
+
+        $scope.toggleInvitations = function(timeType){
+            Report.getInvitations({time_type: timeType }, function(success){
+                $scope.invitations = success;
+            });
+        };
+
+        $scope.togglePractices = function(timeType){
+            Report.getPractices({time_type: timeType }, function(success){
+                $scope.practices = success;
+            });
+        };
+
+        $scope.toggleUsers = function(timeType){
+            Report.getUsers({time_type: timeType }, function(success){
+                $scope.users = success;
+            });
+        };
 
     }]);
