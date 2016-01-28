@@ -346,7 +346,14 @@ angular.module('modals')
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
-            $scope.practiceTypes = Procedure.practiceTypes({'include_procedures': false});
+            $scope.practiceTypes = [];
+            Procedure.practiceTypes({'include_procedures': false}, function(success){
+                success.map(function(item){
+                    if(item.code !== 'multi_specialty'){
+                        $scope.practiceTypes.push(item);
+                    }
+                });
+            });
             $scope.user = editUser;//for now we need only is_admin property to be set
             $scope.user.is_admin = Role.hasRoles([USER_ROLES.admin], Role.getFromMask($scope.user.roles_mask));
             var initialEmail = editUser.email;
@@ -430,7 +437,14 @@ angular.module('modals')
     function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure) {
         $scope.user = editUser;
         $scope.alerts = [];
-        $scope.practiceTypes = Procedure.practiceTypes({'include_procedures': false});
+        $scope.practiceTypes = [];
+        Procedure.practiceTypes({'include_procedures': false}, function(success){
+            success.map(function(item){
+                if(item.code !== 'multi_specialty'){
+                    $scope.practiceTypes.push(item);
+                }
+            });
+        });
 
         $scope.cancel = function () {
             $scope.user.email = undefined; //reset user email if modal is closed

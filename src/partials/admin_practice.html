@@ -17,11 +17,18 @@
                         <label class="hidden">Practice name</label>
                     </div>
                 </div>
-                <div class="row" ng-show="showWarning">
+                <div class="row" ng-show="showWarning == 'first_warning'">
                     <div class="col-sm-6">
                         <alert type="warning">
                             <p>Attention!</p>
-                            This will reset all doctors in the practice to the type being selected
+                            You will now be able to designate each doctor's specialty type by editing their user settings
+                        </alert>
+                    </div>
+                </div>
+                <div class="row" ng-show="showWarning == 'second_warning'">
+                    <div class="col-sm-6">
+                        <alert type="warning">
+                            All doctors in the practice will show as the type being selected
                         </alert>
                     </div>
                 </div>

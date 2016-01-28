@@ -44,10 +44,14 @@ angular.module('admin')
         };
 
         $scope.changePracticeType = function(newValue){
-            if($scope.currentPracticeType.code === 'multi_specialty' && newValue.code !== 'multi_specialty') {
-                $scope.showWarning = true;
-            } else {
+            if($scope.currentPracticeType.code === newValue.code){
                 $scope.showWarning = false;
+            } else {
+                if($scope.currentPracticeType.code !== 'multi_specialty' && newValue.code === 'multi_specialty') {
+                    $scope.showWarning = 'first_warning';
+                } else {
+                    $scope.showWarning = 'second_warning';
+                }
             }
         };
 
