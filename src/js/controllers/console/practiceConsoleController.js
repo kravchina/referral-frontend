@@ -150,7 +150,9 @@ angular.module('console')
                 destinationPractice.practice_type_id = destinationPractice.practice_type.id;
                 destinationPractice.addresses_attributes = destinationPractice.addresses;
                 Practice.update({practiceId: destinationPractice.id}, {practice: destinationPractice}, function (success) {
+                    var tempUsers = $scope.destinationPractice.users;
                     $scope.destinationPractice = $scope.practiceSearch = success;
+                    $scope.destinationPractice.users = tempUsers;
                     Notification.success('Practice update success');
                 }, function (failure) {
                     Notification.error('Practice update fail');
