@@ -183,17 +183,17 @@ describe("Testing Practice Console Controller", function() {
 
     it('test editDialog function', function(){
         $scope.destinationPractice = practiceMock;
-        $scope.destinationPractice.users = userMock;
+        $scope.destinationPracticeUsers = userMock;
 
         $scope.editDialog(userMock[0]);
     });
 
     it('test deleteUser function', function(){
         $scope.destinationPractice = practiceMock;
-        $scope.destinationPractice.users = userMock;
+        $scope.destinationPracticeUsers = userMock;
 
         $scope.deleteUser(userMock[1]);
-        expect($scope.destinationPractice.users).toEqual([userMock[0]]);
+        expect($scope.destinationPracticeUsers).toEqual([userMock[0]]);
     });
 
     it('test addAddress function', function(){
