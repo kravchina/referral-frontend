@@ -42,7 +42,7 @@ angular.module('console')
                             return editUser;
                         },
                         practiceUsers: function() {
-                            return $scope.destinationPractice.users;
+                            return $scope.destinationPracticeUsers;
                         },
                         practiceType: function(){
                             return $scope.destinationPractice.practice_type;
@@ -65,7 +65,7 @@ angular.module('console')
                                 $scope.destinationPractice = {};
                                 $scope.practiceSearch = '';
                             } else {
-                                $scope.destinationPractice.users.splice($scope.destinationPractice.users.indexOf(user), 1);
+                                $scope.destinationPracticeUsers.splice($scope.destinationPracticeUsers.indexOf(user), 1);
                             }
                         }
                     },
@@ -78,7 +78,7 @@ angular.module('console')
                         if (success.msg) {
                             Notification.error(success.msg)
                         } else {
-                            $scope.destinationPractice.users.splice($scope.destinationPractice.users.indexOf(user), 1);
+                            $scope.destinationPracticeUsers.splice($scope.destinationPracticeUsers.indexOf(user), 1);
                         }
                     },
                     function (failure) {
@@ -100,7 +100,7 @@ angular.module('console')
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (user) {
-                $scope.destinationPractice.users.push(user);
+                $scope.destinationPracticeUsers.push(user);
             });
         };
 
@@ -170,7 +170,7 @@ angular.module('console')
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (error) {
-                $scope.destinationPractice = $scope.practiceSearch = '';
+                $scope.destinationPractice = $scope.destinationPracticeUsers = $scope.practiceSearch = '';
             });
         };
 
@@ -183,6 +183,7 @@ angular.module('console')
             modalInstance.result.then(function (practice) {
                 Practice.save({practice: practice}, function(success){
                     $scope.destinationPractice = $scope.practiceSearch = success;
+                    $scope.destinationPracticeUsers = [];
                     Notification.success('Practice create success');
                 }, function(failure){
                     Notification.success('Practice create fail');

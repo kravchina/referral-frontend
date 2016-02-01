@@ -90,7 +90,7 @@ describe("Testing ConsoleHelper service", function() {
         ConsoleHelper.onPracticeSelected($scope)(selectedPractice);
         $rootScope.$apply();
         expect($scope.destinationPractice).toBe(selectedPractice);
-        expect($scope.destinationPractice.users.length).toBe(3);
+        expect($scope.destinationPracticeUsers.length).toBe(3);
         expect(ConsoleHelper.showFullRole()(rolesMask)).toBe('Admin, Doctor');
     })
 

@@ -33,7 +33,7 @@
         </div>
         <select id="selectUsers" name="user" class="form-control" ng-disabled="!destinationPractice" ng-model="practiceUser"
                 ng-options="u as u.first_name && u.last_name ?
-                    u.first_name + ' ' + u.last_name : u.email for u in destinationPractice.users" ng-required="true">
+                    u.first_name + ' ' + u.last_name : u.email for u in destinationPracticeUsers" ng-required="true">
             <option  class="placeholder" value="">Choose a user &hellip;</option>
         </select>
     </div>
@@ -203,8 +203,9 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label>Full user name</label>
-                    <input type="text" class="form-control data1" value="{{practiceUser.title}} {{practiceUser.first_name}}
-                        {{practiceUser.middle_initial}} {{practiceUser.last_name}}" disabled="disabled">
+                    <input type="text" class="form-control data1"
+                           value="{{practiceUser.title}} {{practiceUser.first_name}} {{practiceUser.middle_initial}} {{practiceUser.last_name}}"
+                           disabled="disabled">
                 </div>
                 <div class="row">
                     <div class="col-sm-10">
