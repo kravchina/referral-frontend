@@ -358,7 +358,11 @@ angular.module('dentalLinksServices')
 })
 
 .factory('Report', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
-    return $resource(API_ENDPOINT + '/report');
+    return $resource(API_ENDPOINT + '/report', {}, {
+        getInvitations: {method: 'POST', url: API_ENDPOINT + '/report/show_invitations', isArray: true},
+        getPractices: {method: 'POST', url: API_ENDPOINT + '/report/show_practices', isArray: true},
+        getUsers: {method: 'POST', url: API_ENDPOINT + '/report/show_users', isArray: true}
+    });
 }])
 
 .factory('Activity', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
