@@ -17,7 +17,8 @@ angular.module('pdf')
 
     var pageSizes = {
         width: pdf.internal.pageSize.width,
-        height: pdf.internal.pageSize.height
+        height: pdf.internal.pageSize.height,
+        centerHorizontal: pdf.internal.pageSize.width  / 2
     };
 
     var pagePaddings = {
@@ -55,6 +56,8 @@ angular.module('pdf')
     var blocksPadding = 3; // vertical, between info blocks; line separator is 2X this size
 
     var addressPaddingX = 5; // x-padding under 'Referred' titles
+
+    var qrCodePaddingX = 37;
 
     var thumbnailSquareSize = 30; // width & height of the thumbnail square
     var thumbnailTextPaddingX = 5; // from the thumbnail itself
@@ -385,6 +388,14 @@ angular.module('pdf')
         return caret + blocksPadding;
     };
 
+    var appendQRCode = function(pdf, startRowY, endRowY){
+        if (destinationPracticeData.qrCode){
+            pdf.line(pageSizes.centerHorizontal, startRowY, pageSizes.centerHorizontal, endRowY);
+            pdf.addImage(destinationPracticeData.qrCode , 'JPEG', pageSizes.centerHorizontal + qrCodePaddingX, startRowY);
+        }
+        return endRowY;
+    };
+
     var appendBottomText = function (pdf, caret) {
         var str = 'Visit www.dentalcarelinks.com to see referral documents';
         pdf.setTextColor(auxiliaryFontColor.r, auxiliaryFontColor.g, auxiliaryFontColor.b);
@@ -477,8 +488,10 @@ angular.module('pdf')
         var caret = appendHeader(pdf);
         caret = appendPractices(pdf, caret);
         caret = appendLineSeparator(pdf, caret);
+        var verticalLineStart = caret;
         caret = appendPatientTextData(pdf, caret);
         caret = appendProcedureData(pdf, caret);
+        appendQRCode(pdf, verticalLineStart, caret - blocksPadding);
         caret = appendLineSeparator(pdf, caret);
         caret = appendNotes(pdf, caret);
         if (forPatient) {
@@ -526,7 +539,7 @@ angular.module('pdf')
             }
             return practiceData;
         },
-        prepare: function (data) {
+        prepare: function (data, qrCodeCallback) {
             images = [];
             notes = [];
             var patient = data.patient || {};
@@ -544,6 +557,7 @@ angular.module('pdf')
 
             originalPracticeData = this.createPracticeData('Referred by:', data.orig_provider || {}, data.orig_provider.practice || {});
             destinationPracticeData = this.createPracticeData('Referred to:', data.dest_provider || {}, data.dest_practice || {});
+            qrCodeCallback(destinationPracticeData);
             referralDate = data.created_at;
             this.addNotes(data.notes);
 
