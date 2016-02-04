@@ -12,23 +12,6 @@ angular.module('console')
                 .slice((($scope.currentPage - 1) * $scope.itemsPerPage), ($scope.currentPage * $scope.itemsPerPage));
         };
 
-        Report.get(function(success){
-            $scope.info = success;
-
-            $scope.totalItems = success.event_logs.length;
-            success.event_logs.forEach(function(item){
-                item.event_name = item.type_event.split('_').map(function(item){
-                    return item.charAt(0).toUpperCase() + item.slice(1);
-                }).join(' ');
-
-                eventLogs.push(item);
-            });
-            $scope.toggleInvitations('day');
-            $scope.togglePractices('day');
-            $scope.toggleUsers('day');
-            $scope.changeEventPage();
-        });
-
         $scope.toggleInvitations = function(timeType){
             Report.getInvitations({time_type: timeType }, function(success){
                 $scope.invitations = success;
@@ -46,5 +29,22 @@ angular.module('console')
                 $scope.users = success;
             });
         };
+
+        Report.get(function(success){
+            $scope.info = success;
+
+            $scope.totalItems = success.event_logs.length;
+            success.event_logs.forEach(function(item){
+                item.event_name = item.type_event.split('_').map(function(item){
+                    return item.charAt(0).toUpperCase() + item.slice(1);
+                }).join(' ');
+
+                eventLogs.push(item);
+            });
+            $scope.toggleInvitations('day');
+            $scope.togglePractices('day');
+            $scope.toggleUsers('day');
+            $scope.changeEventPage();
+        });
 
     }]);
