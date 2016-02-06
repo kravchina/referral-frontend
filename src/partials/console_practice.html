@@ -33,7 +33,7 @@
         </div>
         <select id="selectUsers" name="user" class="form-control" ng-disabled="!destinationPractice" ng-model="practiceUser"
                 ng-options="u as u.first_name && u.last_name ?
-                    u.first_name + ' ' + u.last_name : u.email for u in destinationPractice.users" ng-required="true">
+                    u.first_name + ' ' + u.last_name : u.email for u in destinationPracticeUsers" ng-required="true">
             <option  class="placeholder" value="">Choose a user &hellip;</option>
         </select>
     </div>
@@ -71,10 +71,12 @@
                         <input type="text" class="form-control data1" name="practiceName" ng-model="destinationPractice.name"
                                disabled="disabled" ng-required="true">
                     </div>
-                    <div class="form-group">
-                        <label>Owner</label>
-                        <input type="text" class="form-control data1"  disabled="disabled"
-                               value="{{destinationPractice.owner.title}} {{destinationPractice.owner.first_name}} {{destinationPractice.owner.last_name}}">
+                    <div class="row">
+                        <div class="form-group col-sm-9">
+                            <label>Owner</label>
+                            <input type="text" class="form-control data1"  disabled="disabled"
+                                   value="{{destinationPractice.owner.title}} {{destinationPractice.owner.first_name}} {{destinationPractice.owner.last_name}}">
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
@@ -140,13 +142,6 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-sm-5">
-                                    <div class="form-group" ng-class="{'has-error': addressForm.phone.$invalid}">
-                                        <label>Phone</label>
-                                        <input type="tel" class="form-control data1" name="phone" phone-formatter
-                                               ng-model="address.phone" disabled="disabled">
-                                    </div>
-                                </div>
                                 <div class="col-sm-3">
                                     <div class="form-group" ng-class="{'has-error': addressForm.state.$invalid}">
                                         <label>State</label>
@@ -159,6 +154,13 @@
                                         <label>Zip</label>
                                         <input type="text" class="form-control data1" name="zip" ng-model="address.zip"
                                                disabled="disabled" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="form-group" ng-class="{'has-error': addressForm.phone.$invalid}">
+                                        <label>Phone</label>
+                                        <input type="tel" class="form-control data1" name="phone" phone-formatter
+                                               ng-model="address.phone" disabled="disabled">
                                     </div>
                                 </div>
                             </div>
@@ -201,8 +203,9 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label>Full user name</label>
-                    <input type="text" class="form-control data1" value="{{practiceUser.title}} {{practiceUser.first_name}}
-                        {{practiceUser.middle_initial}} {{practiceUser.last_name}}" disabled="disabled">
+                    <input type="text" class="form-control data1"
+                           value="{{practiceUser.title}} {{practiceUser.first_name}} {{practiceUser.middle_initial}} {{practiceUser.last_name}}"
+                           disabled="disabled">
                 </div>
                 <div class="row">
                     <div class="col-sm-10">
@@ -218,9 +221,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group" ng-if="practiceUser.status != 'invited'">
-                    <label>Role</label>
-                    <input type="text" class="form-control data1" value="{{showFullRole(practiceUser.roles_mask)}}" disabled="disabled">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group" ng-if="practiceUser.status != 'invited'">
+                            <label>Role</label>
+                            <input type="text" class="form-control data1" value="{{showFullRole(practiceUser.roles_mask)}}" disabled="disabled">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group" ng-if="destinationPractice.practice_type.code === 'multi_specialty'">
+                            <label>Specialty</label>
+                            <input type="text" class="form-control data1" name="userSpecialty" value="{{showUserSpecialty(practiceUser.specialty_type_id)}}" disabled="disabled">
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group invite-link-group" ng-if="practiceUser.status == 'invited'">
                     <label>Invite link</label>

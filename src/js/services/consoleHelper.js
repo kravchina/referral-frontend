@@ -5,6 +5,7 @@ angular.module('console')
             findPractice: function(scope){
                 return function(searchValue){
                     scope.destinationPractice = null;
+                    scope.destinationPracticeUsers = null;
 
                     var providersPromise = Practice.searchPractice({search: searchValue}).$promise;
                     var invitationsPromise = ProviderInvitation.searchProviderInvitation({search: searchValue}).$promise;
@@ -24,6 +25,7 @@ angular.module('console')
                     if(typeof selectedPractice.isInvitation !== 'undefined' && selectedPractice.isInvitation){
                         scope.destinationPractice = selectedPractice;
                         scope.destinationPractice.name = '-- pending registration --';
+                        scope.destinationPracticeUsers = selectedPractice.users;
                         scope.practiceUser = selectedPractice.users[0];
                     } else {
                         scope.destinationPractice = selectedPractice;
@@ -42,7 +44,7 @@ angular.module('console')
                                 return provider;
                             });
 
-                            scope.destinationPractice.users = registeredUsers.concat(invitedUsers);
+                            scope.destinationPracticeUsers = registeredUsers.concat(invitedUsers);
                         });
                     }
 
@@ -55,6 +57,15 @@ angular.module('console')
                         str += str == '' ? elem.name : ', ' + elem.name;
                     });
                     return str;
+                };
+            },
+            showUserSpecialty: function(practiceTypes){
+                return function(specialtyId){
+                    for(var i = 0; i < practiceTypes.length; i++) {
+                        if(practiceTypes[i].id == specialtyId) {
+                            return practiceTypes[i].name;
+                        }
+                    }
                 };
             },
             showInviteLink: function() {

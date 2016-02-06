@@ -17,6 +17,31 @@
                         <label class="hidden">Practice name</label>
                     </div>
                 </div>
+                <div class="row" ng-show="showWarning == 'first_warning'">
+                    <div class="col-sm-6">
+                        <alert type="warning">
+                            <p>Attention!</p>
+                            You will now be able to designate each doctor's specialty type by editing their user settings
+                        </alert>
+                    </div>
+                </div>
+                <div class="row" ng-show="showWarning == 'second_warning'">
+                    <div class="col-sm-6">
+                        <alert type="warning">
+                            All doctors in the practice will show as the type being selected
+                        </alert>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-block col-sm-4">
+                        <select class="form-control data1 select" name="practiceType" ng-model="practice.practice_type"
+                                ng-change="changePracticeType(practice.practice_type)"
+                                ng-options="p as p.name for p in practiceTypes track by p.id" disabled="disabled" ng-required="true">
+                            <option class="placeholder" value="">Select type &hellip;</option>
+                        </select>
+                        <label class="hidden">Practice type</label>
+                    </div>
+                </div>
             </div>
 
             <div class="section-block" ng-repeat="address in practice.addresses">

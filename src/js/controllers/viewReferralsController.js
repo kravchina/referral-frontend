@@ -72,7 +72,16 @@ angular.module('viewReferrals')
 
         $scope.referral.$promise.then(function (data) {
             Logger.debug('Filling in PDF data...');
-            PDF.prepare(data);
+            PDF.prepare(data, function (destinationPracticeData) {
+                if (destinationPracticeData.website) {
+                    var img = new Image();
+                    img.crossOrigin = 'use-credentials';
+                    img.onload = function () {
+                        destinationPracticeData.qrCode = img;
+                    };
+                    img.src = API_ENDPOINT + '/qrcode?website=' + destinationPracticeData.website;
+                }
+            });
             Logger.debug('Filled in PDF data.');
 
                 $scope.uploader.scope = $scope;

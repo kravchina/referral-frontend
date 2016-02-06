@@ -1,10 +1,10 @@
 angular.module('admin')
-    .controller('AdminInviteController', ['$scope', '$modal', 'Notification', 'User', 'ModalHandler', 'ProviderInvitation', 'Logger',
-    function ($scope, $modal, Notification, User, ModalHandler, ProviderInvitation, Logger) {
+    .controller('AdminInviteController', ['$scope', '$modal', 'Notification', 'ModalHandler', 'ProviderInvitation', 'Logger', 'Practice',
+    function ($scope, $modal, Notification, ModalHandler, ProviderInvitation, Logger, Practice) {
         $scope.invitedUsers = [];
         $scope.invitedColleagues = [];
-        
-        User.getInvitees({user_id: $scope.$parent.auth.id}, function(allInvitees) {
+
+        Practice.getAllInvitees({id: $scope.$parent.auth.practice_id}, function(allInvitees){
             allInvitees.map(function(invitation) {
                 if (invitation.roles_mask) {  // criteria to tell user invitations apart from colleague invitations
                     $scope.invitedUsers.push(invitation);
@@ -14,6 +14,7 @@ angular.module('admin')
             });
             Logger.log('invitedUsers = ' + JSON.stringify($scope.invitedUsers));
         });
+
 
         $scope.inviteDialog = function () {
             var modalInstance = $modal.open({
@@ -29,16 +30,6 @@ angular.module('admin')
             modalInstance.result.then(function (provider) {
                 $scope.invitedColleagues.push(provider);
             });
-        };
-
-        $scope.deleteProviderInvitation = function (provider) {
-            ProviderInvitation.delete({id: provider.id},
-                function (success) {
-                    $scope.invitedColleagues.splice($scope.invitedColleagues.indexOf(provider), 1);
-                },
-                function (failure) {
-                    Notification.error('An error occurred during provider removal...')
-                });
         };
 
         //is not currently used, [#109317458] - Remove generate security code banner and button

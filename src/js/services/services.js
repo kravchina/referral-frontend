@@ -93,7 +93,8 @@ angular.module('dentalLinksServices')
             subscribe: {method: 'PUT', url: API_ENDPOINT + '/practices/:practiceId/subscribe'},
             cancelSubscription: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/cancel_subscription'},
             update: {method: 'PUT'},
-            deleteAndMoveReferral: {method: 'POST', url: API_ENDPOINT + '/practices/delete_and_move_referral'}
+            deleteAndMoveReferral: {method: 'POST', url: API_ENDPOINT + '/practices/delete_and_move_referral'},
+            getAllInvitees: {method: 'POST', url: API_ENDPOINT + '/practices/all_invitees', isArray: true}
         });
     }])
 
@@ -182,7 +183,7 @@ angular.module('dentalLinksServices')
 
 .factory('Procedure', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/procedures', {}, {
-        practiceTypes: {method: 'GET', url: API_ENDPOINT + '/practice_types', isArray: true}
+        practiceTypes: {method: 'GET', url: API_ENDPOINT + '/practice_types', params: {'include_procedures': true}, isArray: true}
     })
 }])
 
@@ -357,7 +358,11 @@ angular.module('dentalLinksServices')
 })
 
 .factory('Report', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
-    return $resource(API_ENDPOINT + '/report');
+    return $resource(API_ENDPOINT + '/report', {}, {
+        getInvitations: {method: 'POST', url: API_ENDPOINT + '/report/show_invitations', isArray: true},
+        getPractices: {method: 'POST', url: API_ENDPOINT + '/report/show_practices', isArray: true},
+        getUsers: {method: 'POST', url: API_ENDPOINT + '/report/show_users', isArray: true}
+    });
 }])
 
 .factory('Activity', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {

@@ -341,11 +341,19 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role',
-        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, Registration, ProviderInvitation, Notification, USER_ROLES, Role) {
+    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
+        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
+            $scope.practiceTypes = [];
+            Procedure.practiceTypes({'include_procedures': false}, function(success){
+                success.map(function(item){
+                    if(item.code !== 'multi_specialty'){
+                        $scope.practiceTypes.push(item);
+                    }
+                });
+            });
             $scope.user = editUser;//for now we need only is_admin property to be set
             $scope.user.is_admin = Role.hasRoles([USER_ROLES.admin], Role.getFromMask($scope.user.roles_mask));
             var initialEmail = editUser.email;
@@ -386,7 +394,7 @@ angular.module('modals')
                     return;
                 }
                 if (initialEmail !== user.email) {
-                    Registration.sendEmailVerification({email: user.email}).$promise.then(function(){
+                    Registration.sendEmailVerification({email: user.email, user_id: user.id}).$promise.then(function(){
                         Notification.success('Confirmation letter was sent to your new email address. Your email will be changed right after confirmation.');
                     });
                 }
@@ -414,22 +422,38 @@ angular.module('modals')
                 return str;
             };
 
+            $scope.is_multispecialty = function(){
+                return Role.hasRoles([USER_ROLES.doctor], Role.getFromMask($scope.user.roles_mask)) && practiceType.code == 'multi_specialty';
+            };
+
             $scope.cancel = function () {
                 ModalHandler.dismiss($modalInstance);
+                $scope.user.email = initialEmail;
                 $scope.listInputUsers = [];
             };
 }])
 
-.controller('EditNoLoginUserModalController', ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser',
-    function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser) {
+.controller('EditNoLoginUserModalController',
+    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure',
+    function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure) {
         $scope.user = editUser;
         $scope.alerts = [];
+        $scope.practiceTypes = [];
+        Procedure.practiceTypes({'include_procedures': false}, function(success){
+            success.map(function(item){
+                if(item.code !== 'multi_specialty'){
+                    $scope.practiceTypes.push(item);
+                }
+            });
+        });
+
         $scope.cancel = function () {
             $scope.user.email = undefined; //reset user email if modal is closed
             ModalHandler.dismiss($modalInstance);
         };
+
         $scope.ok = function (user) {
-             User.sendPasswordInvitation({id: user.id}, {email: user.email},
+             User.sendPasswordInvitation({id: user.id}, {email: user.email, specialty_type_id: user.specialty_type_id},
                  function(success){
                      ModalHandler.close($modalInstance,success);
                  },
@@ -437,7 +461,20 @@ angular.module('modals')
                     $scope.alerts = [];
                     Alert.error($scope.alerts, failure.data.error, true);
                  });
-        }
+        };
+
+        $scope.save = function(user){
+            User.update({id: user.id}, {user: {specialty_type_id: user.specialty_type_id}}, function(success){
+                ModalHandler.dismiss($modalInstance);
+            }, function(failure){
+                $scope.alerts = [];
+                Alert.error($scope.alerts, failure.data.error, true);
+            });
+        };
+
+        $scope.is_multispecialty = function(){
+            return practiceType.code === 'multi_specialty';
+        };
 
 }])
 

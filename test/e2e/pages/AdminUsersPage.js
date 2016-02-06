@@ -21,8 +21,22 @@ var AdminUsersPage = function() {
         return element(by.css('.modal-dialog button[ng-click="cancel()"].btn'));
     };
 
+    this.getEditModalSaveButton = function(){
+        return element(by.css('.modal-dialog button[ng-click="ok(user)"].btn'));
+    };
+
+    this.setEmail = function(email) {
+        var emailField = element(by.model('user.email'));
+        emailField.clear().then(function(){
+            emailField.sendKeys(email)});
+    };
+
     this.getEditModalIsAdminCheckbox = function(){
         return element(by.css('.modal-dialog input[name="is_admin"]'));
+    };
+
+    this.getEditModalSpecialtySelect = function(){
+        return element(by.model('user.specialty_type_id'));
     };
     
 };

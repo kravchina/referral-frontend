@@ -6,7 +6,15 @@ angular.module('createReferrals')
 
         $scope.immediateUpdate = false;
         $scope.procedures = Procedure.query();
-        $scope.practiceTypes = Procedure.practiceTypes();
+        $scope.practiceTypes = [];
+
+        Procedure.practiceTypes(function(success){
+            success.map(function(item){
+                if(item.code !== 'multi_specialty'){
+                    $scope.practiceTypes.push(item);
+                }
+            });
+        });
         $scope.currentPracticeProviders = User.getOtherProviders({practice_id: auth.practice_id});
         $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
 
