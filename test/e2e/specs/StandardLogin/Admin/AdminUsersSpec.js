@@ -1,5 +1,7 @@
 var commonExpects = require('../../../commons/CommonExpects');
+var commonActions = require('../../../commons/CommonActions');
 var adminUsersPage = require('../../../pages/AdminUsersPage');
+var historyPage = require('../../../pages/HistoryPage');
 
 var AdminUsersSpec = function() {
     this.run = function() {
@@ -34,6 +36,22 @@ var AdminUsersSpec = function() {
                     element(by.css('.modal-dialog')).isDisplayed().then(function () {
                         expect(adminUsersPage.getEditModalIsAdminCheckbox()).toBeTruthy();
                         adminUsersPage.getEditModalDiscardButton().click();
+                    });
+                });
+            });
+            it('opens edit other user dialog, changes email, saves it successfully and stays logged in', function(){
+                element.all(by.css('[ng-repeat="user in practice.users.concat(invitedUsers)"]'))
+                    .then(function (rows) {
+                    rows[1].element(by.css('.dlicons-pencil')).click();
+                    element(by.css('.modal-dialog')).isDisplayed().then(function () {
+                        adminUsersPage.setEmail('other@update.email');
+                        adminUsersPage.getEditModalSaveButton().click().then(function(){
+                            commonExpects.expectSuccessNotificationShown();
+                            commonExpects.expectCurrentUrlToBe(adminUsersPage.url);
+                            commonActions.clickLogo();
+                            commonExpects.expectCurrentUrlToBe(historyPage.url);
+                        });
+
                     });
                 });
             });

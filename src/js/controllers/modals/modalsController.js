@@ -394,7 +394,7 @@ angular.module('modals')
                     return;
                 }
                 if (initialEmail !== user.email) {
-                    Registration.sendEmailVerification({email: user.email}).$promise.then(function(){
+                    Registration.sendEmailVerification({email: user.email, user_id: user.id}).$promise.then(function(){
                         Notification.success('Confirmation letter was sent to your new email address. Your email will be changed right after confirmation.');
                     });
                 }
@@ -428,6 +428,7 @@ angular.module('modals')
 
             $scope.cancel = function () {
                 ModalHandler.dismiss($modalInstance);
+                $scope.user.email = initialEmail;
                 $scope.listInputUsers = [];
             };
 }])
