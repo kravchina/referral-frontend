@@ -372,7 +372,7 @@ angular.module('modals')
 
 
             $scope.checkEmail = function (email) {
-                ProviderInvitation.validate({email: email, all: true}, function (success) {
+                ProviderInvitation.validate({email: email}, function (success) {
                     $scope.userForm.email.$setValidity('email', true);
                 }, function (failure) {
                     $scope.userForm.email.$setValidity('email', false);
