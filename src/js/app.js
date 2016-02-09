@@ -197,7 +197,7 @@ angular.module('dentalLinks')
             url: '/license',
             templateUrl: 'partials/license.html'
         }).
-    state('confirmEmail', {
+        state('confirmEmail', {
             url: '/confirm_email/:token',
             onEnter: ['$state', '$stateParams', 'Registration', 'Notification', '$modal', 'ModalHandler', function($state, $stateParams, Registration, Notification, $modal, ModalHandler) {
                 Registration.confirmEmail({confirmation_token: $stateParams.token}).$promise
@@ -223,7 +223,12 @@ angular.module('dentalLinks')
             }],
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
 
+        }).
+        state('debug', {
+            url: '/debug',
+            templateUrl: 'partials/debug.html'
         });
+
     $urlRouterProvider.otherwise('/sign_in');
 }])
     .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', '$modal', 'Logger', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, $modal, Logger) {
