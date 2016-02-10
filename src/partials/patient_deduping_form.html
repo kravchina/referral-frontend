@@ -1,0 +1,25 @@
+<!-- Modal Deduping Patient -->
+<form id="formDedupingPatient" name="dedupingPatientForm">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
+        <h4 class="modal-title">Attention! Find duplicate</h4>
+    </div>
+    <div class="modal-body">
+        <label>What do you want to do:</label>
+        <div class="form-group">
+            <label class="radio-inline">
+                <input type="radio" ng-value="true" ng-model="makeChanges">
+                Create/Update patient
+            </label>
+            <label class="radio-inline">
+                <input type="radio" ng-value="false" ng-model="makeChanges">
+                Use existing patient
+            </label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button"  class="btn btn-orange" ng-disabled="dedupingPatientForm.$invalid"  ng-click="ok(patient)">Ok</button>
+        <button type="button" class="btn btn-grey" data-dismiss="modal" ng-click="cancel()">Discard</button>
+    </div>
+</form>
+<!-- End Modal Deduping Patient -->

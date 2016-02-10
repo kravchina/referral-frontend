@@ -1,5 +1,5 @@
 angular.module('modals')
-.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname) {
+.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', '$modal', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname, $modal) {
 
     $scope.title = 'Create a New Patient Record';
 
@@ -20,14 +20,39 @@ angular.module('modals')
 
     $scope.ok = function (patient) {
         patient.practice_id = Auth.getOrRedirect().practice_id;
-        Patient.save({patient: patient},
-            function (success) {
-                ModalHandler.close($modalInstance, success);
-            },
-            function (failure) {
-                $scope.success = false;
-                $scope.failure = true;
-            });
+
+        function CreatePatient(){
+            Patient.save({patient: patient},
+                function (success) {
+                    ModalHandler.close($modalInstance, success);
+                },
+                function (failure) {
+                    $scope.success = false;
+                    $scope.failure = true;
+                });
+        };
+
+        Patient.searchPatientDuplicate(patient, function (success) {
+            if (typeof(success.patient) !== 'undefined' && success.patient !== null) {
+
+                var dedupingModalInstatnce = $modal.open({
+                    templateUrl: 'partials/patient_deduping_form.html',
+                    controller: 'DedupingPatientModalController'
+                });
+
+                dedupingModalInstatnce.result.then(function (isCreatePatient) {
+                    if (isCreatePatient) {
+                        CreatePatient();
+                    } else {
+                        ModalHandler.close($modalInstance, success.patient);
+                    }
+                });
+            } else {
+                CreatePatient();
+            }
+
+        });
+
     };
 
     $scope.cancel = function () {
@@ -36,21 +61,61 @@ angular.module('modals')
     };
 }])
 
-.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit) {
+.controller('DedupingPatientModalController', ['$scope', '$modalInstance', function($scope, $modalInstance){
+        $scope.makeChanges = true;
+
+        $scope.ok = function () {
+            $modalInstance.close($scope.makeChanges);
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    }])
+
+.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', '$modal',
+        function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, $modal) {
     $scope.title = 'Edit Patient Record';
 
     $scope.alerts = [];
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
     $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: new Date(patientForEdit.birthday), email: patientForEdit.email, phone: patientForEdit.phone};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
     $scope.ok = function (patient) {
-        Patient.update({id: patientForEdit.id}, {patient: patient},
-            function (success) {
-                ModalHandler.close($modalInstance, success);
-            },
-            function (failure) {
-                $scope.alerts = [];
-                Alert.error($scope.alerts, 'Error occurred during patient update.', true);
-            });
+        function UpdatePatient () {
+            Patient.update({id: patientForEdit.id}, {patient: patient},
+                function (success) {
+                    ModalHandler.close($modalInstance, success);
+                },
+                function (failure) {
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, 'Error occurred during patient update.', true);
+                });
+        };
+
+        patient.id = patientForEdit.id;
+        patient.practice_id = patientForEdit.practice_id;
+
+        Patient.searchPatientDuplicate(patient, function (success) {
+            if (typeof(success.patient) !== 'undefined' && success.patient !== null) {
+
+                var dedupingModalInstatnce = $modal.open({
+                    templateUrl: 'partials/patient_deduping_form.html',
+                    controller: 'DedupingPatientModalController'
+                });
+
+                dedupingModalInstatnce.result.then(function (isUpdatePatient) {
+                    if (isUpdatePatient) {
+                        UpdatePatient();
+                    } else {
+                        ModalHandler.close($modalInstance, success.patient);
+                    }
+                });
+            } else {
+                UpdatePatient();
+            }
+
+        });
+
     };
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);

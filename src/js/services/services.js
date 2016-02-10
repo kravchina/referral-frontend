@@ -106,7 +106,8 @@ angular.module('dentalLinksServices')
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',
             'Expires': '0'
-        }, skipSpinner: true}
+        }, skipSpinner: true},
+        searchPatientDuplicate: {method: 'GET', url: API_ENDPOINT + '/patients/search_duplicate'}
     });
 }])
 
