@@ -13,7 +13,36 @@ var CreateReferralSaveSpec = function() {
             procedure: "Follow-up Care",
             tooth: 22
         };
-        
+
+        var patient = {
+            firstName: 'Marty',
+            lastName: 'McFly',
+            birthday: '01.01.1968'
+        };
+
+        describe('check create patient', function(){
+            it('check duplicate patient modal', function(){
+                createReferralPage.getPatientCreateButton().click();
+                expect(createReferralPage.getPatientCreateModal().isDisplayed()).toBe(true);
+
+                createReferralPage.getPatientFirstNameModalElement().sendKeys(patient.firstName);
+                createReferralPage.getPatientLastNameModalElement().sendKeys(patient.lastName);
+                createReferralPage.getPatientBirthdayModalElement().sendKeys(patient.birthday);
+                expect(createReferralPage.getPatientSaveModalButton().isEnabled()).toBe(true);
+
+                createReferralPage.getPatientSaveModalButton().click();
+
+                expect(createReferralPage.getDedupingModal().isDisplayed()).toBe(true);
+
+                createReferralPage.getDedupingDiscardModalButton().click();
+                createReferralPage.getPatientDiscardModalButton().click();
+
+                expect(createReferralPage.getPatientCreateModal().isPresent()).toBe(false);
+                expect(createReferralPage.getDedupingModal().isPresent()).toBe(false);
+
+            });
+        });
+
         // TODO [ak] consider using this description format everywhere else
         describe('fields are filled in and button Save clicked', function() {
             beforeEach(function() {

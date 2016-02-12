@@ -40,11 +40,11 @@ angular.module('modals')
                     controller: 'DedupingPatientModalController'
                 });
 
-                dedupingModalInstatnce.result.then(function (isCreatePatient) {
-                    if (isCreatePatient) {
-                        CreatePatient();
-                    } else {
+                dedupingModalInstatnce.result.then(function (useExistPatient) {
+                    if (useExistPatient) {
                         ModalHandler.close($modalInstance, success.patient);
+                    } else {
+                        CreatePatient();
                     }
                 });
             } else {
@@ -62,10 +62,10 @@ angular.module('modals')
 }])
 
 .controller('DedupingPatientModalController', ['$scope', '$modalInstance', function($scope, $modalInstance){
-        $scope.makeChanges = true;
+        $scope.useExistPatient = true;
 
         $scope.ok = function () {
-            $modalInstance.close($scope.makeChanges);
+            $modalInstance.close($scope.useExistPatient);
         };
 
         $scope.cancel = function () {
@@ -103,11 +103,11 @@ angular.module('modals')
                     controller: 'DedupingPatientModalController'
                 });
 
-                dedupingModalInstatnce.result.then(function (isUpdatePatient) {
-                    if (isUpdatePatient) {
-                        UpdatePatient();
-                    } else {
+                dedupingModalInstatnce.result.then(function (useExistPatient) {
+                    if (useExistPatient) {
                         ModalHandler.close($modalInstance, success.patient);
+                    } else {
+                        UpdatePatient();
                     }
                 });
             } else {
