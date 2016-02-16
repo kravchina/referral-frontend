@@ -19,7 +19,7 @@ angular.module('registration')
             if ($scope.promo) {
                 $scope.invitation = { roles_mask: USER_ROLES.doctor.mask};
             } else {
-                $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token, invitation_type: 'user'},
+                $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
                     function (success) {
                         Referral.countByInvited({id: $scope.invitation.id},
                         function(success){
@@ -163,48 +163,3 @@ angular.module('registration')
 
         $scope.initInvitation();
     }])
-// Only for users invited to the same practice
-    .controller('NewUserController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Notification', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Logger',
-    function ($scope, $location, $stateParams, $modal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Logger) {
-
-        $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token, invitation_type: 'colleguae'},
-            function (invitation) {
-                invitation.newPracticeId = invitation.practice_id; // in case of user invitation - needs this in order to hide security code field
-
-                Logger.log('invitation.newPracticeId = ' + invitation.newPracticeId);
-
-                $scope.practice = Practice.get({practiceId: invitation.newPracticeId}, function (practice) {
-                    Logger.log('received practice info: ' + JSON.stringify($scope.practice));
-                });
-            },
-            function (failure) {
-                Notification.error('invitation.invalid');
-            }
-        );
-
-        var showResultDialog = function(){
-            var modalInstance = $modal.open({
-                templateUrl: 'partials/registration_result.html',
-                controller: 'RegistrationResultController'
-            });
-            ModalHandler.set(modalInstance);
-            modalInstance.result.then(function (res) {
-                $state.go('history');
-            });
-        };
-
-        $scope.register = function (user) {
-            user.practice_id = user.practice.id;
-            Registration.save({user: user, invitation_token: $stateParams.invitation_token, security_code: $scope.security_code, skip_security_code: user.newPracticeId == user.practice_id},
-                function (success) {
-                    Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
-                    Auth.current_user = success;
-                    showResultDialog();
-                },
-                function (failure) {
-                    Notification.error(failure.data.errors[0]);
-                }
-            )
-        };
-
-    }]);

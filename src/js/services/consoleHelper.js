@@ -72,8 +72,7 @@ angular.module('console')
                 return function(user){
                     return $location.protocol() + '://' + $location.host() +
                         ($location.port() == '80' ? '' : ':' + $location.port()) +
-                        (user.practice_id ? '/#/new_user/' : '/#/register/' ) +
-                        user.token;
+                        '/#/register/' + user.token;
                 };
             }
         };
