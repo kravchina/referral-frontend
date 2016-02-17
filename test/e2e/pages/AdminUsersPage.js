@@ -38,7 +38,38 @@ var AdminUsersPage = function() {
     this.getEditModalSpecialtySelect = function(){
         return element(by.model('user.specialty_type_id'));
     };
-    
+
+    this.getAddUserButton = function(){
+        return element(by.css('button[ng-click="usersDialog()"]'));
+    };
+
+    this.getAddModal = function(){
+        return element(by.css('#formNewuser'));
+    };
+
+    this.getAddModalFirstNameElement = function(){
+        return element(by.css('#formNewuser input[name="firstName"]'));
+    };
+
+    this.getAddModalLastNameElement = function(){
+        return element(by.css('#formNewuser input[name="lastName"]'));
+    };
+
+    this.getAddModalEmailElement = function(){
+        return element(by.css('#formNewuser input[name="email"]'));
+    };
+
+    this.getAddModalAdminRadioElement = function(){
+        return element(by.css('#formNewuser')).element(by.repeater('item in radios').row(0).column('item.name'));
+    };
+
+    this.getAddModalSendInviteButton = function(){
+        return element(by.css('#formNewuser button[ng-click="ok(user)"][ng-show="isInvite"]'));
+    };
+
+    this.getAddModalDiscardButton = function(){
+        return element(by.css('#formNewUser button[ng-click="cancel()"]'));
+    };
 };
 
 module.exports = new AdminUsersPage();
