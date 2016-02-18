@@ -1,7 +1,9 @@
 angular.module('modals')
-.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', '$modal', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname, $modal) {
+.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', '$modal', 'Alert',
+        function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname, $modal, Alert) {
 
     $scope.title = 'Create a New Patient Record';
+    $scope.alerts = [];
 
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
 
@@ -21,14 +23,14 @@ angular.module('modals')
     $scope.ok = function (patient) {
         patient.practice_id = Auth.getOrRedirect().practice_id;
 
-        function CreatePatient(){
+        function createPatient(){
             Patient.save({patient: patient},
                 function (success) {
                     ModalHandler.close($modalInstance, success);
                 },
                 function (failure) {
-                    $scope.success = false;
-                    $scope.failure = true;
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, 'Error occurred during patient create.', true)
                 });
         };
 
@@ -40,15 +42,15 @@ angular.module('modals')
                     controller: 'DedupingPatientModalController'
                 });
 
-                dedupingModalInstatnce.result.then(function (useExistPatient) {
-                    if (useExistPatient) {
+                dedupingModalInstatnce.result.then(function (useExistingPatient) {
+                    if (useExistingPatient) {
                         ModalHandler.close($modalInstance, success.patient);
                     } else {
-                        CreatePatient();
+                        createPatient();
                     }
                 });
             } else {
-                CreatePatient();
+                createPatient();
             }
 
         });
@@ -62,10 +64,10 @@ angular.module('modals')
 }])
 
 .controller('DedupingPatientModalController', ['$scope', '$modalInstance', function($scope, $modalInstance){
-        $scope.useExistPatient = true;
+        $scope.useExistingPatient = true;
 
         $scope.ok = function () {
-            $modalInstance.close($scope.useExistPatient);
+            $modalInstance.close($scope.useExistingPatient);
         };
 
         $scope.cancel = function () {
@@ -73,7 +75,7 @@ angular.module('modals')
         };
     }])
 
-.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', '$modal',
+.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth', 'Alert', 'ModalHandler', 'Patient', 'patientForEdit', '$modal',
         function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, $modal) {
     $scope.title = 'Edit Patient Record';
 
@@ -81,7 +83,7 @@ angular.module('modals')
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
     $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: new Date(patientForEdit.birthday), email: patientForEdit.email, phone: patientForEdit.phone};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
     $scope.ok = function (patient) {
-        function UpdatePatient () {
+        function updatePatient () {
             Patient.update({id: patientForEdit.id}, {patient: patient},
                 function (success) {
                     ModalHandler.close($modalInstance, success);
@@ -103,15 +105,15 @@ angular.module('modals')
                     controller: 'DedupingPatientModalController'
                 });
 
-                dedupingModalInstatnce.result.then(function (useExistPatient) {
-                    if (useExistPatient) {
+                dedupingModalInstatnce.result.then(function (useExistingPatient) {
+                    if (useExistingPatient) {
                         ModalHandler.close($modalInstance, success.patient);
                     } else {
-                        UpdatePatient();
+                        updatePatient();
                     }
                 });
             } else {
-                UpdatePatient();
+                updatePatient();
             }
 
         });
