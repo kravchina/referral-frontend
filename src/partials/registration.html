@@ -1,7 +1,8 @@
 <header class="page-header">
     <h1>Registration</h1>
 
-    <p class="page-subheader">Submit your registration details.</p>
+    <p ng-if="!invitation.practice_id" class="page-subheader">Submit your registration details.</p>
+    <p ng-if="invitation.practice_id" class="page-subheader">Complete your registration to join {{invitation.practice.name}}.</p>
 </header><!-- .page-header -->
 
 <div class="form-wrapper">
@@ -71,18 +72,18 @@
                                 <label>Last Name</label>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="input-block" ng-class="{'has-error': submitted && form.selectRole.$invalid }">
-                                <label class="radio-inline" ng-repeat="role in roles">
-                                    <input name="selectRole" type="radio" ng-value="{{role.mask}}"
-                                           ng-model="invitation.roles_mask" ng-required="true">
-                                    {{role.name}}
-                                </label>
-                                <label>Role</label>
-                            </div>
-                        </div>
 
-                        <div>
+                        <div ng-if="!invitation.practice_id || promo">
+                            <div class="row">
+                                <div class="input-block" ng-class="{'has-error': submitted && form.selectRole.$invalid }">
+                                    <label class="radio-inline" ng-repeat="role in roles">
+                                        <input name="selectRole" type="radio" ng-value="role.mask"
+                                               ng-model="invitation.roles_mask" ng-required="true">
+                                        {{role.name}}
+                                    </label>
+                                    <label>Role</label>
+                                </div>
+                            </div>
                             <div class="row text-block">
                                 <h3>Practice</h3>
                             </div>

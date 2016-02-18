@@ -57,11 +57,6 @@ angular.module('dentalLinks')
             templateUrl: 'partials/error.html',
             controller: 'ErrorController'
         }).
-        state('new_user', {
-            url: '/new_user/:invitation_token',
-            templateUrl: 'partials/new_user.html',
-            controller: 'NewUserController'
-        }).
         state('createReferral', {
             url: '/create_referral',
             templateUrl: 'partials/create_referral.html',

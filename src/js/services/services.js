@@ -148,7 +148,6 @@ angular.module('dentalLinksServices')
 .factory('Registration', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/sign_up', {}, {
         verify_security_code: {method: 'GET', url: API_ENDPOINT + '/verify_security_code/:code'},
-        create_user: {method: 'POST', url: API_ENDPOINT + '/register_without_invite'},
         create_no_login_user: {method: 'POST', url: API_ENDPOINT + '/register_no_login_user'},
         register_with_promo: {method: 'POST', url: API_ENDPOINT + '/register_with_promo'},
         confirmEmail: {method: 'POST', url: API_ENDPOINT + '/confirm_email'},

@@ -2,6 +2,8 @@ var commonExpects = require('../../../commons/CommonExpects');
 var commonActions = require('../../../commons/CommonActions');
 var adminUsersPage = require('../../../pages/AdminUsersPage');
 var historyPage = require('../../../pages/HistoryPage');
+var signInPage = require('../../../pages/SignInPage');
+var registrationPage = require('../../../pages/RegistrationPage');
 
 var AdminUsersSpec = function() {
     this.run = function() {
@@ -39,6 +41,7 @@ var AdminUsersSpec = function() {
                     });
                 });
             });
+
             it('opens edit other user dialog, changes email, saves it successfully and stays logged in', function(){
                 element.all(by.css('[ng-repeat="user in practice.users.concat(invitedUsers)"]'))
                     .then(function (rows) {
@@ -54,6 +57,66 @@ var AdminUsersSpec = function() {
 
                     });
                 });
+            });
+
+            it('create colleague invitation and register', function(){
+                var emailAndRegistrationToken = (new Date()).getTime().toString();
+                var newColleague = {
+                    salutation: "Mr.",
+                    firstName: "Smith",
+                    middleInitial: "X",
+                    lastName: "Brown",
+                    email: emailAndRegistrationToken + "@example.com",
+                    password: "12345678"
+                };
+
+                // show add user invitation modal
+                adminUsersPage.getAddUserButton().click();
+                expect(adminUsersPage.getAddModal().isDisplayed()).toBe(true);
+                // creating user invitation
+                adminUsersPage.getAddModalFirstNameElement().sendKeys(newColleague.firstName);
+                adminUsersPage.getAddModalLastNameElement().sendKeys(newColleague.lastName);
+                adminUsersPage.getAddModalEmailElement().sendKeys(newColleague.email);
+                adminUsersPage.getAddModalAdminRadioElement().click();
+                // close the dialog
+                expect(adminUsersPage.getAddModalSendInviteButton().isEnabled()).toBe(true);
+                adminUsersPage.getAddModalSendInviteButton().click();
+                expect(adminUsersPage.getAddModal().isPresent()).toBe(false);
+
+                commonActions.signOut();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectMenuHidden();
+                commonExpects.expectCurrentUrlToBe(signInPage.url);
+
+                // visit registration page as new doctor
+                registrationPage.open(emailAndRegistrationToken);
+
+                registrationPage.getSalutationElement().element(by.cssContainingText("option", newColleague.salutation)).click();
+
+                // first and last names are already filled in
+                expect(registrationPage.getFirstNameElement().getAttribute('value')).toEqual(newColleague.firstName);
+                expect(registrationPage.getLastNameElement().getAttribute('value')).toEqual(newColleague.lastName);
+
+                registrationPage.getMiddleInitialElement().sendKeys(newColleague.middleInitial);
+
+                // email already filled in
+                expect(registrationPage.getEmailElement().getAttribute('value')).toEqual(newColleague.email);
+
+                // practice details not show on this page
+                expect(registrationPage.getPracticeNameElement().isPresent()).toBe(false);
+
+                registrationPage.getPasswordElement().sendKeys(newColleague.password);
+                registrationPage.getPasswordConfirmationElement().sendKeys(newColleague.password);
+                registrationPage.getTNCElement().click();
+
+                // register!
+                registrationPage.getRegisterButtonElement().click();
+
+                // closing a successful registration dialog with OK
+                expect(registrationPage.getSuccessfulDialogElement().isDisplayed()).toBe(true);
+                registrationPage.getSuccessfulDialogOKButtonElement().click();
+                expect(registrationPage.getSuccessfulDialogElement().isPresent()).toBe(false);
+
             });
         });
     };
