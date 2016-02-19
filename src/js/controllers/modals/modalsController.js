@@ -39,7 +39,12 @@ angular.module('modals')
 
                 var dedupingModalInstatnce = $modal.open({
                     templateUrl: 'partials/patient_deduping_form.html',
-                    controller: 'DedupingPatientModalController'
+                    controller: 'DedupingPatientModalController',
+                    resolve: {
+                        isCreatingPatient: function(){
+                            return true;
+                        }
+                    }
                 });
 
                 dedupingModalInstatnce.result.then(function (useExistingPatient) {
@@ -63,8 +68,9 @@ angular.module('modals')
     };
 }])
 
-.controller('DedupingPatientModalController', ['$scope', '$modalInstance', function($scope, $modalInstance){
+.controller('DedupingPatientModalController', ['$scope', '$modalInstance', 'isCreatingPatient', function($scope, $modalInstance, isCreatingPatient){
         $scope.useExistingPatient = true;
+        $scope.isCreatingPatient = isCreatingPatient;
 
         $scope.ok = function () {
             $modalInstance.close($scope.useExistingPatient);
@@ -102,7 +108,12 @@ angular.module('modals')
 
                 var dedupingModalInstatnce = $modal.open({
                     templateUrl: 'partials/patient_deduping_form.html',
-                    controller: 'DedupingPatientModalController'
+                    controller: 'DedupingPatientModalController',
+                    resolve: {
+                        isCreatingPatient: function(){
+                            return false;
+                        }
+                    }
                 });
 
                 dedupingModalInstatnce.result.then(function (useExistingPatient) {
