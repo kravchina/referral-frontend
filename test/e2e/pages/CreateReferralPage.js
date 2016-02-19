@@ -42,7 +42,51 @@ var CreateReferralPage = function() {
     this.getPatientDropDownFirstRowElement = function() {
         return element(by.css('input[name="patient"] ~ ul.dropdown-menu > li:nth-child(1)'));
     };
-    
+
+    this.getPatientCreateButton = function(){
+        return element(by.css('button[ng-click="patientDialog()"]'));
+    };
+
+    //patient create modal
+
+    this.getPatientCreateModal = function(){
+        return element(by.css('#formNewPatient'));
+    };
+
+    this.getPatientFirstNameModalElement = function(){
+        return element(by.css('#formNewPatient input[name="firstName"]'));
+    };
+
+    this.getPatientLastNameModalElement = function(){
+        return element(by.css('#formNewPatient input[name="lastName"]'));
+    };
+
+    this.getPatientBirthdayModalElement = function(){
+        return element(by.css('#formNewPatient input[name="birthday"]'));
+    };
+
+    this.getPatientSaveModalButton = function(){
+        return element(by.css('#formNewPatient button[ng-click="ok(patient)"]'));
+    };
+
+    this.getPatientDiscardModalButton = function(){
+        return element(by.css('#formNewPatient button[ng-click="cancel()"]:last-child'));
+    };
+
+    //patient deduping modal
+
+    this.getDedupingModal = function(){
+        return element(by.css('#formDedupingPatient'));
+    };
+
+    this.getDedupingOkModalButton = function(){
+        return element(by.css('#formDedupingPatient button[ng-click="ok(patient)"]'));
+    };
+
+    this.getDedupingDiscardModalButton = function(){
+        return element(by.css('#formDedupingPatient button[ng-click="cancel()"]:last-child'));
+    };
+
     // practice block
     
     this.getPracticeElement = function() {
