@@ -1,0 +1,2 @@
+docker run -d --name haproxy -v /home/ubuntu/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro -p 80:80 haproxy:1.5
+
