@@ -22,29 +22,33 @@ var ViewReferralPage = function() {
     this.getPatientValue = function() {
         return getInputValue(getInputByIndex(0));
     };
-    
-    this.getFromUserValue = function() {
+
+    this.getPatientPhoneValue = function() {
         return getInputValue(getInputByIndex(1));
     };
     
-    this.getFromPracticeValue = function() {
+    this.getFromUserValue = function() {
         return getInputValue(getInputByIndex(2));
     };
     
-    this.getToUserValue = function() {
+    this.getFromPracticeValue = function() {
         return getInputValue(getInputByIndex(3));
     };
     
-    this.getToPracticeValue = function() {
+    this.getToUserValue = function() {
         return getInputValue(getInputByIndex(4));
     };
     
-    this.getReferralTypeValue = function() {
+    this.getToPracticeValue = function() {
         return getInputValue(getInputByIndex(5));
     };
     
-    this.getProcedureValue = function() {
+    this.getReferralTypeValue = function() {
         return getInputValue(getInputByIndex(6));
+    };
+    
+    this.getProcedureValue = function() {
+        return getInputValue(getInputByIndex(7));
     };
     
     this.isTeethCheckedByIndex = function(index) { // TODO [ak] reconsider design. This kind of index -- outside?.. or actually yes, because it's shared between create and view referral pages

@@ -15,14 +15,16 @@ var gulp = require('gulp'),
     buffer = require('vinyl-buffer'),
     source = require('vinyl-source-stream'),
     through = require('through2'),
-    gutil = require('gutil');
+    gutil = require('gutil'),
+    moment = require('moment'),
+    git = require('gulp-git');
 
 var environmentName = argv.env ? argv.env : 'local',
     environment = config.environment[environmentName],
     buildPath = 'build/' + environmentName;
 
     environment.timestamp = new Date().getTime().toString();
-
+    environment.datetime = moment().format('hh:mm:ss a - MM/DD/YYYY');
 
 gulp.task('publish', ['build'], function() {
     var publisher = awspublish.create({
@@ -44,7 +46,14 @@ gulp.task('publish', ['build'], function() {
 
 gulp.task('run', ['build', 'watch', 'server']);
 
-gulp.task('build', ['build-js','build-css', 'build-templates', 'copy-files']);
+gulp.task('build', function(){
+    git.exec({args : 'rev-parse --verify HEAD'}, function (err, stdout) {
+        if (err) throw err;
+        environment.commithash = stdout.replace(/(\r\n|\n|\r)/gm,'');
+
+        gulp.start('build-js','build-css', 'build-templates', 'copy-files')
+    });
+});
 
 gulp.task('build-js', function() {
     var process = browserify({

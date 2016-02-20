@@ -31,6 +31,7 @@
                     class="dlicons-pencil"></span></button>
         </div>
         <input type="text" class="form-control data1" value="{{referral.patient.first_name}} {{referral.patient.last_name}} ({{referral.patient.birthday | date: 'shortDate'}})" disabled="disabled">
+        <input ng-if="referral.patient.phone" type="tel" class="form-control data1" ng-model="referral.patient.phone" phone-formatter disabled="disabled">
     </div>
 </div>
 <!-- .row -->

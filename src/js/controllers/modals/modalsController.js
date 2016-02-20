@@ -1,7 +1,9 @@
 angular.module('modals')
-.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname) {
+.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', '$modal', 'Alert',
+        function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname, $modal, Alert) {
 
     $scope.title = 'Create a New Patient Record';
+    $scope.alerts = [];
 
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
 
@@ -20,14 +22,44 @@ angular.module('modals')
 
     $scope.ok = function (patient) {
         patient.practice_id = Auth.getOrRedirect().practice_id;
-        Patient.save({patient: patient},
-            function (success) {
-                ModalHandler.close($modalInstance, success);
-            },
-            function (failure) {
-                $scope.success = false;
-                $scope.failure = true;
-            });
+
+        function createPatient(){
+            Patient.save({patient: patient},
+                function (success) {
+                    ModalHandler.close($modalInstance, success);
+                },
+                function (failure) {
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, 'Error occurred during patient create.', true)
+                });
+        };
+
+        Patient.searchPatientDuplicate(patient, function (success) {
+            if (typeof(success.patient) !== 'undefined' && success.patient !== null) {
+
+                var dedupingModalInstatnce = $modal.open({
+                    templateUrl: 'partials/patient_deduping_form.html',
+                    controller: 'DedupingPatientModalController',
+                    resolve: {
+                        isCreatingPatient: function(){
+                            return true;
+                        }
+                    }
+                });
+
+                dedupingModalInstatnce.result.then(function (useExistingPatient) {
+                    if (useExistingPatient) {
+                        ModalHandler.close($modalInstance, success.patient);
+                    } else {
+                        createPatient();
+                    }
+                });
+            } else {
+                createPatient();
+            }
+
+        });
+
     };
 
     $scope.cancel = function () {
@@ -36,21 +68,67 @@ angular.module('modals')
     };
 }])
 
-.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Patient', 'patientForEdit', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit) {
+.controller('DedupingPatientModalController', ['$scope', '$modalInstance', 'isCreatingPatient', function($scope, $modalInstance, isCreatingPatient){
+        $scope.useExistingPatient = true;
+        $scope.isCreatingPatient = isCreatingPatient;
+
+        $scope.ok = function () {
+            $modalInstance.close($scope.useExistingPatient);
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    }])
+
+.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth', 'Alert', 'ModalHandler', 'Patient', 'patientForEdit', '$modal',
+        function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, $modal) {
     $scope.title = 'Edit Patient Record';
 
     $scope.alerts = [];
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
     $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: new Date(patientForEdit.birthday), email: patientForEdit.email, phone: patientForEdit.phone};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
     $scope.ok = function (patient) {
-        Patient.update({id: patientForEdit.id}, {patient: patient},
-            function (success) {
-                ModalHandler.close($modalInstance, success);
-            },
-            function (failure) {
-                $scope.alerts = [];
-                Alert.error($scope.alerts, 'Error occurred during patient update.', true);
-            });
+        function updatePatient () {
+            Patient.update({id: patientForEdit.id}, {patient: patient},
+                function (success) {
+                    ModalHandler.close($modalInstance, success);
+                },
+                function (failure) {
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, 'Error occurred during patient update.', true);
+                });
+        };
+
+        patient.id = patientForEdit.id;
+        patient.practice_id = patientForEdit.practice_id;
+
+        Patient.searchPatientDuplicate(patient, function (success) {
+            if (typeof(success.patient) !== 'undefined' && success.patient !== null) {
+
+                var dedupingModalInstatnce = $modal.open({
+                    templateUrl: 'partials/patient_deduping_form.html',
+                    controller: 'DedupingPatientModalController',
+                    resolve: {
+                        isCreatingPatient: function(){
+                            return false;
+                        }
+                    }
+                });
+
+                dedupingModalInstatnce.result.then(function (useExistingPatient) {
+                    if (useExistingPatient) {
+                        ModalHandler.close($modalInstance, success.patient);
+                    } else {
+                        updatePatient();
+                    }
+                });
+            } else {
+                updatePatient();
+            }
+
+        });
+
     };
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
@@ -372,7 +450,7 @@ angular.module('modals')
 
 
             $scope.checkEmail = function (email) {
-                ProviderInvitation.validate({email: email, all: true}, function (success) {
+                ProviderInvitation.validate({email: email}, function (success) {
                     $scope.userForm.email.$setValidity('email', true);
                 }, function (failure) {
                     $scope.userForm.email.$setValidity('email', false);

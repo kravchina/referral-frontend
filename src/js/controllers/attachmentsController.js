@@ -124,7 +124,8 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
 
         uploader.onErrorItem = function(item, response, status, headers) {
             Logger.error('Error', response, item, status);
-            $scope.errorMessage = response.file[0]? response.file[0] : 'An error occurred during attachment upload. Please try again later.';
+            ProgressIndicator.finish();
+            $scope.errorMessage = response.file? response.file[0] : response.attach? response.attach[0] : 'An error occurred during attachment upload. Please try again later.';
             Notification.error( $scope.errorMessage);
         };
 
