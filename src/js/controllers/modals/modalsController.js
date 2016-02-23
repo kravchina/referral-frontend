@@ -215,7 +215,7 @@ angular.module('modals')
             }
         };
 
-        ProviderInvitation.saveProvider({provider_invitation: provider, send_email: sendEmailNotification}, resultHandlers.success, resultHandlers.failure);
+        ProviderInvitation.saveProvider({provider_invitation: provider, send_email: sendEmailNotification, front_desk: !$scope.isProviderInvite}, resultHandlers.success, resultHandlers.failure);
     };
     $scope.closeAlert = function (index) {
         Alert.close($scope.alerts, index);
