@@ -33,6 +33,7 @@
                    typeahead-loading="loadingPractices" typeahead-no-results="noResults"
                    typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)"
                    typeahead="practice as practice.name for practice in findPractice($viewValue)"
+                   autocomplete="off"
                    ng-required="delete_type == 'move_referrals'">
         </div>
 

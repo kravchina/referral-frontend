@@ -19,7 +19,8 @@
                typeahead-on-select="onPracticeSelected($item, $model, $label)"
                typeahead="practice as (practice.name == '-- pending registration --') ?
                (practice.users[0].last_name == null && practice.users[0].first_name == null ? practice.users[0].email :
-               (practice.users[0].first_name + ' ' + practice.users[0].last_name)) : practice.name for practice in findPractice($viewValue)">
+               (practice.users[0].first_name + ' ' + practice.users[0].last_name)) : practice.name for practice in findPractice($viewValue)"
+               autocomplete="off">
     </div>
 
     <div class="input-block col-xs-12 col-sm-6">
