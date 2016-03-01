@@ -24,7 +24,7 @@ angular.module('modals')
         patient.practice_id = Auth.getOrRedirect().practice_id;
 
         function createPatient(){
-            Patient.save({patient: patient},
+            Patient.save({patient: {salutation: patient.salutation, first_name: patient.first_name, last_name: patient.last_name, middle_initial: patient.middle_initial, birthday: moment(patient.birthday).format('YYYY-MM-DD'), email: patient.email, phone: patient.phone, practice_id: patient.practice_id}},
                 function (success) {
                     ModalHandler.close($modalInstance, success);
                 },
@@ -90,7 +90,7 @@ angular.module('modals')
     $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: new Date(patientForEdit.birthday), email: patientForEdit.email, phone: patientForEdit.phone};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
     $scope.ok = function (patient) {
         function updatePatient () {
-            Patient.update({id: patientForEdit.id}, {patient: patient},
+            Patient.update({id: patientForEdit.id}, {patient: {salutation: patient.salutation, first_name: patient.first_name, last_name: patient.last_name, middle_initial: patient.middle_initial, birthday: moment(patient.birthday).format('YYYY-MM-DD'), email: patient.email, phone: patient.phone}},
                 function (success) {
                     ModalHandler.close($modalInstance, success);
                 },
