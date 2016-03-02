@@ -70,6 +70,9 @@ angular.module('admin')
                         },
                         practiceType: function(){
                             return $scope.practice.practice_type;
+                        },
+                        practiceAddresses: function(){
+                            return $scope.practice.addresses;
                         }
                     }
                 });

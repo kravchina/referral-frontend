@@ -168,8 +168,9 @@ angular.module('createReferrals')
                 }
             },
 
-            findPractice: function () {
+            findPractice: function (scope) {
                 return function (searchValue) {
+                    scope.destinationPractice = [];
                     var providersPromise = Practice.searchPractice({search: searchValue}).$promise;
                     var invitationsPromise = ProviderInvitation.searchProviderInvitation({search: searchValue}).$promise;
                     return $q.all([providersPromise, invitationsPromise]).then(function (results) {
@@ -178,12 +179,7 @@ angular.module('createReferrals')
                         var length = results[0].length;
                         for (var i = 0; i < length; i++) {
                             var p = results[0][i];
-
-                            p.addresses.map(function(a) {
-                                var newPractice = JSON.parse(JSON.stringify(p));
-                                newPractice.address = a;
-                                practices.push(newPractice);
-                            })
+                            practices.push(JSON.parse(JSON.stringify(p)));
                         }
 
                         var invitations = results[1].map(function (invitation) {
@@ -200,8 +196,11 @@ angular.module('createReferrals')
                     // this triggers refresh of items in provider dropdown
                     scope.destinationPractice = selectedItem;
 
-                    scope.practiceSearchText = scope.destinationPractice.name + (scope.destinationPractice.address ? ' (' + scope.destinationPractice.address.city + ', ' + scope.destinationPractice.address.state + ')' : '');
+                    scope.practiceSearchText = scope.destinationPractice.name;
 
+                    if(scope.destinationPractice.addresses && scope.destinationPractice.addresses.length == 1) {
+                        scope.model.referral.address_id = scope.destinationPractice.addresses[0].id;
+                    }
                     if (selectedItem.isInvitation) {
                         scope.model.referral.dest_provider_invited_id = selectedItem.users[0].id;
                         scope.model.referral.dest_provider_id = null;

@@ -525,12 +525,16 @@ angular.module('pdf')
             result += state + ' ' + zip;
             return result;
         },
-        createPracticeData: function (blockTitle, provider, practice) {
+        createPracticeData: function (blockTitle, provider, practice, referralAddress) {
             var practiceData = {};
             practiceData.blockTitle = blockTitle;
             practiceData.doctorName = (provider.first_name || '') + ' ' + (provider.middle_initial || '') + ' ' + (provider.last_name || '');
             practiceData.practiceName = (practice || {}).name || '';
-            var orig_address = ((practice || {}).addresses || [{}])[0] || {};
+            if(angular.equals(referralAddress, {})) {
+                var orig_address = ((provider || {}).addresses || [{}])[0] || {};
+            } else {
+                var orig_address = referralAddress;
+            }
             practiceData.phone = orig_address.phone || '';
             practiceData.addressStreet = orig_address.street_line_1 || '';
             practiceData.addressCity = this.composeAddress((orig_address.city || ''), (orig_address.state || ''), (orig_address.zip || ''));
@@ -555,8 +559,8 @@ angular.module('pdf')
                 procedureData.teeth = data.teeth;
             }
 
-            originalPracticeData = this.createPracticeData('Referred by:', data.orig_provider || {}, data.orig_provider.practice || {});
-            destinationPracticeData = this.createPracticeData('Referred to:', data.dest_provider || {}, data.dest_practice || {});
+            originalPracticeData = this.createPracticeData('Referred by:', data.orig_provider || {}, data.orig_provider.practice || {}, {});
+            destinationPracticeData = this.createPracticeData('Referred to:', data.dest_provider || {}, data.dest_practice || {}, data.address || {});
             qrCodeCallback(destinationPracticeData);
             referralDate = data.created_at;
             this.addNotes(data.notes);

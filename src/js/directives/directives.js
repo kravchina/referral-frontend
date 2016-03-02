@@ -58,18 +58,6 @@ angular.module('dentalLinksDirectives')
     }
 }])
 
-.directive('pdfPhotos', ['Auth', 'PDF', 'File', 'Logger', function (Auth, PDF, File, Logger) {
-    return {
-        scope: true,
-        restrict: 'A',
-        link: function (scope, $element, attrs) {
-            if (Auth.authorize(attrs.access.split(/[,\s]+/))) {
-                PDF.addImage(scope.$index, scope.attachment);
-            }
-        }
-    }
-}])
-
 .directive('attachmentThumb', ['$window', 'Auth', function ($window, Auth) {
     return {
         link: function (scope, element, attributes) {
