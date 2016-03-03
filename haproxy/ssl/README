@@ -1,3 +1,11 @@
 SSL provider I used is: https://sslmate.com/
 I have an application installed on my computer which gives me commandline to request a new certificate or renew existing one
 
+cat www.dentalcarelinks.com.chained.crt www.dentalcarelinks.com.key | tee www.dentalcarelinks.com.pem
+scp www.dentalcarelinks.com.pem haproxy:
+
+Check that certificate is installed correctly: 
+https://www.sslshopper.com/ssl-checker.html#hostname=www.dentalcarelinks.com
+
+
+
