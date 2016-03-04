@@ -35,6 +35,10 @@ var AdminUsersPage = function() {
         return element(by.css('.modal-dialog input[name="is_admin"]'));
     };
 
+    this.getEditModalFirstAddress = function(){
+        return element(by.repeater('address in practiceAddresses').row(0)).element(by.css('input[type="checkbox"]'));
+    };
+
     this.getEditModalSpecialtySelect = function(){
         return element(by.model('user.specialty_type_id'));
     };

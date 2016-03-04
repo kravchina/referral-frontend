@@ -11,7 +11,6 @@ var ConsoleUtilitiesSpec = function() {
             });
 
             it('shows Utilities page', function() {
-                expect(element(by.css('.tab-content h3')).isDisplayed()).toBe(true);
                 expect(consoleUtilitiesPage.getDownloadEmailsButton().isDisplayed()).toBe(true);
 
             });

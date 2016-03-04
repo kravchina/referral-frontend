@@ -100,6 +100,10 @@ var CreateReferralPage = function() {
     this.getPracticeDropDownFirstRowElement = function() {
         return element(by.css('input[name="practice"] ~ ul.dropdown-menu > li:nth-child(1)'));
     };
+
+    this.getAddressElement = function(){
+        return element(by.css('#selectAddress'));
+    };
     
     // provider block
     
