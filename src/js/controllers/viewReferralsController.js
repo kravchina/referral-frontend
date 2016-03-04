@@ -87,9 +87,6 @@ angular.module('viewReferrals')
         };
 
         $scope.referral.$promise.then(function (data) {
-            Logger.debug('Filling in PDF data...');
-            buildPdf(data);
-            Logger.debug('Filled in PDF data.');
                 $scope.uploader.scope = $scope;
                 $scope.uploader.url = API_ENDPOINT + '/attachment/upload';
                 $scope.uploader.alias= 'attach';
