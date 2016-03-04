@@ -11,8 +11,6 @@ angular.module('console')
 
         $scope.showUserSpecialty = ConsoleHelper.showUserSpecialty($scope.practiceTypes);
 
-        $scope.showInviteLink = ConsoleHelper.showInviteLink();
-
         $scope.editDialog = function(editUser){
             var modalInstance;
             if (editUser.no_login) {
