@@ -25,7 +25,8 @@
                 <input type="text" class="form-control" name="practice" placeholder="Search practice &hellip;"
                        ng-model="practiceSearchText" typeahead-editable="false"
                        typeahead-on-select="filterByPractice($item, $model, $label)"
-                       typeahead="practice as practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '') for practice in findPractice($viewValue) ">
+                       typeahead="practice as practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '') for practice in findPractice($viewValue) "
+                       autocomplete="off">
             </div>
 
             <div class="col-sm-2">
@@ -49,7 +50,7 @@
                     <option value="">All Actions</option>
                     <option value="create">Create</option>
                     <option value="update">Update</option>
-                    <option value="destroy">Destroy</option>
+                    <option value="destroy">Delete</option>
                 </select>
             </div>
         </div>

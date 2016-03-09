@@ -48,7 +48,8 @@
                placeholder="Enter existing patient or add new with button on the right ..."
                ng-model="patient" typeahead-editable="false"
                typeahead="p as p.first_name +' ' +  p.last_name + (p.birthday ? ' (' + (p.birthday | date: 'shortDate') + ')' : '') for p in findPatient($viewValue)"
-               ng-required="true">
+               ng-required="true"
+               autocomplete="off">
 
     </div>
 </div><!-- .row -->
@@ -62,7 +63,8 @@
         <alert type="warning" ng-show="form.practice.$dirty && form.practice.$invalid">Please select existing practice or invite new provider</alert>
         <input type="text" class="form-control" name="practice" placeholder="Enter existing practice/provider or add new provider with button on the right..."
                ng-model="practiceSearchText" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)" ng-model-options="{ debounce: 300 }"
-               typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].last_name == null && practice.users[0].first_name == null ? practice.users[0].email : (practice.users[0].first_name + ' ' + practice.users[0].last_name)) : (practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '')) for practice in findPractice($viewValue) ">
+               typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].last_name == null && practice.users[0].first_name == null ? practice.users[0].email : (practice.users[0].first_name + ' ' + practice.users[0].last_name)) : (practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '')) for practice in findPractice($viewValue) "
+               autocomplete="off">
     </div>
 
     <div class="input-block col-xs-12 col-sm-6" ng-class="{'has-error': (form.provider.$dirty && form.provider.$invalid) || form.provider.$error.userActive || form.provider_invited.$error.userActive }">
