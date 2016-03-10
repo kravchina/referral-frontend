@@ -383,6 +383,25 @@ angular.module('dentalLinks')
         };
     }])
 
+.filter('filterUsersByAddress', function(){
+    return function(inputArray, addressId){
+        if(!inputArray) {
+            return false;
+        }
+        return inputArray.filter(function(item){
+            if(item.id == -1) {
+                return true;
+            }
+            for(var i = 0; i < item.addresses.length; i++) {
+                if(item.addresses[i].id === addressId) {
+                    return true;
+                }
+            }
+            return false;
+        });
+    };
+})
+
 .filter('filename', function () {
     return function (fullFileName) {
         return fullFileName.slice(fullFileName.lastIndexOf('/') + 1);

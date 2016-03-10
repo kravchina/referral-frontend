@@ -28,7 +28,7 @@ angular.module('createReferrals')
         } else {
             $scope.destinationPractice = {users: [currentReferral.dest_provider_invited], name: '-- pending registration --'};
         }
-        $scope.practiceSearchText = $scope.destinationPractice.name + ($scope.destinationPractice.addresses ? ' (' + $scope.destinationPractice.addresses[0].city + ', ' + $scope.destinationPractice.addresses[0].state + ')' : '');
+        $scope.practiceSearchText = $scope.destinationPractice.name;
 
         $scope.onPracticeSelected = ReferralHelper.onPracticeSelected($scope, auth);
 

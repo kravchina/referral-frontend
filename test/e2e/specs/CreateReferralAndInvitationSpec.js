@@ -34,6 +34,7 @@ var CreateReferralAndInvitationSpec = function() {
                 street1: "2819 Dawson St",
                 city: "Anchorage",
                 state: "Alaska",
+                short_state: "AK",
                 zip: "99503",
                 phone: "+1 907-562-4774",
                 website: "www.alcandentalanchorage.com"
@@ -174,7 +175,7 @@ var CreateReferralAndInvitationSpec = function() {
                 expect(viewReferralPage.getToUserValue()).toEqual(
                     newProvider.firstName + ' ' + newProvider.middleInitial + ' ' + newProvider.lastName
                 ); // yeah, View Referral page displays two spaces if there's no middle :)
-                expect(viewReferralPage.getToPracticeValue()).toEqual(newPractice.name);
+                expect(viewReferralPage.getToPracticeValue()).toEqual(newPractice.name + ' (' + newPractice.address.city + ', ' + newPractice.address.short_state + ')');
                 expect(viewReferralPage.getReferralTypeValue()).toEqual(newPractice.type);
                 expect(viewReferralPage.getProcedureValue()).toEqual(referral.procedure);
                 for (var t = 0; t < teethCount; ++t) {

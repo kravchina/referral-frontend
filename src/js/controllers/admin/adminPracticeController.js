@@ -26,6 +26,12 @@ angular.module('admin')
                     }
                 },
                 function (success) {
+                    var newAddressNotification = '';
+                    $scope.practice.addresses.forEach(function(address){
+                        if(typeof(address.new) !== 'undefined' && address.new) {
+                            newAddressNotification = ' All users in this practice are now associated with new location. Please edit user settings to change location assignments if necessary.';
+                        }
+                    });
                     form.$setPristine();
                     $scope.currentPracticeType = $scope.practice.practice_type;
                     $scope.showWarning = false;
@@ -33,7 +39,7 @@ angular.module('admin')
                     $scope.practice.addresses = success.addresses;
                     // no UnsavedChanges operations here, we stay on page, callback stays the same, form is now pristine
                     // note: the other tab form might not be pristine here. See #72581022
-                    Notification.success('Account was updated successfully!');
+                    Notification.success('Account was updated successfully!' + newAddressNotification);
                 },
                 function (failure) {
                     Notification.error('An error occurred during account update...');

@@ -96,6 +96,30 @@ var ViewReferralPage = function() {
     this.getEditNoteDialogSaveButtonElement = function() {
         return element(by.css('form#formEditNote div.modal-footer button[ng-click="ok(note)"]'));
     };
+
+    this.getSelectProviderButton = function(){
+        return element(by.css('button[ng-click="editDestProviderDialog()"]'));
+    };
+
+    this.getSelectProviderModal = function(){
+        return element(by.css('form#formChangeDestProvider'));
+    };
+
+    this.getSelectProviderModalSelectAddressElement = function(){
+        return element(by.model('referral.address_id'));
+    };
+
+    this.getSelectProviderModalSelectProviderElement = function(){
+        return element(by.model('providerId'));
+    };
+
+    this.getSelectProviderModalDiscardButton = function(){
+        return element(by.css('form#formChangeDestProvider .modal-footer button[ng-click="cancel()"]'));
+    };
+
+    this.getSelectProviderModalSaveButton = function(){
+        return element(by.css('form#formChangeDestProvider button[ng-click="ok(providerId)"]'));
+    };
 };
 
 module.exports = new ViewReferralPage();

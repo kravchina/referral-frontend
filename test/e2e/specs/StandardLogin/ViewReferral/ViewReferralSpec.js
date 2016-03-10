@@ -57,6 +57,16 @@ var ViewReferralSpec = function() {
                 });
                 
             });
+
+            it('check select provider', function(){
+                viewReferralPage.getSelectProviderButton().click();
+
+                expect(viewReferralPage.getSelectProviderModal().isDisplayed()).toBe(true);
+                expect(viewReferralPage.getSelectProviderModalSelectAddressElement().isPresent()).toBe(true);
+                expect(viewReferralPage.getSelectProviderModalSelectProviderElement().isPresent()).toBe(true);
+
+                viewReferralPage.getSelectProviderModalDiscardButton().click();
+            });
             
             it('shows patient copy button on the page', function() {
                 expect(element(by.css('button[ng-click="savePatientPdf()"]')).isPresent()).toBe(true);
