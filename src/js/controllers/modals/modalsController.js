@@ -35,8 +35,7 @@ angular.module('modals')
         };
 
         Patient.searchPatientDuplicate(patient, function (success) {
-            if (typeof(success.patient) !== 'undefined' && success.patient !== null) {
-
+            if (success.patient) {
                 var dedupingModalInstance = $modal.open({
                     templateUrl: 'partials/patient_deduping_form.html',
                     controller: 'DedupingPatientModalController',
@@ -105,8 +104,7 @@ angular.module('modals')
 
         if($state.is('createReferral')) {
             Patient.searchPatientDuplicate(patient, function (success) {
-                if (typeof(success.patient) !== 'undefined' && success.patient !== null) {
-
+                if (success.patient) {
                     var dedupingModalInstance = $modal.open({
                         templateUrl: 'partials/patient_deduping_form.html',
                         controller: 'DedupingPatientModalController',
