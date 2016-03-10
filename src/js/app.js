@@ -385,7 +385,7 @@ angular.module('dentalLinks')
 
 .filter('filterUsersByAddress', function(){
     return function(inputArray, addressId){
-        if(typeof inputArray === 'undefined') {
+        if(!inputArray) {
             return false;
         }
         return inputArray.filter(function(item){
