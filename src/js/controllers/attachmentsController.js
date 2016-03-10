@@ -131,7 +131,7 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
 
         uploader.onCompleteItem = function(item, response, status, headers){
             Logger.info('Complete', status, item, response);
-            if (status.status == 201 && $scope && $scope.attachments) {
+            if (status == 201 && $scope && $scope.attachments) {
                 $scope.attachments.push(response);
             }
         };
