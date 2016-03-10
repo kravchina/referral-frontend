@@ -35,9 +35,8 @@ angular.module('modals')
         };
 
         Patient.searchPatientDuplicate(patient, function (success) {
-            if (typeof(success.patient) !== 'undefined' && success.patient !== null) {
-
-                var dedupingModalInstatnce = $modal.open({
+            if (success.patient) {
+                var dedupingModalInstance = $modal.open({
                     templateUrl: 'partials/patient_deduping_form.html',
                     controller: 'DedupingPatientModalController',
                     resolve: {
@@ -47,7 +46,7 @@ angular.module('modals')
                     }
                 });
 
-                dedupingModalInstatnce.result.then(function (useExistingPatient) {
+                dedupingModalInstance.result.then(function (useExistingPatient) {
                     if (useExistingPatient) {
                         ModalHandler.close($modalInstance, success.patient);
                     } else {
@@ -81,8 +80,8 @@ angular.module('modals')
         };
     }])
 
-.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth', 'Alert', 'ModalHandler', 'Patient', 'patientForEdit', '$modal',
-        function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, $modal) {
+.controller('EditPatientModalController', [ '$scope', '$state', '$modalInstance', 'Auth', 'Alert', 'ModalHandler', 'Patient', 'patientForEdit', '$modal',
+        function ($scope, $state, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, $modal) {
     $scope.title = 'Edit Patient Record';
 
     $scope.alerts = [];
@@ -103,31 +102,34 @@ angular.module('modals')
         patient.id = patientForEdit.id;
         patient.practice_id = patientForEdit.practice_id;
 
-        Patient.searchPatientDuplicate(patient, function (success) {
-            if (typeof(success.patient) !== 'undefined' && success.patient !== null) {
-
-                var dedupingModalInstatnce = $modal.open({
-                    templateUrl: 'partials/patient_deduping_form.html',
-                    controller: 'DedupingPatientModalController',
-                    resolve: {
-                        isCreatingPatient: function(){
-                            return false;
+        if($state.is('createReferral')) {
+            Patient.searchPatientDuplicate(patient, function (success) {
+                if (success.patient) {
+                    var dedupingModalInstance = $modal.open({
+                        templateUrl: 'partials/patient_deduping_form.html',
+                        controller: 'DedupingPatientModalController',
+                        resolve: {
+                            isCreatingPatient: function () {
+                                return false;
+                            }
                         }
-                    }
-                });
+                    });
 
-                dedupingModalInstatnce.result.then(function (useExistingPatient) {
-                    if (useExistingPatient) {
-                        ModalHandler.close($modalInstance, success.patient);
-                    } else {
-                        updatePatient();
-                    }
-                });
-            } else {
-                updatePatient();
-            }
+                    dedupingModalInstance.result.then(function (useExistingPatient) {
+                        if (useExistingPatient) {
+                            ModalHandler.close($modalInstance, success.patient);
+                        } else {
+                            updatePatient();
+                        }
+                    });
+                } else {
+                    updatePatient();
+                }
 
-        });
+            });
+        } else {
+            updatePatient();
+        }
 
     };
     $scope.cancel = function () {
