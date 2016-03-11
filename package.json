@@ -70,6 +70,7 @@
     "concurrent-transform": "^1.0.0",
     "gulp": "^3.9.0",
     "gulp-awspublish": "^2.0.2",
+    "gulp-awspublish-router": "^0.1.1",
     "gulp-concat": "^2.6.0",
     "gulp-git": "^1.7.0",
     "gulp-minify-css": "^1.2.0",

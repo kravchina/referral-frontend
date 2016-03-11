@@ -1,6 +1,7 @@
 
 var gulp = require('gulp'),
     awspublish = require('gulp-awspublish'),
+    awspublishRouter = require("gulp-awspublish-router");
     argv = require('yargs').argv,
     parallelize = require("concurrent-transform"),
     config = require('read-config')(__dirname + '/GulpConfig.json'),
@@ -35,11 +36,22 @@ gulp.task('publish', ['build'], function() {
         secretAccessKey: config.amazonAws.secretAccessKey
     });
 
-    var headers = {
-        'Cache-Control': 'max-age=315360000, no-transform, public'
-    };
+    var headers = {/*add headers for all files here*/};
 
     return gulp.src(buildPath + '/**/*')
+        .pipe(awspublishRouter({
+            routes: {
+                "^index\\.html$": {
+                    cacheTime: 0
+                },
+                // pass-through for anything that wasn't matched by routes above, to be uploaded with default options
+                "^.+$": {
+                    headers: {
+                        'Cache-Control': 'max-age=315360000, no-transform, public'
+                    }
+                }
+            }
+        }))
         .pipe(parallelize(publisher.publish(headers, {force: true}), 10))
         .pipe(awspublish.reporter());
 });
