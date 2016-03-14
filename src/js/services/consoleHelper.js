@@ -67,13 +67,6 @@ angular.module('console')
                         }
                     }
                 };
-            },
-            showInviteLink: function() {
-                return function(user){
-                    return $location.protocol() + '://' + $location.host() +
-                        ($location.port() == '80' ? '' : ':' + $location.port()) +
-                        '/#/register/' + user.token;
-                };
             }
         };
 

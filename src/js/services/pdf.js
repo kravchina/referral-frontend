@@ -160,22 +160,27 @@ angular.module('pdf')
 
     var appendNotes = function (pdf, caret) {
         if (notes && notes.length && notes.length > 0) {
-            pdf.setFontType('normal');
-            for (var k = 0; k < notes.length; k++) {
-                caret += fontSizeMm;
-                pdf.setFontType('bold');
-                pdf.text(pagePaddings.x, caret, notes[k].user.first_name + " " + notes[k].user.last_name + " " + moment(notes[k].created_at).format("MMM D, YYYY h:mm"));
+            var filteredNotes = notes.filter(function(note){
+                return note.user ? true : false;
+            });
+            if (filteredNotes.length) {
                 pdf.setFontType('normal');
-                var noteLines = pdf.splitTextToSize(notes[k].message, fullSizeColWidth);
-                var noteHeight = noteLines.length * fontSizeMm;
-                caret = addPageIfNeeded(pdf, caret, noteHeight); // may include addHeader() resetting styles, but we have those default styles here anyway
-                caret += fontSizeMm;
-                pdf.text(pagePaddings.x, caret, noteLines); // assuming that note can fit at least a blank page. If not, what kind of "note" is it?..
-                caret += noteHeight;
+                for (var k = 0; k < filteredNotes.length; k++) {
+                    caret += fontSizeMm;
+                    pdf.setFontType('bold');
+                    pdf.text(pagePaddings.x, caret, filteredNotes[k].user.first_name + " " + filteredNotes[k].user.last_name + " " + moment(filteredNotes[k].created_at).format("MMM D, YYYY h:mm"));
+                    pdf.setFontType('normal');
+                    var noteLines = pdf.splitTextToSize(filteredNotes[k].message, fullSizeColWidth);
+                    var noteHeight = noteLines.length * fontSizeMm;
+                    caret = addPageIfNeeded(pdf, caret, noteHeight); // may include addHeader() resetting styles, but we have those default styles here anyway
+                    caret += fontSizeMm;
+                    pdf.text(pagePaddings.x, caret, noteLines); // assuming that note can fit at least a blank page. If not, what kind of "note" is it?..
+                    caret += noteHeight;
+                }
+                caret += blocksPadding;
+                caret = appendLineSeparator(pdf, caret);
+                return caret;
             }
-            caret += blocksPadding;
-            caret = appendLineSeparator(pdf, caret);
-            return caret;
         }
 
         return caret;
@@ -525,12 +530,16 @@ angular.module('pdf')
             result += state + ' ' + zip;
             return result;
         },
-        createPracticeData: function (blockTitle, provider, practice) {
+        createPracticeData: function (blockTitle, provider, practice, referralAddress) {
             var practiceData = {};
             practiceData.blockTitle = blockTitle;
             practiceData.doctorName = (provider.first_name || '') + ' ' + (provider.middle_initial || '') + ' ' + (provider.last_name || '');
             practiceData.practiceName = (practice || {}).name || '';
-            var orig_address = ((practice || {}).addresses || [{}])[0] || {};
+            if(angular.equals(referralAddress, {})) {
+                var orig_address = ((provider || {}).addresses || [{}])[0] || {};
+            } else {
+                var orig_address = referralAddress;
+            }
             practiceData.phone = orig_address.phone || '';
             practiceData.addressStreet = orig_address.street_line_1 || '';
             practiceData.addressCity = this.composeAddress((orig_address.city || ''), (orig_address.state || ''), (orig_address.zip || ''));
@@ -555,8 +564,8 @@ angular.module('pdf')
                 procedureData.teeth = data.teeth;
             }
 
-            originalPracticeData = this.createPracticeData('Referred by:', data.orig_provider || {}, data.orig_provider.practice || {});
-            destinationPracticeData = this.createPracticeData('Referred to:', data.dest_provider || {}, data.dest_practice || {});
+            originalPracticeData = this.createPracticeData('Referred by:', data.orig_provider || {}, data.orig_provider.practice || {}, {});
+            destinationPracticeData = this.createPracticeData('Referred to:', data.dest_provider || {}, data.dest_practice || {}, data.address || {});
             qrCodeCallback(destinationPracticeData);
             referralDate = data.created_at;
             this.addNotes(data.notes);

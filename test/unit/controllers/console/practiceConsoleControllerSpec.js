@@ -168,7 +168,6 @@ describe("Testing Practice Console Controller", function() {
         expect($scope.findPractice).toBeDefined();
         expect($scope.onPracticeSelected).toBeDefined();
         expect($scope.showFullRole).toBeDefined();
-        expect($scope.showInviteLink).toBeDefined();
         expect($scope.showUserSpecialty).toBeDefined();
         expect($scope.usersDialog).toBeDefined();
         expect($scope.editDialog).toBeDefined();

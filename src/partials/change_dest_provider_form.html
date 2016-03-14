@@ -1,16 +1,22 @@
-<form id="formNewPatient" name="form">
+<form id="formChangeDestProvider" name="form">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
         <h4 class="modal-title" id="myModalLabel">Select Provider</h4>
     </div>
     <div class="modal-body">
-        <div class="block-title">
-            <h5>Select Provider</h5>
+        <div class="form-group">
+            <label>Select Address:</label>
+            <select class="form-control" ng-model="referral.address_id"
+                    ng-options="address.id as (address.city + ', ' + address.state) for address in referral.dest_practice.addresses">
+            </select>
         </div>
 
-        <select class="form-control" ng-model="providerId"
-                ng-options="user.id as (user.first_name + ' ' + user.last_name) for user in providers" size="5">
-        </select>
+        <div class="form-group">
+            <label>Select Provider:</label>
+            <select class="form-control" ng-model="providerId"
+                    ng-options="user.id as (user.first_name + ' ' + user.last_name) for user in referral.dest_practice.users | filterUsersByAddress:referral.address_id" size="5">
+            </select>
+        </div>
 
         <br/>
     </div>

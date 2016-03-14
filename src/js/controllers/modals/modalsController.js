@@ -35,9 +35,8 @@ angular.module('modals')
         };
 
         Patient.searchPatientDuplicate(patient, function (success) {
-            if (typeof(success.patient) !== 'undefined' && success.patient !== null) {
-
-                var dedupingModalInstatnce = $modal.open({
+            if (success.patient) {
+                var dedupingModalInstance = $modal.open({
                     templateUrl: 'partials/patient_deduping_form.html',
                     controller: 'DedupingPatientModalController',
                     resolve: {
@@ -47,7 +46,7 @@ angular.module('modals')
                     }
                 });
 
-                dedupingModalInstatnce.result.then(function (useExistingPatient) {
+                dedupingModalInstance.result.then(function (useExistingPatient) {
                     if (useExistingPatient) {
                         ModalHandler.close($modalInstance, success.patient);
                     } else {
@@ -81,8 +80,8 @@ angular.module('modals')
         };
     }])
 
-.controller('EditPatientModalController', [ '$scope', '$modalInstance', 'Auth', 'Alert', 'ModalHandler', 'Patient', 'patientForEdit', '$modal',
-        function ($scope, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, $modal) {
+.controller('EditPatientModalController', [ '$scope', '$state', '$modalInstance', 'Auth', 'Alert', 'ModalHandler', 'Patient', 'patientForEdit', '$modal',
+        function ($scope, $state, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, $modal) {
     $scope.title = 'Edit Patient Record';
 
     $scope.alerts = [];
@@ -103,31 +102,34 @@ angular.module('modals')
         patient.id = patientForEdit.id;
         patient.practice_id = patientForEdit.practice_id;
 
-        Patient.searchPatientDuplicate(patient, function (success) {
-            if (typeof(success.patient) !== 'undefined' && success.patient !== null) {
-
-                var dedupingModalInstatnce = $modal.open({
-                    templateUrl: 'partials/patient_deduping_form.html',
-                    controller: 'DedupingPatientModalController',
-                    resolve: {
-                        isCreatingPatient: function(){
-                            return false;
+        if($state.is('createReferral')) {
+            Patient.searchPatientDuplicate(patient, function (success) {
+                if (success.patient) {
+                    var dedupingModalInstance = $modal.open({
+                        templateUrl: 'partials/patient_deduping_form.html',
+                        controller: 'DedupingPatientModalController',
+                        resolve: {
+                            isCreatingPatient: function () {
+                                return false;
+                            }
                         }
-                    }
-                });
+                    });
 
-                dedupingModalInstatnce.result.then(function (useExistingPatient) {
-                    if (useExistingPatient) {
-                        ModalHandler.close($modalInstance, success.patient);
-                    } else {
-                        updatePatient();
-                    }
-                });
-            } else {
-                updatePatient();
-            }
+                    dedupingModalInstance.result.then(function (useExistingPatient) {
+                        if (useExistingPatient) {
+                            ModalHandler.close($modalInstance, success.patient);
+                        } else {
+                            updatePatient();
+                        }
+                    });
+                } else {
+                    updatePatient();
+                }
 
-        });
+            });
+        } else {
+            updatePatient();
+        }
 
     };
     $scope.cancel = function () {
@@ -137,15 +139,24 @@ angular.module('modals')
 
 .controller('ChangeDestProviderModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Referral', 'referral', 'User', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Referral, referral, User) {
     $scope.providerId = referral.dest_provider_id;
-    $scope.referral = referral;
+    $scope.referral = angular.copy(referral);
 
-    User.getProviders({practice_id: referral.dest_practice_id}).$promise.then(function (users) {
-        users.unshift({id: -1, first_name: 'First', last_name: 'Available', firstAvailable: true});
-        $scope.providers = users;
-    });
+    $scope.referral.dest_practice.users.unshift({id: -1, first_name: 'First', last_name: 'Available', firstAvailable: true, addresses: $scope.referral.dest_practice.addresses});
 
+    $scope.filterByAddress = function(addressId){
+        return function(item){
+            for(var i = 0; i < item.addresses.length; i++) {
+                if(item.addresses[i].id === addressId) {
+                    return true;
+                }
+            }
+            return false;
+        };
+    };
     $scope.ok = function (providerId) {
-        Referral.update({id: referral.id}, {referral: {dest_provider_id: providerId}},
+        $scope.referral.dest_practice.users.shift();
+        referral = $scope.referral;
+        Referral.update({id: referral.id}, {referral: {dest_provider_id: providerId, address_id: $scope.referral.address_id}},
             function (success) {
                 ModalHandler.close($modalInstance, providerId);
             },
@@ -419,8 +430,8 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
-        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
+    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
+        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
@@ -433,6 +444,14 @@ angular.module('modals')
                 });
             });
             $scope.user = editUser;//for now we need only is_admin property to be set
+            $scope.practiceAddresses = angular.copy(practiceAddresses).map(function(pAddress){
+                $scope.user.addresses.forEach(function(uAddress){
+                    if(uAddress.id == pAddress.id) {
+                        pAddress.checked = true;
+                    }
+                });
+                return pAddress;
+            });
             $scope.user.is_admin = Role.hasRoles([USER_ROLES.admin], Role.getFromMask($scope.user.roles_mask));
             var initialEmail = editUser.email;
 
@@ -448,6 +467,30 @@ angular.module('modals')
             });
             $scope.listOutputUsers = [];
 
+            function arrayObjectIndexOf(inputArray, searchTerm, property) {
+                for(var i = 0, len = inputArray.length; i < len; i++) {
+                    if (inputArray[i][property] === searchTerm) {
+                        return i;
+                    }
+                }
+                return -1;
+            };
+
+            $scope.toggleAddresses = function(selectedItem){
+                var index = arrayObjectIndexOf($scope.user.addresses, selectedItem.id, 'id');
+
+                if(index != -1){
+                    if($scope.user.addresses.length > 1) {
+                        $scope.user.addresses.splice(index, 1);
+                        selectedItem.checked = false;
+                    } else {
+                        selectedItem.checked = !selectedItem.checked;
+                    }
+                } else {
+                    selectedItem.checked = true;
+                    $scope.user.addresses.push(selectedItem);
+                }
+            };
 
             $scope.checkEmail = function (email) {
                 ProviderInvitation.validate({email: email}, function (success) {
@@ -476,7 +519,21 @@ angular.module('modals')
                         Notification.success('Confirmation letter was sent to your new email address. Your email will be changed right after confirmation.');
                     });
                 }
+                user.user_addresses_attributes = practiceAddresses.map(function(item){
+                    var selectAddressIndex = arrayObjectIndexOf(user.addresses, item.id, 'id');
+
+                    if(selectAddressIndex == -1) {
+                        var userAddressesIndex  = arrayObjectIndexOf(user.user_addresses, item.id, 'address_id');
+                        if(userAddressesIndex != -1) {
+                            return {id: user.user_addresses[userAddressesIndex].id, _destroy: true};
+                        } else {
+                            return {};
+                        }
+                    }
+                    return {user_id: user.id, address_id: item.id};
+                });
                 User.update({id: editUser.id}, {user: user, email_relations: $scope.listOutputUsers}, function (success) {
+                    $scope.user.user_addresses = success.user_addresses;
                     Logger.log(success);
                     ModalHandler.close($modalInstance,success);
                 },  function (failure) {
@@ -486,7 +543,7 @@ angular.module('modals')
                     }else{
                         Alert.error($scope.alerts, 'Error: ' + failure.data.message, true);
                     }
-                    
+
                 });
                 editUser.email_bindings = $scope.listOutputUsers;
             };

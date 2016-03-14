@@ -6,7 +6,8 @@ var CreateReferralSaveSpec = function() {
         var referral = {
             patient: "Marty McFly (1/1/68)",
             patientPart: "Marty",
-            practice: "David Wolf, DDS, PC (Milford, MA)",
+            practice: "David Wolf, DDS, PC",
+            practiceAddress: "Milford, MA",
             practicePart: "David",
             provider: "Doctor Another",
             referralType: "General Dentistry",
@@ -17,7 +18,7 @@ var CreateReferralSaveSpec = function() {
         var patient = {
             firstName: 'Marty',
             lastName: 'McFly',
-            birthday: '01.01.1968'
+            birthday: '02.01.1968'
         };
 
         describe('check create patient', function(){
@@ -64,7 +65,11 @@ var CreateReferralSaveSpec = function() {
                 // provider and procedure selects get enabled
                 expect(createReferralPage.getProviderElement().isEnabled()).toBe(true);
                 expect(createReferralPage.getProcedureElement().isEnabled()).toBe(true);
-                
+
+                // auto seting address
+                expect(createReferralPage.getAddressElement().isEnabled()).toBe(false);
+                expect(createReferralPage.getAddressElement().element(by.css("option:checked")).getText()).toEqual(referral.practiceAddress);
+
                 // setting provider
                 createReferralPage.getProviderElement().element(by.cssContainingText("option", referral.provider)).click();
                 expect(createReferralPage.getProviderElement().element(by.css("option:checked")).getText()).toEqual(referral.provider);

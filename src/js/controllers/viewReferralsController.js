@@ -70,8 +70,7 @@ angular.module('viewReferrals')
             });
         };
 
-        $scope.referral.$promise.then(function (data) {
-            Logger.debug('Filling in PDF data...');
+        function buildPdf(data){
             PDF.prepare(data, function (destinationPracticeData) {
                 if (destinationPracticeData.website) {
                     var img = new Image();
@@ -82,8 +81,12 @@ angular.module('viewReferrals')
                     img.src = API_ENDPOINT + '/qrcode?website=' + destinationPracticeData.website;
                 }
             });
-            Logger.debug('Filled in PDF data.');
+            data.attachments.forEach(function(attachment, index){
+                PDF.addImage(index, attachment);
+            });
+        };
 
+        $scope.referral.$promise.then(function (data) {
                 $scope.uploader.scope = $scope;
                 $scope.uploader.url = API_ENDPOINT + '/attachment/upload';
                 $scope.uploader.alias= 'attach';
@@ -203,10 +206,18 @@ angular.module('viewReferrals')
         };
 
         $scope.savePdf = function () {
+            Logger.debug('Filling in PDF data...');
+            buildPdf($scope.referral);
+            Logger.debug('Filled in PDF data.');
+
             PDF.save(buildFileName('referral'));
         };
 
         $scope.savePatientPdf = function () {
+            Logger.debug('Filling in PDF data...');
+            buildPdf($scope.referral);
+            Logger.debug('Filled in PDF data.');
+
             PDF.saveForPatient(buildFileName('patient'));
         };
 
