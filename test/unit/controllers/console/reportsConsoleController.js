@@ -7,6 +7,7 @@ describe("Testing Reports Console Controller", function() {
         practices: [{name: 'PracticeTest'}],
         users: [{first_name: 'UserTest'}],
         event_logs: [{type_event: 'test1_test1'}, {type_event: 'test2_test2'}, {type_event: 'test3_test3'}],
+        referrals: [{orig_practice_id: 1}, {orig_practice_id: 2}]
     };
     var eventLogsMock = [{type_event: 'test1_test1', event_name: 'Test1 Test1'}, {type_event: 'test2_test2', event_name: 'Test2 Test2'}, {type_event: 'test3_test3', event_name: 'Test3 Test3'}];
     var oneEventLogsMock = [{type_event: 'test2_test2', event_name: 'Test2 Test2'}];
@@ -48,6 +49,7 @@ describe("Testing Reports Console Controller", function() {
         expect($scope.invitations).toBeDefined();
         expect($scope.practices).toBeDefined();
         expect($scope.users).toBeDefined();
+        expect($scope.referrals).toBeDefined();
         expect($scope.eventLogs).toBeDefined();
 
         expect($scope.currentPage).toBeDefined();
@@ -57,6 +59,7 @@ describe("Testing Reports Console Controller", function() {
         expect($scope.invitations).toBe(dataMock.invitations);
         expect($scope.practices).toBe(dataMock.practices);
         expect($scope.users).toBe(dataMock.users);
+        expect($scope.referrals).toBe(dataMock.referrals);
         expect($scope.eventLogs).toEqual(eventLogsMock);
     });
 

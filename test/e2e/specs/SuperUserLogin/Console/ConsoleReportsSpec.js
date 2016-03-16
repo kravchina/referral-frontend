@@ -37,6 +37,11 @@ var ConsoleReportsSpec = function() {
                 expect(consoleReportsPage.getListOfRemindersTable().isDisplayed()).toBe(true);
             });
 
+            it('check list of unopened referrals', function(){
+                expect(consoleReportsPage.getListOfUnopenedReferralsTable().isDisplayed()).toBe(true);
+                expect(consoleReportsPage.getExportUnopenedReferralsButton().isPresent()).toBe(true);
+            });
+
         });
     };
 };

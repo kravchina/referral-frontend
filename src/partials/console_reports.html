@@ -98,14 +98,16 @@
                         </a>
                     </div>
                     <div class="col-sm-2">
-                        <a href="{{API_ENDPOINT}}/report/export_unopened_referrals" type="button" class="btn btn-xs btn-success pull-right">
+                        <a href="{{API_ENDPOINT}}/report/export_unopened_referrals"
+                           type="button"
+                           class="btn btn-xs btn-success pull-right export-unopened-referrals">
                             <span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;.csv
                         </a>
                     </div>
                 </div>
             </div>
             <div class="panel-body" collapse="isReferralsCollapsed">
-                <table class="table table-hover table-striped list-of-reminders">
+                <table class="table table-hover table-striped list-of-unopened-referrals">
                     <thead>
                     <tr>
                         <th class="cell-type">Provider</th>
