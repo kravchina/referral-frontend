@@ -125,6 +125,9 @@
                             <span ng-if="referral.dest_provider">
                                 {{referral.dest_provider.first_name}} {{referral.dest_provider.last_name}}
                             </span>
+                            <span ng-if="referral.dest_provider_id == -1">
+                                First Available
+                            </span>
                         </td>
                         <td class="cell-email">
                             <span ng-if="referral.dest_provider_invited && !referral.dest_provider">
@@ -137,7 +140,7 @@
                         <td class="cell-description">
                             <span ng-if="referral.dest_provider_invited && !referral.dest_provider"
                                   ng-class="referral.dest_provider_invited.status == 'invited' ? 'glyphicon glyphicon-remove-circle text-danger' : 'glyphicon glyphicon-ok-circle text-success'"></span>
-                            <span ng-if="referral.dest_provider" class="glyphicon glyphicon-ok-circle text-success"></span>
+                            <span ng-if="referral.dest_provider || referral.dest_provider_id == -1" class="glyphicon glyphicon-ok-circle text-success"></span>
                         </td>
                         <td class="cell-date">
                             {{referral.created_at | date: 'medium'}}
