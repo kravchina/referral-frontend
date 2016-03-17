@@ -83,7 +83,73 @@
         </div>
     </div>
 </div>
+<!-- Unopened referrals -->
+<div class="row">
+    <div class="col-sm-12">
 
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <a href="" ng-click="isReferralsCollapsed = !isReferralsCollapsed">
+                            <h3>Unopened referrals
+                                <span ng-class="isReferralsCollapsed ? 'glyphicon glyphicon-expand' : 'glyphicon glyphicon-collapse-down'"></span>
+                            </h3>
+                        </a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href="{{API_ENDPOINT}}/report/export_unopened_referrals"
+                           type="button"
+                           class="btn btn-xs btn-success pull-right export-unopened-referrals">
+                            <span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;.csv
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body" collapse="isReferralsCollapsed">
+                <table class="table table-hover table-striped list-of-unopened-referrals">
+                    <thead>
+                    <tr>
+                        <th class="cell-type">Provider</th>
+                        <th class="cell-email">Email</th>
+                        <th class="cell-description">Registered</th>
+                        <th class="cell-date">Date created</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="referral in referrals">
+                        <td class="cell-to">
+                            <span ng-if="referral.dest_provider_invited && !referral.dest_provider">
+                                {{referral.dest_provider_invited.first_name}} {{referral.dest_provider_invited.last_name}}
+                            </span>
+                            <span ng-if="referral.dest_provider">
+                                {{referral.dest_provider.first_name}} {{referral.dest_provider.last_name}}
+                            </span>
+                        </td>
+                        <td class="cell-email">
+                            <span ng-if="referral.dest_provider_invited && !referral.dest_provider">
+                                {{referral.dest_provider_invited.email}}
+                            </span>
+                            <span ng-if="referral.dest_provider">
+                                {{referral.dest_provider.email}}
+                            </span>
+                        </td>
+                        <td class="cell-description">
+                            <span ng-if="referral.dest_provider_invited && !referral.dest_provider"
+                                  ng-class="referral.dest_provider_invited.status == 'invited' ? 'glyphicon glyphicon-remove-circle text-danger' : 'glyphicon glyphicon-ok-circle text-success'"></span>
+                            <span ng-if="referral.dest_provider" class="glyphicon glyphicon-ok-circle text-success"></span>
+                        </td>
+                        <td class="cell-date">
+                            {{referral.created_at | date: 'medium'}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- List of reminders -->
 <div class="row">
     <div class="col-sm-12">
 

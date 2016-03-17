@@ -57,6 +57,14 @@ var ConsoleReportsPage = function() {
         return element(by.css('.list-of-reminders'));
     };
 
+    this.getListOfUnopenedReferralsTable = function(){
+        return element(by.css('.list-of-unopened-referrals'));
+    };
+
+    this.getExportUnopenedReferralsButton = function(){
+        return element(by.css('.export-unopened-referrals'));
+    };
+
 };
 
 module.exports = new ConsoleReportsPage();
