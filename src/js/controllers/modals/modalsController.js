@@ -696,4 +696,14 @@ angular.module('modals')
             ModalHandler.dismiss($modalInstance);
         }
 
-}]);
+}])
+
+.controller('DeleteProviderModalController', ['$scope', '$modalInstance', 'ModalHandler',
+    function ($scope, $modalInstance, ModalHandler) {
+        $scope.ok = function(){
+            ModalHandler.close($modalInstance, true);
+        };
+        $scope.cancel = function(){
+            ModalHandler.close($modalInstance, false);
+        };
+    }]);

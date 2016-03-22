@@ -81,7 +81,7 @@ angular.module('createReferrals')
 
         $scope.findPatient = ReferralHelper.findPatient(auth);
 
-        $scope.findPractice = ReferralHelper.findPractice();
+        $scope.findPractice = ReferralHelper.findPractice($scope);
 
         $scope.patientDialog = ReferralHelper.patientDialog($scope);
 
