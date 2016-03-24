@@ -64,12 +64,12 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
             fn: function (item /*{File|HTMLInputElement}*/) {
 
                 if (item.size > each_file_size_limit) {
-                    Notification.error('You can not upload a file with more than 50 MB size.');
+                    Notification.error('Files larger than ' + parseInt(each_file_size_limit/1048576) + ' MB are not accepted.');
                     return false;
                 }
 
                 if ($scope.total_size + item.size > total_file_size_limit) {
-                    Notification.error('You can not upload files with more than 100 MB size.');
+                    Notification.error('You can not upload files with more than ' + parseInt(total_file_size_limit/1048576) + ' MB size.');
                     return false;
                 }
 
@@ -89,7 +89,9 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
 
         uploader.onWhenAddingFileFailed = function(item) {
             Logger.info('When adding a file failed', item);
-            Notification.error('Adding file failed. Please try again later.')
+            if(!Notification.get().message || Notification.get().type != 'danger') {
+                Notification.error('Adding file failed. Please try again later.')
+            }
         };
 
         uploader.onAfterAddingAll = function(items) {

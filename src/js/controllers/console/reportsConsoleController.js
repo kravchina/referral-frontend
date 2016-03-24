@@ -1,7 +1,6 @@
 angular.module('console')
     .controller('ReportsConsoleController', ['$scope', 'Report', function($scope, Report){
         var eventLogs = [];
-        $scope.invitations = $scope.practices = $scope.users = $scope.eventLogs = {};
         $scope.invitationsRadio = $scope.practicesRadio = $scope.usersRadio = 'day';
         $scope.currentPage = 1;
         $scope.itemsPerPage = 10;
@@ -31,6 +30,7 @@ angular.module('console')
         };
 
         Report.get(function(success){
+            $scope.referrals = success.referrals;
             $scope.info = success;
 
             $scope.totalItems = success.event_logs.length;
