@@ -1760,7 +1760,7 @@ label.tooth-label {
     font-size: 14px;
 }
 
-label.tooth-label-view{
+label.tooth-label-view {
     line-height: 20px;
     font-weight: bold;
     font-size: 14px;
@@ -1768,16 +1768,19 @@ label.tooth-label-view{
     border-color: rgb(243, 243, 243);
 }
 
-.delete-button-margin{
-    margin-top: 5px;
-    margin-right: 5px;
+.delete-button-margin {
+    margin: 5px;
 }
 
-#formNewNote textarea{
+.download-button-margin {
+    margin: 5px;
+}
+
+#formNewNote textarea {
 	height: 250px;
 }
 
-#formEditNote textarea{
+#formEditNote textarea {
 	height: 250px;
 }
 

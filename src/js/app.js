@@ -408,15 +408,26 @@ angular.module('dentalLinks')
     }
 })
 
-.filter('attachmentDownloadUrl', ['API_ENDPOINT', function(API_ENDPOINT){
+.filter('viewAttachmentUrl', ['API_ENDPOINT', function(API_ENDPOINT){
    return function(attachment){
        return API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.attach_file_name;
    }
 }])
 
-.filter('authenticatableAttachmentDownloadUrl', ['API_ENDPOINT', '$window', 'Auth', function(API_ENDPOINT, $window, Auth){
+.filter('viewAuthenticatableAttachmentUrl', ['API_ENDPOINT', '$window', 'Auth', function(API_ENDPOINT, $window, Auth){
     return function(attachment){
         var downloadUrl = API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.attach_file_name;
+        if (/trident/i.test($window.navigator.userAgent)){ //TODO: workaround for https://www.pivotaltracker.com/story/show/86373800. Remove that filter to use cookies for image authentication.
+            var auth = Auth.get();
+            downloadUrl += '&token=' + auth.token + '&from=' + auth.email;
+        }
+        return  downloadUrl;
+    }
+}])
+
+.filter('attachmentDownloadUrl', ['API_ENDPOINT', '$window', 'Auth', function(API_ENDPOINT, $window, Auth){
+    return function(attachment){
+        var downloadUrl = API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.attach_file_name + "&download=true";
         if (/trident/i.test($window.navigator.userAgent)){ //TODO: workaround for https://www.pivotaltracker.com/story/show/86373800. Remove that filter to use cookies for image authentication.
             var auth = Auth.get();
             downloadUrl += '&token=' + auth.token + '&from=' + auth.email;
