@@ -15,7 +15,7 @@
                 <ul>
                     <!-- Attachments on server -->
                     <li class="attachment-block" ng-repeat="attachment in attachments">
-                        <button type="button" class="close delete-button-margin" aria-label="Close" title="Delete file" ng-click="deleteAttachment(attachment)" ng-hide="{{current_user.id != attachment.author_id}}">&times;</button>
+                        <button type="button" class="close dlicons-remove delete-button-margin" aria-label="Close" title="Delete file" ng-click="deleteAttachment(attachment)" ng-hide="{{current_user.id != attachment.author_id}}"></button>
                         <a href="{{attachment | authenticatableAttachmentDownloadUrl}}" target="_blank">
                             <div class="attachment-thumb" attachment-thumb="{{attachment | attachmentDownloadUrl}}">
 
@@ -30,7 +30,7 @@
 
                     <!-- Attachments in the queue, no links -->
                     <li class="attachment-block" ng-repeat="item in uploader.queue">
-                        <button type="button" class="close delete-button-margin" aria-label="Close" title="Delete file" ng-click="deleteAttachment(item)">&times;</button>
+                        <button type="button" class="close dlicons-remove delete-button-margin" aria-label="Close" title="Delete file" ng-click="deleteAttachment(item)"></button>
                         <div class="attachment-thumb" ng-show="uploader.isHTML5"
                              ng-thumb="{ file: item._file, longEdgeSize:80 }">
                             <!-- no img, canvas is automatically generated here -->
