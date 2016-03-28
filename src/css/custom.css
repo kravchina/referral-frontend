@@ -1769,7 +1769,8 @@ label.tooth-label-view{
 }
 
 .delete-button-margin{
-	margin-right: 5px;
+    margin-top: 5px;
+    margin-right: 5px;
 }
 
 #formNewNote textarea{
