@@ -283,6 +283,13 @@ textarea.form-control {
 .datepicker .btn:hover{
     color: #333 !important
 }
+.datepicker .datepicker-btn .btn{
+	border: 0!important ;
+	background-color: #f3f3f3;
+}
+.datepicker .datepicker-btn .btn:hover{
+	background-color: #e0e0e0;
+}
 
 .btn:active, .btn.active, .btn:focus {
 	box-shadow: none;
