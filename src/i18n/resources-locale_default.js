@@ -122,33 +122,28 @@
         "description": "Error is shown when user provides an email that already registered in our system"
     },
     {
-        "key": "activity.user.update",
-        "value": "updated user's account",
+        "key": "activity.address.create",
+        "value": "created a new address",
         "description": ""
     },
     {
-        "key": "activity.user.create",
-        "value": "created user's account",
+        "key": "activity.address.update",
+        "value": "updated an address",
         "description": ""
     },
     {
-        "key": "activity.user.destroy",
-        "value": "destroyed user's account",
+        "key": "activity.address.destroy",
+        "value": "removed an address",
         "description": ""
     },
     {
-        "key": "activity.referral.update",
-        "value": "updated a referral",
+        "key": "activity.attachment.create",
+        "value": "added an attachment",
         "description": ""
     },
     {
-        "key": "activity.referral.create",
-        "value": "created new referral",
-        "description": ""
-    },
-    {
-        "key": "activity.referral.destroy",
-        "value": "removed a referral",
+        "key": "activity.attachment.destroy",
+        "value": "removed attachment",
         "description": ""
     },
     {
@@ -167,6 +162,46 @@
         "description": ""
     },
     {
+        "key": "activity.patient.create",
+        "value": "created a new patient",
+        "description": ""
+    },
+    {
+        "key": "activity.patient.update",
+        "value": "updated a patient",
+        "description": ""
+    },
+    {
+        "key": "activity.patient.destroy",
+        "value": "removed a patient",
+        "description": ""
+    },
+    {
+        "key": "activity.practice.create",
+        "value": "created practice",
+        "description": ""
+    },
+    {
+        "key": "activity.practice.update",
+        "value": "updated practice information",
+        "description": ""
+    },
+    {
+        "key": "activity.promo.create",
+        "value": "created a new promo code",
+        "description": ""
+    },
+    {
+        "key": "activity.promo.update",
+        "value": "updated a promo code",
+        "description": ""
+    },
+    {
+        "key": "activity.promo.destroy",
+        "value": "removed promo code",
+        "description": ""
+    },
+    {
         "key": "activity.provider_invitation.create",
         "value": "invited new provider",
         "description": ""
@@ -174,6 +209,51 @@
     {
         "key": "activity.provider_invitation.update",
         "value": "updated provider invitation",
+        "description": ""
+    },
+    {
+        "key": "activity.provider_invitation.destroy",
+        "value": "removed provider invitation",
+        "description": ""
+    },
+    {
+        "key": "activity.referral.create",
+        "value": "created new referral",
+        "description": ""
+    },
+    {
+        "key": "activity.referral.update",
+        "value": "updated a referral",
+        "description": ""
+    },
+    {
+        "key": "activity.referral.destroy",
+        "value": "removed a referral",
+        "description": ""
+    },
+    {
+        "key": "activity.security_code.create",
+        "value": "created new security code",
+        "description": ""
+    },
+    {
+        "key": "activity.security_code.destroy",
+        "value": "removed a security code",
+        "description": ""
+    },
+    {
+        "key": "activity.user.update",
+        "value": "updated user's account",
+        "description": ""
+    },
+    {
+        "key": "activity.user.create",
+        "value": "created user's account",
+        "description": ""
+    },
+    {
+        "key": "activity.user.destroy",
+        "value": "destroyed user's account",
         "description": ""
     },
     {

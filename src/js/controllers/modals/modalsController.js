@@ -4,7 +4,7 @@ angular.module('modals')
 
     $scope.title = 'Create a New Patient Record';
     $scope.alerts = [];
-
+    $scope.datepickerStatus = {opened: false};
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
 
     if (fullname) {
@@ -60,7 +60,9 @@ angular.module('modals')
         });
 
     };
-
+    $scope.openDatePicker = function($event){
+        $scope.datepickerStatus.opened = true;
+    };
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
 
@@ -83,7 +85,7 @@ angular.module('modals')
 .controller('EditPatientModalController', [ '$scope', '$state', '$modalInstance', 'Auth', 'Alert', 'ModalHandler', 'Patient', 'patientForEdit', '$modal',
         function ($scope, $state, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, $modal) {
     $scope.title = 'Edit Patient Record';
-
+    $scope.datepickerStatus = {opened: false};
     $scope.alerts = [];
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
     $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: moment(patientForEdit.birthday).toDate(), email: patientForEdit.email, phone: patientForEdit.phone};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
@@ -132,6 +134,11 @@ angular.module('modals')
         }
 
     };
+
+    $scope.openDatePicker = function ($event) {
+        $scope.datepickerStatus.opened = true;
+    };
+
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
     };
