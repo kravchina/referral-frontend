@@ -18,7 +18,7 @@ var CreateReferralSaveSpec = function() {
         var patient = {
             firstName: 'Marty',
             lastName: 'McFly',
-            birthday: '02.01.1968'
+            birthday: '1/1/1968'
         };
 
         describe('check create patient', function(){
