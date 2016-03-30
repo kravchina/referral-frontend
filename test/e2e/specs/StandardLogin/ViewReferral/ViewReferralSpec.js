@@ -20,7 +20,7 @@ var ViewReferralSpec = function() {
             describe('when user clicks the attachment', function() {
                 
                 beforeEach(function() {
-                    element(by.css('div.attachments-wrapper ul > li:nth-child(1) > a')).click();
+                    element(by.css('div.attachments-wrapper ul > li:nth-child(1) > a[target="_blank"]')).click();
                 });
                 
                 it('opens a new tab with image in it', function(done) {
