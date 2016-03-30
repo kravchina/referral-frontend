@@ -36,7 +36,7 @@
                     </div>
                     <div class="input-block datepicker" ng-class="{ 'has-error': patientForm.birthday.$dirty && patientForm.birthday.$invalid }">
                         <p class="input-group">
-                            <input type="text" class="form-control" name="birthday" placeholder="m/d/yy" datepicker-popup="shortDate" ng-model="patient.birthday" is-open="datepickerStatus.opened" min-date="1900-01-01" ng-required="true" close-text="Close"/>
+                            <input type="text" class="form-control" name="birthday" datepicker-popup="M/d/yyyy" placeholder="m/d/yyyy" ng-model="patient.birthday" is-open="datepickerStatus.opened"  ng-required="true" close-text="Close"/>
                             <span class="input-group-btn datepicker-btn">
                                 <button type="button" class="btn btn-default" ng-click="openDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
