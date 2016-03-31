@@ -10,7 +10,7 @@ angular.module('dentalLinks')
 })
 
 .constant('FREE_TRIAL_PERIOD', 45)
-.constant('BASE_SUBSCRIPTION_PRICE', 49.95)
+.constant('BASE_SUBSCRIPTION_PRICE', 4995)
 .constant('HTTP_ERROR_EVENTS', {
     requestTimeout: 'http-request-timeout',
     serverError: 'http-server-error'
@@ -405,6 +405,12 @@ angular.module('dentalLinks')
 .filter('filename', function () {
     return function (fullFileName) {
         return fullFileName.slice(fullFileName.lastIndexOf('/') + 1);
+    }
+})
+
+.filter('money', function () {
+    return function (centsAmount) {
+        return centsAmount / 100;
     }
 })
 
