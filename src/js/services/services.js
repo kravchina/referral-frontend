@@ -94,7 +94,9 @@ angular.module('dentalLinksServices')
             cancelSubscription: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/cancel_subscription'},
             update: {method: 'PUT'},
             deleteAndMoveReferral: {method: 'POST', url: API_ENDPOINT + '/practices/delete_and_move_referral'},
-            getAllInvitees: {method: 'POST', url: API_ENDPOINT + '/practices/all_invitees', isArray: true}
+            getAllInvitees: {method: 'POST', url: API_ENDPOINT + '/practices/all_invitees', isArray: true},
+            give1MonthCoupon: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/give_coupon'},
+            prolongTrial: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/prolong_trial'}
         });
     }])
 

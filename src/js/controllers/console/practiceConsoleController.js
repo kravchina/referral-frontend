@@ -1,10 +1,10 @@
 angular.module('console')
     .controller('PracticeConsoleController', 
-    ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Procedure', 'Practice',
-    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, $rootScope, Address, Procedure, Practice){
+    ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Procedure', 'Practice', 'BASE_SUBSCRIPTION_PRICE',
+    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, $rootScope, Address, Procedure, Practice, BASE_SUBSCRIPTION_PRICE){
         $scope.practiceTypes = Procedure.practiceTypes();
         $scope.onPracticeSelected = ConsoleHelper.onPracticeSelected($scope);
-
+        $scope.baseSubscriptionPrice = BASE_SUBSCRIPTION_PRICE;
         $scope.findPractice = ConsoleHelper.findPractice($scope);
 
         $scope.showFullRole = ConsoleHelper.showFullRole();
@@ -187,9 +187,28 @@ angular.module('console')
                     $scope.destinationPracticeUsers = [];
                     Notification.success('Practice create success');
                 }, function(failure){
-                    Notification.success('Practice create fail');
+                    Notification.error('Practice create fail');
                 });
             });
         };
+        $scope.extendTrial = function(practice){
+            Practice.prolongTrial({practiceId: practice.id}, {},
+                function(success){
+                    practice.subscription_active_until = success.subscription_active_until;
+                    Notification.success('Trial was prolonged successfully!')
+                },
+                function(failure){
+                    Notification.error('Trial prolongation failed. Please try again later')
+                });
+        };
 
+        $scope.give1MonthCoupon = function(practice){
+            Practice.give1MonthCoupon({practiceId: practice.id}, {},
+                function(success){
+                    Notification.success('Coupon was applied successfully!')
+                },
+                function(failure){
+                    Notification.error('Coupon applying failed')
+                });
+        };
     }]);
