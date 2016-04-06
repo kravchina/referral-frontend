@@ -225,6 +225,10 @@ textarea.form-control {
     white-space: nowrap;
 }
 
+.section-block .table .btn-delete.api-key-delete {
+	right: 5px;
+}
+
 .global-notification-bar{
 	position: absolute;
 	display: table-cell;

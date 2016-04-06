@@ -260,7 +260,13 @@ angular.module('dentalLinksServices')
     return $resource(API_ENDPOINT + '/security_code/:id', {}, {})
 }])
 
-.factory('ServerSettings', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+.factory('ApiKey', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+        return $resource(API_ENDPOINT + '/api_key/:id', {},{
+            generate: {method: 'POST', url: API_ENDPOINT + '/api_key/:practice_id'}
+        });
+}])
+
+    .factory('ServerSettings', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + 'settings', {}, {
         getStripeApiPublicKey: {method: 'GET', url: API_ENDPOINT + '/settings/stripe_public_key', headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
