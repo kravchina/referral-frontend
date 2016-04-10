@@ -1982,6 +1982,10 @@ label.tooth-label-view {
 	width: 110px;
 }
 
+#sectApiKeys {
+    margin-top: 20px;
+}
+
 .invite-link-group {
 	overflow: hidden;
     word-wrap: break-word;
