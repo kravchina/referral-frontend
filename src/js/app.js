@@ -9,7 +9,7 @@ angular.module('dentalLinks')
         public: {id: 'public', name: 'Public', desc: 'Public Access', mask: 16}
 })
 
-.constant('FREE_TRIAL_PERIOD', 45)
+.constant('FREE_TRIAL_PERIOD', 30)
 .constant('BASE_SUBSCRIPTION_PRICE', 4995)
 .constant('HTTP_ERROR_EVENTS', {
     requestTimeout: 'http-request-timeout',
@@ -329,16 +329,17 @@ angular.module('dentalLinks')
 
             if (response.status === 401 || response.status === 403) {
                 // handle the case where the user is not authenticated
-                if ($location.path() !== '/sign_in') { //TODO! [mezerny] consider more elegant implementation - now we need to check the location because consequent requests to server from previous view could be finished after redirect to 'sign_in', in that case we are loosing desired 'redirect' location (it is replaced with '/sign_in')
-                     $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
-                }else{
-                     var auth = Auth.get();
-                     if (auth && auth.token) {
-                         $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: redirect.path});
-                     }
+                var path = $location.path();
+                var requiresLogin = !path.startsWith('/sign_in')
+                    && !path.startsWith('/register')
+                    && !path.startsWith('/edit_password')
+                    && !path.startsWith('/confirm_email');
+                if (requiresLogin) { //TODO! [mezerny] consider more elegant implementation - now we need to check the location because consequent requests to server from previous view could be finished after redirect to 'sign_in', in that case we are loosing desired 'redirect' location (it is replaced with '/sign_in')
+                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
+                } else {
+                    Auth.remove();
                 }
-
-            }else if(response.status === 402){
+            } else if (response.status === 402) {
                 //don't allow to show referral in case of expired subscription
                 $rootScope.$broadcast(AUTH_EVENTS.paymentRequired, {redirect: redirect.path})
             }
