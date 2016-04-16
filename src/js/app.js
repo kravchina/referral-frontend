@@ -215,8 +215,7 @@ angular.module('dentalLinks')
                             $state.go('error_page', {error_key: 'confirmation_token.invalid'});
                         }
                     });
-            }],
-            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+            }]
 
         }).
         state('debug', {
