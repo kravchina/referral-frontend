@@ -2,7 +2,7 @@ angular.module('login')
     .controller('LoginController', ['$scope', '$stateParams', 'Auth', 'User', '$location', 'Login', 'redirect', 'Logger', 'Notification',
     function ($scope, $stateParams, Auth, User, $location, Login, redirect, Logger, Notification) {
         var auth = Auth.get();
-        if(auth){// user is authenticated by tries to open login window
+        if (auth) { // user is authenticated but tries to open login window
             $location.path('/history');
         }
         $scope.email = (auth || {}).email;

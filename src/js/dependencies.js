@@ -21,10 +21,11 @@ require('jsPDFsplittext');
 require('jsPDFfonts');
 require('angularStripe');
 require('angularCreditCards');
+require('angular-clipboard');
 
 angular.module('jsPDF', []).factory('jsPDF', function(){ return require('jsPDF');});
 
-angular.module('admin', ['ui.bootstrap', 'angular-stripe', 'credit-cards']);
+angular.module('admin', ['ui.bootstrap', 'angular-stripe', 'credit-cards', 'angular-clipboard']);
 angular.module('console', ['ui.bootstrap']);
 angular.module('history', ['ui.bootstrap', 'infinite-scroll']);
 angular.module('activity', ['ui.bootstrap', 'infinite-scroll']);

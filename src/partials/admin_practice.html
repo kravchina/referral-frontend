@@ -47,51 +47,80 @@
             <div class="section-block" ng-repeat="address in practice.addresses">
                 <hr>
                 <ng-form name="addressForm">
-                <div class="row">
-                    <div class="input-block col-sm-6" ng-class="{'has-error': addressForm.street.$invalid}">
-                        <input type="text" class="form-control" ng-class="{data1: !address.new}" name="street"  ng-model="address.street_line_1" placeholder="Enter street address &hellip;" ng-disabled="!address.new" required>
-                        <label ng-class="{hidden:!address.new}">Street address</label>
-                    </div>
+                    <div class="row">
+                        <div class="input-block col-sm-6" ng-class="{'has-error': addressForm.street.$invalid}">
+                            <input type="text" class="form-control" ng-class="{data1: !address.new}" name="street"  ng-model="address.street_line_1" placeholder="Enter street address &hellip;" ng-disabled="!address.new" required>
+                            <label ng-class="{hidden:!address.new}">Street address</label>
+                        </div>
 
-                    <div class="input-block col-sm-2" ng-class="{'has-error': addressForm.city.$invalid}">
-                        <input type="text" class="form-control" name="city" ng-class="{data1: !address.new}"  ng-model="address.city" placeholder="Enter town / city &hellip;"  ng-disabled="!address.new" required>
-                        <label ng-class="{hidden:!address.new}">Town / City</label>
-                    </div>
+                        <div class="input-block col-sm-2" ng-class="{'has-error': addressForm.city.$invalid}">
+                            <input type="text" class="form-control" name="city" ng-class="{data1: !address.new}"  ng-model="address.city" placeholder="Enter town / city &hellip;"  ng-disabled="!address.new" required>
+                            <label ng-class="{hidden:!address.new}">Town / City</label>
+                        </div>
 
-                    <div class="input-block col-sm-2" ng-class="{'has-error': addressForm.state.$invalid}">
-                        <state-select class="{data1: !address.new}" disabled="!address.new"  name="state" address="address"></state-select>
-                        <label ng-class="{hidden:!address.new}">State</label>
-                    </div>
+                        <div class="input-block col-sm-2" ng-class="{'has-error': addressForm.state.$invalid}">
+                            <state-select class="{data1: !address.new}" disabled="!address.new"  name="state" address="address"></state-select>
+                            <label ng-class="{hidden:!address.new}">State</label>
+                        </div>
 
-                    <div class="input-block col-sm-2"  ng-class="{'has-error': addressForm.zip.$invalid}">
-                        <input type="text" class="form-control" ng-class="{data1: !address.new}" name="zip" ng-model="address.zip" placeholder="Enter ZIP code &hellip;" ng-disabled="!address.new" required>
-                        <label ng-class="{hidden:!address.new}">ZIP code</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-block col-sm-6">
-                        <input type="tel" class="form-control" ng-class="{data1: !address.new}" ng-model="address.phone" phone-formatter ng-disabled="!address.new">
-                        <label ng-class="{hidden:!address.new}">Phone number</label>
-                    </div>
-
-                    <div class="input-block col-sm-4 website-block">
-                        <input type="text" class="form-control" ng-class="{data1: !address.new}" ng-model="address.website" placeholder="Enter website address &hellip;"  ng-disabled="!address.new">
-                        <label ng-class="{hidden:!address.new}">Website</label>
-                    </div>
-
-                    <div class="input-block col-sm-2" >
-                        <!--<button type="button" class="btn btn-danger" ng-click="removeAddress(address)" ng-class="{hidden:!address.new}"><span class="dlicons-remove"></span> Remove</button>-->
-                        <div access="admin" delete-button class="button-block btn-delete" ng-if="practice.addresses.length > 1">
-                            <span class="dlicons-remove"></span> Delete? <a ng-click="removeAddress(address)" class="link-green">Yes</a> | <a class="link-orange">No</a>
+                        <div class="input-block col-sm-2"  ng-class="{'has-error': addressForm.zip.$invalid}">
+                            <input type="text" class="form-control" ng-class="{data1: !address.new}" name="zip" ng-model="address.zip" placeholder="Enter ZIP code &hellip;" ng-disabled="!address.new" required>
+                            <label ng-class="{hidden:!address.new}">ZIP code</label>
                         </div>
                     </div>
-                </div>
+
+                    <div class="row">
+                        <div class="input-block col-sm-6">
+                            <input type="tel" class="form-control" ng-class="{data1: !address.new}" ng-model="address.phone" phone-formatter ng-disabled="!address.new">
+                            <label ng-class="{hidden:!address.new}">Phone number</label>
+                        </div>
+
+                        <div class="input-block col-sm-4 website-block">
+                            <input type="text" class="form-control" ng-class="{data1: !address.new}" ng-model="address.website" placeholder="Enter website address &hellip;"  ng-disabled="!address.new">
+                            <label ng-class="{hidden:!address.new}">Website</label>
+                        </div>
+
+                        <div class="input-block col-sm-2" >
+                            <!--<button type="button" class="btn btn-danger" ng-click="removeAddress(address)" ng-class="{hidden:!address.new}"><span class="dlicons-remove"></span> Remove</button>-->
+                            <div access="admin" delete-button class="button-block btn-delete" ng-if="practice.addresses.length > 1">
+                                <span class="dlicons-remove"></span> Delete? <a ng-click="removeAddress(address)" class="link-green">Yes</a> | <a class="link-orange">No</a>
+                            </div>
+                        </div>
+                    </div>
                 </ng-form>
 
             </div>
-            <!--.section-block-->
-
         </div>
     </form>
+
+    <div id="sectApiKeys">
+        <div class="block-title">
+            <h2>API keys</h2>
+            <button type="button" access="admin" class="btn btn-orange btn-toggle btn-edit" data-toggle="tooltip" ng-click="addApiKey(practice)" data-placement="top" title="Add API key"><span class="dlicons-plus"></span></button>
+        </div>
+        <div class="section-block">
+            <div class="table-wrapper">
+                <div class="table-container">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th class="cell-user">Key</th>
+                            <th class="cell-created"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr  ng-repeat="key in practice.api_keys">
+                            <td class="cell-user" ng-click="copyToClipboard(key.api_key)">{{key.api_key}}</td>
+                            <td class="cell-created">
+                                <div access="admin" delete-button class="button-block btn-delete api-key-delete" >
+                                    <span class="dlicons-remove"></span> Delete this key? <a ng-click="removeApiKey(key)" class="link-green">Yes</a> | <a  class="link-orange">No</a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div><!-- .table-container -->
+            </div><!-- .table-wrapper -->
+        </div>
+    </div>
 </div>

@@ -225,6 +225,10 @@ textarea.form-control {
     white-space: nowrap;
 }
 
+.section-block .table .btn-delete.api-key-delete {
+	right: 5px;
+}
+
 .global-notification-bar{
 	position: absolute;
 	display: table-cell;
@@ -1976,6 +1980,10 @@ label.tooth-label-view {
 
 #sectPractice .input-block .btn-delete.active{
 	width: 110px;
+}
+
+#sectApiKeys {
+    margin-top: 20px;
 }
 
 .invite-link-group {

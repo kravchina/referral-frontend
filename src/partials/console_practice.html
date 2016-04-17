@@ -73,6 +73,35 @@
                                disabled="disabled" ng-required="true">
                     </div>
                     <div class="row">
+                        <div class="col-sm-9">
+                            <div class="form-group">
+                                <label>Subscription</label>
+                                <span class="form-control data1">{{!destinationPractice.stripe_customer_id && destinationPractice.trial_period ? 'Trial' : 'Premium'}} until {{destinationPractice.subscription_active_until | date: 'mediumDate'}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="form-group">
+                                <label>Extend</label>
+                                <button type="button" ng-if="destinationPractice.stripe_customer_id"
+                                        ng-click="give1MonthCoupon(destinationPractice)" class="btn btn-green btn-toggle-shifted btn-edit"
+                                        data-toggle="tooltip" data-placement="top" title="Add practice address">
+                                    <span class="dlicons-plus"></span> 1 month coupon (${{baseSubscriptionPrice * destinationPractice.addresses.length | money}})
+                                </button>
+                                <button type="button" ng-if="!destinationPractice.stripe_customer_id && destinationPractice.trial_period"
+                                        ng-click="extendTrial(destinationPractice)" class="btn btn-green btn-toggle-shifted btn-edit"
+                                        data-toggle="tooltip" data-placement="top" title="Add practice address">
+                                    <span class="dlicons-plus"></span> 1 month trial
+                                </button>
+                                <!--<input type="date" disabled="disabled" class="form-control data1" ng-model="">-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="form-group col-sm-9">
                             <label>Owner</label>
                             <input type="text" class="form-control data1"  disabled="disabled"
