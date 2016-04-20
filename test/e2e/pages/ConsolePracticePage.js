@@ -31,7 +31,7 @@ var ConsolePracticePage = function() {
     };
 
     this.getEditPracticeButton = function(){
-        return element(by.css('#formConsolePractice .btn-edit'));
+        return element(by.css('#formConsolePractice .console-practice-btns .btn-edit'));
     };
 
     this.getSavePracticeButton = function(){
