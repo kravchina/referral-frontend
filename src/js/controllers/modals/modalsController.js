@@ -209,7 +209,9 @@ angular.module('modals')
 
 }])
 
-.controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', 'Spinner', 'sendEmailNotification', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth, Spinner, sendEmailNotification) {
+.controller('ProviderModalController',
+    ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Spinner', 'sendEmailNotification', 'inviterId',
+        function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Spinner, sendEmailNotification, inviterId) {
     $scope.alerts = [];
     $scope.model = {};
     $scope.isProviderInvite = true;
@@ -223,7 +225,7 @@ angular.module('modals')
             }
         });
     $scope.ok = function (provider) {
-        provider.inviter_id = Auth.getOrRedirect().id;
+        provider.inviter_id = inviterId;
         var resultHandlers = {
             success: function (success) {
                 ModalHandler.close($modalInstance, success);
