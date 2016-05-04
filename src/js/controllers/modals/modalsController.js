@@ -364,7 +364,7 @@ angular.module('modals')
     };
 }])
 
-.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', 'Spinner', 'stripe', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id, Spinner, stripe) {
+.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', 'interval', 'Spinner', 'stripe', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id, interval, Spinner, stripe) {
     $scope.result = {};
     $scope.alerts = [];
     var currentYear = moment().year();
@@ -400,7 +400,8 @@ angular.module('modals')
                 return Practice.subscribe({practiceId: practice_id}, {
                         practice: {
                             name_on_card: payment_info.name_on_card,
-                            stripe_token: token.id
+                            stripe_token: token.id,
+                            subscription_interval: interval
                         }
                     },
                     function (success) {
@@ -686,8 +687,10 @@ angular.module('modals')
     };
 }])
 
-.controller('SubscriptionChangeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'BASE_SUBSCRIPTION_PRICE', 'locationsNumber', 'cancelCallback', function($scope, $modalInstance, ModalHandler, BASE_SUBSCRIPTION_PRICE, locationsNumber, cancelCallback){
-    $scope.baseSubscriptionPrice = BASE_SUBSCRIPTION_PRICE;
+.controller('SubscriptionChangeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'locationsNumber', 'basePrice', 'subscriptionPrice', 'subscriptionInterval', 'cancelCallback', function($scope, $modalInstance, ModalHandler, locationsNumber, basePrice, subscriptionPrice, subscriptionInterval, cancelCallback){
+    $scope.basePrice = basePrice;
+    $scope.subscriptionPrice = subscriptionPrice;
+    $scope.subscriptionInterval = subscriptionInterval;
     $scope.locationsNumber = locationsNumber;
     $scope.ok = function(){
         ModalHandler.close($modalInstance);

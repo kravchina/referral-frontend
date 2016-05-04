@@ -87,9 +87,11 @@
                             <div class="form-group">
                                 <label>Extend</label>
                                 <button type="button" ng-if="destinationPractice.stripe_customer_id"
-                                        ng-click="give1MonthCoupon(destinationPractice)" class="btn btn-green btn-toggle-shifted btn-edit"
+                                        ng-click="giveCoupon(destinationPractice)" class="btn btn-green btn-toggle-shifted btn-edit"
                                         data-toggle="tooltip" data-placement="top" title="Add practice address">
-                                    <span class="dlicons-plus"></span> 1 month coupon (${{baseSubscriptionPrice * destinationPractice.addresses.length | money}})
+                                    <span class="dlicons-plus"></span>
+                                    <span ng-show="destinationPractice.subscription_interval === 'month'">1 month coupon (${{destinationPractice.subscription_price | money}})</span>
+                                    <span ng-show="destinationPractice.subscription_interval === 'year'">Give coupon ($50)</span>
                                 </button>
                                 <button type="button" ng-if="!destinationPractice.stripe_customer_id && destinationPractice.trial_period"
                                         ng-click="extendTrial(destinationPractice)" class="btn btn-green btn-toggle-shifted btn-edit"

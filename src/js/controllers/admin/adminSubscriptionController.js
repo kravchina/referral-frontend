@@ -1,8 +1,6 @@
 angular.module('admin')
-    .controller('AdminSubscriptionController', ['$scope', '$state', '$modal', 'Auth', 'Notification', 'Address', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'BASE_SUBSCRIPTION_PRICE', 'Logger',
-    function ($scope, $state, $modal, Auth, Notification, Address, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, BASE_SUBSCRIPTION_PRICE, Logger) {
-
-        $scope.baseSubscriptionPrice = BASE_SUBSCRIPTION_PRICE;
+    .controller('AdminSubscriptionController', ['$scope', '$state', '$modal', 'Auth', 'Notification', 'Address', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'Logger',
+    function ($scope, $state, $modal, Auth, Notification, Address, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, Logger) {
 
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function(practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
@@ -13,7 +11,8 @@ angular.module('admin')
                 showSubscriptionCancelled: !practice.trial_period && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
                 showSubscriptionExpired: !practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime()
             };
-
+            $scope.subscriptionPrice = practice.subscription_price;
+            $scope.subscriptionInterval = practice.subscription_interval;
             $scope.locationsNumber = practice.addresses.length;
 
         });
@@ -22,7 +21,7 @@ angular.module('admin')
             return $scope.practice.stripe_customer_id && $scope.practice.stripe_subscription_id
         };
 
-        $scope.upgradeDialog = function () {
+        $scope.upgradeDialog = function (interval) {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/upgrade_form.html',
                 controller: 'UpgradeModalController',
@@ -32,6 +31,9 @@ angular.module('admin')
                     },
                     stripe_subscription_id: function () {
                         return $scope.practice.stripe_subscription_id;
+                    },
+                    interval: function(){
+                        return interval
                     }
                 }
             });
@@ -42,6 +44,8 @@ angular.module('admin')
                 $scope.paymentNotification.showTrial = practice.trial_period;
                 $scope.showSubscriptionExpired = false;
                 $scope.practice = practice;
+                $scope.subscriptionPrice = practice.subscription_price;
+                $scope.subscriptionInterval = practice.subscription_interval;
             });
         };
 
