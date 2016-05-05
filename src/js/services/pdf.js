@@ -141,7 +141,7 @@ angular.module('pdf')
         var width = pdf.getStringUnitWidth(strBold) * headerFontSizeMm;
         pdf.text(pagePaddings.x, y, strBold);
 
-        var strNormal = 'Links';
+        var strNormal = 'CareLinks';
         pdf.setFontType('normal');
         pdf.text(pagePaddings.x + width, y, strNormal);
 
