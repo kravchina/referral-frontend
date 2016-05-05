@@ -1,6 +1,6 @@
 angular.module('admin')
-    .controller('AdminInviteController', ['$scope', '$modal', 'Notification', 'ModalHandler', 'ProviderInvitation', 'Logger', 'Practice',
-    function ($scope, $modal, Notification, ModalHandler, ProviderInvitation, Logger, Practice) {
+    .controller('AdminInviteController', ['$scope', '$modal', 'Notification', 'ModalHandler', 'ProviderInvitation', 'Logger', 'Practice', 'Auth',
+    function ($scope, $modal, Notification, ModalHandler, ProviderInvitation, Logger, Practice, Auth) {
         $scope.invitedUsers = [];
         $scope.invitedColleagues = [];
 
@@ -23,6 +23,9 @@ angular.module('admin')
                 resolve: {
                     sendEmailNotification: function(){
                         return true;
+                    },
+                    inviterId: function(){
+                        return Auth.getOrRedirect().id;
                     }
                 }
             });

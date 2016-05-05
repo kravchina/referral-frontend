@@ -1,6 +1,6 @@
 angular.module('createReferrals')
-    .service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 'Patient', 'Practice', 'ProviderInvitation', 'Spinner', 'UnsavedChanges', 'User',
-    function ($modal, $q, ModalHandler, Patient, Practice, ProviderInvitation, Spinner, UnsavedChanges, User) {
+    .service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 'Patient', 'Practice', 'ProviderInvitation', 'Spinner', 'UnsavedChanges', 'User', 'Auth',
+    function ($modal, $q, ModalHandler, Patient, Practice, ProviderInvitation, Spinner, UnsavedChanges, User, Auth) {
         return {
 
             prepareSubmit: function (scope, referral) {
@@ -149,6 +149,9 @@ angular.module('createReferrals')
                         resolve: {
                             sendEmailNotification: function(){
                                 return false;
+                            },
+                            inviterId: function(){
+                                return Auth.getOrRedirect().id;
                             }
                         }
                     });

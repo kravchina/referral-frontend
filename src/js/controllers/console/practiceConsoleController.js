@@ -193,6 +193,26 @@ angular.module('console')
                 });
             });
         };
+
+        $scope.inviteDialog = function () {
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/provider_form.html',
+                controller: 'ProviderModalController',
+                resolve: {
+                    sendEmailNotification: function(){
+                        return true;
+                    },
+                    inviterId: function(){
+                        return $scope.practiceUser.id;
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (provider) {
+                Notification.success('Provider invitation was send success');
+            });
+        };
+
         $scope.extendTrial = function(practice){
             Practice.prolongTrial({practiceId: practice.id}, {},
                 function(success){
