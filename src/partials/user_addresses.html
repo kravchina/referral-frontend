@@ -1,0 +1,11 @@
+<div class="user-addresses">
+    <label>Select addresses:</label>
+    <div class="form-group">
+        <label class="checkbox" ng-repeat="address in practiceAddressesCopy">
+            <input type="checkbox" ng-model="address.checked"
+                   ng-disabled="address.checked && user.addresses.length == 1"
+                   ng-click="toggleAddresses(address)">
+            {{address.state}}, {{address.street_line_1}}
+        </label>
+    </div>
+</div>

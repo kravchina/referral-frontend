@@ -99,6 +99,7 @@ require('./controllers/navController.js');
 require('./controllers/teethController.js');
 require('./controllers/notesController.js');
 require('./controllers/rolesSelectorController.js');
+require('./controllers/userAddressesController.js');
 require('./controllers/notificationAreaController.js');
 require('./services/imageUtils.js');
 require('./services/logger.js');

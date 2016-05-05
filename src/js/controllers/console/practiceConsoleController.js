@@ -23,6 +23,9 @@ angular.module('console')
                         },
                         practiceType: function(){
                             return $scope.destinationPractice.practice_type;
+                        },
+                        practiceAddresses: function(){
+                            return $scope.destinationPractice.addresses;
                         }
                     }
                 });
