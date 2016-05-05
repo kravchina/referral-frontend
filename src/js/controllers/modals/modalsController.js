@@ -701,6 +701,17 @@ angular.module('modals')
     };
 }])
 
+.controller('ConfirmationModalController', ['$scope', '$modalInstance', 'ModalHandler', 'confirmMessage',
+    function($scope, $modalInstance, ModalHandler, confirmMessage){
+    $scope.confirmMessage = confirmMessage;
+    $scope.ok = function(){
+        ModalHandler.close($modalInstance);
+    };
+    $scope.cancel = function(){
+        ModalHandler.dismiss($modalInstance);
+    };
+}])
+
 .controller('RegistrationEmailResendModalController', ['$scope', '$modalInstance', 'ModalHandler',
     function ($scope, $modalInstance, ModalHandler) {
         $scope.ok = function () {
