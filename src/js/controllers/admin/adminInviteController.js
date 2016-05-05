@@ -35,6 +35,12 @@ angular.module('admin')
             });
         };
 
+        $scope.resendInvitation = function(id){
+            ProviderInvitation.resend({id: id}, function(success){
+                Notification.success("Resend email success");
+            });
+        };
+
         //is not currently used, [#109317458] - Remove generate security code banner and button
         $scope.securityCodeDialog = function (user_id) {
             var modalInstance = $modal.open({
