@@ -120,6 +120,19 @@ var ViewReferralPage = function() {
     this.getSelectProviderModalSaveButton = function(){
         return element(by.css('form#formChangeDestProvider button[ng-click="ok(providerId)"]'));
     };
+
+    //confirmation modal
+    this.getConfirmationModal = function(){
+        return element(by.css('#confirmationTitle'));
+    };
+
+    this.getConfirmationYesButton = function(){
+        return element(by.css('.modal-dialog button[ng-click="ok()"]'));
+    };
+
+    this.getConfirmationNoButton = function(){
+        return element(by.css('.modal-dialog button[ng-click="cancel()"]'));
+    };
 };
 
 module.exports = new ViewReferralPage();
