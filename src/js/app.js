@@ -10,7 +10,6 @@ angular.module('dentalLinks')
 })
 
 .constant('FREE_TRIAL_PERIOD', 30)
-.constant('BASE_SUBSCRIPTION_PRICE', 4995)
 .constant('HTTP_ERROR_EVENTS', {
     requestTimeout: 'http-request-timeout',
     serverError: 'http-server-error'

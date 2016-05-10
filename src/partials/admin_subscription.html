@@ -12,13 +12,14 @@
         </div>
 
         <div id="descriptionText" class="section-block">
-            Premium account is $49.95 per month per practice location.
-            For your practice with {{locationsNumber}} locations, your monthly payment will be ${{baseSubscriptionPrice * locationsNumber | money}}
+            Premium account is $49.95 per month per practice location or $500 annually per practice location.
+            <span ng-show="subscriptionPrice && subscriptionInterval">For your practice with {{locationsNumber}} locations, your payment will be ${{ subscriptionPrice | money}} per {{subscriptionInterval }}</span>
         </div>
 
 
         <div access="admin" ng-hide="isPremium()" id="sectUpgrade" class="section-block">
-            <button access="admin" id="upgradeBtn" type="button" class="btn btn-primary" ng-click="upgradeDialog()">Upgrade to Premium Account</button>
+            <button access="admin" id="upgradeBtn" type="button" class="btn btn-primary" ng-click="upgradeDialog('month')">Upgrade to Premium Account (monthly)</button>
+            <button access="admin" id="upgradeBtnAnnual" type="button" class="btn btn-primary" ng-click="upgradeDialog('year')">Upgrade to Premium Account (annual)</button>
         </div>
 
         <div ng-show="isPremium()" id="sectEditPayment" class="section-block">

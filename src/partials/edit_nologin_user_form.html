@@ -9,12 +9,14 @@
             <input type="text" name="userName" class="form-control" ng-value="user.first_name +' '+ user.last_name" ng-disabled="true">
         </div>
         <div ng-if="is_multispecialty()">
+            <label>Specialty:</label>
             <div class="input-block">
                 <select class="form-control" ng-model="user.specialty_type_id" ng-options="p.id as p.name for p in practiceTypes">
                     <option selected="selected" class="placeholder" value="">Select specialty &hellip;</option>
                 </select>
             </div>
         </div>
+        <user-addresses user="user" practice-addresses="practiceAddresses"></user-addresses>
         <alert type="warning">If you would like to allow this user to login please enter an email address to send them an invite</alert>
         <div class="input-block">
             <input type="email" name="email" class="form-control" ng-model="user.email" placeholder="Enter Email &hellip;" ng-required="true">

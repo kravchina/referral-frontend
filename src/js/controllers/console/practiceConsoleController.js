@@ -1,10 +1,9 @@
 angular.module('console')
     .controller('PracticeConsoleController', 
-    ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Procedure', 'Practice', 'BASE_SUBSCRIPTION_PRICE',
-    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, $rootScope, Address, Procedure, Practice, BASE_SUBSCRIPTION_PRICE){
+    ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Procedure', 'Practice',
+    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, $rootScope, Address, Procedure, Practice){
         $scope.practiceTypes = Procedure.practiceTypes();
         $scope.onPracticeSelected = ConsoleHelper.onPracticeSelected($scope);
-        $scope.baseSubscriptionPrice = BASE_SUBSCRIPTION_PRICE;
         $scope.findPractice = ConsoleHelper.findPractice($scope);
 
         $scope.showFullRole = ConsoleHelper.showFullRole();
@@ -24,6 +23,9 @@ angular.module('console')
                         },
                         practiceType: function(){
                             return $scope.destinationPractice.practice_type;
+                        },
+                        practiceAddresses: function(){
+                            return $scope.destinationPractice.addresses;
                         }
                     }
                 });
@@ -191,6 +193,26 @@ angular.module('console')
                 });
             });
         };
+
+        $scope.inviteDialog = function () {
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/provider_form.html',
+                controller: 'ProviderModalController',
+                resolve: {
+                    sendEmailNotification: function(){
+                        return true;
+                    },
+                    inviterId: function(){
+                        return $scope.practiceUser.id;
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (provider) {
+                Notification.success('Provider invitation was send success');
+            });
+        };
+
         $scope.extendTrial = function(practice){
             Practice.prolongTrial({practiceId: practice.id}, {},
                 function(success){
@@ -202,8 +224,8 @@ angular.module('console')
                 });
         };
 
-        $scope.give1MonthCoupon = function(practice){
-            Practice.give1MonthCoupon({practiceId: practice.id}, {},
+        $scope.giveCoupon = function(practice){
+            Practice.giveCoupon({practiceId: practice.id}, {},
                 function(success){
                     Notification.success('Coupon was applied successfully!')
                 },

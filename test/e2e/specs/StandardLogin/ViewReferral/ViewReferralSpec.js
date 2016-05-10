@@ -101,6 +101,17 @@ var ViewReferralSpec = function() {
                     expect(viewReferralPage.getLastNoteText()).toEqual(testText);
                 });
             });
+
+            describe('when user delete attachment', function(){
+
+                it('show confirmation modal', function(){
+                    element(by.css('div.attachments-wrapper ul > li:nth-child(1) > button[ng-click="deleteAttachment(attachment)"]')).click();
+
+                    expect(viewReferralPage.getConfirmationModal().isDisplayed()).toBe(true);
+                    viewReferralPage.getConfirmationNoButton().click();
+                    expect(viewReferralPage.getConfirmationModal().isPresent()).toBe(false);
+                });
+            });
             
             // it('| show error when not real provider has been selected', function(){
                 // expect(element(by.css('button[ng-click="editDestProviderDialog()"]')).isPresent()).toBe(true);

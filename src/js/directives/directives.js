@@ -392,6 +392,19 @@ angular.module('dentalLinksDirectives')
     };
 }])
 
+.directive('userAddresses', [function(){
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            user: '=',
+            practiceAddresses: '='
+        },
+        templateUrl: 'partials/user_addresses.html',
+        controller: 'UserAddressesController'
+    };
+}])
+
 .directive('phoneFormatter', ['$compile', function($compile){
     return {
         terminal: true,

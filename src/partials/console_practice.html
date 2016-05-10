@@ -87,9 +87,11 @@
                             <div class="form-group">
                                 <label>Extend</label>
                                 <button type="button" ng-if="destinationPractice.stripe_customer_id"
-                                        ng-click="give1MonthCoupon(destinationPractice)" class="btn btn-green btn-toggle-shifted btn-edit"
+                                        ng-click="giveCoupon(destinationPractice)" class="btn btn-green btn-toggle-shifted btn-edit"
                                         data-toggle="tooltip" data-placement="top" title="Add practice address">
-                                    <span class="dlicons-plus"></span> 1 month coupon (${{baseSubscriptionPrice * destinationPractice.addresses.length | money}})
+                                    <span class="dlicons-plus"></span>
+                                    <span ng-show="destinationPractice.subscription_interval === 'month'">1 month coupon (${{destinationPractice.subscription_price | money}})</span>
+                                    <span ng-show="destinationPractice.subscription_interval === 'year'">Give coupon ($50)</span>
                                 </button>
                                 <button type="button" ng-if="!destinationPractice.stripe_customer_id && destinationPractice.trial_period"
                                         ng-click="extendTrial(destinationPractice)" class="btn btn-green btn-toggle-shifted btn-edit"
@@ -285,6 +287,17 @@
                             <input type="text" class="form-control data1" value="{{practiceUser.updated_at | date: 'mediumDate'}}"
                                    disabled="disabled">
                         </div>
+                    </div>
+                </div>
+                <hr class="hr-half-ident"/>
+                <div class="row">
+                    <div class="col-sm-offset-10 col-sm-2">
+                        <button type="button"
+                                ng-click="inviteDialog()"
+                                class="btn btn-green pull-right"
+                                data-toggle="tooltip" title="Invite a New Provider">
+                            <span class="dlicons-office"></span>
+                        </button>
                     </div>
                 </div>
             </div>

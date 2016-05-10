@@ -6,8 +6,8 @@
     <div class="block-title">
         <h5>Your subscription will be changed</h5>
     </div>
-    <p>Premium account is ${{baseSubscriptionPrice | money}} per month per practice location.
-        For your practice with {{locationsNumber}} location(s), your monthly payment will be ${{baseSubscriptionPrice * locationsNumber | money}}
+    <p>Premium account is ${{ basePrice | money}} per {{subscriptionInterval}} per practice location.
+        For your practice with {{locationsNumber}} location(s), your payment will be ${{ basePrice * locationsNumber | money}} per {{subscriptionInterval}}
     </p>
 
     <p>Your subscription will be prorated automatically. Thank you for using DentalCareLinks!</p>
