@@ -33,6 +33,17 @@ angular.module('admin')
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (user) {
+                var newModalInstance = $modal.open({
+                    templateUrl: 'partials/invite_user_result.html',
+                    controller: 'InviteUserResultController',
+                    resolve: {
+                        toEmail: function(){
+                            return user.email;
+                        }
+                    }
+                });
+                ModalHandler.set(newModalInstance);
+
                 $scope.invitedUsers.push(user);
             });
         };
