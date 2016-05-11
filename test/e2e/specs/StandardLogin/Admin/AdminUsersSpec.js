@@ -84,6 +84,9 @@ var AdminUsersSpec = function() {
                 expect(adminUsersPage.getAddModalSendInviteButton().isEnabled()).toBe(true);
                 adminUsersPage.getAddModalSendInviteButton().click();
                 expect(adminUsersPage.getAddModal().isPresent()).toBe(false);
+                expect(adminUsersPage.getInviteUserResultModal().isPresent()).toBe(true);
+                adminUsersPage.getInviteUserResultOkButton().click();
+                expect(adminUsersPage.getInviteUserResultModal().isPresent()).toBe(false);
 
                 commonActions.signOut();
                 commonExpects.expectProgressDivHidden();

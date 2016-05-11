@@ -74,6 +74,14 @@ var AdminUsersPage = function() {
     this.getAddModalDiscardButton = function(){
         return element(by.css('#formNewUser button[ng-click="cancel()"]'));
     };
+
+    this.getInviteUserResultModal = function(){
+        return element(by.css('#inviteUserResult'));
+    };
+
+    this.getInviteUserResultOkButton = function(){
+        return element(by.css('#inviteUserResult button[ng-click="ok()"]'));
+    };
 };
 
 module.exports = new AdminUsersPage();

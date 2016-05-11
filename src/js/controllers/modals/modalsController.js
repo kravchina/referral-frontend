@@ -605,6 +605,13 @@ angular.module('modals')
     }
 }])
 
+.controller('InviteUserResultController', ['$scope', '$modalInstance', 'ModalHandler', 'toEmail', function ($scope, $modalInstance, ModalHandler, toEmail) {
+    $scope.resultMessage = 'Your invite has been sent to ' + toEmail + '. The email contains a special link to complete their registration, once this is done their account will be activated.';
+    $scope.ok = function(){
+        ModalHandler.close($modalInstance);
+    }
+}])
+
     .controller('EmailChangeResultController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
     $scope.resultMessage = 'Your email was changed. Please login with your new credentials';
     $scope.ok = function(){
