@@ -33,7 +33,7 @@ angular.module('viewReferrals')
                     }
                 },
                 function (failure) {
-                    Notification.error('Something happened... Data was not retrieved from server.')
+                    Notification.error(failure.data.error)
                 }
             );
         };
