@@ -82,7 +82,6 @@
                     </ul>
                 </li>
             </ul>
-                 Notification: {{notification.message}}
         <div class="alert global-notification-bar"  ng-class="'alert-' + (notification.type || 'warning')" ng-show="notification.message" ng-controller="NotificationAreaController" >
             <div><span dynamic-html="notification.message | i18n"></span></div>
         </div>

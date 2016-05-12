@@ -1674,7 +1674,7 @@ td.cell-from .practice, td.cell-to .practice {
 @media (min-width: 1200px) {
 
 	.global-notification-bar{
-		margin-top: 15px;
+		margin-top: 35px;
 		margin-left: 250px;
 		max-width: 670px;
 		min-width: 670px;
