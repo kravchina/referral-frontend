@@ -140,7 +140,17 @@ angular.module('registration')
                 } else if(failure.data.status == 'invited') {
                     $scope.isResend = true;
                     $scope.resendProvider = failure.data;
-                    Notification.error('invitation.email.invited');
+                    Notification.error('invitation.email.invited', {resend: function(){
+                        ProviderInvitation.resend({id: $scope.resendProvider.id}, function(success){
+                            var modalInstance = $modal.open({
+                                templateUrl: 'partials/registration_email_send_message.html',
+                                controller: 'RegistrationEmailResendModalController'
+                            });
+                            ModalHandler.set(modalInstance);
+                        }, function(failure){
+                            Notification.error(failure.data.message[0]);
+                        });
+                    }});
                 }
             });
         };

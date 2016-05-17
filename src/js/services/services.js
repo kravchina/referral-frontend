@@ -319,23 +319,27 @@ angular.module('dentalLinksServices')
 }])
 
 .factory('Notification', ['$timeout', function ($timeout) {
-    var notification = {message: undefined, type: undefined, promise: undefined};
+    var notification = {message: undefined, type: undefined, promise: undefined, params: undefined};
     return {
-        info: function(message) {
+        info: function(message, params) {
             notification.message = message;
             notification.type = 'info';
+            notification.params = params;
         },
-        success: function(message) {
+        success: function(message, params) {
             notification.message = message;
             notification.type = 'success';
+            notification.params = params;
         },
-        warning: function(message) {
+        warning: function(message, params) {
             notification.message = message;
             notification.type = 'warning';
+            notification.params = params;
         },
-        error: function(message) {
+        error: function(message, params) {
             notification.message = message;
             notification.type = 'danger';
+            notification.params = params;
         },
         get: function() {
             return notification;
