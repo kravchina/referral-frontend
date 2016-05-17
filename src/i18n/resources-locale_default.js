@@ -103,7 +103,7 @@
     },
     {
         "key":"invitation.email.invited",
-        "value":"Sorry this email address has been invited in our system.  We will need to resend the special invitation link for you to register using this address",
+        "value":"Sorry, this email address already exists in our system. Click <button type='button' class='btn btn-orange notification-button' ng-click='notification.params.resend()'>here</button> and we will send you a link to register.",
         "description":"Email invited"
     },
     {
