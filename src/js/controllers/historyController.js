@@ -1,5 +1,6 @@
 angular.module('history')
-    .controller('HistoryController', ['$scope', 'Auth', 'Referral', 'Logger', function ($scope, Auth, Referral, Logger) {
+    .controller('HistoryController', ['$scope', '$state', 'Auth', 'Referral', 'Logger', 'Practice',
+    function ($scope, $state, Auth, Referral, Logger, Practice) {
 	$scope.limitTo = 20;
     $scope.referrals = [];
 
@@ -49,6 +50,16 @@ angular.module('history')
                 }
                 $scope.referrals_total_count = data.referrals_total_count;
                 $scope.busy = false;
+        });
+    };
+
+    $scope.newRefferal = function(){
+        Practice.checkContainsDoctor({practiceId: Auth.get().practice_id}, {}, function(success){
+            if(success.result){
+                $state.go('createReferral');
+            } else {
+                $state.go('error_page', {error_key: 'practice.doctor.not.found'});
+            }
         });
     };
 
