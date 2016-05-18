@@ -273,6 +273,18 @@
                         <a href="{{SITE_URL}}#/register/{{practiceUser.token}}" target="_blank">{{SITE_URL}}#/register/{{practiceUser.token}}</a>
                     </p>
                 </div>
+                <div class="form-group" ng-if="practiceUser.status == 'invited'">
+                    <label>Sender</label>
+                    <p class="form-control-static">
+                        {{practiceUser.inviter.practice.name}} | {{practiceUser.inviter.first_name}} {{practiceUser.inviter.last_name}}
+                    </p>
+                </div>
+                <div class="form-group" ng-if="practiceUser.status == 'invited'">
+                    <label>Referrals</label>
+                    <p class="form-control-static">
+                        {{practiceUser.referrals.length}}
+                    </p>
+                </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
