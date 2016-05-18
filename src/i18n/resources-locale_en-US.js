@@ -57,7 +57,7 @@
     },
     {
         "key": "practice.doctor.not.found",
-        "value": "We are sorry, but in order send a new referral, you have to have at least one doctor registered in your practice. Please follow this <a ui-sref='admin.users'>link</a> to add a doctor to your account.",
+        "value": "We are sorry, but in order to send a new referral, you have to have at least one doctor registered in your practice. Please follow this <a ui-sref='admin.users'>link</a> to add a doctor to your account.",
         "description": "Message shown when current practice is no user with doctor role"
     },
     {
