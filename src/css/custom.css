@@ -308,10 +308,10 @@ textarea.form-control {
 	background-color: #47a447;
 }
 .btn-grey {
-	background-color: #bdc3c7;
+	background-color: #7f8c8d;
 }
 .btn-grey:hover {
-	background-color: #7f8c8d;
+	background-color: #8f9c9d;
 }
 .btn-lg {
 	font-size: 16px;
@@ -1674,7 +1674,7 @@ td.cell-from .practice, td.cell-to .practice {
 @media (min-width: 1200px) {
 
 	.global-notification-bar{
-		margin-top: 15px;
+		margin-top: 35px;
 		margin-left: 250px;
 		max-width: 670px;
 		min-width: 670px;
@@ -1713,7 +1713,7 @@ td.cell-from .practice, td.cell-to .practice {
 		margin-left: 0;
 	}
 	.section-block td.cell-status {
-		padding-right: 200px;
+		padding-right: 120px;
 	}
 }
 
@@ -1998,4 +1998,16 @@ label.tooth-label-view {
 
 .center-block {
 	float: none;
+}
+
+.hr-half-ident{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.notification-button{
+	padding: 2px 8px 2px 8px !important;
+	font-size: 12px !important;
+	border-radius: 3px;
+	margin-top: -1px;
 }

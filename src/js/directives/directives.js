@@ -85,7 +85,11 @@ angular.module('dentalLinksDirectives')
                         element.attr( 'style',  "background: url(" + attributes.attachmentThumb + '&token=' + auth.token + '&from=' + auth.email + "&is_thumb=true) no-repeat top/contain, url('img/loader.gif') no-repeat top");
                         cssClass = '';
                     }else{
-                        element.attr( 'style',  "background: url(" + attributes.attachmentThumb + "&is_thumb=true) no-repeat top/contain, url('img/loader.gif') no-repeat top");
+                        element.attr( 'style',  "background: url('img/loader.gif') no-repeat top");
+                        angular.element('<img/>').attr('src', attributes.attachmentThumb + "&is_thumb=true").load(function() {
+                            angular.element(this).remove();
+                            element.attr('style', "background: url(" + attributes.attachmentThumb + "&is_thumb=true) no-repeat top/contain");
+                        });
                         cssClass = '';
                     }
                     break;
@@ -389,6 +393,19 @@ angular.module('dentalLinksDirectives')
         },
         templateUrl: 'partials/roles_selector.html',
         controller: 'RolesSelectorController'
+    };
+}])
+
+.directive('userAddresses', [function(){
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            user: '=',
+            practiceAddresses: '='
+        },
+        templateUrl: 'partials/user_addresses.html',
+        controller: 'UserAddressesController'
     };
 }])
 

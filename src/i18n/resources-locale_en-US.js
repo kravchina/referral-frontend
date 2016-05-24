@@ -51,6 +51,16 @@
 
     },
     {
+        "key": "practice.doctor.not.found.header",
+        "value": "Please add a doctor to your account",
+        "description": "Message shown when current practice is no user with doctor role"
+    },
+    {
+        "key": "practice.doctor.not.found",
+        "value": "We are sorry, but in order to send a new referral, you have to have at least one doctor registered in your practice. Please follow this <a ui-sref='admin.users'>link</a> to add a doctor to your account.",
+        "description": "Message shown when current practice is no user with doctor role"
+    },
+    {
         "key":"invalid.token",
         "value":"Error: provided token is invalid",
         "description":"Error message for the case when token was not valid"
@@ -103,7 +113,7 @@
     },
     {
         "key":"invitation.email.invited",
-        "value":"Sorry this email address has been invited in our system.  We will need to resend the special invitation link for you to register using this address",
+        "value":"Sorry, this email address already exists in our system. Click <button type='button' class='btn btn-orange notification-button' ng-click='notification.params.resend()'>here</button> and we will send you a link to register.",
         "description":"Email invited"
     },
     {

@@ -33,7 +33,7 @@ angular.module('viewReferrals')
                     }
                 },
                 function (failure) {
-                    Notification.error('Something happened... Data was not retrieved from server.')
+                    Notification.error(failure.data.error)
                 }
             );
         };
@@ -306,8 +306,20 @@ angular.module('viewReferrals')
 
 
         $scope.deleteAttachment = function(attachment){
-            $scope.referral.attachments.splice($scope.referral.attachments.indexOf(attachment),1);
-            Attachment.delete({id: attachment.id});
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/confirmation.html',
+                controller: 'ConfirmationModalController',
+                resolve: {
+                    confirmMessage: function(){
+                        return "Delete image?";
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function() {
+                $scope.referral.attachments.splice($scope.referral.attachments.indexOf(attachment),1);
+                Attachment.delete({id: attachment.id});
+            });
         };
     }]);
 

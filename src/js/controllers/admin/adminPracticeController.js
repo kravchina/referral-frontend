@@ -75,8 +75,17 @@ angular.module('admin')
                             locationsNumber: function () {
                                 return $scope.practice.addresses.length;
                             },
-                            cancelCallback: function(){
-                                return function(){
+                            subscriptionPrice: function () {
+                                return $scope.practice.subscription_price;
+                            },
+                            basePrice: function(){
+                                return $scope.practice.base_price;
+                            },
+                            subscriptionInterval: function () {
+                                return $scope.practice.subscription_interval;
+                            },
+                            cancelCallback: function () {
+                                return function () {
                                     PracticeEditMode.on();
                                 }
                             }
@@ -138,6 +147,15 @@ angular.module('admin')
                         resolve: {
                             locationsNumber: function () {
                                 return $scope.practice.addresses.length - 1;
+                            },
+                            subscriptionPrice: function () {
+                                return $scope.practice.subscription_price;
+                            },
+                            subscriptionInterval: function () {
+                                return $scope.practice.subscription_interval;
+                            },
+                            basePrice: function(){
+                                return $scope.practice.base_price;
                             },
                             cancelCallback: function(){
                                 return function(){

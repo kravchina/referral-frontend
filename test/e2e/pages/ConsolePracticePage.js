@@ -31,7 +31,7 @@ var ConsolePracticePage = function() {
     };
 
     this.getEditPracticeButton = function(){
-        return element(by.css('#formConsolePractice .btn-edit'));
+        return element(by.css('#formConsolePractice .console-practice-btns .btn-edit'));
     };
 
     this.getSavePracticeButton = function(){
@@ -188,6 +188,35 @@ var ConsolePracticePage = function() {
 
     this.getUserDeleteButton = function(){
         return element(by.css('div.btn-delete'));
+    };
+
+    this.getInviteDialogButton = function(){
+        return element(by.css('button[ng-click="inviteDialog()"]'));
+    };
+
+    //invite dialog
+    this.getInviteDialog = function(){
+        return element(by.css('#formNewProvider'));
+    };
+
+    this.getInviteDialogFirstName = function(){
+        return element(by.css('#formNewProvider input[name="firstName"]'));
+    };
+
+    this.getInviteDialogLastName = function(){
+        return element(by.css('#formNewProvider input[name="lastName"]'));
+    };
+
+    this.getInviteDialogEmail = function(){
+        return element.all(by.css('#formNewProvider input[name="email"]')).get(0);
+    };
+
+    this.getInviteDialogSendButton = function(){
+        return element(by.css('#formNewProvider button[ng-click="ok(model.provider)"]'));
+    };
+
+    this.getInviteDialogDiscardButton =  function(){
+        return element(by.css('#formNewProvider button[ng-click="cancel()"]'));
     };
 
 };

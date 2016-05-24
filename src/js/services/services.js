@@ -95,8 +95,9 @@ angular.module('dentalLinksServices')
             update: {method: 'PUT'},
             deleteAndMoveReferral: {method: 'POST', url: API_ENDPOINT + '/practices/delete_and_move_referral'},
             getAllInvitees: {method: 'POST', url: API_ENDPOINT + '/practices/all_invitees', isArray: true},
-            give1MonthCoupon: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/give_coupon'},
-            prolongTrial: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/prolong_trial'}
+            giveCoupon: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/give_coupon'},
+            prolongTrial: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/prolong_trial'},
+            checkContainsDoctor: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/check_contains_doctor'}
         });
     }])
 
@@ -318,23 +319,27 @@ angular.module('dentalLinksServices')
 }])
 
 .factory('Notification', ['$timeout', function ($timeout) {
-    var notification = {message: undefined, type: undefined, promise: undefined};
+    var notification = {message: undefined, type: undefined, promise: undefined, params: undefined};
     return {
-        info: function(message) {
+        info: function(message, params) {
             notification.message = message;
             notification.type = 'info';
+            notification.params = params;
         },
-        success: function(message) {
+        success: function(message, params) {
             notification.message = message;
             notification.type = 'success';
+            notification.params = params;
         },
-        warning: function(message) {
+        warning: function(message, params) {
             notification.message = message;
             notification.type = 'warning';
+            notification.params = params;
         },
-        error: function(message) {
+        error: function(message, params) {
             notification.message = message;
             notification.type = 'danger';
+            notification.params = params;
         },
         get: function() {
             return notification;
