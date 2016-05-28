@@ -326,10 +326,13 @@ textarea.form-control {
 
 /* Header */
 .navbar {
-	background-color: #45525b;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.17);
-		-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.17);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.17);
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.17);
 }
+.dark-background {
+    background-color: #45525b;
+}
+
 .navbar-fixed-top {
     position: inherit;
 	border-width: 0;
@@ -1513,8 +1516,6 @@ td.cell-from .practice, td.cell-to .practice {
 	.navbar-nav {
 		left: auto;
 		margin: 0;
-		position: relative;
-		right: auto;
 		top: auto;
 		width: auto;
 	}

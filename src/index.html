@@ -48,19 +48,22 @@
 </div>
 
 <div>
-<nav class="navbar navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-fixed-top" role="navigation" ng-class="{'dark-background': logged()}">
 
     <div class="container">
-        <div class="navbar-header">
+        <div class="navbar-header" style="text-align: center; width: 100%;">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" ng-href="#/history">{{env}}
+            <a class="navbar-brand" ng-href="#/history" ng-if="logged()" >{{env}}
                 <img src="img/DCL_banner-300x82.jpg" alt="Dental Care Links"/>
             </a>
+
+            <img src="img/DCL_wordmark-01.png" alt="Dental Care Links" ng-if="!logged()"/>
+
         </div>
         <!--<div class="navbar-collapse collapse">-->
 
