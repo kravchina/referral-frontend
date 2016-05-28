@@ -1,11 +1,11 @@
 angular.module('dentalLinks').controller('NavController', ['$scope', '$state', '$modal', 'Auth', 'Logger', 'Login', 'Spinner', 'UnsavedChanges', 'User', 'API_ENDPOINT', 'HTTP_ERROR_EVENTS', 'Notification', 'ProgressIndicator',
     function ($scope, $state, $modal, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT, HTTP_ERROR_EVENTS, Notification, ProgressIndicator) {
 
-        $scope.env = 'unknown.';
+        $scope.env = '[unknown]';
         if (API_ENDPOINT.indexOf('dental-links-prod-1') > -1) $scope.env = '';
-        if (API_ENDPOINT.indexOf('dental-links-stage-1') > -1) $scope.env = 'stage1.';
-        if (API_ENDPOINT.indexOf('referral-server') > -1) $scope.env = 'dev1.';
-        if (API_ENDPOINT.indexOf('localhost') > -1) $scope.env = 'local.';
+        if (API_ENDPOINT.indexOf('dental-links-stage-1') > -1) $scope.env = '[stage1]';
+        if (API_ENDPOINT.indexOf('referral-server') > -1) $scope.env = '[dev1]';
+        if (API_ENDPOINT.indexOf('localhost') > -1) $scope.env = '[local]';
 
         $scope.progress = ProgressIndicator.get();
 
