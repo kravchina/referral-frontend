@@ -2010,3 +2010,7 @@ label.tooth-label-view {
 	border-radius: 3px;
 	margin-top: -1px;
 }
+
+.cell-copy > span:hover {
+	cursor: pointer;
+}
