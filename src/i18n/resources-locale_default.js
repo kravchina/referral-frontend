@@ -270,6 +270,16 @@
         "key": "email.not.found",
         "value": "Error: This email address is not found in our database.",
         "description": "Message shown in case of non-existing email during request password reset (forgot password feature "
+    },
+    {
+        "key": "unsubscribe.token.not.found.header",
+        "value": "UNSUBSCRIBE FAILURE",
+        "description": "Message shown in case of non-existing token during request unsubscribe"
+    },
+    {
+        "key": "unsubscribe.token.not.found",
+        "value": "Error: This email address is not found in our database.",
+        "description": "Message shown in case of non-existing token during request unsubscribe"
     }
 
 ]
