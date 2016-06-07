@@ -23,7 +23,7 @@ var ConsolePracticePage = function() {
     };
 
     this.getPracticeName = function(){
-        return element.all(by.css('div[ng-show="practiceSearch"] .form-group input')).get(0);
+        return element.all(by.css('div[ng-if="practiceSearch"] .form-group input')).get(0);
     };
 
     this.getPracticeAddButton = function(){
