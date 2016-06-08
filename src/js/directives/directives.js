@@ -263,6 +263,10 @@ angular.module('dentalLinksDirectives')
             var editButton = $element;
             var addAddressButton = $element.next();
             var saveButton = $element.next().next();
+
+            PracticeEditMode.init(editFormCtrl, formCtrl, editButton, addAddressButton, saveButton);
+            PracticeEditMode.off();
+
             // edit
             editButton.on('click', function (e) {
                 PracticeEditMode.init(editFormCtrl, formCtrl, editButton, addAddressButton, saveButton);
