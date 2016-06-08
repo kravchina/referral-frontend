@@ -40,6 +40,7 @@ angular.module('unsavedChanges', []);
 angular.module('dentalLinksServices', ['ngResource']);
 angular.module('dentalLinksDirectives', ['angularFileUpload']);
 angular.module('error', []);
+angular.module('unsubscribe', []);
 
 require('./controllers/admin/adminController.js');
 require('./controllers/admin/adminInviteController.js');
@@ -61,6 +62,7 @@ require('./controllers/registrationController.js');
 require('./controllers/reviewReferralsController.js');
 require('./controllers/savePasswordsController.js');
 require('./controllers/viewReferralsController.js');
+require('./controllers/unsubscribeController.js');
 require('./directives/directives.js');
 require('./services/pdf.js');
 require('./services/referralHelper.js');
@@ -89,6 +91,7 @@ angular.module('dentalLinks', [
     'ui.mask',
     'localization',
     'error',
+    'unsubscribe',
     'isteven-multi-select',
     'angularFileUpload',
     'dentalLinksPartials'

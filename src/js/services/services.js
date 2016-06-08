@@ -145,7 +145,8 @@ angular.module('dentalLinksServices')
         delete: {method: 'DELETE', url: API_ENDPOINT + '/invitations/:id'},
         update: {method: 'PUT', url: API_ENDPOINT + '/invitations/:id'},
         saveUser: {method: 'POST', url: API_ENDPOINT + '/invitations/user'},
-        saveProvider: {method: 'POST', url: API_ENDPOINT + '/invitations/provider'}
+        saveProvider: {method: 'POST', url: API_ENDPOINT + '/invitations/provider'},
+        mailUnsubscribe: {method: 'GET', params: {md_id: '@md_id'}, url: API_ENDPOINT + '/invitation/mail_unsubscribe'}
     });
 }])
 
@@ -205,7 +206,8 @@ angular.module('dentalLinksServices')
         update: {method: 'PUT' },
         changePassword: {method: 'PUT', url: API_ENDPOINT + '/users/:id/change_password'},
         sendPasswordInvitation: {method: 'PUT', url: API_ENDPOINT + '/users/:id/password'},
-        savePassword: {method: 'POST', url: API_ENDPOINT + '/save_password'}
+        savePassword: {method: 'POST', url: API_ENDPOINT + '/save_password'},
+        mailUnsubscribe: {method: 'GET', params: {md_id: '@md_id', confirm: '@confirm'}, url: API_ENDPOINT + '/user/mail_unsubscribe'}
     })
 }])
 
