@@ -8,7 +8,7 @@ angular.module('unsubscribe')
         $scope.unsubscribeData = {
             type: 'user',
             valid: success.valid,
-            message: 'Are you sure you want to unsubscribe from DentalCareLinks? '
+            message: 'Are you sure you want to stop receiving E-mail notifications from Dental Care Links? '
         };
     }, function(failure){
         ProviderInvitation.mailUnsubscribe({md_id: $stateParams.md_id}, function(success){
@@ -36,12 +36,12 @@ angular.module('unsubscribe')
         modalInstance.result.then(function() {
             $state.go('signIn');
         });
-    };
+    }
 
     $scope.confirm = function(data){
         if(data.type == 'user'){
             User.mailUnsubscribe({md_id: $stateParams.md_id, confirm: true}, function(success){
-                ShowConfirmDialog("E-mail notification successfully changed");
+                ShowConfirmDialog("Your E-mail notification preference has been updated. You can always turn notifications back on by logging in to your Dental Care Links account and editing your user settings.");
             });
         } else if(data.type == 'invitation'){
             ProviderInvitation.mailUnsubscribe({md_id: $stateParams.md_id, confirm: true}, function(success){
