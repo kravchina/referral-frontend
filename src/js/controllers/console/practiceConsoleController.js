@@ -1,8 +1,9 @@
 angular.module('console')
     .controller('PracticeConsoleController', 
-    ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Procedure', 'Practice',
-    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, $rootScope, Address, Procedure, Practice){
+    ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Procedure', 'Practice', 'Designation',
+    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, $rootScope, Address, Procedure, Practice, Designation){
         $scope.practiceTypes = Procedure.practiceTypes();
+        $scope.practiceDesignations = Designation.getAll();
         $scope.onPracticeSelected = ConsoleHelper.onPracticeSelected($scope);
         $scope.findPractice = ConsoleHelper.findPractice($scope);
 
@@ -151,6 +152,7 @@ angular.module('console')
         $scope.savePractice = function(practiceForm, destinationPractice){
             if (practiceForm.$dirty && !practiceForm.$invalid) {
                 destinationPractice.practice_type_id = destinationPractice.practice_type.id;
+                destinationPractice.designation_id = destinationPractice.designation.id;
                 destinationPractice.addresses_attributes = destinationPractice.addresses;
                 Practice.update({practiceId: destinationPractice.id}, {practice: destinationPractice}, function (success) {
                     $scope.destinationPractice = $scope.practiceSearch = success;

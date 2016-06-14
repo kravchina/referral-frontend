@@ -259,6 +259,12 @@ angular.module('dentalLinksServices')
     }
 }])
 
+.factory('Designation', ['$resource', 'API_ENDPOINT', function($resource, API_ENDPOINT){
+    return $resource(API_ENDPOINT + '/designations', {}, {
+        getAll: {method: 'GET', isArray: true}
+    });
+}])
+
 .factory('SecurityCode', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/security_code/:id', {}, {})
 }])
@@ -269,7 +275,7 @@ angular.module('dentalLinksServices')
         });
 }])
 
-    .factory('ServerSettings', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+.factory('ServerSettings', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + 'settings', {}, {
         getStripeApiPublicKey: {method: 'GET', url: API_ENDPOINT + '/settings/stripe_public_key', headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
