@@ -1,0 +1,29 @@
+<div class="row" ng-show="unsubscribeData.valid">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Confirm unsubscribe</h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="confirmCheckbox"> {{unsubscribeData.message}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-7">
+                        <button class="btn btn-orange" ng-disabled="!confirmCheckbox" ng-click="confirm(unsubscribeData)">Confirm</button>
+                        <button ui-sref="signIn" class="btn btn-grey">Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

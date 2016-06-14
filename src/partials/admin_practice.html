@@ -106,11 +106,15 @@
                         <tr>
                             <th class="cell-user">Key</th>
                             <th class="cell-created"></th>
+                            <th class="cell-copy"></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr  ng-repeat="key in practice.api_keys">
-                            <td class="cell-user" ng-click="copyToClipboard(key.api_key)">{{key.api_key}}</td>
+                            <td class="cell-user">{{key.api_key}}</td>
+                            <td class="cell-copy" ng-click="copyToClipboard(key.api_key)">
+                                <span class="icon-clipboard pull-right" title="Copy to clipboard"></span>
+                            </td>
                             <td class="cell-created">
                                 <div access="admin" delete-button class="button-block btn-delete api-key-delete" >
                                     <span class="dlicons-remove"></span> Delete this key? <a ng-click="removeApiKey(key)" class="link-green">Yes</a> | <a  class="link-orange">No</a>

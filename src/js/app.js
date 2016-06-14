@@ -217,6 +217,11 @@ angular.module('dentalLinks')
             }]
 
         }).
+        state('unsubscribe', {
+            url: '/unsubscribe?md_id',
+            templateUrl: 'partials/unsubscribe.html',
+            controller: 'UnsubscribeController'
+        }).
         state('debug', {
             url: '/debug',
             templateUrl: 'partials/debug.html'
