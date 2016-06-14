@@ -12,7 +12,7 @@
         </div>
 
         <div id="descriptionText" class="section-block">
-            Premium account is $49.95 per month per practice location or $500 annually per practice location.
+            Premium account is {{ subscriptionPrice / locationsNumber | money}} per month per practice location or $500 annually per practice location.
             <span ng-show="subscriptionPrice && subscriptionInterval">For your practice with {{locationsNumber}} locations, your payment will be ${{ subscriptionPrice | money}} per {{subscriptionInterval }}</span>
         </div>
 
