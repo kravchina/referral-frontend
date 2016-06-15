@@ -260,8 +260,9 @@ angular.module('dentalLinksServices')
 }])
 
 .factory('Designation', ['$resource', 'API_ENDPOINT', function($resource, API_ENDPOINT){
-    return $resource(API_ENDPOINT + '/designations', {}, {
-        getAll: {method: 'GET', isArray: true}
+    return $resource(API_ENDPOINT + '/designations/:id', {}, {
+        getAll: {method: 'GET', isArray: true},
+        update: {method: 'PUT'}
     });
 }])
 
