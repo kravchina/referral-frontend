@@ -152,13 +152,13 @@ angular.module('console')
         $scope.savePractice = function(practiceForm, destinationPractice){
             if (practiceForm.$dirty && !practiceForm.$invalid) {
                 destinationPractice.practice_type_id = destinationPractice.practice_type.id;
-                destinationPractice.designation_id = destinationPractice.designation.id;
+                destinationPractice.designation_id = destinationPractice.designation ? destinationPractice.designation.id : null;
                 destinationPractice.addresses_attributes = destinationPractice.addresses;
                 Practice.update({practiceId: destinationPractice.id}, {practice: destinationPractice}, function (success) {
                     $scope.destinationPractice = $scope.practiceSearch = success;
                     Notification.success('Practice update success');
                 }, function (failure) {
-                    Notification.error('Practice update fail');
+                    Notification.error(failure.data.message ? failure.data.message : 'Practice update fail');
                 });
             }
         };
