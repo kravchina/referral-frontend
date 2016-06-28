@@ -2,21 +2,17 @@ angular.module('unsubscribe')
     .controller('UnsubscribeController', ['$scope', '$state', '$stateParams', 'User', 'ProviderInvitation', '$modal', 'ModalHandler',
     function($scope, $state, $stateParams, User, ProviderInvitation, $modal, ModalHandler){
 
-    $scope.unsubscribeData = {};
+    $scope.unsubscribeData = null;
 
     User.mailUnsubscribe({md_id: $stateParams.md_id}, function(success){
-        $scope.unsubscribeData = {
-            type: 'user',
-            valid: success.valid,
-            message: 'Are you sure you want to stop receiving E-mail notifications from Dental Care Links? '
-        };
+        $scope.unsubscribeData = success;
+        $scope.unsubscribeData.type = 'user';
+        $scope.unsubscribeData.message = 'Are you sure you want to stop receiving E-mail notifications from Dental Care Links? ';
     }, function(failure){
         ProviderInvitation.mailUnsubscribe({md_id: $stateParams.md_id}, function(success){
-            $scope.unsubscribeData = {
-                type: 'invitation',
-                valid: success.valid,
-                message: 'Are you sure you want to unsubscribe? This will also delete invitation to DentalCareLinks from invitee, including any patient referral info they have provided.'
-            };
+            $scope.unsubscribeData = success;
+            $scope.unsubscribeData.type = 'invitation';
+            $scope.unsubscribeData.message = 'Are you sure you want to unsubscribe? This will also delete invitation to DentalCareLinks from ' + success.practice.name + ', including any patient referral info they have provided.';
         }, function(failure){
             $state.go('error_page', {error_key: 'unsubscribe.token.not.found'});
         });
