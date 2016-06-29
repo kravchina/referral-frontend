@@ -83,7 +83,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-9">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Extend</label>
                                 <button type="button" ng-if="destinationPractice.stripe_customer_id"
@@ -99,6 +99,15 @@
                                     <span class="dlicons-plus"></span> 1 month trial
                                 </button>
                                 <!--<input type="date" disabled="disabled" class="form-control data1" ng-model="">-->
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Designation</label>
+                                <select class="form-control data1 select" name="practiceDesignation" ng-model="destinationPractice.designation"
+                                        ng-options="p as p.name for p in practiceDesignations track by p.id" disabled="disabled" ng-required="false">
+                                    <option class="placeholder" value="">Select type &hellip;</option>
+                                </select>
                             </div>
                         </div>
                     </div>
