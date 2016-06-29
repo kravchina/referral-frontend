@@ -235,7 +235,7 @@ angular.module('dentalLinks')
             ModalHandler.dismissIfOpen();  //close dialog if open.
             if (!Auth.authorize(toState.access)) {
                 event.preventDefault();
-                $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
+                $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.url()});
             }
         });
 
@@ -338,7 +338,7 @@ angular.module('dentalLinks')
                     && !path.startsWith('/edit_password')
                     && !path.startsWith('/confirm_email');
                 if (requiresLogin) { //TODO! [mezerny] consider more elegant implementation - now we need to check the location because consequent requests to server from previous view could be finished after redirect to 'sign_in', in that case we are loosing desired 'redirect' location (it is replaced with '/sign_in')
-                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
+                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.url()});
                 } else {
                     Auth.remove();
                 }
