@@ -76,7 +76,7 @@
                         <div class="col-sm-9">
                             <div class="form-group">
                                 <label>Subscription</label>
-                                <span class="form-control data1">{{!destinationPractice.stripe_customer_id && destinationPractice.trial_period ? 'Trial' : 'Premium'}} until {{destinationPractice.subscription_active_until | date: 'mediumDate'}}</span>
+                                <span class="form-control data1">{{destinationPractice.stripe_customer_id ? 'Premium' : 'Trial'}} until {{destinationPractice.subscription_active_until | date: 'mediumDate'}}</span>
                             </div>
                         </div>
 
@@ -93,7 +93,7 @@
                                     <span ng-show="destinationPractice.subscription_interval === 'month'">1 month coupon (${{destinationPractice.subscription_price | money}})</span>
                                     <span ng-show="destinationPractice.subscription_interval === 'year'">Give coupon ($50)</span>
                                 </button>
-                                <button type="button" ng-if="!destinationPractice.stripe_customer_id && destinationPractice.trial_period"
+                                <button type="button" ng-if="!destinationPractice.stripe_customer_id"
                                         ng-click="extendTrial(destinationPractice)" class="btn btn-green btn-toggle-shifted btn-edit"
                                         data-toggle="tooltip" data-placement="top" title="Add practice address">
                                     <span class="dlicons-plus"></span> 1 month trial

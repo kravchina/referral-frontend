@@ -46,9 +46,8 @@ describe("Testing Practice Console Controller", function() {
         stripe_subscription_id: null,
         stripe_token: null,
         subscription_active_until: "2016-02-28T14:28:13.203Z",
-        trial_period: true,
         updated_at: "2016-01-14T14:28:13.197Z",
-        users: [],
+        users: []
     };
 
     var practiceTypesMock = [
@@ -62,7 +61,7 @@ describe("Testing Practice Console Controller", function() {
             "procedures":[{"id":61,"code":"consultation","name":"Consultation","practice_type_id":8,"created_at":"2015-12-11T09:18:45.673Z","updated_at":"2015-12-11T09:18:45.675Z","order_pos":1},{"id":62,"code":"tmd_treatment","name":"TMD Treatment","practice_type_id":8,"created_at":"2015-12-11T09:18:45.677Z","updated_at":"2015-12-11T09:18:45.678Z","order_pos":2},{"id":63,"code":"sleep_apnea_appliance","name":"Sleep Apnea Appliance","practice_type_id":8,"created_at":"2015-12-11T09:18:45.681Z","updated_at":"2015-12-11T09:18:45.683Z","order_pos":3},{"id":64,"code":"other","name":"Other","practice_type_id":8,"created_at":"2015-12-11T09:18:45.685Z","updated_at":"2015-12-11T09:18:45.687Z","order_pos":4}]}];
 
     beforeEach(function(){
-        module('ui.router')
+        module('ui.router');
         module('console');
 
         module(function($provide){
@@ -101,7 +100,7 @@ describe("Testing Practice Console Controller", function() {
             }]);
             $provide.service('Procedure', ['$q', function($q){
                 return {
-                    practiceTypes: jasmine.createSpy('practiceTypes').and.returnValue({$promise: $q.when(practiceTypesMock)}),
+                    practiceTypes: jasmine.createSpy('practiceTypes').and.returnValue({$promise: $q.when(practiceTypesMock)})
                 };
             }]);
             $provide.service('ModalHandler', [function(){

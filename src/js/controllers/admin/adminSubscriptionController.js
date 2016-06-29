@@ -5,11 +5,11 @@ angular.module('admin')
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function(practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
             $scope.paymentNotification = {
-                showTrial: practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
-                showTrialExpired: practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
+                showTrial: !practice.stripe_customer_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
+                showTrialExpired: !practice.stripe_customer_id && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
                 showSubscriptionSuccess: false,
-                showSubscriptionCancelled: !practice.trial_period && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
-                showSubscriptionExpired: !practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime()
+                showSubscriptionCancelled: practice.stripe_customer_id && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
+                showSubscriptionExpired: practice.stripe_customer_id && new Date().getTime() > new Date(practice.subscription_active_until).getTime()
             };
             $scope.subscriptionPrice = practice.subscription_price;
             $scope.subscriptionInterval = practice.subscription_interval;
@@ -41,7 +41,7 @@ angular.module('admin')
             modalInstance.result.then(function (practice) {
                 // $scope.practice.users.push(user);
                 $scope.paymentNotification.showSubscriptionSuccess = true;
-                $scope.paymentNotification.showTrial = practice.trial_period;
+                $scope.paymentNotification.showTrial = !practice.stripe_customer_id;
                 $scope.showSubscriptionExpired = false;
                 $scope.practice = practice;
                 $scope.subscriptionPrice = practice.subscription_price;
