@@ -17,6 +17,7 @@ angular.module('dentalLinks')
 .constant('API_ENDPOINT', '{{API_ENDPOINT}}')
 .constant('AUTH_EVENTS', {
     notAuthenticated: 'auth-not-authenticated',
+    forbidden: 'forbidden',
     paymentRequired: 'payment-required'
 })
 
@@ -257,7 +258,10 @@ angular.module('dentalLinks')
             Logger.log('paymentRequired');
             $state.go('error_page', {error_key: 'payment.required'});
         });
-
+        $rootScope.$on(AUTH_EVENTS.forbidden, function(event, args){
+            Logger.log('forbidden');
+            $state.go('error_page', {error_key: 'access.denied'});
+        });
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
             if(error == 'redirect_to_viewReferral'){
                 $state.go('viewReferral', toParams);
@@ -345,6 +349,9 @@ angular.module('dentalLinks')
             } else if (response.status === 402) {
                 //don't allow to show referral in case of expired subscription
                 $rootScope.$broadcast(AUTH_EVENTS.paymentRequired, {redirect: redirect.path})
+            } else if (response.status === 409){
+                //don't allow to show referral for a user that doesn't have appropriate permission (his practice is neither origin nor destination for that referral)
+                $rootScope.$broadcast(AUTH_EVENTS.forbidden, {redirect: redirect.path})
             }
 
             return $q.reject(response);
