@@ -1,7 +1,7 @@
 angular.module('console')
     .controller('PracticeConsoleController', 
-    ['$scope', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Procedure', 'Practice', 'Designation',
-    function($scope, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, $rootScope, Address, Procedure, Practice, Designation){
+    ['$scope', '$stateParams', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Procedure', 'Practice', 'Designation',
+    function($scope, $stateParams, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, $rootScope, Address, Procedure, Practice, Designation){
         $scope.practiceTypes = Procedure.practiceTypes();
         $scope.practiceDesignations = Designation.getAll();
         $scope.onPracticeSelected = ConsoleHelper.onPracticeSelected($scope);
@@ -10,6 +10,15 @@ angular.module('console')
         $scope.showFullRole = ConsoleHelper.showFullRole();
 
         $scope.showUserSpecialty = ConsoleHelper.showUserSpecialty($scope.practiceTypes);
+
+        if($stateParams.id){
+            Practice.get({practiceId: $stateParams.id}, function(success){
+                $scope.practiceSearch = success;
+                $scope.onPracticeSelected(success);
+            }, function(failure){
+                Notification.error('An error occurred during get practice...');
+            });
+        }
 
         $scope.editDialog = function(editUser){
             var modalInstance;

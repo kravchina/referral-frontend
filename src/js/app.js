@@ -162,7 +162,7 @@ angular.module('dentalLinks')
             controller: 'ConsoleController'
         }).
         state('console.practice', {
-            url: '/practice',
+            url: '/practice?id',
             templateUrl: 'partials/console_practice.html',
             controller: 'PracticeConsoleController',
             access: [USER_ROLES.super]

@@ -51,6 +51,7 @@
             <div class="panel-body report-panel-scroll">
                 <accordion close-others="false">
                     <accordion-group heading="{{$index+1}}) {{practice.name}}" ng-repeat="practice in practices">
+                        <a ui-sref="console.practice({id: practice.id})">View practice details</a>
                         <label>Created</label>
                         <input type="text" class="form-control" value="{{practice.created_at | date: 'mediumDate'}}" disabled>
                     </accordion-group>
