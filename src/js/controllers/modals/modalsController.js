@@ -441,11 +441,12 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
-        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
+    ['$scope', '$state', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
+        function ($scope, $state, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
+            $scope.state = $state;
             $scope.practiceTypes = [];
             Procedure.practiceTypes({'include_procedures': false}, function(success){
                 success.map(function(item){
@@ -535,11 +536,12 @@ angular.module('modals')
 }])
 
 .controller('EditNoLoginUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure', 'practiceAddresses',
-    function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure, practiceAddresses) {
+    ['$scope', '$state', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure', 'practiceAddresses',
+    function ($scope, $state, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure, practiceAddresses) {
         $scope.user = editUser;
         $scope.alerts = [];
         $scope.practiceTypes = [];
+        $scope.state = $state;
         Procedure.practiceTypes({'include_procedures': false}, function(success){
             success.map(function(item){
                 if(item.code !== 'multi_specialty'){
@@ -566,7 +568,9 @@ angular.module('modals')
         };
 
         $scope.save = function(user){
-            User.update({id: user.id}, {user: {specialty_type_id: user.specialty_type_id, user_addresses_attributes: user.user_addresses_attributes}}, function(success){
+            User.update({id: user.id},
+                {user: {first_name: user.first_name, last_name: user.last_name, specialty_type_id: user.specialty_type_id, user_addresses_attributes: user.user_addresses_attributes}},
+                function(success){
                 ModalHandler.dismiss($modalInstance);
             }, function(failure){
                 $scope.alerts = [];
