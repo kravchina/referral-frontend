@@ -13,9 +13,9 @@ angular.module('viewReferrals')
 
         Practice.get({practiceId: $scope.auth.practice_id}, function(practice){
             $scope.paymentNotification = {
-                showTrial: practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
+                showTrial: !practice.stripe_customer_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
                 expirationDate: new Date(practice.subscription_active_until),
-                showSubscriptionCancelled: !practice.trial_period && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime()
+                showSubscriptionCancelled: practice.stripe_customer_id && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime()
             }
         });
 

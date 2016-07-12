@@ -92,6 +92,16 @@
         "description": "Error message for the case when user tries to open referral, but his practice didn't pay for a premium account."
     },
     {
+        "key": "access.denied.header",
+        "value": "YOU ARE NOT ALLOWED TO VIEW THIS PAGE",
+        "description": "Error page header for the case when user tries to open referral, but user doesn't have permissions for that."
+    },
+    {
+        "key": "access.denied",
+        "value": "We are sorry but you don't have appropriate permissions to view this page.",
+        "description": "Error message for the case when user tries to open referral, but his practice didn't pay for a premium account."
+    },
+    {
         "key":"error.http.requestTimeout",
         "value":"Request Timeout Error. Please try again.",
         "description":"Request Timeout Error"

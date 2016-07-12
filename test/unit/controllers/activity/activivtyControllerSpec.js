@@ -1,15 +1,9 @@
 describe("ActivityController", function() {
 
     var $controller, $scope;
-    var activitiesDataMock =  {activities: ['firstActivity'], activities_total_count: 1};
-    var activityServiceMoreItemsMock = {
-        find: function(){
-            callback(activitiesDataMock);
-        }
-    };
     var activityServiceMock = {
         find: function(requestData, callback){
-            callback(activitiesDataMock);
+            callback( {activities: ['activityItem'], activities_total_count: 1});
         }};
 
 
@@ -17,11 +11,9 @@ describe("ActivityController", function() {
         module('ui.router');
         module('activity');
         spyOn(activityServiceMock, 'find').and.callThrough();
-        spyOn(activityServiceMoreItemsMock, 'find');
         module(function($provide){
             $provide.service('Activity', function(){
                 return activityServiceMock;
-
             });
 
             $provide.service('Practice', function(){
@@ -46,20 +38,21 @@ describe("ActivityController", function() {
         expect(activityServiceMock.find).toHaveBeenCalled();
         expect($scope.activities).toBeDefined();
         expect($scope.activities_total_count).toEqual(1);
-        expect($scope.activities).toContain(activitiesDataMock.activities[0]);
+        expect($scope.activities).toContain('activityItem');
     });
 
     it('adds activities on scrolling', function(){
-        $scope.activities = activitiesDataMock.activities;
-        $scope.practice.id = 1;
+        $scope.practice = {id:1};
         $scope.start_date = new Date();
         $scope.end_date = new Date();
         $scope.limitTo = 1;
-        expect(activityServiceMoreItemsMock.find).toHaveBeenCalled();
+        $scope.offset = 1;
+        expect(activityServiceMock.find).toHaveBeenCalled();
         expect($scope.activities).toBeDefined();
-        expect($scope.activities_total_count).toEqual(1);
-        //$scope.addMoreItems();
-        expect($scope.activities_total_count).toEqual(2);
+        expect($scope.activities.length).toEqual(1);
+        $scope.addMoreItems();
+        expect(activityServiceMock.find).toHaveBeenCalled();
+        expect($scope.activities.length).toEqual(2);
     });
 
 });

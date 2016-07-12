@@ -17,6 +17,7 @@ angular.module('dentalLinks')
 .constant('API_ENDPOINT', '{{API_ENDPOINT}}')
 .constant('AUTH_EVENTS', {
     notAuthenticated: 'auth-not-authenticated',
+    forbidden: 'forbidden',
     paymentRequired: 'payment-required'
 })
 
@@ -235,7 +236,7 @@ angular.module('dentalLinks')
             ModalHandler.dismissIfOpen();  //close dialog if open.
             if (!Auth.authorize(toState.access)) {
                 event.preventDefault();
-                $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
+                $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.url()});
             }
         });
 
@@ -257,7 +258,10 @@ angular.module('dentalLinks')
             Logger.log('paymentRequired');
             $state.go('error_page', {error_key: 'payment.required'});
         });
-
+        $rootScope.$on(AUTH_EVENTS.forbidden, function(event, args){
+            Logger.log('forbidden');
+            $state.go('error_page', {error_key: 'access.denied'});
+        });
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
             if(error == 'redirect_to_viewReferral'){
                 $state.go('viewReferral', toParams);
@@ -338,13 +342,16 @@ angular.module('dentalLinks')
                     && !path.startsWith('/edit_password')
                     && !path.startsWith('/confirm_email');
                 if (requiresLogin) { //TODO! [mezerny] consider more elegant implementation - now we need to check the location because consequent requests to server from previous view could be finished after redirect to 'sign_in', in that case we are loosing desired 'redirect' location (it is replaced with '/sign_in')
-                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
+                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.url()});
                 } else {
                     Auth.remove();
                 }
             } else if (response.status === 402) {
                 //don't allow to show referral in case of expired subscription
                 $rootScope.$broadcast(AUTH_EVENTS.paymentRequired, {redirect: redirect.path})
+            } else if (response.status === 409){
+                //don't allow to show referral for a user that doesn't have appropriate permission (his practice is neither origin nor destination for that referral)
+                $rootScope.$broadcast(AUTH_EVENTS.forbidden, {redirect: redirect.path})
             }
 
             return $q.reject(response);

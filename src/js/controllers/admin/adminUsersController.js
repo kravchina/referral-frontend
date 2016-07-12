@@ -33,16 +33,18 @@ angular.module('admin')
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (user) {
-                var newModalInstance = $modal.open({
-                    templateUrl: 'partials/invite_user_result.html',
-                    controller: 'InviteUserResultController',
-                    resolve: {
-                        toEmail: function(){
-                            return user.email;
+                if(!user.no_login){
+                    var newModalInstance = $modal.open({
+                        templateUrl: 'partials/invite_user_result.html',
+                        controller: 'InviteUserResultController',
+                        resolve: {
+                            toEmail: function(){
+                                return user.email;
+                            }
                         }
-                    }
-                });
-                ModalHandler.set(newModalInstance);
+                    });
+                    ModalHandler.set(newModalInstance);
+                }
 
                 $scope.invitedUsers.push(user);
             });
@@ -94,9 +96,20 @@ angular.module('admin')
 
             }
             ModalHandler.set(modalInstance);
-            /*modalInstance.result.then(function (user) {
-                editUser.is_admin = user.is_admin; //update user's role after editing
-            });*/
+            modalInstance.result.then(function (user) {
+                if(user.password) {
+                    var passwordEditModal = $modal.open({
+                        templateUrl: 'partials/password_edit_modal.html',
+                        controller: 'PasswordEditModalController',
+                        resolve: {
+                            message: function () {
+                                return 'Your password has been changed successfully';
+                            }
+                        }
+                    });
+                    ModalHandler.set(passwordEditModal);
+                }
+            });
         };
 
         $scope.deleteUser = function (user) {

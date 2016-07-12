@@ -18,7 +18,7 @@ angular.module('login')
                     Logger.log(success);
                     Auth.current_user = user;
                     $scope.email = user.email;
-                    $location.path(redirect.path);
+                    $location.url(redirect.path);
                 },
                 function (failure) {
                     Logger.log(failure);

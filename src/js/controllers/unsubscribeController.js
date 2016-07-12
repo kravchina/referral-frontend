@@ -2,20 +2,20 @@ angular.module('unsubscribe')
     .controller('UnsubscribeController', ['$scope', '$state', '$stateParams', 'User', 'ProviderInvitation', '$modal', 'ModalHandler',
     function($scope, $state, $stateParams, User, ProviderInvitation, $modal, ModalHandler){
 
-    $scope.unsubscribeData = {};
+    $scope.unsubscribeData = null;
 
     User.mailUnsubscribe({md_id: $stateParams.md_id}, function(success){
         $scope.unsubscribeData = {
             type: 'user',
             valid: success.valid,
-            message: 'Are you sure you want to unsubscribe from DentalCareLinks? '
+            message: 'Are you sure you want to stop receiving E-mail notifications from Dental Care Links?'
         };
     }, function(failure){
         ProviderInvitation.mailUnsubscribe({md_id: $stateParams.md_id}, function(success){
             $scope.unsubscribeData = {
                 type: 'invitation',
                 valid: success.valid,
-                message: 'Are you sure you want to unsubscribe? This will also delete invitation to DentalCareLinks from invitee, including any patient referral info they have provided.'
+                message: 'Are you sure you want to unsubscribe? This will also delete your invitation to DentalCareLinks from ' + (success.practice ? success.practice.name : 'the invitee') + ', including any patient referral info they have provided.'
             };
         }, function(failure){
             $state.go('error_page', {error_key: 'unsubscribe.token.not.found'});
@@ -36,12 +36,12 @@ angular.module('unsubscribe')
         modalInstance.result.then(function() {
             $state.go('signIn');
         });
-    };
+    }
 
     $scope.confirm = function(data){
         if(data.type == 'user'){
             User.mailUnsubscribe({md_id: $stateParams.md_id, confirm: true}, function(success){
-                ShowConfirmDialog("E-mail notification successfully changed");
+                ShowConfirmDialog("Your E-mail notification preference has been updated. You can always turn notifications back on by logging in to your Dental Care Links account and editing your user settings.");
             });
         } else if(data.type == 'invitation'){
             ProviderInvitation.mailUnsubscribe({md_id: $stateParams.md_id, confirm: true}, function(success){

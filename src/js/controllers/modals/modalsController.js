@@ -686,6 +686,15 @@ angular.module('modals')
         };
 }])
 
+.controller('PasswordEditModalController', ['$scope', '$modalInstance', 'ModalHandler', 'message',
+    function($scope, $modalInstance, ModalHandler, message){
+        $scope.message = message;
+
+        $scope.ok = function(){
+            ModalHandler.close($modalInstance);
+        };
+}])
+
 .controller('RegistrationEmailResendModalController', ['$scope', '$modalInstance', 'ModalHandler',
     function ($scope, $modalInstance, ModalHandler) {
         $scope.ok = function () {
