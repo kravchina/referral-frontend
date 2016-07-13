@@ -28,6 +28,7 @@ var AdminPracticePremiumSpec = function() {
                 adminPracticePage.getStateElement(newAddressForm).element(by.cssContainingText('option', 'AK')).click();
                 adminPracticePage.getZipElement(newAddressForm).sendKeys(123456);
                 expect(adminPracticePage.getPracticeSaveButton().isEnabled()).toBe(true);
+                commonActions.scrollIntoView(adminPracticePage.getPracticeSaveButton());
                 adminPracticePage.getPracticeSaveButton().click();
                 expect(adminPracticePage.getSubscriptionNotificationModal().isPresent()).toBe(true);
                 expect(adminPracticePage.getSubscriptionNotificationModal().element(by.id('subscription_ok_btn')).isEnabled()).toBe(true);
