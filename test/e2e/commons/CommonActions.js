@@ -17,6 +17,12 @@ var CommonActions = function() {
     this.maximizeBrowser = function() {
         browser.driver.manage().window().maximize();
     };
+
+    this.scrollIntoView = function(el) {
+        browser.executeScript(function(el) {
+            el.scrollIntoView(false);
+        }, el.getWebElement());
+    };
     
 };
 

@@ -320,37 +320,28 @@ angular.module('dentalLinksServices')
     }
 }])
 
-.factory('Notification', ['$timeout', '$anchorScroll', function ($timeout, $anchorScroll) {
+.factory('Notification', ['$timeout', function ($timeout) {
     var notification = {message: undefined, type: undefined, promise: undefined, params: undefined};
-    function ScrollToNotification () {
-        $timeout(function() {
-            $anchorScroll('global-notification-bar');
-        }, 0);
-    };
     return {
         info: function(message, params) {
             notification.message = message;
             notification.type = 'info';
             notification.params = params;
-            ScrollToNotification();
         },
         success: function(message, params) {
             notification.message = message;
             notification.type = 'success';
             notification.params = params;
-            ScrollToNotification();
         },
         warning: function(message, params) {
             notification.message = message;
             notification.type = 'warning';
             notification.params = params;
-            ScrollToNotification();
         },
         error: function(message, params) {
             notification.message = message;
             notification.type = 'danger';
             notification.params = params;
-            ScrollToNotification();
         },
         get: function() {
             return notification;
