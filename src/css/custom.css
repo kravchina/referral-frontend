@@ -2024,5 +2024,6 @@ label.tooth-label-view {
 }
 
 .light-background img {
-	height: 100px;
+	max-height: 100px;
+    max-width: 100%;
 }
