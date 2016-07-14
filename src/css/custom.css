@@ -333,8 +333,12 @@ textarea.form-control {
     background-color: #45525b;
 }
 
+.light-background {
+	background-color: #f3f3f3;
+}
+
 .navbar-fixed-top {
-    position: inherit;
+    position: fixed;
 	border-width: 0;
 	z-index: 1050;
 }
@@ -1529,7 +1533,7 @@ td.cell-from .practice, td.cell-to .practice {
 	.navbar .navbar-brand {
 		font-size: 24px;
 		font-size: 2.4rem;
-		padding: 40px 20px;
+		padding: 7px 20px;
 	}
 	.navbar-nav .open .dropdown-menu {
 		border-radius: 0 0 5px 5px;
@@ -2013,4 +2017,13 @@ label.tooth-label-view {
 
 .cell-copy > span:hover {
 	cursor: pointer;
+}
+
+.content-container {
+	margin-top: 135px;
+}
+
+.light-background img {
+	max-height: 100px;
+    max-width: 100%;
 }

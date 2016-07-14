@@ -1,4 +1,5 @@
 var commonExpects = require('../../../commons/CommonExpects');
+var commonActions = require('../../../commons/CommonActions');
 var consolePracticePage = require('../../../pages/ConsolePracticePage');
 
 var ConsolePracticeSpec = function() {
@@ -125,6 +126,7 @@ var ConsolePracticeSpec = function() {
                 consolePracticePage.getPracticeTypeSelect().element(by.cssContainingText('option', 'Multi-Specialty')).click();
                 consolePracticePage.getSavePracticeButton().click();
 
+                commonActions.scrollIntoView(consolePracticePage.getUser());
                 consolePracticePage.getUser().click();
                 expect(consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).isDisplayed()).toBe(true);
                 consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).click();
