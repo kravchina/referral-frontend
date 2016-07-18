@@ -26,7 +26,7 @@
                         <label>Status</label>
                         <input type="text" class="form-control" value="{{invitation.status}}" disabled>
                         <label>Invited by</label>
-                        <input type="text" class="form-control" value="{{invitation.practice.name}}" disabled>
+                        <input type="text" class="form-control" value="{{invitation.inviter.first_name}} {{invitation.inviter.last_name}} from {{invitation.inviter.practice.name}}" disabled>
                     </accordion-group>
                 </accordion>
             </div>
