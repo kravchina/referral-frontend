@@ -11,7 +11,7 @@
         <div class="input-block">
             <input type="email" name="email" class="form-control" ng-model="user.email" ng-change="checkEmail(user.email)" ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }">
         </div>
-        <div class="input-block" ng-show="!state.includes('console')">
+        <div class="input-block" ng-show="!isConsole">
             <input type="text" name="userRole" class="form-control" ng-value="roleName(user.roles_mask)" ng-disabled="true">
         </div>
         <div class="input-block" ng-class="{ 'has-error': userForm.password.$dirty && userForm.password.$invalid }">
@@ -22,8 +22,8 @@
         </div>
         <user-addresses user="user" practice-addresses="practiceAddresses"></user-addresses>
         <alert type="warning">Users with Admin privileges are allowed to create and edit users, allows auxiliary to sign and send referrals and to set referrals complete</alert>
-        <div roles-selector show-roles="showRoles" input-mask="user.roles_mask" ng-show="state.includes('console')"></div>
-        <div access="admin" class="input-block" ng-show="!state.includes('console')">
+        <div roles-selector show-roles="showRoles" input-mask="user.roles_mask" ng-show="isConsole"></div>
+        <div access="admin" class="input-block" ng-show="!isConsole">
             <label>
                 <input type="checkbox" name="is_admin" ng-model="user.is_admin">
                 Admin?

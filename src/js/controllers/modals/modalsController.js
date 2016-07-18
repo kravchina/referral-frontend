@@ -441,12 +441,12 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', '$state', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
-        function ($scope, $state, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
+    ['$scope', 'isConsole', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
+        function ($scope, isConsole, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
-            $scope.state = $state;
+            $scope.isConsole = isConsole;
             $scope.practiceTypes = [];
             $scope.showRoles = [USER_ROLES.aux, USER_ROLES.doctor, USER_ROLES.admin]
             Procedure.practiceTypes({'include_procedures': false}, function(success){
@@ -485,7 +485,7 @@ angular.module('modals')
 
 
             $scope.ok = function (user) {
-                if(!$state.includes('console')) {
+                if(!isConsole) {
                     if (Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && !user.is_admin) {
                         user.roles_mask -= USER_ROLES.admin.mask;
                     } else if (!Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && user.is_admin) {
