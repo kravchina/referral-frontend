@@ -5,10 +5,10 @@
     </div>
     <div class="modal-body">
         <alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.message | i18n}}</alert>
-        <div class="input-block" ng-if="!state.includes('console')">
+        <div class="input-block" ng-if="!isConsole">
             <input type="text" name="userName" class="form-control" ng-value="user.first_name +' '+ user.last_name" ng-disabled="true">
         </div>
-        <div class="row" ng-if="state.includes('console')">
+        <div class="row" ng-if="isConsole">
             <div class="col-sm-6">
                 <div class="input-block">
                     <label>First name</label>
