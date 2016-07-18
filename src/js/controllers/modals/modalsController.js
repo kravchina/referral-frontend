@@ -566,7 +566,13 @@ angular.module('modals')
         };
 
         $scope.save = function(user){
-            User.update({id: user.id}, {user: {specialty_type_id: user.specialty_type_id, user_addresses_attributes: user.user_addresses_attributes}}, function(success){
+            User.update({id: user.id}, {
+                user: {
+                    title: user.title,
+                    specialty_type_id: user.specialty_type_id,
+                    user_addresses_attributes: user.user_addresses_attributes
+                }
+            }, function(success){
                 ModalHandler.dismiss($modalInstance);
             }, function(failure){
                 $scope.alerts = [];
