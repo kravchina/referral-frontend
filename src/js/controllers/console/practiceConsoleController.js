@@ -51,7 +51,7 @@ angular.module('console')
                         practiceAddresses: function(){
                             return $scope.destinationPractice.addresses;
                         },
-                        isConsole: function(){
+                        showInEditDialog: function(){
                             return true;
                         }
                     }
