@@ -43,6 +43,10 @@ var AdminUsersPage = function() {
         return element(by.model('user.specialty_type_id'));
     };
 
+    this.getEditModalSalutation = function(){
+        return element(by.css('#selectSalutation'));
+    };
+
     this.getAddUserButton = function(){
         return element(by.css('button[ng-click="usersDialog()"]'));
     };

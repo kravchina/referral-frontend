@@ -441,13 +441,15 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', 'showNameControls', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
-        function ($scope, showNameControls, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
+    ['$scope', 'showNameControls', 'showRoleSelector', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
+        function ($scope, showNameControls, showRoleSelector, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
             $scope.showNameControls = showNameControls;
+            $scope.showRoleSelector = showRoleSelector;
             $scope.practiceTypes = [];
+            $scope.showRoles = [USER_ROLES.aux, USER_ROLES.doctor, USER_ROLES.admin]
             Procedure.practiceTypes({'include_procedures': false}, function(success){
                 success.map(function(item){
                     if(item.code !== 'multi_specialty'){
@@ -484,10 +486,12 @@ angular.module('modals')
 
 
             $scope.ok = function (user) {
-                if(Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && !user.is_admin) {
-                    user.roles_mask -= USER_ROLES.admin.mask;
-                } else if(!Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && user.is_admin) {
-                    user.roles_mask += USER_ROLES.admin.mask;
+                if(!showRoleSelector) {
+                    if (Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && !user.is_admin) {
+                        user.roles_mask -= USER_ROLES.admin.mask;
+                    } else if (!Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && user.is_admin) {
+                        user.roles_mask += USER_ROLES.admin.mask;
+                    }
                 }
                 if (user.password != user.password_confirmation) {
                     $scope.alerts = [];
@@ -568,9 +572,15 @@ angular.module('modals')
         };
 
         $scope.save = function(user){
-            User.update({id: user.id},
-                {user: {first_name: user.first_name, last_name: user.last_name, specialty_type_id: user.specialty_type_id, user_addresses_attributes: user.user_addresses_attributes}},
-                function(success){
+            User.update({id: user.id}, {
+                user: {
+                    title: user.title,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    specialty_type_id: user.specialty_type_id,
+                    user_addresses_attributes: user.user_addresses_attributes
+                }
+            }, function(success){
                 ModalHandler.dismiss($modalInstance);
             }, function(failure){
                 $scope.alerts = [];

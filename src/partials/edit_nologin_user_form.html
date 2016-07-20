@@ -5,6 +5,15 @@
     </div>
     <div class="modal-body">
         <alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.message | i18n}}</alert>
+        <div class="input-block">
+            <select id="selectSalutation" name="salutation" ng-model="user.title" class="form-control">
+                <option selected="selected" disabled="disabled" class="placeholder" value="">Select salutation</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Mrs.">Mrs.</option>
+                <option value="Dr.">Dr.</option>
+            </select>
+        </div>
         <div class="input-block" ng-if="!showNameControls">
             <input type="text" name="userName" class="form-control" ng-value="user.first_name +' '+ user.last_name" ng-disabled="true">
         </div>
