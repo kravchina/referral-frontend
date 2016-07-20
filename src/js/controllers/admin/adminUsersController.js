@@ -90,7 +90,7 @@ angular.module('admin')
                         practiceAddresses: function(){
                             return $scope.practice.addresses;
                         },
-                        showInEditDialog: function(){
+                        showRoleSelector: function(){
                             return false;
                         }
                     }
