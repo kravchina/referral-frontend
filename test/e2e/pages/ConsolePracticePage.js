@@ -1,5 +1,5 @@
 var ConsolePracticePage = function() {
-    this.url = "/#/console/practice";
+    this.url = "/#/console/practice/";
 
     this.open = function() {
         browser.get(this.url);
@@ -217,6 +217,27 @@ var ConsolePracticePage = function() {
 
     this.getInviteDialogDiscardButton =  function(){
         return element(by.css('#formNewProvider button[ng-click="cancel()"]'));
+    };
+
+    //edit user dialog
+    this.getEditUserDialog = function(){
+        return element(by.css('#formEditUser'));
+    };
+
+    this.getEditUserDialogButton = function(){
+        return element(by.css('div[ng-click="editDialog(practiceUser)"]'));
+    };
+
+    this.getEditUserDialogSalutation = function(){
+        return element(by.css('#selectSalutation'));
+    };
+
+    this.getEditUserDialogSaveButton = function(){
+        return element(by.css('#formEditUser button[ng-click="ok(user)"]'));
+    };
+
+    this.getEditUserDialogDiscardButton = function(){
+        return element(by.css('#formEditUser button[ng-click="cancel()"].btn'));
     };
 
 };
