@@ -441,12 +441,14 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
-        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
+    ['$scope', 'showRoleSelector', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
+        function ($scope, showRoleSelector, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
+            $scope.showRoleSelector = showRoleSelector;
             $scope.practiceTypes = [];
+            $scope.showRoles = [USER_ROLES.aux, USER_ROLES.doctor, USER_ROLES.admin]
             Procedure.practiceTypes({'include_procedures': false}, function(success){
                 success.map(function(item){
                     if(item.code !== 'multi_specialty'){
@@ -483,10 +485,12 @@ angular.module('modals')
 
 
             $scope.ok = function (user) {
-                if(Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && !user.is_admin) {
-                    user.roles_mask -= USER_ROLES.admin.mask;
-                } else if(!Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && user.is_admin) {
-                    user.roles_mask += USER_ROLES.admin.mask;
+                if(!showRoleSelector) {
+                    if (Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && !user.is_admin) {
+                        user.roles_mask -= USER_ROLES.admin.mask;
+                    } else if (!Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && user.is_admin) {
+                        user.roles_mask += USER_ROLES.admin.mask;
+                    }
                 }
                 if (user.password != user.password_confirmation) {
                     $scope.alerts = [];

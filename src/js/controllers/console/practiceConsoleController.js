@@ -59,6 +59,9 @@ angular.module('console')
                         },
                         practiceAddresses: function(){
                             return $scope.destinationPractice.addresses;
+                        },
+                        showRoleSelector: function(){
+                            return true;
                         }
                     }
                 });

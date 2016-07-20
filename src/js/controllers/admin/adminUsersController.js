@@ -89,6 +89,9 @@ angular.module('admin')
                         },
                         practiceAddresses: function(){
                             return $scope.practice.addresses;
+                        },
+                        showRoleSelector: function(){
+                            return false;
                         }
                     }
                 });
