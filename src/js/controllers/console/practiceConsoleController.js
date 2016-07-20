@@ -36,6 +36,9 @@ angular.module('console')
                         },
                         practiceAddresses: function(){
                             return $scope.destinationPractice.addresses;
+                        },
+                        showNameControls: function(){
+                            return true;
                         }
                     }
                 });
@@ -61,6 +64,9 @@ angular.module('console')
                             return $scope.destinationPractice.addresses;
                         },
                         showRoleSelector: function(){
+                            return true;
+                        },
+                        showNameControls: function(){
                             return true;
                         }
                     }

@@ -66,6 +66,9 @@ angular.module('admin')
                         },
                         practiceAddresses: function(){
                             return $scope.practice.addresses;
+                        },
+                        showNameControls: function(){
+                            return false;
                         }
                     }
                 });
@@ -91,6 +94,9 @@ angular.module('admin')
                             return $scope.practice.addresses;
                         },
                         showRoleSelector: function(){
+                            return false;
+                        },
+                        showNameControls: function(){
                             return false;
                         }
                     }

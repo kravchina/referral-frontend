@@ -441,11 +441,12 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', 'showRoleSelector', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
-        function ($scope, showRoleSelector, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
+    ['$scope', 'showNameControls', 'showRoleSelector', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
+        function ($scope, showNameControls, showRoleSelector, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
+            $scope.showNameControls = showNameControls;
             $scope.showRoleSelector = showRoleSelector;
             $scope.practiceTypes = [];
             $scope.showRoles = [USER_ROLES.aux, USER_ROLES.doctor, USER_ROLES.admin]
@@ -539,11 +540,12 @@ angular.module('modals')
 }])
 
 .controller('EditNoLoginUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure', 'practiceAddresses',
-    function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure, practiceAddresses) {
+    ['$scope', 'showNameControls', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure', 'practiceAddresses',
+    function ($scope, showNameControls, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure, practiceAddresses) {
         $scope.user = editUser;
         $scope.alerts = [];
         $scope.practiceTypes = [];
+        $scope.showNameControls = showNameControls;
         Procedure.practiceTypes({'include_procedures': false}, function(success){
             success.map(function(item){
                 if(item.code !== 'multi_specialty'){
@@ -573,6 +575,8 @@ angular.module('modals')
             User.update({id: user.id}, {
                 user: {
                     title: user.title,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
                     specialty_type_id: user.specialty_type_id,
                     user_addresses_attributes: user.user_addresses_attributes
                 }
