@@ -28,7 +28,7 @@ angular.module('console')
                         practiceAddresses: function(){
                             return $scope.destinationPractice.addresses;
                         },
-                        showInEditDialog: function(){
+                        showNameControls: function(){
                             return true;
                         }
                     }
@@ -54,7 +54,7 @@ angular.module('console')
                         practiceAddresses: function(){
                             return $scope.destinationPractice.addresses;
                         },
-                        showInEditDialog: function(){
+                        showNameControls: function(){
                             return true;
                         }
                     }

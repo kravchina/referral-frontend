@@ -441,12 +441,12 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', 'showInEditDialog', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
-        function ($scope, showInEditDialog, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
+    ['$scope', 'showNameControls', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
+        function ($scope, showNameControls, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
-            $scope.showInEditDialog = showInEditDialog;
+            $scope.showNameControls = showNameControls;
             $scope.practiceTypes = [];
             Procedure.practiceTypes({'include_procedures': false}, function(success){
                 success.map(function(item){
@@ -536,12 +536,12 @@ angular.module('modals')
 }])
 
 .controller('EditNoLoginUserModalController',
-    ['$scope', 'showInEditDialog', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure', 'practiceAddresses',
-    function ($scope, showInEditDialog, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure, practiceAddresses) {
+    ['$scope', 'showNameControls', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure', 'practiceAddresses',
+    function ($scope, showNameControls, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure, practiceAddresses) {
         $scope.user = editUser;
         $scope.alerts = [];
         $scope.practiceTypes = [];
-        $scope.showInEditDialog = showInEditDialog;
+        $scope.showNameControls = showNameControls;
         Procedure.practiceTypes({'include_procedures': false}, function(success){
             success.map(function(item){
                 if(item.code !== 'multi_specialty'){

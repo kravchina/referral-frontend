@@ -67,7 +67,7 @@ angular.module('admin')
                         practiceAddresses: function(){
                             return $scope.practice.addresses;
                         },
-                        showInEditDialog: function(){
+                        showNameControls: function(){
                             return false;
                         }
                     }
@@ -93,7 +93,7 @@ angular.module('admin')
                         practiceAddresses: function(){
                             return $scope.practice.addresses;
                         },
-                        showInEditDialog: function(){
+                        showNameControls: function(){
                             return false;
                         }
                     }
