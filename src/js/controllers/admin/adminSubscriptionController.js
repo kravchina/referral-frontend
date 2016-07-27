@@ -42,7 +42,7 @@ angular.module('admin')
                 // $scope.practice.users.push(user);
                 $scope.paymentNotification.showSubscriptionSuccess = true;
                 $scope.paymentNotification.showTrial = !practice.stripe_customer_id;
-                $scope.showSubscriptionExpired = false;
+                $scope.paymentNotification.showSubscriptionExpired = false;
                 $scope.practice = practice;
                 $scope.subscriptionPrice = practice.subscription_price;
                 $scope.subscriptionInterval = practice.subscription_interval;
