@@ -2027,3 +2027,7 @@ label.tooth-label-view {
 	max-height: 100px;
     max-width: 100%;
 }
+
+.attachment-error {
+	border: 1px solid #a94442 !important;
+}
