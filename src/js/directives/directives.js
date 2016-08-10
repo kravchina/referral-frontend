@@ -198,7 +198,13 @@ angular.module('dentalLinksDirectives')
             );
 
             if(scope.start_date && scope.end_date) {
-                $element.find('span').html(moment(scope.start_date).format('MMMM D, YYYY') + ' - ' + moment(scope.end_date).format('MMMM D, YYYY'));
+                if (moment(scope.start_date).format('MMMM D, YYYY') == moment(0).format('MMMM D, YYYY') &&
+                        moment(scope.end_date).format('MMMM D, YYYY') == moment().endOf('day').format('MMMM D, YYYY')) {
+                    $element.find('span').html('All');
+                } else {
+                    $element.find('span').html(
+                        moment(scope.start_date).format('MMMM D, YYYY') + ' - ' + moment(scope.end_date).format('MMMM D, YYYY'));
+                }
             } else {
                 $element.find('span').html('All');
             }
