@@ -26,6 +26,7 @@ var environmentName = argv.env ? argv.env : 'local',
 
     environment.timestamp = new Date().getTime().toString();
     environment.datetime = moment().format('hh:mm:ss a - MM/DD/YYYY');
+    environment.environment_name = environmentName;
 
 gulp.task('publish', ['build'], function() {
     var publisher = awspublish.create({
