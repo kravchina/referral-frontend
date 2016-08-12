@@ -16,28 +16,32 @@
             api_endpoint: 'http://0.0.0.0:3000',
             site_url: 'http://localhost/',
             google_analytics_key: 'LOCAL_KEY',
-            minify: false
+            minify: false,
+            rollbar_token: ''
         },
         dev: {
             api_endpoint: 'https://referral-server.herokuapp.com',
             site_url: 'http://dev1.dentallinks.org/',
             google_analytics_key: 'UA-28482471-4',
             amazon_aws_bucket: 'dev1.dentallinks.org',
-            minify: false
+            minify: false,
+            rollbar_token: ''
         },
         stage: {
             api_endpoint: 'STAGE_API_URL',
             site_url: '',
             google_analytics_key: 'UA-28482471-3',
             amazon_aws_bucket: '',
-            minify: true
+            minify: true,
+            rollbar_token: ''
         },
         production: {
             api_endpoint: 'PRODUCTION_API_URL',
             site_url: '',
             google_analytics_key: 'UA-28482471-2',
             amazon_aws_bucket: '',
-            minify: true
+            minify: true,
+            rollbar_token: ''
         }
     }
 }
