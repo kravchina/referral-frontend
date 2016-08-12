@@ -401,11 +401,13 @@ angular.module('dentalLinks')
                     {status: rejection.status, text: rejection.statusText});
             }
 
-            Rollbar.error(
-                "NetworkError: Failed response: " + rejection.config.url + "\n" +
-                "method: " + rejection.config.method + "\n" +
-                "status: " + rejection.status + "\n" +
-                "statusText: " + rejection.statusText + "\n");
+            if(!(rejection.status == 401 || rejection.status == 422) && (rejection.status < 300 || rejection.status > 399)){
+                Rollbar.error(
+                    "NetworkError: Failed response: " + rejection.config.url + "\n" +
+                    "method: " + rejection.config.method + "\n" +
+                    "status: " + rejection.status + "\n" +
+                    "statusText: " + rejection.statusText + "\n");
+            }
 
             return $q.reject(rejection);
         }
