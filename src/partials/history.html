@@ -27,7 +27,7 @@
             </div>
 
             <div class="input-block col-xs-12 col-sm-4 col-sm-offset-1">
-                <input type="search" ng-model="query" placeholder="Search &hellip;" class="form-control placeholder search-no-button" ng-change="findReferralsByTerm()">
+                <input type="search" ng-model="query" placeholder="Search &hellip;" ng-model-options="{debounce: 300}" class="form-control placeholder search-no-button" ng-change="findReferralsByTerm()">
             </div>
 
             <div class="input-block col-xs-12 col-sm-2 col-sm-offset-1">
