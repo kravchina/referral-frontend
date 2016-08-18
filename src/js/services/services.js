@@ -394,6 +394,12 @@ angular.module('dentalLinksServices')
     });
 }])
 
+.factory('Subscription', ['$resource', 'API_ENDPOINT', function($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/customer_events/:customer_id', {}, {
+        getEvents: {method: 'GET', isArray: true}
+    })
+}])
+
 .factory('Role', ['USER_ROLES', function(USER_ROLES){
     var ROLES = [];
 

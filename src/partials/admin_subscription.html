@@ -37,6 +37,45 @@
         </form>
     </p>
 
+    <div id="sectCharges" ng-if="practice.stripe_customer_id">
+        <div class="block-title">
+            <h2>Transactions</h2>
+            <div class="btn btn-toggle">
+            <i ng-click='refreshEvents()' class="glyphicon glyphicon-refresh btn-toggle btn"></i>
+        </div>
+        </div>
+        <div class="section-block">
+            <div class="table-wrapper">
+                <div class="table-container">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th class="cell-date">Date</th>
+                            <th class="cell-created">Amount/Plan</th>
+                            <th class="cell-copy">Card</th>
+                            <th class="cell-copy">Event</th>
+                            <th class="cell-description">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr  ng-repeat="event in events">
+                            <td class="cell-user">{{event.created * 1000 | date: 'short'}}</td>
+                            <td class="cell-copy" >${{ (event.data.object.amount || event.data.object.plan.amount)  | money}}</td>
+                            <td class="cell-created">{{event.data.object.source.brand}} ···· {{event.data.object.source.last4}}</td>
+                            <td class="cell-created">{{event.type}}</td>
+                            <td class="cell-description" ng-if="event.type == 'charge.succeeded'">Charged ${{event.data.object.amount | money}} to prolong subscription.</td>
+                            <td class="cell-description" ng-if="event.type == 'charge.failed'">{{event.data.object.failure_message}}</td>
+                            <td class="cell-description" ng-if="event.type == 'customer.subscription.updated'">{{event.data.object.cancel_at_period_end == true ? 'Subscription has been set to cancel at the end of the billing period' : (event.data.object.plan.amount > event.data.previous_attributes.plan.amount ? ('Upgraded premium plan from $'+ (event.data.previous_attributes.plan.amount | money) + ' to $' + ( event.data.object.plan.amount | money)) : (event.data.object.plan.amount < event.data.previous_attributes.plan.amount ? ('Downgraded premium plan from $' + (event.data.previous_attributes.plan.amount | money) + ' to $' + ( event.data.object.plan.amount | money )) : 'Subscription was changed.'))}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div><!-- .table-container -->
+            </div><!-- .table-wrapper -->
+        </div>
+    </div>
+
+
     <p class="col-md-12">
 
         <div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><iframe src="//fast.wistia.net/embed/iframe/o7lllbirvv?videoFoam=true" allowtransparency="true" frameborder="0" scrolling="no" class="wistia_embed" name="wistia_embed" allowfullscreen mozallowfullscreen webkitallowfullscreen oallowfullscreen msallowfullscreen width="100%" height="100%"></iframe></div></div>

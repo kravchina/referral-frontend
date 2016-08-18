@@ -1,6 +1,6 @@
 angular.module('admin')
-    .controller('AdminSubscriptionController', ['$scope', '$state', '$modal', 'Auth', 'Notification', 'Address', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'Logger',
-    function ($scope, $state, $modal, Auth, Notification, Address, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, Logger) {
+    .controller('AdminSubscriptionController', ['$scope', '$state', '$modal', 'Auth', 'Notification', 'Address', 'ModalHandler', 'Practice', 'Subscription', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'Logger',
+    function ($scope, $state, $modal, Auth, Notification, Address, ModalHandler, Practice, Subscription, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, Logger) {
 
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function(practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
@@ -14,8 +14,14 @@ angular.module('admin')
             $scope.subscriptionPrice = practice.subscription_price;
             $scope.subscriptionInterval = practice.subscription_interval;
             $scope.locationsNumber = practice.addresses.length;
-
+            $scope.refreshEvents();
         });
+
+        $scope.refreshEvents = function(){
+            if($scope.practice.stripe_customer_id){
+                $scope.events = Subscription.getEvents({customer_id: $scope.practice.stripe_customer_id});
+            }
+        };
 
         $scope.isPremium = function(){
             return $scope.practice.stripe_customer_id && $scope.practice.stripe_subscription_id
