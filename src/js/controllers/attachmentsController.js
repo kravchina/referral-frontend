@@ -42,9 +42,12 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
         };
 
         $scope.isInvalidAttachments = function(){
+            if(!$scope.attachments) {
+                return false;
+            }
             var attachmentsState = $scope.attachments.reduce(function(prev, current){
-                return prev.invalid || current.invalid;
-            });
+                return prev || current.invalid;
+            }, false);
             if(attachmentsState) {
                 Notification.error('One of the attachments don\'t have the creation date, please edit it');
             } else {
