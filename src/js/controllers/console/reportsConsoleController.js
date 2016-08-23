@@ -41,6 +41,9 @@ angular.module('console')
 
                 eventLogs.push(item);
             });
+            $scope.total_referrals = success.total_referrals;
+            $scope.total_active_accounts = success.total_active_accounts;
+            $scope.total_active_practices = success.total_active_practices;
             $scope.toggleInvitations('day');
             $scope.togglePractices('day');
             $scope.toggleUsers('day');
