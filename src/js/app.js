@@ -21,7 +21,7 @@ angular.module('dentalLinks')
     paymentRequired: 'payment-required'
 })
 
-.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', function ($stateProvider, $urlRouterProvider, USER_ROLES) {
+.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', '$provide', function ($stateProvider, $urlRouterProvider, USER_ROLES, $provide) {
     $stateProvider.
         state('signIn', {
             url: '/sign_in',
@@ -120,9 +120,10 @@ angular.module('dentalLinks')
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('history', {
-            url: '/history',
+            url: '/history?query&start&end&status',
             templateUrl: 'partials/history.html',
             controller: 'HistoryController',
+            reloadOnSearch: false,
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('admin', {
@@ -229,6 +230,22 @@ angular.module('dentalLinks')
         });
 
     $urlRouterProvider.otherwise('/sign_in');
+
+    $provide.decorator('$exceptionHandler', ['$delegate', '$injector', '$window', function($delegate, $injector, $window) {
+        return function (exception, cause) {
+            if($window.Rollbar) {
+                $window.Rollbar.error(exception, {cause: cause}, function(err, data) {
+                    var $rootScope = $injector.get('$rootScope');
+                    $rootScope.$emit('rollbar:exception', {
+                        exception: exception,
+                        err: err,
+                        data: data.result
+                    });
+                });
+            }
+            $delegate(exception, cause);
+        };
+    }]);
 }])
     .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', '$modal', 'Logger', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, $modal, Logger) {
 
@@ -340,6 +357,7 @@ angular.module('dentalLinks')
                 var requiresLogin = !path.startsWith('/sign_in')
                     && !path.startsWith('/register')
                     && !path.startsWith('/edit_password')
+                    && !path.startsWith('/unsubscribe')
                     && !path.startsWith('/confirm_email');
                 if (requiresLogin) { //TODO! [mezerny] consider more elegant implementation - now we need to check the location because consequent requests to server from previous view could be finished after redirect to 'sign_in', in that case we are loosing desired 'redirect' location (it is replaced with '/sign_in')
                     $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.url()});
@@ -363,6 +381,13 @@ angular.module('dentalLinks')
     return {
         requestError: function(rejection){
             $rootScope.$broadcast(HTTP_ERROR_EVENTS.requestError, {status: rejection.status, text: rejection.statusText});
+
+            Rollbar.error(
+                "NetworkError: Failed request: " + rejection.config.url + "\n" +
+                "method: " + rejection.config.method + "\n" +
+                "status: " + rejection.status + "\n" +
+                "statusText: " + rejection.statusText + "\n");
+
             return $q.reject(rejection);
         },
         responseError: function(rejection){
@@ -370,12 +395,21 @@ angular.module('dentalLinks')
                 $rootScope.$broadcast(HTTP_ERROR_EVENTS.requestTimeout,
                     {status: rejection.status, text: 'http.request.timeout'});
             } else if(rejection.status == 408) {
-                $rootScope.$broadcast(HTTP_ERROR_EVENTS.requestTimeout, 
+                $rootScope.$broadcast(HTTP_ERROR_EVENTS.requestTimeout,
                     {status: rejection.status, text: rejection.statusText});
             } else if(rejection.status >= 503 && rejection.status < 504){
-                $rootScope.$broadcast(HTTP_ERROR_EVENTS.serverError, 
+                $rootScope.$broadcast(HTTP_ERROR_EVENTS.serverError,
                     {status: rejection.status, text: rejection.statusText});
             }
+
+            if(!(rejection.status == 401 || rejection.status == 422) && (rejection.status < 300 || rejection.status > 399)){
+                Rollbar.error(
+                    "NetworkError: Failed response: " + rejection.config.url + "\n" +
+                    "method: " + rejection.config.method + "\n" +
+                    "status: " + rejection.status + "\n" +
+                    "statusText: " + rejection.statusText + "\n");
+            }
+
             return $q.reject(rejection);
         }
     };
