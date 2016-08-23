@@ -1,43 +1,61 @@
 angular.module('history')
-    .controller('HistoryController', ['$scope', '$state', 'Auth', 'Referral', 'Logger', 'Practice',
-    function ($scope, $state, Auth, Referral, Logger, Practice) {
-	$scope.limitTo = 20;
+    .controller('HistoryController', ['$scope', '$state', '$location','Auth', 'Referral', 'Logger', 'Practice',
+    function ($scope, $state, $location, Auth, Referral, Logger, Practice) {
+    var params = $state.params,
+        suppressParamsHandling = false;
+    $scope.limitTo = 20;
     $scope.referrals = [];
 
-    $scope.findReferralsByDateRange = function (start, end) {
-    	$scope.start_date = start;
-    	$scope.end_date = end;
-        $scope.busy = true;
-        Referral.findByPractice({id: Auth.get().practice_id, start_date: start.toISOString(), end_date: end.toISOString(), term: $scope.query, status: $scope.statusFilter, limit: $scope.limitTo},
-			function(data){
-				Logger.log(data);
-				$scope.referrals = data.referrals;
-				$scope.referrals_total_count = data.referrals_total_count;
-                $scope.busy = false;
-            });
+    $scope.$watchCollection(function(){
+        return $state.params;
+    }, function(){
+        if(!suppressParamsHandling){
+            fillQueryFromParams();
+            queryReferrals();
+        }
+        suppressParamsHandling = false;
+    });
+
+    function fillQueryFromParams(){
+        $scope.query = params.query ? params.query : null;
+        $scope.statusFilter = params.status ? params.status : null;
+        $scope.start_date = params.start ? new Date(params.start) : moment(0);
+        $scope.end_date = params.end ? new Date(params.end) : moment().endOf('day');
     };
 
-    $scope.findReferralsByTerm = function () {
-    	Logger.log($scope.query);
+    function queryReferrals(){
         $scope.busy = true;
-        Referral.findByPractice({id: Auth.get().practice_id, start_date: $scope.start_date.toISOString(), end_date: $scope.end_date.toISOString(), term: $scope.query, status: $scope.statusFilter, limit: $scope.limitTo},
-			function(data){
-				Logger.log(data);
-				$scope.referrals = data.referrals;
-				$scope.referrals_total_count = data.referrals_total_count;
-                $scope.busy = false;
-			});
-    };
-
-    $scope.findReferralsByStatus = function(){
-        $scope.busy = true;
-        Referral.findByPractice({id: Auth.get().practice_id, start_date: $scope.start_date.toISOString(), end_date: $scope.end_date.toISOString(), term: $scope.query, status: $scope.statusFilter, limit: $scope.limitTo},
-            function(data){
+        Referral.findByPractice({
+                id: Auth.get().practice_id,
+                start_date: $scope.start_date.toISOString(), end_date: $scope.end_date.toISOString(),
+                term: $scope.query, status: $scope.statusFilter, limit: $scope.limitTo
+            }, function(data){
                 Logger.log(data);
                 $scope.referrals = data.referrals;
                 $scope.referrals_total_count = data.referrals_total_count;
                 $scope.busy = false;
             });
+    };
+
+    $scope.findReferralsByDateRange = function (start, end) {
+        suppressParamsHandling = true;
+        $state.go('.', {start: start.toISOString(),end: end.toISOString() }, {notify: false});
+    	$scope.start_date = start;
+    	$scope.end_date = end;
+        queryReferrals();
+    };
+
+    $scope.findReferralsByTerm = function () {
+        suppressParamsHandling = true;
+        $state.go('.', {query: $scope.query }, {notify: false});
+    	Logger.log($scope.query);
+        queryReferrals();
+    };
+
+    $scope.findReferralsByStatus = function(){
+        suppressParamsHandling = true;
+        $state.go('.', {status: $scope.statusFilter }, {notify: false});
+        queryReferrals();
     };
 
     $scope.addMoreItems = function(){
@@ -63,5 +81,6 @@ angular.module('history')
         });
     };
 
-    $scope.findReferralsByDateRange(moment(0), moment().endOf('day'));
+    fillQueryFromParams();
+    queryReferrals();
 }]);

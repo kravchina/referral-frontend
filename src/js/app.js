@@ -120,9 +120,10 @@ angular.module('dentalLinks')
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('history', {
-            url: '/history',
+            url: '/history?query&start&end&status',
             templateUrl: 'partials/history.html',
             controller: 'HistoryController',
+            reloadOnSearch: false,
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('admin', {
