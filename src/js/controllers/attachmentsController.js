@@ -20,6 +20,43 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
             });
         };
 
+        $scope.editLastModified = function(event, attachment){
+            event.preventDefault();
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/date_picker.html',
+                controller: 'DatePickerModalController',
+                resolve: {
+                    currentDate: function(){
+                        return new Date().toISOString();
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (date) {
+                Attachment.update({id: attachment.id}, {last_modified: date},
+                    function(success){
+                        attachment.last_modified = success.last_modified;
+                        attachment.invalid = false;
+                    });
+            });
+        };
+
+        $scope.isInvalidAttachments = function(){
+            if(!$scope.attachments) {
+                return false;
+            }
+            var attachmentsState = $scope.attachments.reduce(function(prev, current){
+                return prev || current.invalid;
+            }, false);
+            if(attachmentsState) {
+                Notification.error('One of the attachments don\'t have the creation date, please edit it');
+            } else {
+                Notification.close();
+            }
+
+            return attachmentsState;
+        };
+
         $scope.deleteAttachment = function(attachment){
             if(typeof attachment.id !== 'undefined'){
                 $scope.attachments.splice($scope.attachments.indexOf(attachment),1);
@@ -41,6 +78,12 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
 
         angular.forEach($scope.attachments, function (attachment, key) {
             $scope.total_size += $scope.total_size + attachment.size;
+
+            if(!$scope.attachments[key].last_modified && $scope.attachments[key].attach_content_type == "image/jpeg") {
+                $scope.attachments[key].invalid = true;
+            } else {
+                $scope.attachments[key].invalid = false;
+            }
         });
 
         var uploader = $scope.uploader = new FileUploader({

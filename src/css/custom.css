@@ -2028,6 +2028,10 @@ label.tooth-label-view {
     max-width: 100%;
 }
 
+.attachment-error {
+	border: 1px solid #a94442 !important;
+}
+
 .console-reports .menu-accordion {
 	width: 100%;
 	display: block;

@@ -50,6 +50,7 @@ exports.config = {
         },
         // id of the referral to run View Referral tests on. Check the tests to see what this referral should have
         viewReferralId: 215,
+        viewReferralDraftId: 2,
         // common URL part of individually opened attachments (try opening any of the referral attachments on your environment to find it out)
         attachmentUrlPart: 'http://localhost:3000/attachment/?file='
     },
