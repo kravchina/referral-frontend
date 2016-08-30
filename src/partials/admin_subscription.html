@@ -5,7 +5,7 @@
         <alert ng-show="!paymentNotification.showDesignation && paymentNotification.showSubscriptionCancelled && !paymentNotification.showSubscriptionSuccess" type="{{alert.type}}">Your premium subscription will expire on {{practice.subscription_active_until | date: 'short'}}, you will need to enter new payment information for your premium account to stay active.</alert>
         <alert ng-show="paymentNotification.showSubscriptionSuccess" type="{{alert.type}}">Thank you for upgrading to a Premium Account. Your automatic renewal date is {{practice.subscription_active_until | date: 'short'}}.</alert>
         <alert ng-show="!paymentNotification.showDesignation && paymentNotification.showSubscriptionExpired" type="{{alert.type}}">Either your premium account has been cancelled or we were unable to process your payment. Please enter new payment information to activate your premium account features</alert>
-        <alert ng-show="paymentNotification.showDesignation" type="{{alert.type}}">Your practice is a member of the  {{designation.name}} and your premium subscription will expire on {{designation.active_until_override | date: 'short'}}</alert>
+        <alert ng-show="paymentNotification.showDesignation" type="{{alert.type}}">Your practice is a member of the  {{designation.name}}. Your premium subscription will expire on {{designation.active_until_override | date: 'short'}}</alert>
 
         <form edit-form id="formAccountTab" name="accountForm">
             <div class="block-title">
