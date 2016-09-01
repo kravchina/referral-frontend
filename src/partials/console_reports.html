@@ -51,7 +51,14 @@
                 </div>
                 <div class="panel-body report-panel-scroll">
                     <accordion close-others="false">
-                        <accordion-group heading="{{$index+1}}) {{practice.name}}" ng-repeat="practice in practices">
+                        <accordion-group ng-repeat="practice in practices">
+                            <accordion-heading>
+                                <span ng-class="{'text-muted': practice.removed_at}">
+                                    {{$index+1}})
+                                    <span ng-class="{'hidden': !practice.removed_at}" class="text-danger">[deleted]</span>
+                                    {{practice.name}}
+                                </span>
+                            </accordion-heading>
                             <a ui-sref="console.practice({id: practice.id})" target="_blank">View practice details</a>
                             <table class="table">
                                 <tbody>
