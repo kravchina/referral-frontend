@@ -15,7 +15,7 @@ angular.module('unsubscribe')
             $scope.unsubscribeData = {
                 type: 'invitation',
                 valid: success.valid,
-                message: 'Are you sure you want to unsubscribe? This will also delete your invitation to DentalCareLinks from ' + (success.practice ? success.practice.name : 'the invitee') + ', including any patient referral info they have provided.'
+                message: 'Are you sure you want to unsubscribe? This will also delete your invitation to Dental Care Links including any patient referral info they have provided. ' + (success.practice ? 'This invitation was sent by ' + success.practice.name + '.' : '')
             };
         }, function(failure){
             $state.go('error_page', {error_key: 'unsubscribe.token.not.found'});
