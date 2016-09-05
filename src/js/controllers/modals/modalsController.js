@@ -613,7 +613,7 @@ angular.module('modals')
 }])
 
 .controller('RegistrationResultController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
-    $scope.resultMessage = 'Thank you for registering your account on Dental Links. Your account is waiting to start sending HIPAA Compliant referrals for free!';
+    $scope.resultMessage = 'Thank you for registering your account on Dental Care Links. Your account is waiting to start sending HIPAA Compliant referrals for free!';
     $scope.ok = function(){
         ModalHandler.close($modalInstance);
     }

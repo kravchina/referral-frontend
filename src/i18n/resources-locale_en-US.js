@@ -31,7 +31,7 @@
     },
     {
         "key":"promotion.expired",
-        "value":"This promo code has expired. If you are interested in registering a Dental Links account, please contact us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
+        "value":"This promo code has expired. If you are interested in registering a Dental Care Links account, please contact us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
         "description":"Error message for the case when promo code was expired"
     },
     {
@@ -41,7 +41,7 @@
     },
     {
         "key":"promotion.not.found",
-        "value":"Your promo code is not found. If you are interested in registering a Dental Links account, please contact us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
+        "value":"Your promo code is not found. If you are interested in registering a Dental Care Links account, please contact us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
         "description":"Error message for the case when promo code was not found"
     },
     {
