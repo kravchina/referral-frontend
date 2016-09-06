@@ -59,12 +59,13 @@ gulp.task('publish', ['build'], function() {
 
 gulp.task('run', ['build', 'watch', 'server']);
 
-gulp.task('build', function(){
-    git.exec({args : 'rev-parse --verify HEAD'}, function (err, stdout) {
-        if (err) throw err;
-        environment.commithash = stdout.replace(/(\r\n|\n|\r)/gm,'');
+gulp.task('build', ['copy-files']);
 
-        gulp.start('build-js','build-css', 'build-templates', 'copy-files')
+gulp.task('git-revision', function(cb){
+    git.revParse({args : '--verify HEAD'}, function (err, revision) {
+        if (err) throw err;
+        environment.commithash = revision;
+        cb();
     });
 });
 
@@ -125,7 +126,7 @@ gulp.task('build-css', function() {
         .pipe(gulp.dest(buildPath));
 });
 
-gulp.task('copy-files', function(){
+gulp.task('copy-files', ['build-js', 'build-css', 'build-templates'], function(){
     var process = gulp.src('src/index.html');
 
     process = replaceEnvironmentVariables(process);
@@ -145,7 +146,7 @@ gulp.task('copy-files', function(){
         .pipe(gulp.dest(buildPath + '/docs'));
 });
 
-gulp.task('build-templates', function(){
+gulp.task('build-templates', ['git-revision'], function(){
     var process = gulp.src('src/partials/**/*.html')
         .pipe(ngHtml2Js({
             moduleName: "dentalLinksPartials",
