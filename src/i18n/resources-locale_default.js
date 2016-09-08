@@ -290,6 +290,16 @@
         "key": "unsubscribe.token.not.found",
         "value": "Error: This email address is not found in our database.",
         "description": "Message shown in case of non-existing token during request unsubscribe"
+    },
+    {
+        "key": "referral.not.found.header",
+        "value": "Referral error",
+        "description": "Message shown when referral not found or delete"
+    },
+    {
+        "key": "referral.not.found",
+        "value": "Sorry, referral not found or deleted",
+        "description": "Message shown when referral not found or delete"
     }
 
 ]

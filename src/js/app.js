@@ -69,7 +69,7 @@ angular.module('dentalLinks')
             templateUrl: 'partials/create_referral.html',
             controller: 'ReviewReferralsController',
             resolve: {
-                currentReferral: ['$q', '$stateParams', 'Referral', function ($q, $stateParams, Referral) {
+                currentReferral: ['$q', '$stateParams', '$state', 'Referral', function ($q, $stateParams, $state, Referral) {
                     var d = $q.defer();
                     Referral.get({id: $stateParams.referral_id}).$promise.then(function (referral) {
                         if ('draft' == referral.status) {
@@ -78,6 +78,10 @@ angular.module('dentalLinks')
                             d.reject('redirect_to_viewReferral'); //prevent controller instantiation and emit $stateChangeError event for redirecting to viewReferral state
                         }
 
+                    }).catch(function(error){
+                        if(error.status === 422) {
+                            $state.go('error_page', {error_key: error.data.message});
+                        }
                     });
                     return d.promise;
                 }
