@@ -7,7 +7,7 @@ angular.module('console')
                     scope.destinationPractice = null;
                     scope.destinationPracticeUsers = null;
 
-                    var providersPromise = Practice.searchPractice({search: searchValue}).$promise;
+                    var providersPromise = Practice.superUserSearchPractice({search: searchValue}).$promise;
                     var invitationsPromise = ProviderInvitation.searchProviderInvitation({search: searchValue}).$promise;
 
                     return $q.all([providersPromise, invitationsPromise]).then(function(results){

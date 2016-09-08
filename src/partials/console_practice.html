@@ -46,7 +46,9 @@
     <div class="input-block col-xs-12 col-sm-6" ng-if="practiceSearch" >
         <div class="panel panel-primary">
             <div class="panel-heading with-btn">
-                <h3 class="panel-title">Practice info:</h3>
+                <h3 class="panel-title">
+                    <span ng-class="{'hidden': !destinationPractice.removed_at}" class="text-danger">[deleted]</span> Practice info:
+                </h3>
             </div>
             <div class="panel-body">
                 <form edit-form="destinationPractice" show-labels="true" id="{{'formConsolePractice'}}" name="practiceForm"
