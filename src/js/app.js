@@ -9,8 +9,7 @@ angular.module('dentalLinks')
         public: {id: 'public', name: 'Public', desc: 'Public Access', mask: 16}
 })
 
-.constant('FREE_TRIAL_PERIOD', 45)
-.constant('BASE_SUBSCRIPTION_PRICE', 49.95)
+.constant('FREE_TRIAL_PERIOD', 30)
 .constant('HTTP_ERROR_EVENTS', {
     requestTimeout: 'http-request-timeout',
     serverError: 'http-server-error'
@@ -18,10 +17,11 @@ angular.module('dentalLinks')
 .constant('API_ENDPOINT', '{{API_ENDPOINT}}')
 .constant('AUTH_EVENTS', {
     notAuthenticated: 'auth-not-authenticated',
+    forbidden: 'forbidden',
     paymentRequired: 'payment-required'
 })
 
-.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', function ($stateProvider, $urlRouterProvider, USER_ROLES) {
+.config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', '$provide', function ($stateProvider, $urlRouterProvider, USER_ROLES, $provide) {
     $stateProvider.
         state('signIn', {
             url: '/sign_in',
@@ -69,7 +69,7 @@ angular.module('dentalLinks')
             templateUrl: 'partials/create_referral.html',
             controller: 'ReviewReferralsController',
             resolve: {
-                currentReferral: ['$q', '$stateParams', 'Referral', function ($q, $stateParams, Referral) {
+                currentReferral: ['$q', '$stateParams', '$state', 'Referral', function ($q, $stateParams, $state, Referral) {
                     var d = $q.defer();
                     Referral.get({id: $stateParams.referral_id}).$promise.then(function (referral) {
                         if ('draft' == referral.status) {
@@ -78,6 +78,10 @@ angular.module('dentalLinks')
                             d.reject('redirect_to_viewReferral'); //prevent controller instantiation and emit $stateChangeError event for redirecting to viewReferral state
                         }
 
+                    }).catch(function(error){
+                        if(error.status === 422) {
+                            $state.go('error_page', {error_key: error.data.message});
+                        }
                     });
                     return d.promise;
                 }
@@ -120,9 +124,10 @@ angular.module('dentalLinks')
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('history', {
-            url: '/history',
+            url: '/history?query&start&end&status',
             templateUrl: 'partials/history.html',
             controller: 'HistoryController',
+            reloadOnSearch: false,
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('admin', {
@@ -162,7 +167,7 @@ angular.module('dentalLinks')
             controller: 'ConsoleController'
         }).
         state('console.practice', {
-            url: '/practice',
+            url: '/practice/:id',
             templateUrl: 'partials/console_practice.html',
             controller: 'PracticeConsoleController',
             access: [USER_ROLES.super]
@@ -215,9 +220,13 @@ angular.module('dentalLinks')
                             $state.go('error_page', {error_key: 'confirmation_token.invalid'});
                         }
                     });
-            }],
-            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+            }]
 
+        }).
+        state('unsubscribe', {
+            url: '/unsubscribe?md_id',
+            templateUrl: 'partials/unsubscribe.html',
+            controller: 'UnsubscribeController'
         }).
         state('debug', {
             url: '/debug',
@@ -225,6 +234,22 @@ angular.module('dentalLinks')
         });
 
     $urlRouterProvider.otherwise('/sign_in');
+
+    $provide.decorator('$exceptionHandler', ['$delegate', '$injector', '$window', function($delegate, $injector, $window) {
+        return function (exception, cause) {
+            if($window.Rollbar) {
+                $window.Rollbar.error(exception, {cause: cause}, function(err, data) {
+                    var $rootScope = $injector.get('$rootScope');
+                    $rootScope.$emit('rollbar:exception', {
+                        exception: exception,
+                        err: err,
+                        data: data.result
+                    });
+                });
+            }
+            $delegate(exception, cause);
+        };
+    }]);
 }])
     .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', '$modal', 'Logger', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, $modal, Logger) {
 
@@ -232,7 +257,7 @@ angular.module('dentalLinks')
             ModalHandler.dismissIfOpen();  //close dialog if open.
             if (!Auth.authorize(toState.access)) {
                 event.preventDefault();
-                $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
+                $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.url()});
             }
         });
 
@@ -254,7 +279,10 @@ angular.module('dentalLinks')
             Logger.log('paymentRequired');
             $state.go('error_page', {error_key: 'payment.required'});
         });
-
+        $rootScope.$on(AUTH_EVENTS.forbidden, function(event, args){
+            Logger.log('forbidden');
+            $state.go('error_page', {error_key: 'access.denied'});
+        });
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
             if(error == 'redirect_to_viewReferral'){
                 $state.go('viewReferral', toParams);
@@ -329,18 +357,23 @@ angular.module('dentalLinks')
 
             if (response.status === 401 || response.status === 403) {
                 // handle the case where the user is not authenticated
-                if ($location.path() !== '/sign_in') { //TODO! [mezerny] consider more elegant implementation - now we need to check the location because consequent requests to server from previous view could be finished after redirect to 'sign_in', in that case we are loosing desired 'redirect' location (it is replaced with '/sign_in')
-                     $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.path()});
-                }else{
-                     var auth = Auth.get();
-                     if (auth && auth.token) {
-                         $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: redirect.path});
-                     }
+                var path = $location.path();
+                var requiresLogin = !path.startsWith('/sign_in')
+                    && !path.startsWith('/register')
+                    && !path.startsWith('/edit_password')
+                    && !path.startsWith('/unsubscribe')
+                    && !path.startsWith('/confirm_email');
+                if (requiresLogin) { //TODO! [mezerny] consider more elegant implementation - now we need to check the location because consequent requests to server from previous view could be finished after redirect to 'sign_in', in that case we are loosing desired 'redirect' location (it is replaced with '/sign_in')
+                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.url()});
+                } else {
+                    Auth.remove();
                 }
-
-            }else if(response.status === 402){
+            } else if (response.status === 402) {
                 //don't allow to show referral in case of expired subscription
                 $rootScope.$broadcast(AUTH_EVENTS.paymentRequired, {redirect: redirect.path})
+            } else if (response.status === 409){
+                //don't allow to show referral for a user that doesn't have appropriate permission (his practice is neither origin nor destination for that referral)
+                $rootScope.$broadcast(AUTH_EVENTS.forbidden, {redirect: redirect.path})
             }
 
             return $q.reject(response);
@@ -352,6 +385,13 @@ angular.module('dentalLinks')
     return {
         requestError: function(rejection){
             $rootScope.$broadcast(HTTP_ERROR_EVENTS.requestError, {status: rejection.status, text: rejection.statusText});
+
+            Rollbar.error(
+                "NetworkError: Failed request: " + rejection.config.url + "\n" +
+                "method: " + rejection.config.method + "\n" +
+                "status: " + rejection.status + "\n" +
+                "statusText: " + rejection.statusText + "\n");
+
             return $q.reject(rejection);
         },
         responseError: function(rejection){
@@ -359,12 +399,21 @@ angular.module('dentalLinks')
                 $rootScope.$broadcast(HTTP_ERROR_EVENTS.requestTimeout,
                     {status: rejection.status, text: 'http.request.timeout'});
             } else if(rejection.status == 408) {
-                $rootScope.$broadcast(HTTP_ERROR_EVENTS.requestTimeout, 
+                $rootScope.$broadcast(HTTP_ERROR_EVENTS.requestTimeout,
                     {status: rejection.status, text: rejection.statusText});
             } else if(rejection.status >= 503 && rejection.status < 504){
-                $rootScope.$broadcast(HTTP_ERROR_EVENTS.serverError, 
+                $rootScope.$broadcast(HTTP_ERROR_EVENTS.serverError,
                     {status: rejection.status, text: rejection.statusText});
             }
+
+            if(!(rejection.status == 401 || rejection.status == 422) && (rejection.status < 300 || rejection.status > 399)){
+                Rollbar.error(
+                    "NetworkError: Failed response: " + rejection.config.url + "\n" +
+                    "method: " + rejection.config.method + "\n" +
+                    "status: " + rejection.status + "\n" +
+                    "statusText: " + rejection.statusText + "\n");
+            }
+
             return $q.reject(rejection);
         }
     };
@@ -408,15 +457,32 @@ angular.module('dentalLinks')
     }
 })
 
-.filter('attachmentDownloadUrl', ['API_ENDPOINT', function(API_ENDPOINT){
+.filter('money', function () {
+    return function (centsAmount) {
+        return centsAmount / 100;
+    }
+})
+
+.filter('viewAttachmentUrl', ['API_ENDPOINT', function(API_ENDPOINT){
    return function(attachment){
        return API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.attach_file_name;
    }
 }])
 
-.filter('authenticatableAttachmentDownloadUrl', ['API_ENDPOINT', '$window', 'Auth', function(API_ENDPOINT, $window, Auth){
+.filter('viewAuthenticatableAttachmentUrl', ['API_ENDPOINT', '$window', 'Auth', function(API_ENDPOINT, $window, Auth){
     return function(attachment){
         var downloadUrl = API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.attach_file_name;
+        if (/trident/i.test($window.navigator.userAgent)){ //TODO: workaround for https://www.pivotaltracker.com/story/show/86373800. Remove that filter to use cookies for image authentication.
+            var auth = Auth.get();
+            downloadUrl += '&token=' + auth.token + '&from=' + auth.email;
+        }
+        return  downloadUrl;
+    }
+}])
+
+.filter('attachmentDownloadUrl', ['API_ENDPOINT', '$window', 'Auth', function(API_ENDPOINT, $window, Auth){
+    return function(attachment){
+        var downloadUrl = API_ENDPOINT + '/attachment/?file=' + attachment.id + '/' + attachment.attach_file_name + "&download=true";
         if (/trident/i.test($window.navigator.userAgent)){ //TODO: workaround for https://www.pivotaltracker.com/story/show/86373800. Remove that filter to use cookies for image authentication.
             var auth = Auth.get();
             downloadUrl += '&token=' + auth.token + '&from=' + auth.email;

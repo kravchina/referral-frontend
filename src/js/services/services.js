@@ -90,11 +90,19 @@ angular.module('dentalLinksServices')
                 'Pragma': 'no-cache',
                 'Expires': '0'
             }, skipSpinner: true},
+            superUserSearchPractice: {method: 'GET', url: API_ENDPOINT + '/practices/super_user_search', isArray: true, headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }, skipSpinner: true},
             subscribe: {method: 'PUT', url: API_ENDPOINT + '/practices/:practiceId/subscribe'},
             cancelSubscription: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/cancel_subscription'},
             update: {method: 'PUT'},
             deleteAndMoveReferral: {method: 'POST', url: API_ENDPOINT + '/practices/delete_and_move_referral'},
-            getAllInvitees: {method: 'POST', url: API_ENDPOINT + '/practices/all_invitees', isArray: true}
+            getAllInvitees: {method: 'POST', url: API_ENDPOINT + '/practices/all_invitees', isArray: true},
+            giveCoupon: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/give_coupon'},
+            prolongTrial: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/prolong_trial'},
+            checkContainsDoctor: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/check_contains_doctor'}
         });
     }])
 
@@ -142,7 +150,8 @@ angular.module('dentalLinksServices')
         delete: {method: 'DELETE', url: API_ENDPOINT + '/invitations/:id'},
         update: {method: 'PUT', url: API_ENDPOINT + '/invitations/:id'},
         saveUser: {method: 'POST', url: API_ENDPOINT + '/invitations/user'},
-        saveProvider: {method: 'POST', url: API_ENDPOINT + '/invitations/provider'}
+        saveProvider: {method: 'POST', url: API_ENDPOINT + '/invitations/provider'},
+        mailUnsubscribe: {method: 'GET', params: {md_id: '@md_id'}, url: API_ENDPOINT + '/invitation/mail_unsubscribe'}
     });
 }])
 
@@ -202,7 +211,8 @@ angular.module('dentalLinksServices')
         update: {method: 'PUT' },
         changePassword: {method: 'PUT', url: API_ENDPOINT + '/users/:id/change_password'},
         sendPasswordInvitation: {method: 'PUT', url: API_ENDPOINT + '/users/:id/password'},
-        savePassword: {method: 'POST', url: API_ENDPOINT + '/save_password'}
+        savePassword: {method: 'POST', url: API_ENDPOINT + '/save_password'},
+        mailUnsubscribe: {method: 'GET', params: {md_id: '@md_id', confirm: '@confirm'}, url: API_ENDPOINT + '/user/mail_unsubscribe'}
     })
 }])
 
@@ -254,8 +264,21 @@ angular.module('dentalLinksServices')
     }
 }])
 
+.factory('Designation', ['$resource', 'API_ENDPOINT', function($resource, API_ENDPOINT){
+    return $resource(API_ENDPOINT + '/designations/:id', {}, {
+        getAll: {method: 'GET', isArray: true},
+        update: {method: 'PUT'}
+    });
+}])
+
 .factory('SecurityCode', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/security_code/:id', {}, {})
+}])
+
+.factory('ApiKey', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+        return $resource(API_ENDPOINT + '/api_key/:id', {},{
+            generate: {method: 'POST', url: API_ENDPOINT + '/api_key/:practice_id'}
+        });
 }])
 
 .factory('ServerSettings', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
@@ -310,23 +333,27 @@ angular.module('dentalLinksServices')
 }])
 
 .factory('Notification', ['$timeout', function ($timeout) {
-    var notification = {message: undefined, type: undefined, promise: undefined};
+    var notification = {message: undefined, type: undefined, promise: undefined, params: undefined};
     return {
-        info: function(message) {
+        info: function(message, params) {
             notification.message = message;
             notification.type = 'info';
+            notification.params = params;
         },
-        success: function(message) {
+        success: function(message, params) {
             notification.message = message;
             notification.type = 'success';
+            notification.params = params;
         },
-        warning: function(message) {
+        warning: function(message, params) {
             notification.message = message;
             notification.type = 'warning';
+            notification.params = params;
         },
-        error: function(message) {
+        error: function(message, params) {
             notification.message = message;
             notification.type = 'danger';
+            notification.params = params;
         },
         get: function() {
             return notification;
@@ -370,6 +397,12 @@ angular.module('dentalLinksServices')
         find: {method: 'GET', url: API_ENDPOINT + '/activities', isArray: false},
         patientsChanges: {method: 'GET', url: API_ENDPOINT + '/activities/patient', isArray: false}
     });
+}])
+
+.factory('Subscription', ['$resource', 'API_ENDPOINT', function($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/customer_events/:customer_id', {}, {
+        getEvents: {method: 'GET', isArray: true}
+    })
 }])
 
 .factory('Role', ['USER_ROLES', function(USER_ROLES){

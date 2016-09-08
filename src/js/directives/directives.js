@@ -85,7 +85,11 @@ angular.module('dentalLinksDirectives')
                         element.attr( 'style',  "background: url(" + attributes.attachmentThumb + '&token=' + auth.token + '&from=' + auth.email + "&is_thumb=true) no-repeat top/contain, url('img/loader.gif') no-repeat top");
                         cssClass = '';
                     }else{
-                        element.attr( 'style',  "background: url(" + attributes.attachmentThumb + "&is_thumb=true) no-repeat top/contain, url('img/loader.gif') no-repeat top");
+                        element.attr( 'style',  "background: url('img/loader.gif') no-repeat top");
+                        angular.element('<img/>').attr('src', attributes.attachmentThumb + "&is_thumb=true").load(function() {
+                            angular.element(this).remove();
+                            element.attr('style', "background: url(" + attributes.attachmentThumb + "&is_thumb=true) no-repeat top/contain");
+                        });
                         cssClass = '';
                     }
                     break;
@@ -193,7 +197,17 @@ angular.module('dentalLinksDirectives')
                 }
             );
 
-            $element.find('span').html('All');
+            if(scope.start_date && scope.end_date) {
+                if (moment(scope.start_date).format('MMMM D, YYYY') == moment(0).format('MMMM D, YYYY') &&
+                        moment(scope.end_date).format('MMMM D, YYYY') == moment().endOf('day').format('MMMM D, YYYY')) {
+                    $element.find('span').html('All');
+                } else {
+                    $element.find('span').html(
+                        moment(scope.start_date).format('MMMM D, YYYY') + ' - ' + moment(scope.end_date).format('MMMM D, YYYY'));
+                }
+            } else {
+                $element.find('span').html('All');
+            }
         }
     }
 }])
@@ -259,6 +273,10 @@ angular.module('dentalLinksDirectives')
             var editButton = $element;
             var addAddressButton = $element.next();
             var saveButton = $element.next().next();
+
+            PracticeEditMode.init(editFormCtrl, formCtrl, editButton, addAddressButton, saveButton);
+            PracticeEditMode.off();
+
             // edit
             editButton.on('click', function (e) {
                 PracticeEditMode.init(editFormCtrl, formCtrl, editButton, addAddressButton, saveButton);
@@ -389,6 +407,19 @@ angular.module('dentalLinksDirectives')
         },
         templateUrl: 'partials/roles_selector.html',
         controller: 'RolesSelectorController'
+    };
+}])
+
+.directive('userAddresses', [function(){
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            user: '=',
+            practiceAddresses: '='
+        },
+        templateUrl: 'partials/user_addresses.html',
+        controller: 'UserAddressesController'
     };
 }])
 

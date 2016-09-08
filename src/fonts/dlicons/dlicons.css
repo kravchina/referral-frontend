@@ -62,3 +62,6 @@
 .dlicons-group:before {
 	content: "\f0c0";
 }
+.dlicons-download:before {
+    content: "\e900";
+}

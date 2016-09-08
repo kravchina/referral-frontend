@@ -75,7 +75,7 @@
         <select id="selectAddress" class="form-control" name="address" ng-model="model.referral.address_id"
                 ng-disabled="!destinationPractice || !destinationPractice.addresses || destinationPractice.addresses.length == 1 || model.referral.dest_provider_invited_id"
                 ng-options="a.id as (a.city + ', ' + a.state) for a in destinationPractice.addresses">
-            <option selected="selected" class="placeholder" value="">Choose address &hellip;</option>
+            <option selected="selected" class="placeholder" value="">{{model.referral.dest_provider_invited_id ? '-- pending registration --' : 'Choose address &hellip;'}}</option>
         </select>
     </div>
 
@@ -123,8 +123,8 @@
 </div><!-- .box-white -->
 
 <div class="button-block">
-    <button class="btn btn-green btn-lg" ng-click="saveTemplate(model)" ng-disabled="form.$invalid">Save</button>
-    <button  class="btn btn-orange btn-lg" access="admin, doctor" ng-click="createReferral(model)" ng-disabled="form.$invalid">Sign &amp; Send</button>
+    <button class="btn btn-green btn-lg" ng-click="saveTemplate(model)" ng-disabled="form.$invalid || isInvalidAttachments()">Save</button>
+    <button  class="btn btn-orange btn-lg" access="admin, doctor" ng-click="createReferral(model)" ng-disabled="form.$invalid || isInvalidAttachments()">Sign &amp; Send</button>
     <button class="btn btn-danger btn-lg" ng-click="discardTemplate(model.referral)" ng-show="model.referral.id">Discard draft</button>
 </div><!-- .button-block -->
 </form>

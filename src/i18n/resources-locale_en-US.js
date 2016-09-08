@@ -31,7 +31,7 @@
     },
     {
         "key":"promotion.expired",
-        "value":"This promo code has expired. If you are interested in registering a Dental Links account, please contact us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
+        "value":"This promo code has expired. If you are interested in registering a Dental Care Links account, please contact us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
         "description":"Error message for the case when promo code was expired"
     },
     {
@@ -41,7 +41,7 @@
     },
     {
         "key":"promotion.not.found",
-        "value":"Your promo code is not found. If you are interested in registering a Dental Links account, please contact us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
+        "value":"Your promo code is not found. If you are interested in registering a Dental Care Links account, please contact us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
         "description":"Error message for the case when promo code was not found"
     },
     {
@@ -49,6 +49,16 @@
         "value":"Unable to create practice",
         "description":"Error message for the case when practice creation was failed"
 
+    },
+    {
+        "key": "practice.doctor.not.found.header",
+        "value": "Please add a doctor to your account",
+        "description": "Message shown when current practice is no user with doctor role"
+    },
+    {
+        "key": "practice.doctor.not.found",
+        "value": "We are sorry, but in order to send a new referral, you have to have at least one doctor registered in your practice. Please follow this <a ui-sref='admin.users'>link</a> to add a doctor to your account.",
+        "description": "Message shown when current practice is no user with doctor role"
     },
     {
         "key":"invalid.token",
@@ -82,6 +92,16 @@
         "description": "Error message for the case when user tries to open referral, but his practice didn't pay for a premium account."
     },
     {
+        "key": "access.denied.header",
+        "value": "YOU ARE NOT ALLOWED TO VIEW THIS PAGE",
+        "description": "Error page header for the case when user tries to open referral, but user doesn't have permissions for that."
+    },
+    {
+        "key": "access.denied",
+        "value": "We are sorry but you don't have appropriate permissions to view this page.",
+        "description": "Error message for the case when user tries to open referral, but his practice didn't pay for a premium account."
+    },
+    {
         "key":"error.http.requestTimeout",
         "value":"Request Timeout Error. Please try again.",
         "description":"Request Timeout Error"
@@ -103,7 +123,7 @@
     },
     {
         "key":"invitation.email.invited",
-        "value":"Sorry this email address has been invited in our system.  We will need to resend the special invitation link for you to register using this address",
+        "value":"Sorry, this email address already exists in our system. Click <button type='button' class='btn btn-orange notification-button' ng-click='notification.params.resend()'>here</button> and we will send you a link to register.",
         "description":"Email invited"
     },
     {
@@ -122,33 +142,28 @@
         "description": "Error is shown when user provides an email that already registered in our system"
     },
     {
-        "key": "activity.user.update",
-        "value": "updated user's account",
+        "key": "activity.address.create",
+        "value": "created a new address",
         "description": ""
     },
     {
-        "key": "activity.user.create",
-        "value": "created user's account",
+        "key": "activity.address.update",
+        "value": "updated an address",
         "description": ""
     },
     {
-        "key": "activity.user.destroy",
-        "value": "destroyed user's account",
+        "key": "activity.address.destroy",
+        "value": "removed an address",
         "description": ""
     },
     {
-        "key": "activity.referral.update",
-        "value": "updated a referral",
+        "key": "activity.attachment.create",
+        "value": "added an attachment",
         "description": ""
     },
     {
-        "key": "activity.referral.create",
-        "value": "created new referral",
-        "description": ""
-    },
-    {
-        "key": "activity.referral.destroy",
-        "value": "removed a referral",
+        "key": "activity.attachment.destroy",
+        "value": "removed attachment",
         "description": ""
     },
     {
@@ -167,6 +182,46 @@
         "description": ""
     },
     {
+        "key": "activity.patient.create",
+        "value": "created a new patient",
+        "description": ""
+    },
+    {
+        "key": "activity.patient.update",
+        "value": "updated a patient",
+        "description": ""
+    },
+    {
+        "key": "activity.patient.destroy",
+        "value": "removed a patient",
+        "description": ""
+    },
+    {
+        "key": "activity.practice.create",
+        "value": "created practice",
+        "description": ""
+    },
+    {
+        "key": "activity.practice.update",
+        "value": "updated practice information",
+        "description": ""
+    },
+    {
+        "key": "activity.promo.create",
+        "value": "created a new promo code",
+        "description": ""
+    },
+    {
+        "key": "activity.promo.update",
+        "value": "updated a promo code",
+        "description": ""
+    },
+    {
+        "key": "activity.promo.destroy",
+        "value": "removed promo code",
+        "description": ""
+    },
+    {
         "key": "activity.provider_invitation.create",
         "value": "invited new provider",
         "description": ""
@@ -182,19 +237,69 @@
         "description": ""
     },
     {
-        "key": "activity.practice.create",
-        "value": "created practice",
+        "key": "activity.referral.create",
+        "value": "created new referral",
         "description": ""
     },
     {
-        "key": "activity.practice.update",
-        "value": "updated practice information",
+        "key": "activity.referral.update",
+        "value": "updated a referral",
+        "description": ""
+    },
+    {
+        "key": "activity.referral.destroy",
+        "value": "removed a referral",
+        "description": ""
+    },
+    {
+        "key": "activity.security_code.create",
+        "value": "created new security code",
+        "description": ""
+    },
+    {
+        "key": "activity.security_code.destroy",
+        "value": "removed a security code",
+        "description": ""
+    },
+    {
+        "key": "activity.user.update",
+        "value": "updated user's account",
+        "description": ""
+    },
+    {
+        "key": "activity.user.create",
+        "value": "created user's account",
+        "description": ""
+    },
+    {
+        "key": "activity.user.destroy",
+        "value": "destroyed user's account",
         "description": ""
     },
     {
         "key": "email.not.found",
         "value": "Error: This email address is not found in our database.",
         "description": "Message shown in case of non-existing email during request password reset (forgot password feature "
+    },
+    {
+        "key": "unsubscribe.token.not.found.header",
+        "value": "UNSUBSCRIBE FAILURE",
+        "description": "Message shown in case of non-existing token during request unsubscribe"
+    },
+    {
+        "key": "unsubscribe.token.not.found",
+        "value": "Error: This email address is not found in our database.",
+        "description": "Message shown in case of non-existing token during request unsubscribe"
+    },
+    {
+        "key": "referral.not.found.header",
+        "value": "Referral error",
+        "description": "Message shown when referral not found or delete"
+    },
+    {
+        "key": "referral.not.found",
+        "value": "Sorry, referral not found or deleted",
+        "description": "Message shown when referral not found or delete"
     }
 
 ]

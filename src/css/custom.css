@@ -6,7 +6,6 @@ body {
 	font-family: "Lato", sans-serif;
 	font-size: 12px;
 	font-size: 1.2rem;
-	padding-top: 60px;
 }
 ::-webkit-input-placeholder {
    color: #34495e !important;
@@ -225,6 +224,10 @@ textarea.form-control {
     white-space: nowrap;
 }
 
+.section-block .table .btn-delete.api-key-delete {
+	right: 5px;
+}
+
 .global-notification-bar{
 	position: absolute;
 	display: table-cell;
@@ -283,6 +286,13 @@ textarea.form-control {
 .datepicker .btn:hover{
     color: #333 !important
 }
+.datepicker .datepicker-btn .btn{
+	border: 0!important ;
+	background-color: #f3f3f3;
+}
+.datepicker .datepicker-btn .btn:hover{
+	background-color: #e0e0e0;
+}
 
 .btn:active, .btn.active, .btn:focus {
 	box-shadow: none;
@@ -297,10 +307,10 @@ textarea.form-control {
 	background-color: #47a447;
 }
 .btn-grey {
-	background-color: #bdc3c7;
+	background-color: #7f8c8d;
 }
 .btn-grey:hover {
-	background-color: #7f8c8d;
+	background-color: #8f9c9d;
 }
 .btn-lg {
 	font-size: 16px;
@@ -316,11 +326,19 @@ textarea.form-control {
 
 /* Header */
 .navbar {
-	background-color: #34495e;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.17);
-		-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.17);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.17);
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.17);
 }
+.dark-background {
+    background-color: #45525b;
+}
+
+.light-background {
+	background-color: #f3f3f3;
+}
+
 .navbar-fixed-top {
+    position: fixed;
 	border-width: 0;
 	z-index: 1050;
 }
@@ -1466,8 +1484,6 @@ td.cell-from .practice, td.cell-to .practice {
 @media (min-width: 992px) {
 	body {
 		font-size: 14px;
-		/*font-size: 1.4rem;*/
-		padding-top: 115px;
 	}
 	h1 {
 		font-size: 36px;
@@ -1504,8 +1520,6 @@ td.cell-from .practice, td.cell-to .practice {
 	.navbar-nav {
 		left: auto;
 		margin: 0;
-		position: relative;
-		right: auto;
 		top: auto;
 		width: auto;
 	}
@@ -1519,7 +1533,7 @@ td.cell-from .practice, td.cell-to .practice {
 	.navbar .navbar-brand {
 		font-size: 24px;
 		font-size: 2.4rem;
-		padding: 40px 20px;
+		padding: 7px 20px;
 	}
 	.navbar-nav .open .dropdown-menu {
 		border-radius: 0 0 5px 5px;
@@ -1663,7 +1677,7 @@ td.cell-from .practice, td.cell-to .practice {
 @media (min-width: 1200px) {
 
 	.global-notification-bar{
-		margin-top: 15px;
+		margin-top: 35px;
 		margin-left: 250px;
 		max-width: 670px;
 		min-width: 670px;
@@ -1702,7 +1716,7 @@ td.cell-from .practice, td.cell-to .practice {
 		margin-left: 0;
 	}
 	.section-block td.cell-status {
-		padding-right: 200px;
+		padding-right: 120px;
 	}
 }
 
@@ -1760,7 +1774,7 @@ label.tooth-label {
     font-size: 14px;
 }
 
-label.tooth-label-view{
+label.tooth-label-view {
     line-height: 20px;
     font-weight: bold;
     font-size: 14px;
@@ -1768,15 +1782,19 @@ label.tooth-label-view{
     border-color: rgb(243, 243, 243);
 }
 
-.delete-button-margin{
-	margin-right: 5px;
+.delete-button-margin {
+    margin: 5px;
 }
 
-#formNewNote textarea{
+.download-button-margin {
+    margin: 5px;
+}
+
+#formNewNote textarea {
 	height: 250px;
 }
 
-#formEditNote textarea{
+#formEditNote textarea {
 	height: 250px;
 }
 
@@ -1967,6 +1985,10 @@ label.tooth-label-view{
 	width: 110px;
 }
 
+#sectApiKeys {
+    margin-top: 20px;
+}
+
 .invite-link-group {
 	overflow: hidden;
     word-wrap: break-word;
@@ -1979,4 +2001,65 @@ label.tooth-label-view{
 
 .center-block {
 	float: none;
+}
+
+.hr-half-ident{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.notification-button{
+	padding: 2px 8px 2px 8px !important;
+	font-size: 12px !important;
+	border-radius: 3px;
+	margin-top: -1px;
+}
+
+.cell-copy > span:hover {
+	cursor: pointer;
+}
+
+.content-container {
+	margin-top: 135px;
+}
+
+.light-background img {
+	max-height: 100px;
+    max-width: 100%;
+}
+
+.attachment-error {
+	border: 1px solid #a94442 !important;
+}
+
+.console-reports .menu-accordion {
+	width: 100%;
+	display: block;
+	float: left;
+}
+
+.console-reports .menu-accordion ul {
+	width: 20%;
+	float: left;
+}
+
+.console-reports .menu-accordion .tab-content {
+	float: left;
+	padding: 0;
+	width: 80%;
+	padding: 0 20px;
+}
+
+.console-reports .menu-accordion .nav>li>a {
+	color: #34495e;
+}
+
+.console-reports .menu-accordion .nav-pills>li.active>a,
+.console-reports .menu-accordion .nav>li>a:hover {
+	background-color: #5cb85c;
+	color: #FFF;
+}
+
+.console-reports .site-stats .title {
+	width: 40%;
 }

@@ -40,7 +40,7 @@ describe("Testing ConsoleHelper service", function() {
             });
             $provide.service('Practice', function($q){
                 return {
-                    searchPractice: jasmine.createSpy('searchPractice').and.returnValue($q.defer().promise),
+                    superUserSearchPractice: jasmine.createSpy('superUserSearchPractice').and.returnValue($q.defer().promise),
                 };
             });
             $provide.service('Role', function(){
@@ -80,7 +80,7 @@ describe("Testing ConsoleHelper service", function() {
         expect(User.getAllUsers).toHaveBeenCalled();
 
         ConsoleHelper.findPractice($scope)(searchValue);
-        expect(Practice.searchPractice).toHaveBeenCalled();
+        expect(Practice.superUserSearchPractice).toHaveBeenCalled();
 
         ConsoleHelper.showFullRole()(rolesMask);
         expect(Role.getFromMask).toHaveBeenCalled();

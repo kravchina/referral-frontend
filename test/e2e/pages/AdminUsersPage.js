@@ -43,6 +43,10 @@ var AdminUsersPage = function() {
         return element(by.model('user.specialty_type_id'));
     };
 
+    this.getEditModalSalutation = function(){
+        return element(by.css('#selectSalutation'));
+    };
+
     this.getAddUserButton = function(){
         return element(by.css('button[ng-click="usersDialog()"]'));
     };
@@ -73,6 +77,14 @@ var AdminUsersPage = function() {
 
     this.getAddModalDiscardButton = function(){
         return element(by.css('#formNewUser button[ng-click="cancel()"]'));
+    };
+
+    this.getInviteUserResultModal = function(){
+        return element(by.css('#inviteUserResult'));
+    };
+
+    this.getInviteUserResultOkButton = function(){
+        return element(by.css('#inviteUserResult button[ng-click="ok()"]'));
     };
 };
 

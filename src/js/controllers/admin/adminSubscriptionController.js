@@ -1,28 +1,35 @@
 angular.module('admin')
-    .controller('AdminSubscriptionController', ['$scope', '$state', '$modal', 'Auth', 'Notification', 'Address', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'BASE_SUBSCRIPTION_PRICE', 'Logger',
-    function ($scope, $state, $modal, Auth, Notification, Address, ModalHandler, Practice, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, BASE_SUBSCRIPTION_PRICE, Logger) {
-
-        $scope.baseSubscriptionPrice = BASE_SUBSCRIPTION_PRICE;
+    .controller('AdminSubscriptionController', ['$scope', '$state', '$modal', 'Auth', 'Notification', 'Address', 'ModalHandler', 'Practice', 'Subscription', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'Logger',
+    function ($scope, $state, $modal, Auth, Notification, Address, ModalHandler, Practice, Subscription, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, Logger) {
 
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function(practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
+            $scope.designation = practice.designation;
             $scope.paymentNotification = {
-                showTrial: practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
-                showTrialExpired: practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
+                showTrial: !practice.stripe_customer_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
+                showTrialExpired: !practice.stripe_customer_id && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
                 showSubscriptionSuccess: false,
-                showSubscriptionCancelled: !practice.trial_period && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
-                showSubscriptionExpired: !practice.trial_period && new Date().getTime() > new Date(practice.subscription_active_until).getTime()
+                showSubscriptionCancelled: practice.stripe_customer_id && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
+                showSubscriptionExpired: practice.stripe_customer_id && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
+                showDesignation: $scope.designation
             };
-
+            $scope.subscriptionPrice = practice.subscription_price;
+            $scope.subscriptionInterval = practice.subscription_interval;
             $scope.locationsNumber = practice.addresses.length;
-
+            $scope.refreshEvents();
         });
+
+        $scope.refreshEvents = function(){
+            if($scope.practice.stripe_customer_id){
+                $scope.events = Subscription.getEvents({customer_id: $scope.practice.stripe_customer_id});
+            }
+        };
 
         $scope.isPremium = function(){
             return $scope.practice.stripe_customer_id && $scope.practice.stripe_subscription_id
         };
 
-        $scope.upgradeDialog = function () {
+        $scope.upgradeDialog = function (interval) {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/upgrade_form.html',
                 controller: 'UpgradeModalController',
@@ -32,6 +39,9 @@ angular.module('admin')
                     },
                     stripe_subscription_id: function () {
                         return $scope.practice.stripe_subscription_id;
+                    },
+                    interval: function(){
+                        return interval
                     }
                 }
             });
@@ -39,9 +49,11 @@ angular.module('admin')
             modalInstance.result.then(function (practice) {
                 // $scope.practice.users.push(user);
                 $scope.paymentNotification.showSubscriptionSuccess = true;
-                $scope.paymentNotification.showTrial = practice.trial_period;
-                $scope.showSubscriptionExpired = false;
+                $scope.paymentNotification.showTrial = !practice.stripe_customer_id;
+                $scope.paymentNotification.showSubscriptionExpired = false;
                 $scope.practice = practice;
+                $scope.subscriptionPrice = practice.subscription_price;
+                $scope.subscriptionInterval = practice.subscription_interval;
             });
         };
 

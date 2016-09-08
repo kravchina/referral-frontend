@@ -4,7 +4,7 @@ angular.module('modals')
 
     $scope.title = 'Create a New Patient Record';
     $scope.alerts = [];
-
+    $scope.datepickerStatus = {opened: false};
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
 
     if (fullname) {
@@ -22,9 +22,9 @@ angular.module('modals')
 
     $scope.ok = function (patient) {
         patient.practice_id = Auth.getOrRedirect().practice_id;
-
+        patient.birthday = moment(patient.birthday).format('YYYY-MM-DD');//fix for #114475519
         function createPatient(){
-            Patient.save({patient: {salutation: patient.salutation, first_name: patient.first_name, last_name: patient.last_name, middle_initial: patient.middle_initial, birthday: moment(patient.birthday).format('YYYY-MM-DD'), email: patient.email, phone: patient.phone, practice_id: patient.practice_id}},
+            Patient.save({patient: patient},
                 function (success) {
                     ModalHandler.close($modalInstance, success);
                 },
@@ -60,7 +60,9 @@ angular.module('modals')
         });
 
     };
-
+    $scope.openDatePicker = function($event){
+        $scope.datepickerStatus.opened = true;
+    };
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
 
@@ -83,13 +85,14 @@ angular.module('modals')
 .controller('EditPatientModalController', [ '$scope', '$state', '$modalInstance', 'Auth', 'Alert', 'ModalHandler', 'Patient', 'patientForEdit', '$modal',
         function ($scope, $state, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, $modal) {
     $scope.title = 'Edit Patient Record';
-
+    $scope.datepickerStatus = {opened: false};
     $scope.alerts = [];
     $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
     $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: moment(patientForEdit.birthday).toDate(), email: patientForEdit.email, phone: patientForEdit.phone};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
     $scope.ok = function (patient) {
+        patient.birthday = moment(patient.birthday).format('YYYY-MM-DD');//fix for #114475519
         function updatePatient () {
-            Patient.update({id: patientForEdit.id}, {patient: {salutation: patient.salutation, first_name: patient.first_name, last_name: patient.last_name, middle_initial: patient.middle_initial, birthday: moment(patient.birthday).format('YYYY-MM-DD'), email: patient.email, phone: patient.phone}},
+            Patient.update({id: patientForEdit.id}, {patient: patient},
                 function (success) {
                     ModalHandler.close($modalInstance, success);
                 },
@@ -132,6 +135,11 @@ angular.module('modals')
         }
 
     };
+
+    $scope.openDatePicker = function ($event) {
+        $scope.datepickerStatus.opened = true;
+    };
+
     $scope.cancel = function () {
         ModalHandler.dismiss($modalInstance);
     };
@@ -201,7 +209,9 @@ angular.module('modals')
 
 }])
 
-.controller('ProviderModalController', ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Auth', 'Spinner', 'sendEmailNotification', function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Auth, Spinner, sendEmailNotification) {
+.controller('ProviderModalController',
+    ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Spinner', 'sendEmailNotification', 'inviterId',
+        function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Spinner, sendEmailNotification, inviterId) {
     $scope.alerts = [];
     $scope.model = {};
     $scope.isProviderInvite = true;
@@ -215,7 +225,7 @@ angular.module('modals')
             }
         });
     $scope.ok = function (provider) {
-        provider.inviter_id = Auth.getOrRedirect().id;
+        provider.inviter_id = inviterId;
         var resultHandlers = {
             success: function (success) {
                 ModalHandler.close($modalInstance, success);
@@ -356,7 +366,7 @@ angular.module('modals')
     };
 }])
 
-.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', 'Spinner', 'stripe', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id, Spinner, stripe) {
+.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', 'interval', 'Spinner', 'stripe', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id, interval, Spinner, stripe) {
     $scope.result = {};
     $scope.alerts = [];
     var currentYear = moment().year();
@@ -392,7 +402,8 @@ angular.module('modals')
                 return Practice.subscribe({practiceId: practice_id}, {
                         practice: {
                             name_on_card: payment_info.name_on_card,
-                            stripe_token: token.id
+                            stripe_token: token.id,
+                            subscription_interval: interval
                         }
                     },
                     function (success) {
@@ -430,12 +441,15 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
-        function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
+    ['$scope', 'showNameControls', 'showRoleSelector', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
+        function ($scope, showNameControls, showRoleSelector, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
+            $scope.showNameControls = showNameControls;
+            $scope.showRoleSelector = showRoleSelector;
             $scope.practiceTypes = [];
+            $scope.showRoles = [USER_ROLES.aux, USER_ROLES.doctor, USER_ROLES.admin]
             Procedure.practiceTypes({'include_procedures': false}, function(success){
                 success.map(function(item){
                     if(item.code !== 'multi_specialty'){
@@ -444,14 +458,7 @@ angular.module('modals')
                 });
             });
             $scope.user = editUser;//for now we need only is_admin property to be set
-            $scope.practiceAddresses = angular.copy(practiceAddresses).map(function(pAddress){
-                $scope.user.addresses.forEach(function(uAddress){
-                    if(uAddress.id == pAddress.id) {
-                        pAddress.checked = true;
-                    }
-                });
-                return pAddress;
-            });
+            $scope.practiceAddresses = practiceAddresses;
             $scope.user.is_admin = Role.hasRoles([USER_ROLES.admin], Role.getFromMask($scope.user.roles_mask));
             var initialEmail = editUser.email;
 
@@ -467,31 +474,6 @@ angular.module('modals')
             });
             $scope.listOutputUsers = [];
 
-            function arrayObjectIndexOf(inputArray, searchTerm, property) {
-                for(var i = 0, len = inputArray.length; i < len; i++) {
-                    if (inputArray[i][property] === searchTerm) {
-                        return i;
-                    }
-                }
-                return -1;
-            };
-
-            $scope.toggleAddresses = function(selectedItem){
-                var index = arrayObjectIndexOf($scope.user.addresses, selectedItem.id, 'id');
-
-                if(index != -1){
-                    if($scope.user.addresses.length > 1) {
-                        $scope.user.addresses.splice(index, 1);
-                        selectedItem.checked = false;
-                    } else {
-                        selectedItem.checked = !selectedItem.checked;
-                    }
-                } else {
-                    selectedItem.checked = true;
-                    $scope.user.addresses.push(selectedItem);
-                }
-            };
-
             $scope.checkEmail = function (email) {
                 ProviderInvitation.validate({email: email}, function (success) {
                     $scope.userForm.email.$setValidity('email', true);
@@ -504,10 +486,12 @@ angular.module('modals')
 
 
             $scope.ok = function (user) {
-                if(Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && !user.is_admin) {
-                    user.roles_mask -= USER_ROLES.admin.mask;
-                } else if(!Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && user.is_admin) {
-                    user.roles_mask += USER_ROLES.admin.mask;
+                if(!showRoleSelector) {
+                    if (Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && !user.is_admin) {
+                        user.roles_mask -= USER_ROLES.admin.mask;
+                    } else if (!Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && user.is_admin) {
+                        user.roles_mask += USER_ROLES.admin.mask;
+                    }
                 }
                 if (user.password != user.password_confirmation) {
                     $scope.alerts = [];
@@ -519,19 +503,6 @@ angular.module('modals')
                         Notification.success('Confirmation letter was sent to your new email address. Your email will be changed right after confirmation.');
                     });
                 }
-                user.user_addresses_attributes = practiceAddresses.map(function(item){
-                    var selectAddressIndex = arrayObjectIndexOf(user.addresses, item.id, 'id');
-
-                    if(selectAddressIndex == -1) {
-                        var userAddressesIndex  = arrayObjectIndexOf(user.user_addresses, item.id, 'address_id');
-                        if(userAddressesIndex != -1) {
-                            return {id: user.user_addresses[userAddressesIndex].id, _destroy: true};
-                        } else {
-                            return {};
-                        }
-                    }
-                    return {user_id: user.id, address_id: item.id};
-                });
                 User.update({id: editUser.id}, {user: user, email_relations: $scope.listOutputUsers}, function (success) {
                     $scope.user.user_addresses = success.user_addresses;
                     Logger.log(success);
@@ -569,11 +540,12 @@ angular.module('modals')
 }])
 
 .controller('EditNoLoginUserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure',
-    function ($scope, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure) {
+    ['$scope', 'showNameControls', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure', 'practiceAddresses',
+    function ($scope, showNameControls, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure, practiceAddresses) {
         $scope.user = editUser;
         $scope.alerts = [];
         $scope.practiceTypes = [];
+        $scope.showNameControls = showNameControls;
         Procedure.practiceTypes({'include_procedures': false}, function(success){
             success.map(function(item){
                 if(item.code !== 'multi_specialty'){
@@ -581,6 +553,7 @@ angular.module('modals')
                 }
             });
         });
+        $scope.practiceAddresses = practiceAddresses;
 
         $scope.cancel = function () {
             $scope.user.email = undefined; //reset user email if modal is closed
@@ -599,7 +572,15 @@ angular.module('modals')
         };
 
         $scope.save = function(user){
-            User.update({id: user.id}, {user: {specialty_type_id: user.specialty_type_id}}, function(success){
+            User.update({id: user.id}, {
+                user: {
+                    title: user.title,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    specialty_type_id: user.specialty_type_id,
+                    user_addresses_attributes: user.user_addresses_attributes
+                }
+            }, function(success){
                 ModalHandler.dismiss($modalInstance);
             }, function(failure){
                 $scope.alerts = [];
@@ -632,7 +613,14 @@ angular.module('modals')
 }])
 
 .controller('RegistrationResultController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
-    $scope.resultMessage = 'Thank you for registering your account on Dental Links. Your account is waiting to start sending HIPAA Compliant referrals for free!';
+    $scope.resultMessage = 'Thank you for registering your account on Dental Care Links. Your account is waiting to start sending HIPAA Compliant referrals for free!';
+    $scope.ok = function(){
+        ModalHandler.close($modalInstance);
+    }
+}])
+
+.controller('InviteUserResultController', ['$scope', '$modalInstance', 'ModalHandler', 'toEmail', function ($scope, $modalInstance, ModalHandler, toEmail) {
+    $scope.resultMessage = 'Your invite has been sent to ' + toEmail + '. The email contains a special link to complete their registration, once this is done their account will be activated.';
     $scope.ok = function(){
         ModalHandler.close($modalInstance);
     }
@@ -678,8 +666,10 @@ angular.module('modals')
     };
 }])
 
-.controller('SubscriptionChangeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'BASE_SUBSCRIPTION_PRICE', 'locationsNumber', 'cancelCallback', function($scope, $modalInstance, ModalHandler, BASE_SUBSCRIPTION_PRICE, locationsNumber, cancelCallback){
-    $scope.baseSubscriptionPrice = BASE_SUBSCRIPTION_PRICE;
+.controller('SubscriptionChangeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'locationsNumber', 'basePrice', 'subscriptionPrice', 'subscriptionInterval', 'cancelCallback', function($scope, $modalInstance, ModalHandler, locationsNumber, basePrice, subscriptionPrice, subscriptionInterval, cancelCallback){
+    $scope.basePrice = basePrice;
+    $scope.subscriptionPrice = subscriptionPrice;
+    $scope.subscriptionInterval = subscriptionInterval;
     $scope.locationsNumber = locationsNumber;
     $scope.ok = function(){
         ModalHandler.close($modalInstance);
@@ -688,6 +678,35 @@ angular.module('modals')
         cancelCallback();
         ModalHandler.dismiss($modalInstance);
     };
+}])
+
+.controller('ConfirmationModalController', ['$scope', '$modalInstance', 'ModalHandler', 'confirmMessage',
+    function($scope, $modalInstance, ModalHandler, confirmMessage){
+    $scope.confirmMessage = confirmMessage;
+    $scope.ok = function(){
+        ModalHandler.close($modalInstance);
+    };
+    $scope.cancel = function(){
+        ModalHandler.dismiss($modalInstance);
+    };
+}])
+
+.controller('UnsubscribeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'confirmMessage',
+    function($scope, $modalInstance, ModalHandler, confirmMessage){
+        $scope.confirmMessage = confirmMessage;
+
+        $scope.ok = function(){
+            ModalHandler.close($modalInstance);
+        };
+}])
+
+.controller('PasswordEditModalController', ['$scope', '$modalInstance', 'ModalHandler', 'message',
+    function($scope, $modalInstance, ModalHandler, message){
+        $scope.message = message;
+
+        $scope.ok = function(){
+            ModalHandler.close($modalInstance);
+        };
 }])
 
 .controller('RegistrationEmailResendModalController', ['$scope', '$modalInstance', 'ModalHandler',

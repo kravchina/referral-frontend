@@ -80,7 +80,7 @@
                             <span class="dlicons-pencil" title="Edit user"></span>
                         </td>
                         <td class="cell-from">
-                        <span class="provider">{{activity.owner.first_name}} {{activity.owner.middle_initial}} {{activity.owner.last_name}} {{ 'activity.' + activity.key | i18n}} <a ng-if='activity.trackable_type==="Referral"' ng-href="#/view_referral/{{activity.trackable_id}}">#{{activity.trackable_id}}</a></span>
+                        <span class="provider">{{activity.owner ? activity.owner.first_name : 'Someone unknown'}} {{activity.owner.middle_initial}} {{activity.owner.last_name}} {{ 'activity.' + activity.key | i18n}} <a ng-if='activity.trackable_type==="Referral"' ng-href="#/view_referral/{{activity.trackable_id}}">#{{activity.trackable_id}}</a></span>
                             <span class="practice">{{activity.owner.practice.name}}</span>
                         </td>
                         <td class="cell-datetime">

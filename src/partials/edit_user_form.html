@@ -1,4 +1,4 @@
-<form id="formNewuser" name="userForm">
+<form id="formEditUser" name="userForm">
     <div class="modal-header">
         <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel">Edit user</h4>
@@ -6,12 +6,35 @@
     <div class="modal-body">
         <alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.message | i18n}}</alert>
         <div class="input-block">
+            <select id="selectSalutation" name="salutation" ng-model="user.title" class="form-control">
+                <option selected="selected" disabled="disabled" class="placeholder" value="">Select salutation</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Mrs.">Mrs.</option>
+                <option value="Dr.">Dr.</option>
+            </select>
+        </div>
+        <div class="input-block" ng-if="!showNameControls">
             <input type="text" name="userName" class="form-control" ng-value="user.first_name +' '+ user.last_name" ng-disabled="true">
+        </div>
+        <div class="row" ng-if="showNameControls">
+            <div class="col-sm-6">
+                <div class="input-block">
+                    <label>First name</label>
+                    <input type="text" name="userFirstName" class="form-control" ng-model="user.first_name" ng-disabled="false">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="input-block">
+                    <label>Last name</label>
+                    <input type="text" name="userLastName" class="form-control" ng-model="user.last_name" ng-disabled="false">
+                </div>
+            </div>
         </div>
         <div class="input-block">
             <input type="email" name="email" class="form-control" ng-model="user.email" ng-change="checkEmail(user.email)" ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }">
         </div>
-        <div class="input-block">
+        <div class="input-block" ng-show="!showRoleSelector">
             <input type="text" name="userRole" class="form-control" ng-value="roleName(user.roles_mask)" ng-disabled="true">
         </div>
         <div class="input-block" ng-class="{ 'has-error': userForm.password.$dirty && userForm.password.$invalid }">
@@ -20,17 +43,10 @@
         <div class="input-block" ng-class="{ 'has-error': userForm.password_confirmation.$dirty && (userForm.password_confirmation.$invalid  || user.password_confirmation !== user.password) }">
             <input type="password" name="password_confirmation" class="form-control" ng-model="user.password_confirmation" placeholder="Confirm New Password &hellip;" ng-minlength="8" ng-required="userForm.password.$dirty">
         </div>
-        <label>Select addresses:</label>
-        <div class="form-group">
-            <label class="checkbox" ng-repeat="address in practiceAddresses">
-                <input type="checkbox" ng-model="address.checked"
-                       ng-disabled="address.checked && user.addresses.length == 1"
-                       ng-click="toggleAddresses(address)">
-                {{address.state}}, {{address.street_line_1}}
-            </label>
-        </div>
+        <user-addresses user="user" practice-addresses="practiceAddresses"></user-addresses>
         <alert type="warning">Users with Admin privileges are allowed to create and edit users, allows auxiliary to sign and send referrals and to set referrals complete</alert>
-        <div access="admin" class="input-block">
+        <div roles-selector show-roles="showRoles" input-mask="user.roles_mask" ng-show="showRoleSelector"></div>
+        <div access="admin" class="input-block" ng-show="!showRoleSelector">
             <label>
                 <input type="checkbox" name="is_admin" ng-model="user.is_admin">
                 Admin?

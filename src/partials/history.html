@@ -8,7 +8,7 @@
         <div class="col-xs-12 col-sm-4">
         </div>
         <div class="input-block col-xs-12 col-sm-4 text-right">
-            <a ng-href="#/create_referral" class="btn btn-orange btn-lg">New Referral</a>
+            <a class="btn btn-orange btn-lg" ng-click="newRefferal()">New Referral</a>
         </div>
     </div>
 </header><!-- .page-header -->
@@ -27,7 +27,7 @@
             </div>
 
             <div class="input-block col-xs-12 col-sm-4 col-sm-offset-1">
-                <input type="search" ng-model="query" placeholder="Search &hellip;" class="form-control placeholder search-no-button" ng-change="findReferralsByTerm()">
+                <input type="search" ng-model="query" placeholder="Search &hellip;" ng-model-options="{debounce: 300}" class="form-control placeholder search-no-button" ng-change="findReferralsByTerm()">
             </div>
 
             <div class="input-block col-xs-12 col-sm-2 col-sm-offset-1">
@@ -38,6 +38,7 @@
                     <option value="Draft">Draft</option>
                     <option value="Complete">Complete</option>
                     <option value="unread_updates">Unread updates</option>
+                    <option value="bounced">Bounced</option>
                 </select>
             </div>
         </div>
@@ -82,7 +83,7 @@
                             <span class="practice">{{referral.dest_practice.name}}</span>
                         </td>
                         <td class="cell-status">
-                            <span class="label" ng-class="{'label-success': referral.status == 'completed', 'label-warning': referral.status == 'active', 'label-info' : referral.status == 'new', 'label-danger' : referral.status == 'draft'}">{{referral.status}} {{referral.has_updates? '*':''}}</span>
+                            <span class="label" ng-class="{'label-success': referral.status == 'completed', 'label-warning': referral.status == 'active', 'label-info' : referral.status == 'new', 'label-danger' : referral.status == 'draft' || referral.status == 'bounced'}">{{referral.status}} {{referral.has_updates? '*':''}}</span>
                         </td>
                     </tr>
                     </tbody>

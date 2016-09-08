@@ -1,124 +1,191 @@
-<div class="row">
-    <div class="input-block col-sm-4 report-invitation">
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <h3>Invitations</h3>
-                <div class="btn-group btn-group-justified">
-                    <label class="btn btn-success" ng-model="invitationsRadio" btn-radio="'day'" ng-click="toggleInvitations('day')">
-                        Day: <span class="badge">{{info.invitations.day}}</span>
-                    </label>
-                    <label class="btn btn-success" ng-model="invitationsRadio" btn-radio="'week'" ng-click="toggleInvitations('week')">
-                        Week: <span class="badge">{{info.invitations.week}}</span>
-                    </label>
-                    <label class="btn btn-success" ng-model="invitationsRadio" btn-radio="'ytd'" ng-click="toggleInvitations('ytd')">
-                        YTD: <span class="badge">{{info.invitations.ytd}}</span>
-                    </label>
-                </div>
-            </div>
-            <div class="panel-body report-panel-scroll">
-                <accordion close-others="false">
-                    <accordion-group ng-repeat="invitation in invitations">
-                        <accordion-heading>
-                            {{$index+1}}) {{invitation.first_name}} {{invitation.last_name}}
-                        </accordion-heading>
-                        <label>Email</label>
-                        <input type="text" class="form-control" value="{{invitation.email}}" disabled>
-                        <label>Status</label>
-                        <input type="text" class="form-control" value="{{invitation.status}}" disabled>
-                    </accordion-group>
-                </accordion>
-            </div>
-        </div>
-    </div>
-    <div class="input-block col-sm-4 report-practice">
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <h3>Practices</h3>
-                <div class="btn-group btn-group-justified">
-                    <label class="btn btn-success" ng-model="practicesRadio" btn-radio="'day'" ng-click="togglePractices('day')">
-                        Day: <span class="badge">{{info.practices.day}}</span>
-                    </label>
-                    <label class="btn btn-success" ng-model="practicesRadio" btn-radio="'week'" ng-click="togglePractices('week')">
-                        Week: <span class="badge">{{info.practices.week}}</span>
-                    </label>
-                    <label class="btn btn-success" ng-model="practicesRadio" btn-radio="'ytd'" ng-click="togglePractices('ytd')">
-                        YTD: <span class="badge">{{info.practices.ytd}}</span>
-                    </label>
-                </div>
-            </div>
-            <div class="panel-body report-panel-scroll">
-                <accordion close-others="false">
-                    <accordion-group heading="{{$index+1}}) {{practice.name}}" ng-repeat="practice in practices">
-                        <label>Created</label>
-                        <input type="text" class="form-control" value="{{practice.created_at | date: 'mediumDate'}}" disabled>
-                    </accordion-group>
-                </accordion>
-            </div>
-        </div>
-    </div>
-    <div class="input-block col-sm-4 report-user">
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <h3>Users</h3>
-                <div class="btn-group btn-group-justified">
-                    <label class="btn btn-success" ng-model="usersRadio" btn-radio="'day'" ng-click="toggleUsers('day')">
-                        Day: <span class="badge">{{info.users.day}}</span>
-                    </label>
-                    <label class="btn btn-success" ng-model="usersRadio" btn-radio="'week'" ng-click="toggleUsers('week')">
-                        Week: <span class="badge">{{info.users.week}}</span>
-                    </label>
-                    <label class="btn btn-success" ng-model="usersRadio" btn-radio="'ytd'" ng-click="toggleUsers('ytd')">
-                        YTD: <span class="badge">{{info.users.ytd}}</span>
-                    </label>
-                </div>
-            </div>
-            <div class="panel-body report-panel-scroll">
-                <accordion close-others="false">
-                    <accordion-group heading="{{$index+1}}) {{user.title}} {{user.first_name}} {{user.last_name}}" ng-repeat="user in users">
-                        <label>Email</label>
-                        <input type="text" class="form-control" value="{{user.email}}" disabled>
-                    </accordion-group>
-                </accordion>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Unopened referrals -->
-<div class="row">
-    <div class="col-sm-12">
-
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-sm-10">
-                        <a href="" ng-click="isReferralsCollapsed = !isReferralsCollapsed">
-                            <h3>Unopened referrals
-                                <span ng-class="isReferralsCollapsed ? 'glyphicon glyphicon-expand' : 'glyphicon glyphicon-collapse-down'"></span>
-                            </h3>
-                        </a>
-                    </div>
-                    <div class="col-sm-2">
-                        <a href="{{API_ENDPOINT}}/report/export_unopened_referrals"
-                           type="button"
-                           class="btn btn-xs btn-success pull-right export-unopened-referrals">
-                            <span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;.csv
-                        </a>
+<div class="row console-reports">
+    <tabset vertical="true" type="pills" class="menu-accordion">
+        <tab heading="Invitation">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3>Invitations</h3>
+                    <div class="btn-group btn-group-justified">
+                        <label class="btn btn-success" ng-model="invitationsRadio" btn-radio="'day'" ng-click="toggleInvitations('day')">
+                            Day: <span class="badge">{{info.invitations.day}}</span>
+                        </label>
+                        <label class="btn btn-success" ng-model="invitationsRadio" btn-radio="'week'" ng-click="toggleInvitations('week')">
+                            Week: <span class="badge">{{info.invitations.week}}</span>
+                        </label>
+                        <label class="btn btn-success" ng-model="invitationsRadio" btn-radio="'ytd'" ng-click="toggleInvitations('ytd')">
+                            YTD: <span class="badge">{{info.invitations.ytd}}</span>
+                        </label>
                     </div>
                 </div>
+                <div class="panel-body report-panel-scroll">
+                    <accordion close-others="false">
+                        <accordion-group ng-repeat="invitation in invitations">
+                            <accordion-heading>
+                                {{$index+1}}) {{invitation.first_name}} {{invitation.last_name}}
+                            </accordion-heading>
+                            <label>Email</label>
+                            <input type="text" class="form-control" value="{{invitation.email}}" disabled>
+                            <label>Status</label>
+                            <input type="text" class="form-control" value="{{invitation.status}}" disabled>
+                            <label>Invited by</label>
+                            <input type="text" class="form-control" value="{{invitation.inviter.first_name}} {{invitation.inviter.last_name}} from {{invitation.inviter.practice.name}}" disabled>
+                        </accordion-group>
+                    </accordion>
+                </div>
             </div>
-            <div class="panel-body" collapse="isReferralsCollapsed">
-                <table class="table table-hover table-striped list-of-unopened-referrals">
-                    <thead>
-                    <tr>
-                        <th class="cell-type">Provider</th>
-                        <th class="cell-email">Email</th>
-                        <th class="cell-description">Registered</th>
-                        <th class="cell-date">Date created</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="referral in referrals">
-                        <td class="cell-to">
+        </tab>
+        <tab heading="Practices">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3>Practices</h3>
+                    <div class="btn-group btn-group-justified">
+                        <label class="btn btn-success" ng-model="practicesRadio" btn-radio="'day'" ng-click="togglePractices('day')">
+                            Day: <span class="badge">{{info.practices.day}}</span>
+                        </label>
+                        <label class="btn btn-success" ng-model="practicesRadio" btn-radio="'week'" ng-click="togglePractices('week')">
+                            Week: <span class="badge">{{info.practices.week}}</span>
+                        </label>
+                        <label class="btn btn-success" ng-model="practicesRadio" btn-radio="'ytd'" ng-click="togglePractices('ytd')">
+                            YTD: <span class="badge">{{info.practices.ytd}}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="panel-body report-panel-scroll">
+                    <accordion close-others="false">
+                        <accordion-group ng-repeat="practice in practices">
+                            <accordion-heading>
+                                <span ng-class="{'text-muted': practice.removed_at}">
+                                    {{$index+1}})
+                                    <span ng-class="{'hidden': !practice.removed_at}" class="text-danger">[deleted]</span>
+                                    {{practice.name}}
+                                </span>
+                            </accordion-heading>
+                            <a ui-sref="console.practice({id: practice.id})" target="_blank">View practice details</a>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>Created</td>
+                                        <td><span>{{practice.created_at | date: 'mediumDate'}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sent referrals</td>
+                                        <td><span>{{practice.count_sent_referrals}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Received referrals</td>
+                                        <td><span>{{practice.count_received_referrals}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Last login</td>
+                                        <td><span>{{practice.last_login_at | date: 'medium'}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </accordion-group>
+                    </accordion>
+                </div>
+            </div>
+        </tab>
+        <tab heading="Users">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3>Users</h3>
+                    <div class="btn-group btn-group-justified">
+                        <label class="btn btn-success" ng-model="usersRadio" btn-radio="'day'" ng-click="toggleUsers('day')">
+                            Day: <span class="badge">{{info.users.day}}</span>
+                        </label>
+                        <label class="btn btn-success" ng-model="usersRadio" btn-radio="'week'" ng-click="toggleUsers('week')">
+                            Week: <span class="badge">{{info.users.week}}</span>
+                        </label>
+                        <label class="btn btn-success" ng-model="usersRadio" btn-radio="'ytd'" ng-click="toggleUsers('ytd')">
+                            YTD: <span class="badge">{{info.users.ytd}}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="panel-body report-panel-scroll">
+                    <accordion close-others="false">
+                        <accordion-group heading="{{$index+1}}) {{user.title}} {{user.first_name}} {{user.last_name}}" ng-repeat="user in users">
+                            <label>Email</label>
+                            <input type="text" class="form-control" value="{{user.email}}" disabled>
+                        </accordion-group>
+                    </accordion>
+                </div>
+            </div>
+        </tab>
+        <tab heading="List of reminders">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h3>List of reminders</h3>
+                        </div>
+                        <div class="col-sm-8">
+                            <pagination class="pull-right pagination-sm" direction-links="false"
+                                        total-items="totalItems" ng-model="currentPage"
+                                        items-per-page="itemsPerPage" max-size="10"
+                                        ng-change="changeEventPage()">
+                            </pagination>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover table-striped list-of-reminders">
+                        <thead>
+                        <tr>
+                            <th class="cell-type">Type</th>
+                            <th class="cell-description">Description</th>
+                            <th class="cell-date">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="log in eventLogs">
+                            <td class="cell-type">
+                                {{log.event_name}}
+                            </td>
+                            <td class="cell-description">
+                                {{log.description}}
+                            </td>
+                            <td class="cell-date">
+                                {{log.created_at | date: 'medium'}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </tab>
+        <tab heading="Unopened referrals" style="display:none;">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <a href="" ng-click="isReferralsCollapsed = !isReferralsCollapsed">
+                                <h3>Unopened referrals
+                                    <span ng-class="isReferralsCollapsed ? 'glyphicon glyphicon-expand' : 'glyphicon glyphicon-collapse-down'"></span>
+                                </h3>
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="{{API_ENDPOINT}}/report/export_unopened_referrals"
+                               type="button"
+                               class="btn btn-xs btn-success pull-right export-unopened-referrals">
+                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;.csv
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body" collapse="isReferralsCollapsed">
+                    <table class="table table-hover table-striped list-of-unopened-referrals">
+                        <thead>
+                        <tr>
+                            <th class="cell-type">Provider</th>
+                            <th class="cell-email">Email</th>
+                            <th class="cell-description">Registered</th>
+                            <th class="cell-date">Date created</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="referral in referrals">
+                            <td class="cell-to">
                             <span ng-if="referral.dest_provider_invited && !referral.dest_provider">
                                 {{referral.dest_provider_invited.first_name}} {{referral.dest_provider_invited.last_name}}
                             </span>
@@ -128,73 +195,70 @@
                             <span ng-if="referral.dest_provider_id == -1">
                                 First Available
                             </span>
-                        </td>
-                        <td class="cell-email">
+                            </td>
+                            <td class="cell-email">
                             <span ng-if="referral.dest_provider_invited && !referral.dest_provider">
                                 {{referral.dest_provider_invited.email}}
                             </span>
                             <span ng-if="referral.dest_provider">
                                 {{referral.dest_provider.email}}
                             </span>
-                        </td>
-                        <td class="cell-description">
+                            </td>
+                            <td class="cell-description">
                             <span ng-if="referral.dest_provider_invited && !referral.dest_provider"
                                   ng-class="referral.dest_provider_invited.status == 'invited' ? 'glyphicon glyphicon-remove-circle text-danger' : 'glyphicon glyphicon-ok-circle text-success'"></span>
-                            <span ng-if="referral.dest_provider || referral.dest_provider_id == -1" class="glyphicon glyphicon-ok-circle text-success"></span>
-                        </td>
-                        <td class="cell-date">
-                            {{referral.created_at | date: 'medium'}}
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- List of reminders -->
-<div class="row">
-    <div class="col-sm-12">
-
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <h3>List of reminders</h3>
-                    </div>
-                    <div class="col-sm-8">
-                        <pagination class="pull-right pagination-sm" direction-links="false"
-                                    total-items="totalItems" ng-model="currentPage"
-                                    items-per-page="itemsPerPage" max-size="10"
-                                    ng-change="changeEventPage()">
-                        </pagination>
-                    </div>
+                                <span ng-if="referral.dest_provider || referral.dest_provider_id == -1" class="glyphicon glyphicon-ok-circle text-success"></span>
+                            </td>
+                            <td class="cell-date">
+                                {{referral.created_at | date: 'medium'}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="panel-body">
-                <table class="table table-hover table-striped list-of-reminders">
-                    <thead>
-                    <tr>
-                        <th class="cell-type">Type</th>
-                        <th class="cell-description">Description</th>
-                        <th class="cell-date">Date</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="log in eventLogs">
-                        <td class="cell-type">
-                            {{log.event_name}}
-                        </td>
-                        <td class="cell-description">
-                            {{log.description}}
-                        </td>
-                        <td class="cell-date">
-                            {{log.created_at | date: 'medium'}}
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+        </tab>
+        <tab heading="Site stats">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h3>Site stats</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body site-stats">
+                    <table class="table table-hover table-striped ">
+                        <tbody>
+                            <tr>
+                                <td class="title">
+                                    Total referrals created
+                                </td>
+                                <td>
+                                    {{total_referrals}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="title">
+                                    Number of active accounts
+                                </td>
+                                <td>
+                                    {{total_active_accounts}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="title">
+                                    Number of active practices
+                                </td>
+                                <td>
+                                    {{total_active_practices}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-    </div>
+        </tab>
+        <div class="tab-content"></div>
+    </tabset>
 </div>

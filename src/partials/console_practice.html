@@ -43,10 +43,12 @@
 <!-- Practice / Users info block -->
 <div class="row">
     <!-- Practice INFO -->
-    <div class="input-block col-xs-12 col-sm-6" ng-show="practiceSearch" >
+    <div class="input-block col-xs-12 col-sm-6" ng-if="practiceSearch" >
         <div class="panel panel-primary">
             <div class="panel-heading with-btn">
-                <h3 class="panel-title">Practice info:</h3>
+                <h3 class="panel-title">
+                    <span ng-class="{'hidden': !destinationPractice.removed_at}" class="text-danger">[deleted]</span> Practice info:
+                </h3>
             </div>
             <div class="panel-body">
                 <form edit-form="destinationPractice" show-labels="true" id="{{'formConsolePractice'}}" name="practiceForm"
@@ -72,6 +74,46 @@
                         <input type="text" class="form-control data1" name="practiceName" ng-model="destinationPractice.name"
                                disabled="disabled" ng-required="true">
                     </div>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="form-group">
+                                <label>Subscription</label>
+                                <span class="form-control data1">{{destinationPractice.stripe_customer_id ? 'Premium' : 'Trial'}} until {{destinationPractice.subscription_active_until | date: 'mediumDate'}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Extend</label>
+                                <button type="button" ng-if="destinationPractice.stripe_customer_id"
+                                        ng-click="giveCoupon(destinationPractice)" class="btn btn-green btn-toggle-shifted btn-edit"
+                                        data-toggle="tooltip" data-placement="top" title="Add practice address">
+                                    <span class="dlicons-plus"></span>
+                                    <span ng-show="destinationPractice.subscription_interval === 'month'">1 month coupon (${{destinationPractice.subscription_price | money}})</span>
+                                    <span ng-show="destinationPractice.subscription_interval === 'year'">Give coupon ($50)</span>
+                                </button>
+                                <button type="button" ng-if="!destinationPractice.stripe_customer_id"
+                                        ng-click="extendTrial(destinationPractice)" class="btn btn-green btn-toggle-shifted btn-edit"
+                                        data-toggle="tooltip" data-placement="top" title="Add practice address">
+                                    <span class="dlicons-plus"></span> 1 month trial
+                                </button>
+                                <!--<input type="date" disabled="disabled" class="form-control data1" ng-model="">-->
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Designation</label>
+                                <select class="form-control data1 select" name="practiceDesignation" ng-model="destinationPractice.designation"
+                                        ng-options="p as p.name for p in practiceDesignations track by p.id" disabled="disabled" ng-required="false">
+                                    <option class="placeholder" value="">Select type &hellip;</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="form-group col-sm-9">
                             <label>Owner</label>
@@ -242,6 +284,18 @@
                         <a href="{{SITE_URL}}#/register/{{practiceUser.token}}" target="_blank">{{SITE_URL}}#/register/{{practiceUser.token}}</a>
                     </p>
                 </div>
+                <div class="form-group" ng-if="practiceUser.status == 'invited'">
+                    <label>Sender</label>
+                    <p class="form-control-static">
+                        {{practiceUser.inviter.practice.name}} | {{practiceUser.inviter.first_name}} {{practiceUser.inviter.last_name}}
+                    </p>
+                </div>
+                <div class="form-group" ng-if="practiceUser.status == 'invited'">
+                    <label>Referrals</label>
+                    <p class="form-control-static">
+                        {{practiceUser.referrals.length}}
+                    </p>
+                </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -256,6 +310,17 @@
                             <input type="text" class="form-control data1" value="{{practiceUser.updated_at | date: 'mediumDate'}}"
                                    disabled="disabled">
                         </div>
+                    </div>
+                </div>
+                <hr class="hr-half-ident"/>
+                <div class="row">
+                    <div class="col-sm-offset-10 col-sm-2">
+                        <button type="button"
+                                ng-click="inviteDialog()"
+                                class="btn btn-green pull-right"
+                                data-toggle="tooltip" title="Invite a New Provider">
+                            <span class="dlicons-office"></span>
+                        </button>
                     </div>
                 </div>
             </div>

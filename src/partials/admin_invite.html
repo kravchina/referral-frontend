@@ -14,6 +14,7 @@
                         <th class="cell-practice">E-mail</th>
                         <th class="cell-invited">Invited on</th>
                         <th class="cell-status">Status</th>
+                        <th class="cell-resend">Resend</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -23,6 +24,9 @@
                         <td class="cell-invited">{{provider.created_at | date: 'mediumDate'}}</td>
                         <td class="cell-status">
                             <span class="label" ng-class="{'label-success': provider.status == 'registered', 'label-info' : provider.status == 'invited'}">{{provider.status}}</span>
+                        </td>
+                        <td class="cel-resend">
+                            <button class="btn btn-orange" ng-click="resendInvitation(provider.id)">Resend</button>
                         </td>
                     </tr>
                     </tbody>

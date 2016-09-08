@@ -10,6 +10,8 @@ var adminInviteSpec = require('./Admin/AdminInviteSpec');
 var adminSubscriptionSpec = require('./Admin/AdminSubscriptionSpec');
 var createReferralSpec = require('./CreateReferral/CreateReferralSpec');
 var viewReferralSpec = require('./ViewReferral/ViewReferralSpec');
+var viewReferralDraftSpec = require('./ViewReferral/ViewReferralDraftSpec');
+var historySpec = require('./History/HistorySpec');
 
 var StandardLoginSpec = function() {
     this.run = function() {
@@ -32,13 +34,15 @@ var StandardLoginSpec = function() {
                 expect(element(by.css('a[ui-sref="console.practice"]')).isDisplayed()).toBe(false);
                 commonActions.openMenu();
             });
-            
+
+            historySpec.run();
             adminPracticeSpec.run();
             adminUsersSpec.run();
             adminInviteSpec.run();
             adminSubscriptionSpec.run();
             createReferralSpec.run();
             viewReferralSpec.run();
+            viewReferralDraftSpec.run();
             
             afterEach(function() {
                 commonActions.signOut();

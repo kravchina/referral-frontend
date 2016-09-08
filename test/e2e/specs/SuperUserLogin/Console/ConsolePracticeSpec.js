@@ -1,4 +1,5 @@
 var commonExpects = require('../../../commons/CommonExpects');
+var commonActions = require('../../../commons/CommonActions');
 var consolePracticePage = require('../../../pages/ConsolePracticePage');
 
 var ConsolePracticeSpec = function() {
@@ -123,13 +124,58 @@ var ConsolePracticeSpec = function() {
 
                 consolePracticePage.getEditPracticeButton().click();
                 consolePracticePage.getPracticeTypeSelect().element(by.cssContainingText('option', 'Multi-Specialty')).click();
+                commonActions.scrollIntoView(consolePracticePage.getSavePracticeButton());
                 consolePracticePage.getSavePracticeButton().click();
 
+                commonActions.scrollIntoView(consolePracticePage.getUser());
                 consolePracticePage.getUser().click();
                 expect(consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).isDisplayed()).toBe(true);
                 consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).click();
                 expect(consolePracticePage.getUserSpecialty().isDisplayed()).toBe(true);
             });
+
+            it('check edit user dialog', function(){
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
+                consolePracticePage.setPractice(browser.params.login.correct.practice.name);
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(true);
+                consolePracticePage.getPracticeDropDownFirstRowElement().click();
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
+
+                consolePracticePage.getUser().click();
+                expect(consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).isDisplayed()).toBe(true);
+                consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).click();
+
+                consolePracticePage.getEditUserDialogButton().click();
+                expect(consolePracticePage.getEditUserDialog().isDisplayed()).toBe(true);
+                expect(consolePracticePage.getEditUserDialogSalutation().isPresent()).toBe(true);
+                consolePracticePage.getEditUserDialogDiscardButton().click();
+
+            });
+
+            it('check provider invitation dialog', function(){
+                var inviteData = {
+                    firstName: 'TestFirstName',
+                    lastName: 'TestLastName',
+                    email: 'invite@example.com'
+                };
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
+                consolePracticePage.setPractice(browser.params.login.correct.practice.name);
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(true);
+                consolePracticePage.getPracticeDropDownFirstRowElement().click();
+                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
+
+                consolePracticePage.getUser().click();
+                expect(consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).isDisplayed()).toBe(true);
+                consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).click();
+
+                consolePracticePage.getInviteDialogButton().click();
+                expect(consolePracticePage.getInviteDialog().isDisplayed()).toBe(true);
+
+                consolePracticePage.getInviteDialogFirstName().sendKeys(inviteData.firstName);
+                consolePracticePage.getInviteDialogLastName().sendKeys(inviteData.lastName);
+                consolePracticePage.getInviteDialogEmail().sendKeys(inviteData.email);
+                consolePracticePage.getInviteDialogSendButton().click();
+            })
 
         });
     };

@@ -1,5 +1,5 @@
 var ConsolePracticePage = function() {
-    this.url = "/#/console/practice";
+    this.url = "/#/console/practice/";
 
     this.open = function() {
         browser.get(this.url);
@@ -23,7 +23,7 @@ var ConsolePracticePage = function() {
     };
 
     this.getPracticeName = function(){
-        return element.all(by.css('div[ng-show="practiceSearch"] .form-group input')).get(0);
+        return element.all(by.css('div[ng-if="practiceSearch"] .form-group input')).get(0);
     };
 
     this.getPracticeAddButton = function(){
@@ -31,7 +31,7 @@ var ConsolePracticePage = function() {
     };
 
     this.getEditPracticeButton = function(){
-        return element(by.css('#formConsolePractice .btn-edit'));
+        return element(by.css('#formConsolePractice .console-practice-btns .btn-edit'));
     };
 
     this.getSavePracticeButton = function(){
@@ -188,6 +188,56 @@ var ConsolePracticePage = function() {
 
     this.getUserDeleteButton = function(){
         return element(by.css('div.btn-delete'));
+    };
+
+    this.getInviteDialogButton = function(){
+        return element(by.css('button[ng-click="inviteDialog()"]'));
+    };
+
+    //invite dialog
+    this.getInviteDialog = function(){
+        return element(by.css('#formNewProvider'));
+    };
+
+    this.getInviteDialogFirstName = function(){
+        return element(by.css('#formNewProvider input[name="firstName"]'));
+    };
+
+    this.getInviteDialogLastName = function(){
+        return element(by.css('#formNewProvider input[name="lastName"]'));
+    };
+
+    this.getInviteDialogEmail = function(){
+        return element.all(by.css('#formNewProvider input[name="email"]')).get(0);
+    };
+
+    this.getInviteDialogSendButton = function(){
+        return element(by.css('#formNewProvider button[ng-click="ok(model.provider)"]'));
+    };
+
+    this.getInviteDialogDiscardButton =  function(){
+        return element(by.css('#formNewProvider button[ng-click="cancel()"]'));
+    };
+
+    //edit user dialog
+    this.getEditUserDialog = function(){
+        return element(by.css('#formEditUser'));
+    };
+
+    this.getEditUserDialogButton = function(){
+        return element(by.css('div[ng-click="editDialog(practiceUser)"]'));
+    };
+
+    this.getEditUserDialogSalutation = function(){
+        return element(by.css('#selectSalutation'));
+    };
+
+    this.getEditUserDialogSaveButton = function(){
+        return element(by.css('#formEditUser button[ng-click="ok(user)"]'));
+    };
+
+    this.getEditUserDialogDiscardButton = function(){
+        return element(by.css('#formEditUser button[ng-click="cancel()"].btn'));
     };
 
 };

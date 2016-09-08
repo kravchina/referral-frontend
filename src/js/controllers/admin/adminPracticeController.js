@@ -1,6 +1,6 @@
 angular.module('admin')
-    .controller('AdminPracticeController', ['$scope', '$modal', 'ModalHandler', 'Notification', 'Address', 'Practice', 'FREE_TRIAL_PERIOD', 'UnsavedChanges', 'Logger', 'PracticeEditMode', 'Procedure',
-    function ($scope, $modal, ModalHandler, Notification, Address, Practice, FREE_TRIAL_PERIOD, UnsavedChanges, Logger, PracticeEditMode, Procedure) {
+    .controller('AdminPracticeController', ['$scope', '$modal', 'ModalHandler', 'Notification', 'Address', 'Practice', 'FREE_TRIAL_PERIOD', 'UnsavedChanges', 'Logger', 'PracticeEditMode', 'Procedure', 'ApiKey', 'clipboard',
+    function ($scope, $modal, ModalHandler, Notification, Address, Practice, FREE_TRIAL_PERIOD, UnsavedChanges, Logger, PracticeEditMode, Procedure, ApiKey, clipboard) {
 
         $scope.showWarning = false;
         $scope.currentPracticeType = {};
@@ -75,8 +75,17 @@ angular.module('admin')
                             locationsNumber: function () {
                                 return $scope.practice.addresses.length;
                             },
-                            cancelCallback: function(){
-                                return function(){
+                            subscriptionPrice: function () {
+                                return $scope.practice.subscription_price;
+                            },
+                            basePrice: function(){
+                                return $scope.practice.base_price;
+                            },
+                            subscriptionInterval: function () {
+                                return $scope.practice.subscription_interval;
+                            },
+                            cancelCallback: function () {
+                                return function () {
                                     PracticeEditMode.on();
                                 }
                             }
@@ -98,6 +107,32 @@ angular.module('admin')
             }
         };
 
+        $scope.addApiKey = function(practice){
+           ApiKey.generate({ practice_id: practice.id},{} ,function(success){
+               practice.api_keys.push(success)
+           }, function(failure){
+               Notification.error(failure.data.error? failure.data.error : "Error: can't create API key")
+           });
+        };
+
+        $scope.removeApiKey = function (apiKey) {
+            ApiKey.remove({id: apiKey.id}, function (success) {
+                $scope.practice.api_keys.forEach(function (current_key, index, array) {
+                    if (current_key.id === apiKey.id && current_key.api_key === apiKey.api_key) {
+                        array.splice(index, 1);
+                    }
+                });
+            }, function (error) {
+                Notification.error("Error: can't remove API key");
+            });
+        };
+
+        $scope.copyToClipboard = function(value){
+            clipboard.copyText(value);
+            Notification.info('API key <b>' + value + '</b> was copied to clipboard');
+        };
+
+
         $scope.removeAddress = function (address) {
             function removeAddressFromList(addressToRemove) {
                 $scope.practice.addresses.splice($scope.practice.addresses.indexOf(addressToRemove), 1);
@@ -112,6 +147,15 @@ angular.module('admin')
                         resolve: {
                             locationsNumber: function () {
                                 return $scope.practice.addresses.length - 1;
+                            },
+                            subscriptionPrice: function () {
+                                return $scope.practice.subscription_price;
+                            },
+                            subscriptionInterval: function () {
+                                return $scope.practice.subscription_interval;
+                            },
+                            basePrice: function(){
+                                return $scope.practice.base_price;
                             },
                             cancelCallback: function(){
                                 return function(){

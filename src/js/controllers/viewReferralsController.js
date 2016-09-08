@@ -1,6 +1,6 @@
 angular.module('viewReferrals')
-    .controller('ViewReferralsController', ['$scope', '$location', '$stateParams', 'FileUploader', '$timeout', '$anchorScroll', 'Notification', 'Referral', 'Practice', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message', 'ProgressIndicator', 'USER_ROLES',
-    function ($scope, $location, $stateParams, FileUploader, $timeout, $anchorScroll, Notification, Referral, Practice, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message, ProgressIndicator, USER_ROLES) {
+    .controller('ViewReferralsController', ['$scope', '$location', '$stateParams', 'FileUploader', '$timeout', '$anchorScroll', 'Notification', 'Referral', 'Practice', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message', 'ProgressIndicator', 'USER_ROLES', '$state',
+    function ($scope, $location, $stateParams, FileUploader, $timeout, $anchorScroll, Notification, Referral, Practice, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message, ProgressIndicator, USER_ROLES, $state) {
         $scope.uploader = new FileUploader();
 
         $scope.total_size = 0;
@@ -13,9 +13,9 @@ angular.module('viewReferrals')
 
         Practice.get({practiceId: $scope.auth.practice_id}, function(practice){
             $scope.paymentNotification = {
-                showTrial: practice.trial_period && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
+                showTrial: !practice.stripe_customer_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
                 expirationDate: new Date(practice.subscription_active_until),
-                showSubscriptionCancelled: !practice.trial_period && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime()
+                showSubscriptionCancelled: practice.stripe_customer_id && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime()
             }
         });
 
@@ -33,7 +33,10 @@ angular.module('viewReferrals')
                     }
                 },
                 function (failure) {
-                    Notification.error('Something happened... Data was not retrieved from server.')
+                    if(failure.status === 422) {
+                        $state.go('error_page', {error_key: failure.data.message});
+                    }
+                    Notification.error(failure.data.error)
                 }
             );
         };
@@ -306,8 +309,20 @@ angular.module('viewReferrals')
 
 
         $scope.deleteAttachment = function(attachment){
-            $scope.referral.attachments.splice($scope.referral.attachments.indexOf(attachment),1);
-            Attachment.delete({id: attachment.id});
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/confirmation.html',
+                controller: 'ConfirmationModalController',
+                resolve: {
+                    confirmMessage: function(){
+                        return "Delete image?";
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function() {
+                $scope.referral.attachments.splice($scope.referral.attachments.indexOf(attachment),1);
+                Attachment.delete({id: attachment.id});
+            });
         };
     }]);
 

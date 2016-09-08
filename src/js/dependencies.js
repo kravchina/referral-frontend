@@ -21,10 +21,11 @@ require('jsPDFsplittext');
 require('jsPDFfonts');
 require('angularStripe');
 require('angularCreditCards');
+require('angular-clipboard');
 
 angular.module('jsPDF', []).factory('jsPDF', function(){ return require('jsPDF');});
 
-angular.module('admin', ['ui.bootstrap', 'angular-stripe', 'credit-cards']);
+angular.module('admin', ['ui.bootstrap', 'angular-stripe', 'credit-cards', 'angular-clipboard']);
 angular.module('console', ['ui.bootstrap']);
 angular.module('history', ['ui.bootstrap', 'infinite-scroll']);
 angular.module('activity', ['ui.bootstrap', 'infinite-scroll']);
@@ -39,6 +40,7 @@ angular.module('unsavedChanges', []);
 angular.module('dentalLinksServices', ['ngResource']);
 angular.module('dentalLinksDirectives', ['angularFileUpload']);
 angular.module('error', []);
+angular.module('unsubscribe', []);
 
 require('./controllers/admin/adminController.js');
 require('./controllers/admin/adminInviteController.js');
@@ -60,6 +62,7 @@ require('./controllers/registrationController.js');
 require('./controllers/reviewReferralsController.js');
 require('./controllers/savePasswordsController.js');
 require('./controllers/viewReferralsController.js');
+require('./controllers/unsubscribeController.js');
 require('./directives/directives.js');
 require('./services/pdf.js');
 require('./services/referralHelper.js');
@@ -88,6 +91,7 @@ angular.module('dentalLinks', [
     'ui.mask',
     'localization',
     'error',
+    'unsubscribe',
     'isteven-multi-select',
     'angularFileUpload',
     'dentalLinksPartials'
@@ -98,6 +102,7 @@ require('./controllers/navController.js');
 require('./controllers/teethController.js');
 require('./controllers/notesController.js');
 require('./controllers/rolesSelectorController.js');
+require('./controllers/userAddressesController.js');
 require('./controllers/notificationAreaController.js');
 require('./services/imageUtils.js');
 require('./services/logger.js');
