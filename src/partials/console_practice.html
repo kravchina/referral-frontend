@@ -68,6 +68,12 @@
                                 title="Save changes" ng-disabled="practiceForm.$invalid">
                             <span class="dlicons-check"></span>
                         </button>
+                        <button type="button" class="btn btn-green btn-approve"
+                                ng-click="approvePractice(destinationPractice)"
+                                ng-show="destinationPractice.status == 'pending_review'">
+                            <span class="glyphicon glyphicon-ok-circle"></span>
+                                Approve
+                        </button>
                     </div>
                     <div class="form-group" ng-class="{'has-error': practiceForm.practiceName.$invalid}">
                         <label>Practice name</label>

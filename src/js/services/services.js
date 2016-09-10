@@ -102,7 +102,8 @@ angular.module('dentalLinksServices')
             getAllInvitees: {method: 'POST', url: API_ENDPOINT + '/practices/all_invitees', isArray: true},
             giveCoupon: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/give_coupon'},
             prolongTrial: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/prolong_trial'},
-            checkContainsDoctor: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/check_contains_doctor'}
+            checkContainsDoctor: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/check_contains_doctor'},
+            updateStatus: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/update_status'}
         });
     }])
 

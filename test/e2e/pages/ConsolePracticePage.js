@@ -50,6 +50,10 @@ var ConsolePracticePage = function() {
         return element(by.css('#formConsolePractice select[name="practiceType"]'));
     };
 
+    this.getPracticeApproveButton = function(){
+        return element(by.css('button[ng-click="approvePractice(destinationPractice)"]'));
+    };
+
     //delete practice modal
     this.getDeletePracticeModal = function(){
         return element(by.css('#formPracticeDelete'));

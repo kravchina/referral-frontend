@@ -29,6 +29,13 @@ var ConsolePracticeSpec = function() {
                 expect(consolePracticePage.getUser().isDisplayed()).toBe(true);
             });
 
+            it('check approve button', function(){
+                consolePracticePage.setPractice('Promo');
+                consolePracticePage.getPracticeDropDownFirstRowElement().click();
+
+                expect(consolePracticePage.getPracticeApproveButton().isDisplayed()).toBe(true);
+            });
+
             it('fill input fields and check output data', function(){
                 var userFullName = browser.params.login.super_user.firstName + ' ' + browser.params.login.super_user.lastName;
                 //practice fields

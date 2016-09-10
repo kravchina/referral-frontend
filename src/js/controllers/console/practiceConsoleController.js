@@ -233,6 +233,16 @@ angular.module('console')
             });
         };
 
+        $scope.approvePractice = function(practice) {
+            Practice.updateStatus({practiceId: practice.id}, {status: null},
+                function(success){
+                    $scope.destinationPractice.status = null;
+                    Notification.success('Approve was success');
+                }, function(failure){
+                    Notification.error(failure.data.message)
+                });
+        };
+
         $scope.extendTrial = function(practice){
             Practice.prolongTrial({practiceId: practice.id}, {},
                 function(success){
