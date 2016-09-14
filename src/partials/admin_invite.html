@@ -4,6 +4,59 @@
         <button type="button" ng-click="inviteDialog()" class="btn btn-orange btn-toggle btn-toggle-modal-provider" data-toggle="tooltip" data-placement="top" title="Invite a New Provider" data-target="#modalProvider"><span class="dlicons-user-add"></span></button>
     </div>
 
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-sm-3">
+                    <a href="" ng-click="searchCollapsed = !searchCollapsed">
+                        <h3>Practice Directory
+                            <span ng-class="searchCollapsed ? 'glyphicon glyphicon-expand' : 'glyphicon glyphicon-collapse-down'"></span>
+                        </h3>
+                    </a>
+                </div>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" name="address" placeholder="Enter state, city or zip to find relevant practices&hellip;"
+                           ng-model="addressSearchPhrase" typeahead-editable="false"
+                           typeahead="address as address.city + ' (' + address.state + ', ' + address.zip + ')' for address in searchAddresses($viewValue) "
+                           autocomplete="off"
+                           ng-model-options="{ debounce: 300 }">
+                </div>
+
+            </div>
+        </div>
+        <div class="panel-body" collapse="searchCollapsed">
+            <div ng-if="noResults">Sorry, we didn't find any practices by your search criteria. Please try again with another search phrase.</div>
+            <table class="table table-hover table-striped list-of-unopened-referrals">
+                <thead ng-show="addresses.length > 0">
+                <tr>
+                    <th class="cell-type">State</th>
+                    <th class="cell-type">Practice</th>
+                    <th class="cell-email">Type</th>
+                    <th class="cell-description">Address</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="address in addresses">
+                    <td class="cell-to">
+                        {{address.state}}
+                    </td>
+                    <td class="cell-email">
+                        {{address.practice.name}}
+                    </td>
+                    <td class="cell-description">
+                        {{address.practice.practice_type.name}}
+                    </td>
+                    <td class="cell-description">
+                        {{address.street_line_1}}, {{address.city}}, {{address.zip}}, {{address.state}}
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <div id="sectInvite" class="section-block">
         <div class="table-wrapper">
             <div class="table-container">

@@ -1,8 +1,9 @@
 angular.module('admin')
-    .controller('AdminInviteController', ['$scope', '$modal', 'Notification', 'ModalHandler', 'ProviderInvitation', 'Logger', 'Practice', 'Auth',
-    function ($scope, $modal, Notification, ModalHandler, ProviderInvitation, Logger, Practice, Auth) {
+    .controller('AdminInviteController', ['$scope', '$modal', 'Notification', 'ModalHandler', 'ProviderInvitation', 'Logger', 'Practice', 'Auth', 'Address',
+    function ($scope, $modal, Notification, ModalHandler, ProviderInvitation, Logger, Practice, Auth, Address) {
         $scope.invitedUsers = [];
         $scope.invitedColleagues = [];
+        $scope.searchCollapsed = true;
 
         Practice.getAllInvitees({id: $scope.$parent.auth.practice_id}, function(allInvitees){
             allInvitees.map(function(invitation) {
@@ -15,6 +16,17 @@ angular.module('admin')
             Logger.log('invitedUsers = ' + JSON.stringify($scope.invitedUsers));
         });
 
+        $scope.searchAddresses = function(searchPhrase){
+            $scope.noResults = false;
+            Address.search({search: searchPhrase}, function(result){
+                $scope.addresses = result;
+                $scope.searchCollapsed = false;
+                if (result.length < 1){
+                    $scope.noResults = true;
+                }
+
+            })
+        };
 
         $scope.inviteDialog = function () {
             var modalInstance = $modal.open({

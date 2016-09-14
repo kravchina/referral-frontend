@@ -18,7 +18,7 @@ angular.module('admin')
             active: false
         },
         {
-            heading: 'Invite New Practice',
+            heading: 'Colleagues',
             route: 'admin.invite',
             class: 'dlicons-user-add',
             active: false
