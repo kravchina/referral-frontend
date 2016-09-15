@@ -86,15 +86,14 @@ angular.module('registration')
                             promo: $scope.promo
                         },
                         function(success){
-                            Auth.set({
-                                token: success.user.authentication_token,
-                                email: success.user.email,
-                                roles: success.user.roles,
-                                id: success.user.id,
-                                practice_id: success.user.practice_id
+                            var modalInstance = $modal.open({
+                                templateUrl: 'partials/promo_registration_result.html',
+                                controller: 'PromoRegistrationResultController'
                             });
-                            Auth.current_user = success.user;
-                            showResultDialog();
+                            ModalHandler.set(modalInstance);
+                            modalInstance.result.then(function (res) {
+                                $state.go('signIn');
+                            });
                             console.log('registered a new account: ' + JSON.stringify(success));
                         },
                         function(fail){

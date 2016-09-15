@@ -1,9 +1,14 @@
 var RegistrationPage = function() {
     this.urlPart = "/#/register/";
-    
+    this.urlPromoPart = "/#/register/promo/";
+
     this.open = function(token) {
         // TODO [ak] inherit this code somehow?..
         browser.get(this.urlPart + token);
+    };
+
+    this.openPromo = function(promoCode) {
+        browser.get(this.urlPromoPart + promoCode);
     };
     
     // personal info
@@ -80,6 +85,10 @@ var RegistrationPage = function() {
     
     this.getRegisterButtonElement = function() {
         return element(by.css('button[ng-click="register(practice, invitation)"]'));
+    };
+
+    this.getPromoRegisterButtonElement = function() {
+        return element(by.css('button[ng-click="createPracticeAndRegister(practice, invitation)"]'));
     };
     
     // post-final dialog

@@ -2063,3 +2063,9 @@ label.tooth-label-view {
 .console-reports .site-stats .title {
 	width: 40%;
 }
+
+.console-practice-btns .btn-approve {
+	position: absolute;
+	top: 0;
+	left: 160px;
+}
