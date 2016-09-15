@@ -234,9 +234,9 @@ angular.module('console')
         };
 
         $scope.approvePractice = function(practice) {
-            Practice.updateStatus({practiceId: practice.id}, {status: null},
+            Practice.updateStatus({practiceId: practice.id}, {status: 'approved'},
                 function(success){
-                    $scope.destinationPractice.status = null;
+                    $scope.destinationPractice.status = success.status;
                     Notification.success('Approve was success');
                 }, function(failure){
                     Notification.error(failure.data.message)
