@@ -73,6 +73,26 @@ angular.module('createReferrals')
                             }
                             currentScope.model.referral.dest_provider_id = null; //if dest_provider_invited_id is set (user added new provider invitation to the referral), we need to remove 'dest_provider_id'
                         }
+                        if(!newVal && currentScope.model.referral.isCreatedNow) {
+                            var modalInstance = $modal.open({
+                                templateUrl: 'partials/delete_provider.html',
+                                controller: 'DeleteProviderModalController'
+                            });
+                            ModalHandler.set(modalInstance);
+                            modalInstance.result.then(function (remove) {
+                                if(remove) {
+                                    ProviderInvitation.delete({id: oldVal});
+                                    currentScope.destinationPractice = [];
+                                    currentScope.practiceSearchText = '';
+                                    currentScope.model.referral.isCreatedNow = false;
+                                } else {
+                                    currentScope.model.referral.dest_provider_invited_id = oldVal;
+                                    currentScope.destinationPractice = currentScope.tempDestinationPractice;
+                                    currentScope.practiceSearchText = currentScope.tempDestinationPractice.name;
+                                    delete(currentScope.tempDestinationPractice);
+                                }
+                            });
+                        }
                     });
                 scope.$watch( //observing changes of the dest_provider_id field
                     function () {
@@ -160,6 +180,7 @@ angular.module('createReferrals')
                         scope.destinationPractice = {users: [provider], name: '-- pending registration --'};
                         scope.practiceSearchText = scope.destinationPractice.name;
                         scope.model.referral.dest_provider_invited_id = provider.id;
+                        scope.model.referral.isCreatedNow = true;
                         scope.form.$setDirty();  //need for unsaved changes
                         scope.form.practice.$setValidity('editable', true);//fix for the case, when practice has invalid value and then provider is invited (removes practice's validation error and sets state to valid to enable saving)
                     });
@@ -173,6 +194,9 @@ angular.module('createReferrals')
 
             findPractice: function (scope) {
                 return function (searchValue) {
+                    if(scope.model.referral.isCreatedNow) {
+                        scope.tempDestinationPractice = scope.destinationPractice;
+                    }
                     scope.destinationPractice = [];
                     var providersPromise = Practice.searchPractice({search: searchValue}).$promise;
                     var invitationsPromise = ProviderInvitation.searchProviderInvitation({search: searchValue}).$promise;

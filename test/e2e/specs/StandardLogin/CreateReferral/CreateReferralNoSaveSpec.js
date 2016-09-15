@@ -70,6 +70,41 @@ var CreateReferralNoSaveSpec = function() {
             });
             
         });
+
+        describe('check invite new provider', function(){
+            var alertDialog;
+            var provider = {
+                firstName: 'PName',
+                lastName: 'PLastName',
+                email: 'provider@provider.com'
+            };
+
+            it('when user changed his mind and selects existing practice and existing provider in it', function(){
+                createReferralPage.getInviteProviderButton().click();
+                expect(createReferralPage.getProviderDialogElement().isDisplayed()).toBe(true);
+
+                createReferralPage.getProviderDialogFirstNameElement().sendKeys(provider.firstName);
+                createReferralPage.getProviderDialogLastNameElement().sendKeys(provider.lastName);
+                createReferralPage.getProviderDialogEmailElement().sendKeys(provider.email);
+                createReferralPage.getProviderDialogSendButton().click();
+                expect(createReferralPage.getProviderDialogElement().isPresent()).toBe(false);
+
+                createReferralPage.getPracticeElement().clear();
+                createReferralPage.getPracticeElement().sendKeys('Trial');
+
+                expect(createReferralPage.getDeleteProviderDialog().isDisplayed()).toBe(true);
+                createReferralPage.getDeleteProviderDialogOkButton().click();
+                expect(createReferralPage.getDeleteProviderDialog().isPresent()).toBe(false);
+            });
+
+            afterEach(function() {
+                commonActions.clickLogo();
+                alertDialog = browser.switchTo().alert();
+                alertDialog.accept();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectCurrentUrlToBe(historyPage.url);
+            });
+        });
         
     };
 };

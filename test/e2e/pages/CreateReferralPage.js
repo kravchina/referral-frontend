@@ -146,7 +146,21 @@ var CreateReferralPage = function() {
     this.getProviderDialogSendButton = function() {
         return element(by.css('button[ng-click="ok(model.provider)"]'));
     };
-    
+
+    //delete provider modal
+
+    this.getDeleteProviderDialog = function() {
+        return element(by.css('div.modal-dialog form#formDeleteProvider'));
+    };
+
+    this.getDeleteProviderDialogOkButton = function() {
+        return element(by.css('form#formDeleteProvider button[ng-click="ok()"]'));
+    };
+
+    this.getDeleteProviderDialogDiscardButton = function() {
+        return element(by.css('form#formDeleteProvider button[ng-click="cancel()"]'));
+    };
+
     // referral type block
     
     this.getReferralTypeElement = function() {
