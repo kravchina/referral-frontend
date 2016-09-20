@@ -1,6 +1,6 @@
 angular.module('unsubscribe')
-    .controller('UnsubscribeController', ['$scope', '$state', '$stateParams', 'User', 'ProviderInvitation', '$modal', 'ModalHandler',
-    function($scope, $state, $stateParams, User, ProviderInvitation, $modal, ModalHandler){
+    .controller('UnsubscribeController', ['$scope', '$state', '$stateParams', 'User', 'ProviderInvitation', '$modal', 'ModalHandler', '$location',
+    function($scope, $state, $stateParams, User, ProviderInvitation, $modal, ModalHandler, $location){
 
     $scope.unsubscribeData = null;
 
@@ -34,7 +34,7 @@ angular.module('unsubscribe')
         });
         ModalHandler.set(modalInstance);
         modalInstance.result.then(function() {
-            $state.go('signIn');
+            $location.url('/');
         });
     }
 
