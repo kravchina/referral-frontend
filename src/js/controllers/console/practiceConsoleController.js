@@ -237,7 +237,7 @@ angular.module('console')
             Practice.updateStatus({practiceId: practice.id}, {status: 'approved'},
                 function(success){
                     $scope.destinationPractice.status = success.status;
-                    Notification.success('Approve was success');
+                    Notification.success('Practice has been approved successfully');
                 }, function(failure){
                     Notification.error(failure.data.message)
                 });
