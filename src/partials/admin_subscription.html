@@ -19,17 +19,18 @@
             </div>
 
 
-            <div access="admin" ng-hide="isPremium()" id="sectUpgrade" class="section-block">
-                <button access="admin" id="upgradeBtn" type="button" class="btn btn-primary" ng-click="upgradeDialog('month')">Upgrade to Premium Account (monthly)</button>
-                <button access="admin" id="upgradeBtnAnnual" type="button" class="btn btn-primary" ng-click="upgradeDialog('year')">Upgrade to Premium Account (annual)</button>
+            <div access="admin"  id="sectUpgrade" class="section-block">
+                <!--<button access="admin" id="upgradeBtn" type="button" class="btn btn-primary" ng-click="upgradeDialog('month')">Upgrade to Premium Account (monthly)</button>
+                <button access="admin" id="upgradeBtnAnnual" type="button" class="btn btn-primary" ng-click="upgradeDialog('year')">Upgrade to Premium Account (annual)</button>-->
+                <button access="admin" type="button" class="btn btn-primary">Change Subscription</button>
             </div>
 
-            <div ng-show="isPremium()" id="sectEditPayment" class="section-block">
+            <!--<div ng-show="isPremium()" id="sectEditPayment" class="section-block">
                 <button type="button" class="btn btn-primary" ng-click="upgradeDialog()">Edit Payment Information</button>
 
                 <button access="admin" type="button" class="btn btn-primary" ng-click="cancelSubscription()">Cancel Subscription</button>
             </div>
-
+-->
             <div ng-show="isPremium()" id="sectPayment" class="section-block">
                 <h3>Payment Information (Premium)</h3>
                 Your account number: ************{{practice.last_4_digits}}
