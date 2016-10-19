@@ -36,7 +36,7 @@ var CreateReferralAndInvitationSpec = function() {
                 state: "Alaska",
                 short_state: "AK",
                 zip: "99503",
-                phone: "+1 907-562-4774",
+                phone: "907-562-4774",
                 website: "www.alcandentalanchorage.com"
             }
         };
