@@ -49,7 +49,7 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
                 return prev || current.invalid;
             }, false);
             if(attachmentsState) {
-                Notification.error('One of the attachments don\'t have the creation date, please edit it');
+                Notification.error('Attached image does not have a creation date. Please enter the correct date.');
             } else {
                 Notification.close();
             }
