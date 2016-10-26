@@ -2069,3 +2069,185 @@ label.tooth-label-view {
 	top: 0;
 	left: 160px;
 }
+
+#pricing-table {
+	text-align: center;
+	width: 1228px; /* total computed width */
+	zoom: 1;
+}
+
+#pricing-table:before, #pricing-table:after {
+	content: "";
+	display: table
+}
+
+#pricing-table:after {
+	clear: both
+}
+
+#pricing-table .plan {
+	background: #fff;
+	border: 1px solid #ddd;
+	padding: 20px;
+	width: 350px;
+	float: left;
+	position: relative;
+	margin: 0 0 0 20px;
+	/*box-shadow: 0 2px 2px -1px rgba(0, 0, 0, .3);*/
+}
+
+
+#pricing-table .popular-plan {
+
+	/*top: -20px;
+    padding: 40px 20px;*/
+}
+
+#pricing-table .header {
+	position: relative;
+	font-size: 18px;
+	font-weight: normal;
+	text-transform: uppercase;
+	padding: 40px;
+	margin: -20px -20px 20px -20px;
+	border-bottom: 8px solid;
+	background-color: #eee;
+	background-image: linear-gradient(#fff, #eee);
+}
+
+#pricing-table .header:after {
+	position: absolute;
+	bottom: -8px;
+	left: 0;
+	height: 3px;
+	width: 100%;
+	content: '';
+}
+
+#pricing-table .popular-plan .header {
+	margin-top: -40px;
+	padding-top: 60px;
+}
+
+#pricing-table .plan1 .header {
+	border-bottom-color: #B3E03F;
+}
+
+#pricing-table .plan2 .header {
+	border-bottom-color: #7BD553;
+}
+
+#pricing-table .plan3 .header {
+	border-bottom-color: #3AD5A0;
+}
+
+#pricing-table .plan4 .header {
+	border-bottom-color: #45D0DA;
+}
+
+#pricing-table .price {
+	font-size: 45px;
+}
+
+#pricing-table .monthly {
+	font-size: 13px;
+	/*margin-bottom: 20px;*/
+	text-transform: uppercase;
+	color: #999;
+}
+
+/* --------------- */
+
+#pricing-table ul {
+	margin: 20px 0;
+	padding: 0;
+	list-style: none;
+}
+
+#pricing-table li {
+	padding: 10px 0;
+}
+
+/* --------------- */
+
+#pricing-table .signup {
+	position: relative;
+	padding: 10px 20px;
+	color: #fff;
+	font: bold 14px Arial, Helvetica;
+	text-transform: uppercase;
+	text-decoration: none;
+	display: inline-block;
+	background-color: #72ce3f;
+	border-radius: 3px;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, .15);
+	opacity: .9;
+}
+
+#pricing-table .signup:hover {
+	opacity: 1;
+}
+
+#pricing-table .signup:active {
+	box-shadow: 0 2px 2px rgba(0, 0, 0, .3) inset;
+}
+
+#pricing-table .plan1 .signup {
+	background: #B3E03F;
+}
+
+#pricing-table .plan2 .signup {
+	background: #7BD553;
+}
+
+#pricing-table .plan3 .signup {
+	background: #3AD5A0;
+}
+
+#pricing-table .plan4 .signup {
+	background: #45D0DA;
+}
+
+#pricing-table .current-plan {
+	color: #B3E03F;
+	font-size: 5em;
+}
+
+#pricing-table .current-plan.popular {
+	top: -15px;
+}
+
+#pricing-table .current-plan-text {
+	color: #B3E03F;
+	font-size: 16px;
+	display: block;
+	position: relative;
+	text-transform: uppercase;
+}
+
+#pricing-table .current-plan-text.popular {
+	top: -10px;
+}
+
+.plan-container {
+	float: left;
+}
+
+.non-visible {
+	visibility: hidden !important;
+}
+
+.premium-advantages {
+	clear:both;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	margin-left: 20px;
+}
+.top{
+	border-bottom: 0 !important;
+}
+
+.bottom {
+	border-top: 0 !important;
+}
+
