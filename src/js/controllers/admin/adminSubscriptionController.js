@@ -6,11 +6,15 @@ angular.module('admin')
             Logger.log('existing users = ' + JSON.stringify(practice.users));
             $scope.designation = practice.designation;
             $scope.paymentNotification = {
-                showTrial: !practice.stripe_customer_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
+                /*showTrial: !practice.stripe_customer_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
                 showTrialExpired: !practice.stripe_customer_id && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
                 showSubscriptionSuccess: false,
                 showSubscriptionCancelled: practice.stripe_customer_id && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
                 showSubscriptionExpired: practice.stripe_customer_id && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
+                */
+                showBasic: !practice.stripe_subscription_id,
+                showMonthly: practice.stripe_subscription_id && practice.subscription_interval === 'month',
+                showAnnual: practice.stripe_subscription_id && practice.subscription_interval === 'year',
                 showDesignation: $scope.designation
             };
             $scope.subscriptionPrice = practice.subscription_price;
@@ -40,35 +44,17 @@ angular.module('admin')
                     stripe_subscription_id: function () {
                         return $scope.practice.stripe_subscription_id;
                     },
-                    interval: function(){
+                    interval: function () {
                         return interval
                     }
                 }
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (practice) {
-                // $scope.practice.users.push(user);
-                $scope.paymentNotification.showSubscriptionSuccess = true;
-                $scope.paymentNotification.showTrial = !practice.stripe_customer_id;
-                $scope.paymentNotification.showSubscriptionExpired = false;
+                Notification.success('Subscription was changed successfully!');
                 $scope.practice = practice;
-                $scope.subscriptionPrice = practice.subscription_price;
-                $scope.subscriptionInterval = practice.subscription_interval;
+                $scope.currentPlan = interval;
             });
-        };
-
-        $scope.cancelSubscription = function () {
-            Practice.cancelSubscription({practiceId: $scope.practice.id}, {},
-                function (success) {
-                    Logger.log(success);
-                    Notification.success('Subscription was cancelled successfully!');
-                    $scope.practice = success;
-                    $scope.paymentNotification.showSubscriptionCancelled = true;
-                    $scope.paymentNotification.showSubscriptionSuccess = false;
-                },
-                function (failure) {
-                    Notification.error('An error occurred during cancelling subscription...')
-                });
         };
 
     }]);

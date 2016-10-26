@@ -97,6 +97,7 @@ angular.module('dentalLinks', [
     'dentalLinksPartials'
 ]);
 
+require('./controllers/subscriptionChangeController.js');
 require('./controllers/attachmentsController.js');
 require('./controllers/navController.js');
 require('./controllers/teethController.js');

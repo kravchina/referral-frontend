@@ -1,0 +1,82 @@
+<header class="page-header">
+    <div class="row">
+        <div class="input-block col-xs-12 col-sm-4">
+            <h1>Subscription</h1>
+
+            <p class="page-subheader">Change your subscription</p>
+        </div>
+    </div>
+</header><!-- .page-header -->
+<div id="pricing-table">
+    <div class="plan-container">
+        <div ng-class="{'non-visible': currentPlan !== 'basic'}">
+            <span class="current-plan-text">your plan</span>
+            <span class="glyphicon glyphicon-chevron-down current-plan" aria-hidden="true"></span>
+        </div>
+        <div class="plan plan1">
+            <div class="header">Basic</div>
+            <div class="price">FREE</div>
+            <div class="monthly">forever</div>
+            <ul>
+                <li>Send unlimited # patient referrals
+                </li>
+                <li>Receive patient referrals from <b>premium</b> accounts</li>
+                <li>Add attachments/images to referrals</li>
+                <li><b>Multiple</b> practice locations</li>
+                <li>Customer support</li>
+            </ul>
+            <a class="signup" href="" ng-click="cancelSubscription()">FREE</a>
+        </div>
+    </div>
+    <div class="plan-container">
+        <div class='plan-container'>
+            <div ng-class="{'non-visible': currentPlan !== 'month'}">
+                <span class="current-plan-text popular">your plan</span>
+                <span class="glyphicon glyphicon-chevron-down current-plan popular" aria-hidden="true"></span>
+            </div>
+            <div class="plan plan2 popular-plan top">
+                <div class="header">Premium Monthly</div>
+                <div class="price">$50</div>
+                <div class="monthly">per month</div>
+
+            </div>
+        </div>
+        <div class="plan-container">
+            <div ng-class="{'non-visible': currentPlan !== 'year'}">
+                <span class="current-plan-text popular">your plan</span>
+                <span class="glyphicon glyphicon-chevron-down current-plan popular" aria-hidden="true"></span>
+            </div>
+
+            <div class="plan plan3 popular-plan top" >
+                <div class="header">Premium Annual</div>
+                <div class="price">$500</div>
+                <div class="monthly">per year</div>
+
+            </div>
+        </div>
+        <div  class="premium-advantages">
+            <ul>
+                <li>Send unlimited # patient referrals</li>
+                <li>Receive patient referrals from <b>premium</b> accounts</li>
+                <li>Receive patient referrals from <b>basic</b> accounts</li>
+                <li>Add attachments/images to referrals</li>
+                <li><b>Multiple</b> practice locations</li>
+                <li>Customer support</li>
+
+            </ul>
+
+        </div>
+        <div class="plan plan2 popular-plan bottom">
+            <a class="signup" href="" ng-click="upgradeDialog('month')">$50 / month*</a>
+            <div>*per practice location</div>
+        </div>
+        <div class="plan plan3 popular-plan bottom">
+            <a class="signup" href='' ng-click="upgradeDialog('year')">$500 / year*</a>
+            <div>*per practice location</div>
+        </div>
+    </div>
+</div>
+
+
+
+

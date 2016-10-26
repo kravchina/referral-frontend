@@ -130,6 +130,12 @@ angular.module('dentalLinks')
             reloadOnSearch: false,
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
+        state('change_subscription', {
+            url: '/subscription/change',
+            templateUrl: 'partials/change_subscription.html',
+            controller: 'SubscriptionChangeController',
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+        }).
         state('admin', {
             url: '/admin',
             templateUrl: 'partials/admin.html',
