@@ -73,7 +73,6 @@
         height: 3px;
         width: 100%;
         content: '';
-        background-image: url(data:image/png;base64,iVBO[...]);
     }
 
     #pricing-table .popular-plan .header {
@@ -209,11 +208,11 @@
                 <li><b>Multiple</b> practice locations</li>
                 <li>Customer support</li>
             </ul>
-            <a class="signup" href="" ng-click="">FREE</a>
+            <a class="signup" href="" ng-click="cancelSubscription()">FREE</a>
         </div>
     </div>
     <div class="plan-container">
-        <div ng-class="{'non-visible': currentPlan !== 'monthly'}">
+        <div ng-class="{'non-visible': currentPlan !== 'month'}">
             <span class="current-plan-text popular">your plan</span>
             <span class="glyphicon glyphicon-chevron-down current-plan popular" aria-hidden="true"></span>
         </div>
@@ -230,7 +229,7 @@
                 <li>Customer support</li>
 
             </ul>
-            <a class="signup" href="" ng-click="upgradeDialog('month')">$50 / month</a>
+            <a class="signup" href="" ng-click="upgradeDialog('month')">$50 / month*</a>
         </div>
     </div>
     <div class="plan-container">
@@ -251,7 +250,7 @@
                 <li>Customer support</li>
 
             </ul>
-            <a class="signup" href='' ng-click="upgradeDialog('year')">$500 / year</a>
+            <a class="signup" href='' ng-click="upgradeDialog('year')">$500 / year*</a>
         </div>
     </div>
 </div>

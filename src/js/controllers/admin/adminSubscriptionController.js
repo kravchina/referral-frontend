@@ -33,4 +33,28 @@ angular.module('admin')
             return $scope.practice.stripe_customer_id && $scope.practice.stripe_subscription_id
         };
 
+        $scope.upgradeDialog = function (interval) {
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/upgrade_form.html',
+                controller: 'UpgradeModalController',
+                resolve: {
+                    practice_id: function () {
+                        return $scope.practice.id;
+                    },
+                    stripe_subscription_id: function () {
+                        return $scope.practice.stripe_subscription_id;
+                    },
+                    interval: function () {
+                        return interval
+                    }
+                }
+            });
+            ModalHandler.set(modalInstance);
+            modalInstance.result.then(function (practice) {
+                Notification.success('Subscription was changed successfully!');
+                $scope.practice = practice;
+                $scope.currentPlan = interval;
+            });
+        };
+
     }]);
