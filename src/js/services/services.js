@@ -218,6 +218,12 @@ angular.module('dentalLinksServices')
     })
 }])
 
+.factory('DclPluginUpdate', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
+    return $resource(API_ENDPOINT + '/dcl_plugin_updates/:id', {}, {
+        update: {method: 'PUT'}
+    });
+}])
+
 .factory('File', [function () {
     return {
         isImage: function (filename) {

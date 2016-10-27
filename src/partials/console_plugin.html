@@ -1,0 +1,70 @@
+<div class="row">
+    <!-- versions list -->
+    <div class="input-block col-xs-12 col-sm-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading with-btn">
+                <h3 class="panel-title">
+                    OD versions:
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="list-group">
+                    <a href="" ng-click="selectVersion(version)" class="list-group-item" ng-repeat="version in allVersions">
+                        {{version.od_version}}
+                    </a>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-offset-7 col-xs-5">
+                        <button type="button"
+                                ng-click="addVersion()" class="btn btn-green btn-toggle-shifted btn-edit btn-add-address pull-right"
+                                data-toggle="tooltip" data-placement="top" title="Add OD version">
+                            <span class="dlicons-plus"></span> Add version
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- version info -->
+    <div class="input-block col-xs-12 col-sm-6" ng-if="selectedVersion">
+        <div class="panel panel-primary">
+            <div class="panel-heading with-btn">
+                <h3 class="panel-title ">
+                    Plugin info:
+                </h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <label>Current build date:</label>
+                    <input class="form-control" ng-model="selectedVersion.plugin_version" disabled/>
+                </div>
+
+                <div class="form-group">
+                    <label>Path:</label>
+                    <p>
+                        <a href="{{selectedVersion.plugin_url}}">
+                            {{selectedVersion.plugin_file_name}}
+                        </a>
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label>Download count:</label>
+                    <input class="form-control" ng-model="selectedVersion.download_count" disabled/>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-offset-10 col-xs-2">
+                        <label class="btn btn-orange btn-toggle" data-toggle="tooltip" data-placement="top" title="Upload Plugin">
+                            <input nv-file-select uploader="uploader" type="file" style="display: none;" multiple>
+                            <span class="dlicons-plus"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

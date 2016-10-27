@@ -51,6 +51,7 @@ require('./controllers/console/consoleController.js');
 require('./controllers/console/practiceConsoleController.js');
 require('./controllers/console/reportsConsoleController.js');
 require('./controllers/console/utilitiesConsoleController.js');
+require('./controllers/console/pluginConsoleController.js');
 require('./controllers/modals/modalsController.js');
 require('./controllers/createReferralsController.js');
 require('./controllers/errorController.js');

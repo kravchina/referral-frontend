@@ -184,6 +184,12 @@ angular.module('dentalLinks')
             controller: 'UtilitiesConsoleController',
             access: [USER_ROLES.super]
         }).
+        state('console.plugin', {
+            url: '/plugin',
+            templateUrl: 'partials/console_plugin.html',
+            controller: 'PluginConsoleController',
+            access: [USER_ROLES.super]
+        }).
         state('activity', {
             url: '/activity',
             templateUrl: 'partials/activity.html',
