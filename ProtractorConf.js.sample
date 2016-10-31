@@ -66,6 +66,7 @@ exports.config = {
         browser.getCapabilities().then(function (cc) {
             browser.currentRunBrowserName = cc.caps_.browserName;
         });
+        global.EC = protractor.ExpectedConditions;
     },
     jasmineNodeOpts: {
         defaultTimeoutInterval: 60000

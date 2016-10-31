@@ -36,9 +36,12 @@ var AdminPracticeNonPremiumSpec = function() {
             });
 
             it('removes address without prorate notification dialog', function(){
-                adminPracticePage.clickRemoveAddress(adminPracticePage.getLastAddress());
-                expect(adminPracticePage.getLastAddress().element(by.css('a[ng-click="removeAddress(address)"]')).isEnabled()).toBe(true);
-                adminPracticePage.getLastAddress().element(by.css('a[ng-click="removeAddress(address)"]')).click();
+                var lastAddressElement = adminPracticePage.getLastAddress();
+                adminPracticePage.clickRemoveAddress(lastAddressElement);
+                var lastAddressRemovalYesElement = lastAddressElement.element(by.css('a[ng-click="removeAddress(address)"]'));
+                browser.wait(EC.elementToBeClickable(lastAddressRemovalYesElement), 5000);
+                expect(lastAddressRemovalYesElement.isDisplayed()).toBe(true);
+                lastAddressRemovalYesElement.click();
                 expect(adminPracticePage.getSubscriptionNotificationModal().isPresent()).toBe(false);
                 expect(adminPracticePage.getSubscriptionNotificationModal().element(by.id('subscription_ok_btn')).isPresent()).toBe(false);
                 commonExpects.expectProgressDivHidden();
