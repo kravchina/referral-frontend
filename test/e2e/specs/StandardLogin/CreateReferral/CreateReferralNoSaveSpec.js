@@ -27,7 +27,7 @@ var CreateReferralNoSaveSpec = function() {
                 createReferralPage.getPatientElement().sendKeys(dataStr);
                 expect(createReferralPage.getPatientElement().getAttribute('value')).toEqual(dataStr);
                 commonActions.clickLogo();
-                browser.wait(protractor.ExpectedConditions.alertIsPresent(), 10000); // added to prevent "No alert is active" under IE from time to time
+                browser.wait(EC.alertIsPresent(), 10000); // added to prevent "No alert is active" under IE from time to time
             });
             
             var alertDialog;

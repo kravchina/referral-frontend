@@ -41,7 +41,7 @@ var AdminPracticeSpec = function() {
                         adminPracticePage.setPracticeName(dataStr);
                         expect(adminPracticePage.getPracticeName()).toEqual(dataStr);
                         commonActions.clickLogo();
-                        browser.wait(protractor.ExpectedConditions.alertIsPresent(), 10000); // added to prevent "No alert is active" under IE from time to time
+                        browser.wait(EC.alertIsPresent(), 10000); // added to prevent "No alert is active" under IE from time to time
                     });
 
                     var alertDialog; // TODO [ak] extract common alert functions somewhere, re-use code
