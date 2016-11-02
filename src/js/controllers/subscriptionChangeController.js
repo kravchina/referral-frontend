@@ -10,15 +10,22 @@ angular.module('dentalLinks')
             $scope.cancelSubscription = function () {
                 //change to basic plan
                 if ($scope.currentPlan !== 'basic') {
-                    Practice.cancelSubscription({practiceId: $scope.practice.id}, {},
-                        function (success) {
-                            Notification.success('Subscription was downgraded to basic successfully!');
-                            $scope.currentPlan = 'basic';
-                            $scope.practice = success;
-                        },
-                        function (failure) {
-                            Notification.error('An error occurred during downgrading subscription...')
-                        });
+                    var modalInstance = $modal.open({
+                        templateUrl: 'partials/downgrade_confirmation.html',
+                        controller: 'DowngradeModalController'
+                    });
+                    ModalHandler.set(modalInstance);
+                    modalInstance.result.then(function (practice) {
+                        Practice.cancelSubscription({practiceId: $scope.practice.id}, {},
+                            function (success) {
+                                Notification.success('Subscription was downgraded to basic successfully!');
+                                $scope.currentPlan = 'basic';
+                                $scope.practice = success;
+                            },
+                            function (failure) {
+                                Notification.error('An error occurred during downgrading subscription...')
+                            });
+                    });
                 }
             };
 

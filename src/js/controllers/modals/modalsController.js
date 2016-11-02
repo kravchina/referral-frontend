@@ -440,6 +440,15 @@ angular.module('modals')
     };
 }])
 
+.controller('DowngradeModalController', [ '$scope', '$modalInstance', 'ModalHandler', function($scope, $modalInstance, ModalHandler){
+    $scope.ok = function () {
+        ModalHandler.close($modalInstance);
+    };
+    $scope.cancel = function () {
+        ModalHandler.dismiss($modalInstance);
+    };
+}])
+
 .controller('EditUserModalController',
     ['$scope', 'showNameControls', 'showRoleSelector', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
         function ($scope, showNameControls, showRoleSelector, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
@@ -449,7 +458,7 @@ angular.module('modals')
             $scope.showNameControls = showNameControls;
             $scope.showRoleSelector = showRoleSelector;
             $scope.practiceTypes = [];
-            $scope.showRoles = [USER_ROLES.aux, USER_ROLES.doctor, USER_ROLES.admin]
+            $scope.showRoles = [USER_ROLES.aux, USER_ROLES.doctor, USER_ROLES.admin];
             Procedure.practiceTypes({'include_procedures': false}, function(success){
                 success.map(function(item){
                     if(item.code !== 'multi_specialty'){
