@@ -19,7 +19,7 @@ angular.module('console')
             headers: {'Authorization': $scope.token, 'From': $scope.from}
         });
 
-        uploader.onAfterAddingFile = function(item){
+        uploader.onAfterAddingFile = function(item) {
             console.log('After adding a file', item);
             item.url += '/' + $scope.selectedVersion.id;
             ProgressIndicator.start();
@@ -41,7 +41,7 @@ angular.module('console')
             ProgressIndicator.set(progress);
         };
 
-        $scope.addVersion = function(){
+        $scope.addVersion = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/add_plugin_version_modal.html',
                 controller: 'AddPluginVersionModalController'
@@ -53,12 +53,56 @@ angular.module('console')
                     $scope.allVersions.push(success);
                     Notification.success('Version successfully added');
                 }, function(failure){
-                    console.log('failure: ', failure)
+                    Notification.error(failure.data.message);
                 });
             });
         };
 
         $scope.selectVersion = function(version){
             $scope.selectedVersion = version;
+        };
+
+        $scope.deleteVersion = function(version) {
+            DclPluginUpdate.delete({id: version.id}, function(success){
+                $scope.allVersions = $scope.allVersions.filter(function(item){
+                    if(item.id == version.id) {
+                        return false;
+                    }
+                    return true;
+                });
+            }, function(failure){
+                Notification.error(failure.data.message);
+            });
+        };
+
+        $scope.deletePlugin = function(version) {
+            DclPluginUpdate.deletePlugin({id: version.id}, function(success){
+                $scope.allVersions = $scope.allVersions.map(function(item){
+                    if(item.id == success.id) {
+                        return success;
+                    }
+                    return item;
+                });
+                $scope.selectedVersion = success;
+            }, function(failure) {
+                Notification.error(failure.data.message);
+            });
+        };
+
+        $scope.getLogs = function(version) {
+            DclPluginUpdate.getLogs({od_version: version.od_version}, function(success){
+                var modalInstance = $modal.open({
+                    templateUrl: 'partials/version_logs_modal.html',
+                    controller: 'VersionLogsModalController',
+                    resolve: {
+                        logs : function(){
+                            return success;
+                        }
+                    }
+                });
+                ModalHandler.set(modalInstance);
+            }, function(failure){
+                Notification.error(failure.data.message);
+            });
         };
     }]);

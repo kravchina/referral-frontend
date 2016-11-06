@@ -220,7 +220,9 @@ angular.module('dentalLinksServices')
 
 .factory('DclPluginUpdate', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/dcl_plugin_updates/:id', {}, {
-        update: {method: 'PUT'}
+        update: {method: 'PUT'},
+        deletePlugin: {method: 'DELETE', url: API_ENDPOINT + '/dcl_plugin_updates/delete_plugin'},
+        getLogs: {method: 'POST', url: API_ENDPOINT + '/dcl_plugin_updates/get_logs', isArray: true}
     });
 }])
 

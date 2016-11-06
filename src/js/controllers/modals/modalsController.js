@@ -735,6 +735,15 @@ angular.module('modals')
         };
 }])
 
+.controller('VersionLogsModalController', ['$scope', '$modalInstance', 'ModalHandler', 'logs',
+    function ($scope, $modalInstance, ModalHandler, logs) {
+        $scope.logs = logs;
+
+        $scope.cancel = function(){
+            ModalHandler.dismiss($modalInstance);
+        };
+}])
+
 .controller('DeleteProviderModalController', ['$scope', '$modalInstance', 'ModalHandler',
     function ($scope, $modalInstance, ModalHandler) {
         $scope.ok = function(){
