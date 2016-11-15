@@ -7,6 +7,7 @@ var historyPage = require('../../pages/HistoryPage');
 var consolePracticeSpec = require('./Console/ConsolePracticeSpec');
 var consoleReportsSpec = require('./Console/ConsoleReportsSpec');
 var consoleUtilitiesSpec = require('./Console/ConsoleUtilitiesSpec');
+var consolePluginSpec = require('./Console/ConsolePluginSpec');
 
 var SuperUserLoginSpec = function() {
     this.run = function() {
@@ -26,6 +27,7 @@ var SuperUserLoginSpec = function() {
             consolePracticeSpec.run();
             consoleReportsSpec.run();
             consoleUtilitiesSpec.run();
+            consolePluginSpec.run();
 
             afterEach(function() {
                 commonActions.signOut();
