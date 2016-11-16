@@ -1,26 +1,22 @@
 <div id="admintabAccount" >
     <p>
-        <!--<alert ng-show="!paymentNotification.showDesignation && paymentNotification.showTrial" type="{{alert.type}}">It is always free to send referrals but you will need a premium membership to receive referrals after {{practice.subscription_active_until | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
-        <alert ng-show="!paymentNotification.showDesignation && paymentNotification.showTrialExpired" type="{{alert.type}}">Your trial period has expired. You will need a premium account to receive referrals. You can upgrade at any time.</alert>
-        <alert ng-show="!paymentNotification.showDesignation && paymentNotification.showSubscriptionCancelled && !paymentNotification.showSubscriptionSuccess" type="{{alert.type}}">Your premium subscription will expire on {{practice.subscription_active_until | date: 'short'}}, you will need to enter new payment information for your premium account to stay active.</alert>
-        <alert ng-show="paymentNotification.showSubscriptionSuccess" type="{{alert.type}}">Thank you for upgrading to a Premium Account. Your automatic renewal date is {{practice.subscription_active_until | date: 'short'}}.</alert>
-        <alert ng-show="!paymentNotification.showDesignation && paymentNotification.showSubscriptionExpired" type="{{alert.type}}">Either your premium account has been cancelled or we were unable to process your payment. Please enter new payment information to activate your premium account features</alert>
-        -->
-        <alert ng-show="paymentNotification.showBasic" type="warning">You are currently subscribed to a basic account.</alert>
-        <alert ng-show="paymentNotification.showMonthly" type="success">You are currently subscribed to a premium account with a month to month payment plan.</alert>
-        <alert ng-show="paymentNotification.showAnnual" type="success">You are currently subscribed to a premium account with an annual payment plan.</alert>
-        <alert ng-show="paymentNotification.showDesignation" type="info">Your practice is a member of the  {{designation.name}}. Your premium subscription will expire on {{designation.active_until_override | date: 'short'}}</alert>
-
         <form edit-form id="formAccountTab" name="accountForm">
             <div class="block-title">
                 <h2>Subscription</h2>
             </div>
 
+            <alert ng-show="paymentNotification.showBasic" type="warning">You are currently subscribed to a basic account.</alert>
+            <alert ng-show="paymentNotification.showMonthly" type="success">You are currently subscribed to a premium account with a month to month payment plan.</alert>
+            <alert ng-show="paymentNotification.showAnnual" type="success">You are currently subscribed to a premium account with an annual payment plan.</alert>
+            <alert ng-show="paymentNotification.showDesignation" type="info">Your practice is a member of the  {{designation.name}}. Your premium subscription will expire on {{designation.active_until_override | date: 'short'}}</alert>
+
+<!--
             <div id="descriptionText" class="section-block">
                 <span ng-if="subscriptionInterval == 'year'">Premium account is $50.00 per month per practice location or ${{ subscriptionPrice / locationsNumber | money}} annually per practice location.</span>
                 <span ng-if="subscriptionInterval == 'month'">Premium account is ${{ subscriptionPrice / locationsNumber | money}} per month per practice location or $500 annually per practice location.</span>
                 <span ng-show="subscriptionPrice && subscriptionInterval">For your practice with {{locationsNumber}} locations, your payment will be ${{ subscriptionPrice | money}} per {{subscriptionInterval }}</span>
             </div>
+-->
 
 
             <div access="admin"  id="sectUpgrade" class="section-block">
@@ -37,6 +33,7 @@
             <div ng-show="isPremium()" id="sectPayment" class="section-block">
                 <h3>Payment Information (Premium) - next automatic renewal on {{practice.subscription_active_until | date: 'mediumDate'}}</h3>
                 Payment source: ************{{practice.last_4_digits}}
+                <br/>
                 <button type="button" class="btn btn-primary" ng-click="upgradeDialog()">Edit Payment Source</button>
             </div>
 
