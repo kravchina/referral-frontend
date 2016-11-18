@@ -733,6 +733,26 @@ angular.module('modals')
 
 }])
 
+.controller('AddPluginVersionModalController', ['$scope', '$modalInstance', 'ModalHandler',
+    function ($scope, $modalInstance, ModalHandler) {
+        $scope.version = '';
+        $scope.add = function () {
+            ModalHandler.close($modalInstance, $scope.version);
+        };
+        $scope.cancel = function(){
+            ModalHandler.dismiss($modalInstance);
+        };
+}])
+
+.controller('VersionLogsModalController', ['$scope', '$modalInstance', 'ModalHandler', 'logs',
+    function ($scope, $modalInstance, ModalHandler, logs) {
+        $scope.logs = logs;
+
+        $scope.cancel = function(){
+            ModalHandler.dismiss($modalInstance);
+        };
+}])
+
 .controller('DeleteProviderModalController', ['$scope', '$modalInstance', 'ModalHandler',
     function ($scope, $modalInstance, ModalHandler) {
         $scope.ok = function(){

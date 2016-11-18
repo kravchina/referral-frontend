@@ -17,6 +17,12 @@ angular.module('console')
             route: 'console.utilities',
             class: 'glyphicon glyphicon-wrench',
             active: false
+        },
+        {
+            heading: 'Plugin',
+            route: 'console.plugin',
+            class: 'glyphicon glyphicon-cog',
+            active: false
         }];
 
         $scope.active = function(route){

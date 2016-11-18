@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <h4 class="modal-title">Notification:</h4>
+</div>
+<div class="modal-body">
+    <div class="well" ng-repeat="log in logs" style="overflow: scroll">
+        {{log.raw}}
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-orange" ng-click="cancel()">Cancel</button>
+</div>
