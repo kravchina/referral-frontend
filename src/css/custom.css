@@ -2125,8 +2125,12 @@ label.tooth-label-view {
 }
 
 #pricing-table .popular-plan .header {
-	margin-top: -40px;
+	margin-top: -20px;
 	padding-top: 60px;
+}
+
+#pricing-table .plan1{
+	padding: 0;
 }
 
 #pricing-table .plan1 .header {
@@ -2228,6 +2232,15 @@ label.tooth-label-view {
 #pricing-table .current-plan-text.popular {
 	top: -10px;
 }
+#pricing-table .borders {
+	border-bottom:1px solid #ddd;
+	border-top: 1px solid #ddd;
+	padding: 20px 0
+}
+
+#pricing-table .feature-block{
+	padding: 20px
+}
 
 .plan-container {
 	float: left;
@@ -2245,9 +2258,14 @@ label.tooth-label-view {
 }
 .top{
 	border-bottom: 0 !important;
+	margin-top: -20px !important;
 }
 
 .bottom {
 	border-top: 0 !important;
+}
+
+.header-left{
+	padding-left: 30px
 }
 

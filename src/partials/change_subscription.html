@@ -1,6 +1,6 @@
 <header class="page-header">
     <div class="row">
-        <div class="input-block col-xs-12 col-sm-4">
+        <div class="col-xs-12 col-sm-4 header-left" >
             <h1>Subscription</h1>
 
             <p class="page-subheader">Change your subscription</p>
@@ -14,18 +14,24 @@
             <span class="glyphicon glyphicon-chevron-down current-plan" aria-hidden="true"></span>
         </div>
         <div class="plan plan1">
-            <div class="header">Basic</div>
-            <div class="price">FREE</div>
-            <div class="monthly">forever</div>
-            <ul>
-                <li>Send unlimited # patient referrals
-                </li>
-                <li>Receive patient referrals from <b>premium</b> accounts</li>
-                <li>Add attachments/images to referrals</li>
-                <li><b>Multiple</b> practice locations</li>
-                <li>Customer support</li>
-            </ul>
-            <a class="signup" href="" ng-click="cancelSubscription()">FREE</a>
+            <div class="feature-block">
+                <div class="header">Basic</div>
+                <div class="price">FREE</div>
+                <div class="monthly">forever</div>
+            </div>
+            <div class='borders'>
+                <ul>
+                    <li>Send unlimited # patient referrals</li>
+                    <li>Receive patient referrals from <b>premium</b> accounts</li>
+                    <li>Add attachments/images to referrals</li>
+                    <li><b>Multiple</b> practice locations</li>
+                    <li>Customer support</li>
+                </ul>
+            </div>
+            <div class="feature-block">
+                <a class="signup" href="" ng-click="cancelSubscription()">FREE</a>
+                <div>forever</div>
+            </div>
         </div>
     </div>
     <div class="plan-container">
@@ -34,7 +40,7 @@
                 <span class="current-plan-text popular">your plan</span>
                 <span class="glyphicon glyphicon-chevron-down current-plan popular" aria-hidden="true"></span>
             </div>
-            <div class="plan plan2 popular-plan top">
+            <div class="plan plan2 popular-plan top ">
                 <div class="header">Premium Monthly</div>
                 <div class="price">$50</div>
                 <div class="monthly">per month</div>
@@ -47,7 +53,7 @@
                 <span class="glyphicon glyphicon-chevron-down current-plan popular" aria-hidden="true"></span>
             </div>
 
-            <div class="plan plan3 popular-plan top" >
+            <div class="plan plan3 popular-plan top">
                 <div class="header">Premium Annual</div>
                 <div class="price">$500</div>
                 <div class="monthly">per year</div>
