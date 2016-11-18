@@ -11,12 +11,11 @@ var ConsoleReportsSpec = function() {
             });
 
             it('shows Reports page', function() {
-                expect(consoleReportsPage.getInvitationHeader().isDisplayed()).toBe(true);
-                expect(consoleReportsPage.getInvitationHeader().getText()).toMatch('INVITATIONS');
-                expect(consoleReportsPage.getPracticeHeader().isDisplayed()).toBe(true);
-                expect(consoleReportsPage.getPracticeHeader().getText()).toMatch('PRACTICES');
-                expect(consoleReportsPage.getUserHeader().isDisplayed()).toBe(true);
-                expect(consoleReportsPage.getUserHeader().getText()).toMatch('USERS');
+                expect(consoleReportsPage.getInvitationMenuLink().isDisplayed()).toBe(true);
+                expect(consoleReportsPage.getPracticeMenuLink().isDisplayed()).toBe(true);
+                expect(consoleReportsPage.getUserMenuLink().isDisplayed()).toBe(true);
+                expect(consoleReportsPage.getListOfRemindersMenuLink().isDisplayed()).toBe(true);
+                expect(consoleReportsPage.getSiteStatsMenuLink().isDisplayed()).toBe(true);
             });
 
             it('check report invitations', function(){
@@ -34,12 +33,8 @@ var ConsoleReportsSpec = function() {
             });
 
             it('check list of reminders', function(){
+                consoleReportsPage.getListOfRemindersMenuLink().click();
                 expect(consoleReportsPage.getListOfRemindersTable().isDisplayed()).toBe(true);
-            });
-
-            it('check list of unopened referrals', function(){
-                expect(consoleReportsPage.getListOfUnopenedReferralsTable().isDisplayed()).toBe(true);
-                expect(consoleReportsPage.getExportUnopenedReferralsButton().isPresent()).toBe(true);
             });
 
         });

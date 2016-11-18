@@ -108,6 +108,7 @@ var CreateReferralAndInvitationSpec = function() {
                 // close the dialog
                 expect(createReferralPage.getCreationConfirmationDialogElement().isDisplayed()).toBe(true);
                 createReferralPage.getCreationConfirmationDialogCloseButton().click();
+                browser.wait(EC.stalenessOf(createReferralPage.getCreationConfirmationDialogElement()), 5000);
                 expect(createReferralPage.getCreationConfirmationDialogElement().isPresent()).toBe(false);
                 
                 // TODO [ak] fields are filled with referral info

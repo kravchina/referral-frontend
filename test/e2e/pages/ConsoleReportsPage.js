@@ -5,64 +5,64 @@ var ConsoleReportsPage = function() {
         browser.get(this.url);
     };
 
-    this.getInvitationHeader = function(){
-        return element(by.css('.report-invitation h3'));
+    this.getInvitationMenuLink = function(){
+        return element(by.css('.nav li[heading="Invitation"] a'));
     };
 
-    this.getPracticeHeader = function(){
-        return element(by.css('.report-practice h3'));
+    this.getPracticeMenuLink = function(){
+        return element(by.css('.nav li[heading="Practices"] a'));
     };
 
-    this.getUserHeader = function(){
-        return element(by.css('.report-user h3'));
+    this.getUserMenuLink = function(){
+        return element(by.css('.nav li[heading="Users"] a'));
+    };
+
+    this.getListOfRemindersMenuLink = function(){
+        return element(by.css('.nav li[heading="List of reminders"] a'));
+    };
+
+    this.getSiteStatsMenuLink = function(){
+        return element(by.css('.nav li[heading="Site stats"] a'));
     };
 
     this.getInvitationDay = function(){
-        return element.all(by.css('.report-invitation span.badge')).get(0);
+        return element.all(by.css('.btn-group span.badge')).get(0);
     };
 
     this.getInvitationWeek = function(){
-        return element.all(by.css('.report-invitation span.badge')).get(1);
+        return element.all(by.css('.btn-group span.badge')).get(1);
     };
 
     this.getInvitationYTD = function(){
-        return element.all(by.css('.report-invitation span.badge')).get(2);
+        return element.all(by.css('.btn-group span.badge')).get(2);
     };
 
     this.getPracticeDay = function(){
-        return element.all(by.css('.report-practice span.badge')).get(0);
+        return element.all(by.css('.btn-group span.badge')).get(0);
     };
 
     this.getPracticeWeek = function(){
-        return element.all(by.css('.report-practice span.badge')).get(1);
+        return element.all(by.css('.btn-group span.badge')).get(1);
     };
 
     this.getPracticeYTD = function(){
-        return element.all(by.css('.report-practice span.badge')).get(2);
+        return element.all(by.css('.btn-group span.badge')).get(2);
     };
 
     this.getUserDay = function(){
-        return element.all(by.css('.report-user span.badge')).get(0);
+        return element.all(by.css('.btn-group span.badge')).get(0);
     };
 
     this.getUserWeek = function(){
-        return element.all(by.css('.report-user span.badge')).get(1);
+        return element.all(by.css('.btn-group span.badge')).get(1);
     };
 
     this.getUserYTD = function(){
-        return element.all(by.css('.report-user span.badge')).get(2);
+        return element.all(by.css('.btn-group span.badge')).get(2);
     };
 
     this.getListOfRemindersTable = function(){
         return element(by.css('.list-of-reminders'));
-    };
-
-    this.getListOfUnopenedReferralsTable = function(){
-        return element(by.css('.list-of-unopened-referrals'));
-    };
-
-    this.getExportUnopenedReferralsButton = function(){
-        return element(by.css('.export-unopened-referrals'));
     };
 
 };

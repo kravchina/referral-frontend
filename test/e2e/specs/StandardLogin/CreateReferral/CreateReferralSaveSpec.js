@@ -38,6 +38,7 @@ var CreateReferralSaveSpec = function() {
                 createReferralPage.getDedupingDiscardModalButton().click();
                 createReferralPage.getPatientDiscardModalButton().click();
 
+                browser.wait(EC.stalenessOf(createReferralPage.getPatientCreateModal()), 5000);
                 expect(createReferralPage.getPatientCreateModal().isPresent()).toBe(false);
                 expect(createReferralPage.getDedupingModal().isPresent()).toBe(false);
 
