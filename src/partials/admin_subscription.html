@@ -56,16 +56,14 @@
                             <th class="cell-date">Date</th>
                             <th class="cell-created">Amount/Plan</th>
                             <th class="cell-copy">Card</th>
-                            <th class="cell-copy">Event</th>
                             <th class="cell-description">Description</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr  ng-repeat="event in events">
+                        <tr  ng-repeat="event in events" ng-if="event.type != 'customer.subscription.updated'">
                             <td class="cell-user">{{event.created * 1000 | date: 'short'}}</td>
                             <td class="cell-copy" >${{ (event.data.object.amount || event.data.object.plan.amount)  | money}}</td>
                             <td class="cell-created">{{event.data.object.source.brand}} ···· {{event.data.object.source.last4}}</td>
-                            <td class="cell-created">{{event.type}}</td>
                             <td class="cell-description" ng-if="event.type == 'charge.succeeded'">Charged ${{event.data.object.amount | money}} to prolong subscription.</td>
                             <td class="cell-description" ng-if="event.type == 'charge.failed'">{{event.data.object.failure_message}}</td>
                             <td class="cell-description" ng-if="event.type == 'customer.subscription.updated'">{{event.data.object.cancel_at_period_end == true ? 'Subscription has been set to cancel at the end of the billing period' : (event.data.object.plan.amount > event.data.previous_attributes.plan.amount ? ('Upgraded premium plan from $'+ (event.data.previous_attributes.plan.amount | money) + ' to $' + ( event.data.object.plan.amount | money)) : (event.data.object.plan.amount < event.data.previous_attributes.plan.amount ? ('Downgraded premium plan from $' + (event.data.previous_attributes.plan.amount | money) + ' to $' + ( event.data.object.plan.amount | money )) : 'Subscription was changed.'))}}
