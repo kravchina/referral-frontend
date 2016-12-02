@@ -46,6 +46,18 @@ exports.config = {
             trial_user: {
                 email: 'trial@example.com',
                 pass: '12345678'
+            },
+            basic_to_monthly_plan_user:{
+                email: 'basic_to_monthly@example.com',
+                pass: '12345678'
+            },
+            basic_to_annual_plan_user:{
+                email: 'basic_to_annual@example.com',
+                pass: '12345678'
+            },
+            monthly_to_basic_plan_user:{
+                email: 'monthly_to_basic@example.com',
+                pass: '12345678'
             }
         },
         // id of the referral to run View Referral tests on. Check the tests to see what this referral should have

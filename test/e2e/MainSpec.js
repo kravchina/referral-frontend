@@ -11,6 +11,7 @@ var adminPracticeNonPremiumSpec = require('./specs/AdminPracticeNonPremiumSpec')
 var adminSubscriptionPremiumSpec = require('./specs/AdminSubscriptionPremiumSpec');
 var createReferralAndInvitationSpec = require('./specs/CreateReferralAndInvitationSpec');
 var promoRegistrationSpec = require('./specs/PromoRegistrationSpec');
+var changeSubscriptionSpec = require('./specs/ChangeSubscriptionSpec');
 
 describe('when user navigates to Sign In page', function() {
     commonActions.maximizeBrowser();
@@ -43,6 +44,7 @@ describe('when user navigates to Sign In page', function() {
         adminPracticePremiumSpec.run();
         adminPracticeNonPremiumSpec.run();
         adminSubscriptionPremiumSpec.run();
+        changeSubscriptionSpec.run();
         afterEach(function(){
             commonExpects.expectConsoleWithoutErrors();
         });

@@ -9,7 +9,7 @@
 </header><!-- .page-header -->
 <div id="pricing-table">
     <div class="plan-container">
-        <div ng-class="{'non-visible': currentPlan !== 'basic'}">
+        <div id="freePlanIndicator" ng-class="{'non-visible': currentPlan !== 'basic'}">
             <span class="current-plan-text">your plan</span>
             <span class="glyphicon glyphicon-chevron-down current-plan" aria-hidden="true"></span>
         </div>
@@ -36,7 +36,7 @@
     </div>
     <div class="plan-container">
         <div class='plan-container'>
-            <div ng-class="{'non-visible': currentPlan !== 'month'}">
+            <div id="monthlyPlanIndicator" ng-class="{'non-visible': currentPlan !== 'month'}">
                 <span class="current-plan-text popular">your plan</span>
                 <span class="glyphicon glyphicon-chevron-down current-plan popular" aria-hidden="true"></span>
             </div>
@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="plan-container">
-            <div ng-class="{'non-visible': currentPlan !== 'year'}">
+            <div id="annualPlanIndicator" ng-class="{'non-visible': currentPlan !== 'year'}">
                 <span class="current-plan-text popular">your plan</span>
                 <span class="glyphicon glyphicon-chevron-down current-plan popular" aria-hidden="true"></span>
             </div>

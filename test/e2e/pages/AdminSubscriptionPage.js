@@ -5,12 +5,16 @@ var AdminSubscriptionPage = function () {
         browser.get(this.url);
     };
 
-    this.clickUpgradeSubscription = function () {
-        element(by.id('upgradeBtn')).click();
+    this.clickChangeSubscription = function () {
+        element(by.id('changeSubscription')).click();
+    };
+
+    this.clickChangePaymentSource = function(){
+        element(by.css('button[ng-click="upgradeDialog()"]')).click();
     };
 
     this.getSubscriptionDialogElement = function () {
-        return element(by.css('div.modal-dialog form#formUpgrade'));
+        return element(by.id('formUpgrade'));
     };
     this.getSubscriptionDialogNameElement = function () {
         return element(by.model('payment_info.name_on_card'));
@@ -26,7 +30,10 @@ var AdminSubscriptionPage = function () {
     };
     this.getSubscriptionDialogUpgradeButton = function () {
         return element(by.id('upgradeSubscriptionBtn'));
-    }
+    };
+    this.getSubscriptionDialogSaveButton = function () {
+        return element(by.id('changePaymentInfo'));
+    };
 
 };
 
