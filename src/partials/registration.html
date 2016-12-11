@@ -84,6 +84,22 @@
                                     <label>Role</label>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="input-block col-xs-4">
+                                    <label>Specialty:</label>
+                                    <div ng-class="{ 'has-error': (submitted || form.invitationType.$dirty) && form.invitationType.$invalid }">
+                                        <select id="selectRefType"
+                                                class="form-control"
+                                                name="invitationType"
+                                                ng-model="invitation.specialty_type_id"
+                                                ng-options="p.id as p.name for p in practiceTypes | filter: {code: '!multi_specialty'}"
+                                                ng-required="invitation.roles_mask != 4"
+                                                ng-disabled="invitation.roles_mask == 4">
+                                            <option disabled="disabled" class="placeholder" value="">Select type &hellip;</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row text-block">
                                 <h3>Practice</h3>
                             </div>

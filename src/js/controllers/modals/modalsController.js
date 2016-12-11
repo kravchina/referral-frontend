@@ -314,13 +314,19 @@ angular.module('modals')
     }])
 
 .controller('UserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role',
-    function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role) {
+    ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role', 'practice', 'practiceTypes',
+    function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role, practice, practiceTypes) {
+    $scope.practice = angular.copy(practice);
+    $scope.practiceTypes = practiceTypes.filter(function(type){
+        return type.code != 'multi_specialty';
+    });
     $scope.result = {};
     $scope.alerts = [];
     $scope.isInvite = true;
+    $scope.isAux = false;
     $scope.user = {};
     $scope.user.roles_mask = 0;
+    $scope.user.specialty_type_id = $scope.practice.practice_type.code != 'multi_specialty' ? $scope.practice.practice_type_id : '';
     $scope.defaultRoles = [USER_ROLES.aux];
     $scope.showRoles = [USER_ROLES.aux, USER_ROLES.doctor, USER_ROLES.admin];
 
@@ -334,9 +340,17 @@ angular.module('modals')
         }
     };
 
+    $scope.onRoleChange = function(resultMask) {
+        $scope.isAux = Role.hasRoles([USER_ROLES.aux], Role.getFromMask(resultMask));
+    };
+
     $scope.ok = function (user) {
         user.practice_id = ($scope.params && $scope.params.practiceId) || Auth.getOrRedirect().practice_id;
         user.inviter_id = Auth.getOrRedirect().id;
+
+        if($scope.isAux) {
+            user.specialty_type_id = '';
+        }
 
         if($scope.isInvite){
             ProviderInvitation.saveUser({provider_invitation: user},

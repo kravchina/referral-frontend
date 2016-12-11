@@ -70,7 +70,8 @@ var AdminUsersSpec = function() {
                     middleInitial: "X",
                     lastName: "Brown",
                     email: emailAndRegistrationToken + "@example.com",
-                    password: "12345678"
+                    password: "12345678",
+                    specialty: 'General Dentistry'
                 };
 
                 // show add user invitation modal
@@ -81,12 +82,17 @@ var AdminUsersSpec = function() {
                 adminUsersPage.getAddModalLastNameElement().sendKeys(newColleague.lastName);
                 adminUsersPage.getAddModalEmailElement().sendKeys(newColleague.email);
                 adminUsersPage.getAddModalAdminRadioElement().click();
+                //adminUsersPage.getAddModalSpecialtyElement().element(by.cssContainingText("option", newColleague.specialty)).click();
                 // close the dialog
                 expect(adminUsersPage.getAddModalSendInviteButton().isEnabled()).toBe(true);
                 adminUsersPage.getAddModalSendInviteButton().click();
+
+                browser.wait(EC.stalenessOf(adminUsersPage.getAddModal()), 5000);
                 expect(adminUsersPage.getAddModal().isPresent()).toBe(false);
                 expect(adminUsersPage.getInviteUserResultModal().isPresent()).toBe(true);
+                browser.wait(EC.visibilityOf(adminUsersPage.getInviteUserResultModal()), 5000);
                 adminUsersPage.getInviteUserResultOkButton().click();
+                browser.wait(EC.stalenessOf(adminUsersPage.getInviteUserResultModal()), 5000);
                 expect(adminUsersPage.getInviteUserResultModal().isPresent()).toBe(false);
 
                 commonActions.signOut();

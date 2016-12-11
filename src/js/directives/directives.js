@@ -403,7 +403,8 @@ angular.module('dentalLinksDirectives')
         scope: {
             inputMask : '=',
             defaultRoles : '=',
-            showRoles : '='
+            showRoles : '=',
+            onChange : '='
         },
         templateUrl: 'partials/roles_selector.html',
         controller: 'RolesSelectorController'
