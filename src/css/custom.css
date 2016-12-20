@@ -1293,6 +1293,12 @@ td.cell-from .practice, td.cell-to .practice {
 	}
 }
 
+@media (max-width:450px){
+	.page-header{
+		display: none;
+	}
+}
+
 /* Mobile devices (mobile, 540px and up) */
 @media (min-width: 540px) {
 	.page-header{
@@ -1856,6 +1862,9 @@ label.tooth-label-view {
 	.note-block .datestamp {
 		width: 10%;
 	}
+	.combined{
+		display: none;
+	}
 }
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
@@ -2072,7 +2081,6 @@ label.tooth-label-view {
 
 #pricing-table {
 	text-align: center;
-	width: 1228px; /* total computed width */
 	zoom: 1;
 }
 
@@ -2088,19 +2096,10 @@ label.tooth-label-view {
 #pricing-table .plan {
 	background: #fff;
 	border: 1px solid #ddd;
-	padding: 20px;
 	width: 350px;
-	float: left;
 	position: relative;
 	margin: 0 0 0 20px;
 	/*box-shadow: 0 2px 2px -1px rgba(0, 0, 0, .3);*/
-}
-
-
-#pricing-table .popular-plan {
-
-	/*top: -20px;
-    padding: 40px 20px;*/
 }
 
 #pricing-table .header {
@@ -2232,10 +2231,14 @@ label.tooth-label-view {
 #pricing-table .current-plan-text.popular {
 	top: -10px;
 }
-#pricing-table .borders {
+#pricing-table .features {
 	border-bottom:1px solid #ddd;
 	border-top: 1px solid #ddd;
 	padding: 20px 0
+}
+
+#pricing-table .features-premium {
+	padding: 0;
 }
 
 #pricing-table .feature-block{
@@ -2244,6 +2247,7 @@ label.tooth-label-view {
 
 .plan-container {
 	float: left;
+	display:inline-block;
 }
 
 .non-visible {
@@ -2268,4 +2272,31 @@ label.tooth-label-view {
 .header-left{
 	padding-left: 30px
 }
+
+.combined{
+	position: absolute;
+	top: 579px;
+	width: 720px;
+}
+
+@media (max-width: 991px) {
+	.plan-container{
+		float: none;!important
+
+	}
+	.combined{
+		display: none;!important
+	}
+}
+
+@media (max-width: 1200px){
+	.plan-container {
+		padding-top: 10px;
+	}
+	.combined{
+		display: none;
+	}
+}
+
+
 

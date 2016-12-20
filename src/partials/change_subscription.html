@@ -19,7 +19,7 @@
                 <div class="price">FREE</div>
                 <div class="monthly">forever</div>
             </div>
-            <div class='borders'>
+            <div class='features'>
                 <ul>
                     <li>Send unlimited # patient referrals</li>
                     <li>Receive patient referrals from <b>premium</b> accounts</li>
@@ -41,11 +41,28 @@
                 <span class="glyphicon glyphicon-chevron-down current-plan popular" aria-hidden="true"></span>
             </div>
             <div class="plan plan2 popular-plan top ">
-                <div class="header">Premium Monthly</div>
-                <div class="price">$50</div>
-                <div class="monthly">per month</div>
-
+                <div class="feature-block">
+                    <div class="header">Premium Monthly</div>
+                    <div class="price">$50</div>
+                    <div class="monthly">per month</div>
+                </div>
+                <div  class="features-premium">
+                    <ul>
+                        <li>Send unlimited # patient referrals</li>
+                        <li>Receive patient referrals from <b>premium</b> accounts</li>
+                        <li>Receive patient referrals from <b>basic</b> accounts</li>
+                        <li>Add attachments/images to referrals</li>
+                        <li><b>Multiple</b> practice locations</li>
+                        <li>Customer support</li>
+                    </ul>
+                </div>
+                <div class="feature-block">
+                    <a id='upgrade-month' class="signup" href="" ng-click="upgradeDialog('month')">$50 / month*</a>
+                    <div>*per practice location</div>
+                </div>
             </div>
+
+
         </div>
         <div class="plan-container">
             <div id="annualPlanIndicator" ng-class="{'non-visible': currentPlan !== 'year'}">
@@ -54,13 +71,29 @@
             </div>
 
             <div class="plan plan3 popular-plan top">
-                <div class="header">Premium Annual</div>
-                <div class="price">$500</div>
-                <div class="monthly">per year</div>
-
+                <div class="feature-block">
+                    <div class="header">Premium Annual</div>
+                    <div class="price">$500</div>
+                    <div class="monthly">per year</div>
+                </div>
+                <div  class="features-premium">
+                    <ul>
+                        <li>Send unlimited # patient referrals</li>
+                        <li>Receive patient referrals from <b>premium</b> accounts</li>
+                        <li>Receive patient referrals from <b>basic</b> accounts</li>
+                        <li>Add attachments/images to referrals</li>
+                        <li><b>Multiple</b> practice locations</li>
+                        <li>Customer support</li>
+                    </ul>
+                </div>
+                <div class="feature-block">
+                    <a id='upgrade-year' class="signup" href='' ng-click="upgradeDialog('year')">$500 / year*</a>
+                    <div>*per practice location (saves $100)</div>
+                </div>
             </div>
+
         </div>
-        <div  class="premium-advantages">
+        <div  class="premium-advantages combined">
             <ul>
                 <li>Send unlimited # patient referrals</li>
                 <li>Receive patient referrals from <b>premium</b> accounts</li>
@@ -72,14 +105,7 @@
             </ul>
 
         </div>
-        <div class="plan plan2 popular-plan bottom">
-            <a id='upgrade-month' class="signup" href="" ng-click="upgradeDialog('month')">$50 / month*</a>
-            <div>*per practice location</div>
-        </div>
-        <div class="plan plan3 popular-plan bottom">
-            <a id='upgrade-year' class="signup" href='' ng-click="upgradeDialog('year')">$500 / year*</a>
-            <div>*per practice location (saves $100)</div>
-        </div>
+
     </div>
 </div>
 
