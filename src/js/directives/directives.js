@@ -216,8 +216,8 @@ angular.module('dentalLinksDirectives')
     return {
         restrict: 'A',
         scope: {
-            source: '=editForm',
-            showLabels: '='
+            source: '=?editForm',
+            showLabels: '=?'
         },
         controller: ['$scope', '$element', function ($scope, $element) {
             if(typeof $scope.showLabels === 'undefined') {
