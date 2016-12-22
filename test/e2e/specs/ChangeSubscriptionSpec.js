@@ -6,12 +6,12 @@ var changeSubscriptionPage = require('../pages/ChangeSubscriptionPage');
 
 var ChangeSubscriptionSpec = function () {
     this.run = function () {
+        var TIMEOUT_MS = 8000;
         var validPaymentDetails = {
             name: "Test Subscriber",
             cardNumber: "4242424242424242",
             cvc: "111",
             expMonth: 12,
-            expYear: new Date().getFullYear() + 1
         };
         describe('when user subscribes to monthly premium plan', function () {
             beforeEach(function () {
@@ -31,12 +31,11 @@ var ChangeSubscriptionSpec = function () {
                 changeSubscriptionPage.getSubscriptionDialogNameElement().sendKeys(validPaymentDetails.name);
                 changeSubscriptionPage.getSubscriptionDialogCardNumberElement().sendKeys(validPaymentDetails.cardNumber);
                 changeSubscriptionPage.getSubscriptionDialogCvcElement().sendKeys(validPaymentDetails.cvc);
-                changeSubscriptionPage.getSubscriptionDialogMonthElement().sendKeys(validPaymentDetails.expMonth);
                 element(by.cssContainingText('option', validPaymentDetails.expMonth)).click();
                 element.all(by.repeater('year in years')).last().click();
                 expect(changeSubscriptionPage.getSubscriptionDialogUpgradeButton().isEnabled()).toBe(true);
                 changeSubscriptionPage.getSubscriptionDialogUpgradeButton().click();
-                browser.driver.wait(protractor.until.elementIsNotVisible(element(by.css('div#resultLoading'))));
+                browser.wait(protractor.until.elementIsNotVisible(element(by.css('div#resultLoading'))), TIMEOUT_MS);
                 commonExpects.expectProgressDivHidden();
             });
 
@@ -48,14 +47,6 @@ var ChangeSubscriptionSpec = function () {
             });
         });
         describe('when user subscribes to annual premium plan', function () {
-            var validPaymentDetails = {
-                name: "Test Subscriber",
-                cardNumber: "4242424242424242",
-                cvc: "111",
-                expMonth: 12,
-                expYear: new Date().getFullYear() + 1
-            };
-
             beforeEach(function () {
                 signInPage.setEmail(browser.params.login.basic_to_annual_plan_user.email);
                 signInPage.setPass(browser.params.login.basic_to_annual_plan_user.pass);
@@ -75,12 +66,11 @@ var ChangeSubscriptionSpec = function () {
                 changeSubscriptionPage.getSubscriptionDialogNameElement().sendKeys(validPaymentDetails.name);
                 changeSubscriptionPage.getSubscriptionDialogCardNumberElement().sendKeys(validPaymentDetails.cardNumber);
                 changeSubscriptionPage.getSubscriptionDialogCvcElement().sendKeys(validPaymentDetails.cvc);
-                changeSubscriptionPage.getSubscriptionDialogMonthElement().sendKeys(validPaymentDetails.expMonth);
                 element(by.cssContainingText('option', validPaymentDetails.expMonth)).click();
                 element.all(by.repeater('year in years')).last().click();
                 expect(changeSubscriptionPage.getSubscriptionDialogUpgradeButton().isEnabled()).toBe(true);
                 changeSubscriptionPage.getSubscriptionDialogUpgradeButton().click();
-                browser.driver.wait(protractor.until.elementIsNotVisible(element(by.css('div#resultLoading'))));
+                browser.wait(protractor.until.elementIsNotVisible(element(by.css('div#resultLoading'))), TIMEOUT_MS);
                 commonExpects.expectProgressDivHidden() ;
                 /*expect(changeSubscriptionPage.getSubscriptionDialogElement().isDisplayed()).toBe(false);*/
                 /*commonExpects.expectSuccessNotificationShown();*/
@@ -113,7 +103,7 @@ var ChangeSubscriptionSpec = function () {
                   expect(changeSubscriptionPage.getDowngradeConfirmationDialog().isDisplayed()).toBe(true);
                   expect(changeSubscriptionPage.getDowngradeButton().isEnabled()).toBe(true);
                   changeSubscriptionPage.getDowngradeButton().click();
-                  browser.driver.wait(protractor.until.elementIsNotVisible(element(by.css('div#resultLoading'))));
+                  browser.wait(protractor.until.elementIsNotVisible(element(by.css('div#resultLoading'))), TIMEOUT_MS);
                   commonExpects.expectProgressDivHidden();
                   expect(changeSubscriptionPage.getFreePlanIndicator().isDisplayed()).toBe(true);
                   expect(changeSubscriptionPage.getMonthlyPlanIndicator().isDisplayed()).toBe(false);
