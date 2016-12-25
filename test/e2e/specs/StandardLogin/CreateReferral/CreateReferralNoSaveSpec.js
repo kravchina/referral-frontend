@@ -105,6 +105,29 @@ var CreateReferralNoSaveSpec = function() {
                 commonExpects.expectCurrentUrlToBe(historyPage.url);
             });
         });
+
+        describe('when url contain pid parameter', function(){
+            var alertDialog;
+
+            beforeEach(function() {
+                createReferralPage.openWithPid();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectCurrentUrlToBe(createReferralPage.url_with_pid);
+            });
+
+            it('check practice selected', function(){
+                expect(createReferralPage.getProviderElement().isEnabled()).toBe(true);
+            });
+
+            afterEach(function() {
+                commonActions.clickLogo();
+                alertDialog = browser.switchTo().alert();
+                alertDialog.accept();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectCurrentUrlToBe(historyPage.url);
+            });
+
+        });
         
     };
 };
