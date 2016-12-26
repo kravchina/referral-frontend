@@ -369,7 +369,9 @@ angular.module('dentalLinksServices')
             return notification;
         },
         close: function() {
-            notification.message = undefined;
+            if (!(notification.params && notification.params.dontHideOnRequest)) {//need this for a case when user creates referral with non-acceptable attachment - we need to create referral succesfully, but show notification that attachment was rejected.
+                notification.message = undefined;
+            }
         }
 
     }

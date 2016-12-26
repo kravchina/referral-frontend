@@ -7,9 +7,9 @@ angular.module('viewReferrals')
 
         $scope.auth = Auth.get();
         $scope.auth.is_admin = Auth.hasRole(USER_ROLES.admin);
-        if(message){
+        /*if(message){
             Notification.error(message);
-        }
+        } */
 
         Practice.get({practiceId: $scope.auth.practice_id}, function(practice){
             $scope.paymentNotification = {
@@ -179,7 +179,7 @@ angular.module('viewReferrals')
 
             $scope.uploader.onErrorItem = function(item, response, status, headers) {
                 Logger.error('Error', status, item, response);
-                Notification.error(response.file[0] ? response.file[0] : 'An error occurred while adding attachment.' );
+                Notification.error(response.attach ? 'Sorry this file type is not allowed as an attachment.' : 'An error occurred while adding attachment.' );
 
                 // show the loading indicator
                 ProgressIndicator.finish();
@@ -314,7 +314,7 @@ angular.module('viewReferrals')
                 controller: 'ConfirmationModalController',
                 resolve: {
                     confirmMessage: function(){
-                        return "Delete image?";
+                        return "Delete attachment?";
                     }
                 }
             });

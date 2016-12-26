@@ -47,7 +47,6 @@ angular.module('createReferrals')
             var resultHandlers = {
                 success: function (referral) {
                     Logger.debug('Sent referral #' + referral.id);
-                    Notification.success('Referral was sent successfully!');
                     ReferralHelper.uploadAttachments($scope, referral.id, function(message){
                         UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
                         $state.go('viewReferral', {referral_id: referral.id, message: message, isNew: true});

@@ -13,9 +13,9 @@ angular.module('createReferrals')
         $scope.currentPracticeProviders = User.getOtherProviders({practice_id: auth.practice_id});
         $scope.userIsAux = auth.roles.indexOf('aux') >= 0;
 
-        if(message){
+        /*if(message){
             Notification.error(message);
-        }
+        }*/
 
         Procedure.practiceTypes().$promise.then(function (types) {
             $scope.practiceTypes = types;

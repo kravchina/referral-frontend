@@ -79,11 +79,7 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
         angular.forEach($scope.attachments, function (attachment, key) {
             $scope.total_size += $scope.total_size + attachment.size;
 
-            if(!$scope.attachments[key].last_modified && $scope.attachments[key].attach_content_type == "image/jpeg") {
-                $scope.attachments[key].invalid = true;
-            } else {
-                $scope.attachments[key].invalid = false;
-            }
+            $scope.attachments[key].invalid = !$scope.attachments[key].last_modified && $scope.attachments[key].attach_content_type == "image/jpeg";
         });
 
         var uploader = $scope.uploader = new FileUploader({
@@ -170,8 +166,8 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
         uploader.onErrorItem = function(item, response, status, headers) {
             Logger.error('Error', response, item, status);
             ProgressIndicator.finish();
-            $scope.errorMessage = response.file? response.file[0] : response.attach? response.attach[0] : 'An error occurred during attachment upload. Please try again later.';
-            Notification.error( $scope.errorMessage);
+            $scope.errorMessage = response.file? response.file[0] : response.attach? 'Sorry this file type is not allowed as an attachment.' : 'An error occurred during attachment upload. Please try again later.';
+            Notification.error( $scope.errorMessage, {dontHideOnRequest: true});
         };
 
         uploader.onCompleteItem = function(item, response, status, headers){
