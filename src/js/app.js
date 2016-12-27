@@ -58,9 +58,10 @@ angular.module('dentalLinks')
             controller: 'ErrorController'
         }).
         state('createReferral', {
-            url: '/create_referral',
+            url: '/create_referral?pid',
             templateUrl: 'partials/create_referral.html',
             controller: 'CreateReferralsController',
+            reloadOnSearch: false,
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('reviewReferral', {

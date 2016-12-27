@@ -1,6 +1,6 @@
 angular.module('createReferrals')
-    .controller('CreateReferralsController', ['$scope', '$state','Notification', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper', 'User', 'USER_ROLES',
-    function ($scope, $state, Notification, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User, USER_ROLES) {
+    .controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Notification', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper', 'User', 'USER_ROLES', 'Practice',
+    function ($scope, $state, $stateParams, Notification, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User, USER_ROLES, Practice) {
 
         var auth = $scope.auth = Auth.get() || {};
 
@@ -23,6 +23,15 @@ angular.module('createReferrals')
         $scope.onPracticeSelected = ReferralHelper.onPracticeSelected($scope, auth);
 
         ReferralHelper.watchProviders($scope);
+
+        if(typeof $stateParams.pid !== 'undefined') {
+            Practice.get({practiceId: $stateParams.pid}, function(data) {
+                $scope.onPracticeSelected(data);
+                $scope.form.$setDirty();
+            }, function (failure) {
+                Notification.error('An error occurred during practice search...');
+            });
+        }
 
         $scope.saveTemplate = function (model) {
             ReferralHelper.prepareSubmit($scope, model.referral);
