@@ -75,6 +75,10 @@ var AdminUsersPage = function() {
         return element(by.css('#formNewuser button[ng-click="ok(user)"][ng-show="isInvite"]'));
     };
 
+    this.getAddModalSpecialtyElement = function() {
+        return element(by.model('practiceType'));
+    };
+
     this.getAddModalDiscardButton = function(){
         return element(by.css('#formNewUser button[ng-click="cancel()"]'));
     };

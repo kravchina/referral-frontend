@@ -28,6 +28,10 @@ var RegistrationPage = function() {
     this.getLastNameElement = function() {
         return element(by.model('invitation.last_name'));
     };
+
+    this.getSpecialtyElement = function() {
+        return element(by.model('invitation.specialty_type_id'));
+    };
     
     // practice
     

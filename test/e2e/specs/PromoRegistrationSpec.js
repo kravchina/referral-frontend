@@ -42,10 +42,10 @@ var PromoRegistrationSpec = function() {
                 registrationPage.getLastNameElement().sendKeys(newProvider.lastName);
 
                 registrationPage.getMiddleInitialElement().sendKeys(newProvider.middleInitial);
+                registrationPage.getSpecialtyElement().element(by.cssContainingText("option", newPractice.type)).click();
 
                 // creating new practice
                 registrationPage.getPracticeNameElement().sendKeys(newPractice.name);
-                registrationPage.getPracticeTypeElement().element(by.cssContainingText("option", newPractice.type)).click();
                 registrationPage.getPracticeAddressStreetElement().sendKeys(newPractice.address.street1);
                 registrationPage.getPracticeAddressCityElement().sendKeys(newPractice.address.city);
                 registrationPage.getPracticeAddressStateElement().element(by.cssContainingText("option", newPractice.address.state)).click();

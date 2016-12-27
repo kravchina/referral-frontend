@@ -1,7 +1,8 @@
 angular.module('admin')
-    .controller('AdminUsersController', ['$scope',  '$modal',  'Notification', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'FREE_TRIAL_PERIOD', 'Logger', 'USER_ROLES', 'Role',
-    function ($scope, $modal, Notification, ModalHandler, Practice, ProviderInvitation, User, FREE_TRIAL_PERIOD, Logger, USER_ROLES, Role) {
-        
+    .controller('AdminUsersController', ['$scope',  '$modal',  'Notification', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'FREE_TRIAL_PERIOD', 'Logger', 'USER_ROLES', 'Role', 'Procedure',
+    function ($scope, $modal, Notification, ModalHandler, Practice, ProviderInvitation, User, FREE_TRIAL_PERIOD, Logger, USER_ROLES, Role, Procedure) {
+        $scope.practiceTypes = Procedure.practiceTypes({'include_procedures': false});
+
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function(practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
         });
@@ -29,7 +30,15 @@ angular.module('admin')
         $scope.usersDialog = function () {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/user_form.html',
-                controller: 'UserModalController'
+                controller: 'UserModalController',
+                resolve: {
+                    practiceTypes: function () {
+                        return $scope.practiceTypes;
+                    },
+                    practice: function () {
+                        return $scope.practice;
+                    }
+                }
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (user) {

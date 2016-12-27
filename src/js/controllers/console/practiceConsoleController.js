@@ -118,6 +118,14 @@ angular.module('console')
             var modalInstance = $modal.open({
                 templateUrl: 'partials/user_form.html',
                 controller: 'UserModalController',
+                resolve: {
+                    practiceTypes: function () {
+                        return $scope.practiceTypes;
+                    },
+                    practice: function () {
+                        return $scope.destinationPractice;
+                    }
+                },
                 scope: scope
             });
             ModalHandler.set(modalInstance);

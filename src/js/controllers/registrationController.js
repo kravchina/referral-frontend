@@ -51,6 +51,9 @@ angular.module('registration')
         // this function is used in case of registration through an invitation
         $scope.register = function (practice, invitation) {
             $scope.submitted = true;
+            if(!invitation.practice_id) {
+                $scope.setSpecialty(practice, invitation);
+            }
             if ($scope.form.$valid) {
                 //invitation.practice_id = invitation.practice.id;
                 Registration.save({
@@ -75,6 +78,7 @@ angular.module('registration')
         // this function is used instead of register() in case of registration through promotion
         $scope.createPracticeAndRegister = function (practice, invitation) {
             $scope.submitted = true;
+            $scope.setSpecialty(practice, invitation);
             if ($scope.form.$valid) {
                 //we check first, that email is new and was not used for invitation
                 ProviderInvitation.validate({email: invitation.email}, function(success){
@@ -152,6 +156,28 @@ angular.module('registration')
                     }});
                 }
             });
+        };
+
+        $scope.setSpecialty = function (practice, invitation) {
+            if(!invitation.specialty_type_id) {
+                $scope.practiceTypes.forEach(function(item){
+                    if(item.code == 'general_dentistry') {
+                        invitation.specialty_type_id = item.id;
+                    }
+                });
+            }
+            if(practice.multi_specialty) {
+                $scope.practiceTypes.forEach(function(item){
+                    if(item.code == 'multi_specialty') {
+                        practice.practice_type_id = item.id;
+                    }
+                });
+            } else {
+                practice.practice_type_id = invitation.specialty_type_id;
+            }
+            if(invitation.roles_mask == USER_ROLES.aux.mask) {
+                invitation.specialty_type_id = '';
+            }
         };
 
         $scope.resend = function(){

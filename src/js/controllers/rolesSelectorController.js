@@ -16,6 +16,10 @@ angular.module('dentalLinks')
                 }
             });
             $scope.inputMask += $scope.selected.radio.mask;
+
+            if(typeof $scope.onChange !== "undefined") {
+                $scope.onChange($scope.inputMask);
+            }
         };
 
         function choiceButtons (){
@@ -47,7 +51,7 @@ angular.module('dentalLinks')
                 $scope.inputMask = 0;
             }
             filterByShow();
-            choiceButtons()
+            choiceButtons();
             $scope.onChangeRole();
         });
 

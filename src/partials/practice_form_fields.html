@@ -1,12 +1,11 @@
     <div class="row">
-        <div class="input-block col-sm-6" ng-class="{ 'has-error': (submitted || form.name.$dirty) && form.name.$invalid }">
+        <div class="input-block col-sm-10" ng-class="{ 'has-error': (submitted || form.name.$dirty) && form.name.$invalid }">
             <input type="text" name="name" class="form-control" ng-model="practice.name" placeholder="Practice name &hellip;" ng-required="true">
         </div>
 
-        <div class="input-block col-xs-6" ng-class="{ 'has-error': (submitted || form.practiceType.$dirty) && form.practiceType.$invalid }">
-            <select id="selectRefType" class="form-control" name="practiceType" ng-model="practice.practice_type_id" ng-options="p.id as p.name for p in practiceTypes" ng-required="true">
-                <option disabled="disabled" class="placeholder" value="">Select type &hellip;</option>
-            </select>
+        <div class="input-block col-xs-2">
+            <label>Multi specialty: </label>
+            <input type="checkbox" name="multi_specialty" ng-model="practice.multi_specialty">
         </div>
     </div>
 
