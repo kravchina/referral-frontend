@@ -3,6 +3,9 @@ angular.module('dentalLinks')
         function ($scope, $element, $attrs) {
 
         $scope.practiceAddressesCopy = angular.copy($scope.practiceAddresses).map(function(pAddress){
+            if(typeof $scope.user.addresses == 'undefined') {
+                return pAddress;
+            }
             $scope.user.addresses.forEach(function(uAddress){
                 if(uAddress.id == pAddress.id) {
                     pAddress.checked = true;
