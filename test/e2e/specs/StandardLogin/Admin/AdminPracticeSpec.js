@@ -12,6 +12,12 @@ var AdminPracticeSpec = function() {
                 commonExpects.expectCurrentUrlToBe(adminPracticePage.url);
             });
 
+            it('check custom referral link block', function() {
+                expect(adminPracticePage.getCustomReferralLinkBlock().isDisplayed()).toBe(true);
+                adminPracticePage.getCopyToClipboardButton().click();
+                commonExpects.expectInfoNotificationShown();
+            });
+
             it('shows Admin Practice page in Practice view mode', function() {
                 expect(element(by.css('#adminTabContent')).isPresent()).toBe(true);
                 expect(element(by.model('practice.name')).isDisplayed()).toBe(true); // this input is displayed on the page in both view and edit modes

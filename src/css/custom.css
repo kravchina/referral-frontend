@@ -2298,5 +2298,10 @@ label.tooth-label-view {
 	}
 }
 
+.custom-referral-link {
+	margin-top: 20px;
+}
 
-
+.custom-referral-link .btn {
+	padding: 3px 3px !important;
+}

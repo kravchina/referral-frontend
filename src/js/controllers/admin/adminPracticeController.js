@@ -127,9 +127,9 @@ angular.module('admin')
             });
         };
 
-        $scope.copyToClipboard = function(value){
+        $scope.copyToClipboard = function(value, message){
             clipboard.copyText(value);
-            Notification.info('API key <b>' + value + '</b> was copied to clipboard');
+            Notification.info(message + ' <b>' + value + '</b> was copied to clipboard');
         };
 
 
