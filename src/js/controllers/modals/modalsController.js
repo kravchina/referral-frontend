@@ -464,8 +464,8 @@ angular.module('modals')
 }])
 
 .controller('EditUserModalController',
-    ['$scope', 'showNameControls', 'showRoleSelector', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure',
-        function ($scope, showNameControls, showRoleSelector, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure) {
+    ['$scope', 'showNameControls', 'showRoleSelector', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure', '$modal',
+        function ($scope, showNameControls, showRoleSelector, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure, $modal) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
@@ -509,37 +509,65 @@ angular.module('modals')
 
 
             $scope.ok = function (user) {
-                if(!showRoleSelector) {
-                    if (Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && !user.is_admin) {
-                        user.roles_mask -= USER_ROLES.admin.mask;
-                    } else if (!Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && user.is_admin) {
-                        user.roles_mask += USER_ROLES.admin.mask;
-                    }
-                }
-                if (user.password != user.password_confirmation) {
-                    $scope.alerts = [];
-                    Alert.error($scope.alerts, 'Error: Password does not match', true);
-                    return;
-                }
-                if (initialEmail !== user.email) {
-                    Registration.sendEmailVerification({email: user.email, user_id: user.id}).$promise.then(function(){
-                        Notification.success('Confirmation letter was sent to your new email address. Your email will be changed right after confirmation.');
+                if(user.email == '') {
+                    var confirmModalInstance = $modal.open({
+                        templateUrl: 'partials/confirmation.html',
+                        controller: 'ConfirmationModalController',
+                        resolve: {
+                            confirmMessage: function(){
+                                return 'This account will be changed to the no-login account. You can\'t login in this account any way. Do you want to continue?';
+                            }
+                        }
                     });
-                }
-                User.update({id: editUser.id}, {user: user, email_relations: $scope.listOutputUsers}, function (success) {
-                    $scope.user.user_addresses = success.user_addresses;
-                    Logger.log(success);
-                    ModalHandler.close($modalInstance,success);
-                },  function (failure) {
-                    Logger.log(failure);
-                    if(failure.data.password){
-                        Alert.error($scope.alerts, 'Error: Password ' + failure.data.password[0], true);
-                    }else{
-                        Alert.error($scope.alerts, 'Error: ' + failure.data.message, true);
-                    }
 
-                });
-                editUser.email_bindings = $scope.listOutputUsers;
+                    confirmModalInstance.result.then(function () {
+                        user.no_login = true;
+                        saveUser();
+                        ModalHandler.close($modalInstance);
+                    });
+                } else {
+                    saveUser();
+                }
+
+                function saveUser () {
+                    if (!showRoleSelector) {
+                        if (Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && !user.is_admin) {
+                            user.roles_mask -= USER_ROLES.admin.mask;
+                        } else if (!Role.hasRoles([USER_ROLES.admin], Role.getFromMask(user.roles_mask)) && user.is_admin) {
+                            user.roles_mask += USER_ROLES.admin.mask;
+                        }
+                    }
+                    if (user.password != user.password_confirmation) {
+                        $scope.alerts = [];
+                        Alert.error($scope.alerts, 'Error: Password does not match', true);
+                        return;
+                    }
+                    User.update({id: editUser.id}, {
+                        user: user,
+                        email_relations: $scope.listOutputUsers
+                    }, function (success) {
+                        $scope.user.user_addresses = success.user_addresses;
+                        Logger.log(success);
+                        if (initialEmail !== user.email && user.email !== '') {
+                            Registration.sendEmailVerification({
+                                email: user.email,
+                                user_id: user.id
+                            }).$promise.then(function () {
+                                Notification.success('Confirmation letter was sent to your new email address. Your email will be changed right after confirmation.');
+                            });
+                        }
+                        ModalHandler.close($modalInstance, success);
+                    }, function (failure) {
+                        Logger.log(failure);
+                        if (failure.data.password) {
+                            Alert.error($scope.alerts, 'Error: Password ' + failure.data.password[0], true);
+                        } else {
+                            Alert.error($scope.alerts, 'Error: ' + failure.data.message, true);
+                        }
+
+                    });
+                    editUser.email_bindings = $scope.listOutputUsers;
+                }
             };
 
 
