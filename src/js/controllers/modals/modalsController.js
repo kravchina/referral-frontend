@@ -562,7 +562,7 @@ angular.module('modals')
                         if (failure.data.password) {
                             Alert.error($scope.alerts, 'Error: Password ' + failure.data.password[0], true);
                         } else {
-                            Alert.error($scope.alerts, 'Error: ' + failure.data.message, true);
+                            Alert.error($scope.alerts, failure.data.message, true);
                         }
 
                     });
