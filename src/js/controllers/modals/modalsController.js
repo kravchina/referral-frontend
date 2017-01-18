@@ -521,21 +521,21 @@ angular.module('modals')
                     Alert.error($scope.alerts, 'Error: Password does not match', true);
                     return;
                 }
-                if (initialEmail !== user.email) {
-                    Registration.sendEmailVerification({email: user.email, user_id: user.id}).$promise.then(function(){
-                        Notification.success('Confirmation letter was sent to your new email address. Your email will be changed right after confirmation.');
-                    });
-                }
                 User.update({id: editUser.id}, {user: user, email_relations: $scope.listOutputUsers}, function (success) {
                     $scope.user.user_addresses = success.user_addresses;
                     Logger.log(success);
+                    if (initialEmail !== user.email) {
+                        Registration.sendEmailVerification({email: user.email, user_id: user.id}).$promise.then(function(){
+                            Notification.success('Confirmation letter was sent to your new email address. Your email will be changed right after confirmation.');
+                        });
+                    }
                     ModalHandler.close($modalInstance,success);
                 },  function (failure) {
                     Logger.log(failure);
                     if(failure.data.password){
                         Alert.error($scope.alerts, 'Error: Password ' + failure.data.password[0], true);
                     }else{
-                        Alert.error($scope.alerts, 'Error: ' + failure.data.message, true);
+                        Alert.error($scope.alerts, failure.data.message, true);
                     }
 
                 });
