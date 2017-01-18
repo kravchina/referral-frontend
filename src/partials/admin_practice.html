@@ -93,6 +93,21 @@
         </div>
     </form>
 
+    <div class="custom-referral-link">
+        <div class="block-title">
+            <h2>Custom Referral Link</h2>
+        </div>
+        <div class="section-block">
+            <div class="alert alert-warning" role="alert">
+                <label>URL:</label>&nbsp;
+                <a href="{{SITE_URL}}#/create_referral?pid={{practice.id}}">{{SITE_URL}}#/create_referral?pid={{practice.id}}</a>
+                <button class="btn btn-info pull-right" ng-click="copyToClipboard('{{SITE_URL}}#/create_referral?pid=' + practice.id, 'Referral link')" title="Copy to clipboard">
+                    <span class="icon-clipboard pull-right" title="Copy to clipboard"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="sectApiKeys">
         <div class="block-title">
             <h2>API keys</h2>
@@ -112,7 +127,7 @@
                         <tbody>
                         <tr  ng-repeat="key in practice.api_keys">
                             <td class="cell-user">{{key.api_key}}</td>
-                            <td class="cell-copy" ng-click="copyToClipboard(key.api_key)">
+                            <td class="cell-copy" ng-click="copyToClipboard(key.api_key, 'API key')">
                                 <span class="icon-clipboard pull-right" title="Copy to clipboard"></span>
                             </td>
                             <td class="cell-created">

@@ -68,7 +68,15 @@ var AdminPracticePage = function() {
 
     this.clickRemoveAddress = function(item){
         item.element(by.css('span.dlicons-remove')).click();
-    }
+    };
+
+    this.getCustomReferralLinkBlock = function(){
+        return element(by.css('.custom-referral-link'));
+    };
+
+    this.getCopyToClipboardButton = function() {
+        return element(by.css('.custom-referral-link button'));
+    };
 
 };
 
