@@ -23,10 +23,11 @@ angular.module('dentalLinks')
         };
 
         function choiceButtons (){
+            var data;
             if($scope.inputMask) {
-                var data = Role.getFromMask($scope.inputMask);
+                data = Role.getFromMask($scope.inputMask);
             } else {
-                var data = $scope.defaultRoles;
+                data = $scope.defaultRoles;
             }
             $scope.selected.radio = $scope.radios.filter(function(item){
                 return Role.hasRoles([item], data);
@@ -35,7 +36,7 @@ angular.module('dentalLinks')
             $scope.checkboxes.forEach(function(item){
                 $scope.selected.checkbox[item.id] = Role.hasRoles([item], data);
             });
-        };
+        }
 
         function filterByShow(){
             $scope.radios = [USER_ROLES.doctor, USER_ROLES.aux].filter(function(item){
@@ -44,7 +45,7 @@ angular.module('dentalLinks')
             $scope.checkboxes = [USER_ROLES.admin, USER_ROLES.super].filter(function(item){
                 return $scope.showRoles.indexOf(item) != -1;
             });
-        };
+        }
 
         $scope.$watch('showRoles', function(newValue, oldValue){
             if(oldValue !== newValue){
