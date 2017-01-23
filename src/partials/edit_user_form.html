@@ -63,13 +63,13 @@
         <label>Notification preference:</label>
         <div class="radio">
             <label>
-                <input type="radio" ng-model="user.notification_preference" value="2" ng-checked="user.notification_preference == 2 ? true : false">
+                <input type="radio" ng-model="user.notification_preference" value="2" ng-checked="user.notification_preference == 2">
                 All email notifications for practice
             </label>
         </div>
         <div class="radio" access="aux">
             <label>
-                <input type="radio" ng-model="user.notification_preference" value="1" ng-checked="user.notification_preference == 1 ? true : false">
+                <input type="radio" ng-model="user.notification_preference" value="1" ng-checked="user.notification_preference == 1">
                 Email notifications from:
             </label>
             <div    ng-show="user.notification_preference == 1"
@@ -85,13 +85,13 @@
         </div>
         <div class="radio" access="doctor,admin,super">
             <label>
-                <input type="radio" ng-model="user.notification_preference" value="1" ng-checked="user.notification_preference == 1 ? true : false">
+                <input type="radio" ng-model="user.notification_preference" value="1" ng-checked="user.notification_preference == 1">
                 Email notifications for me only
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" ng-model="user.notification_preference" value="0" ng-checked="user.notification_preference == 0 ? true : false">
+                <input type="radio" ng-model="user.notification_preference" value="0" ng-checked="user.notification_preference == 0">
                 No email notifications
             </label>
         </div>
