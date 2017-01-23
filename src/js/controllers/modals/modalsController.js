@@ -472,7 +472,7 @@ angular.module('modals')
             $scope.showNameControls = showNameControls;
             $scope.showRoleSelector = showRoleSelector;
             $scope.practiceTypes = [];
-            $scope.showRoles = [USER_ROLES.aux, USER_ROLES.doctor, USER_ROLES.admin];
+            $scope.showRoles = [USER_ROLES.super, USER_ROLES.aux, USER_ROLES.doctor, USER_ROLES.admin];
             Procedure.practiceTypes({'include_procedures': false}, function(success){
                 success.map(function(item){
                     if(item.code !== 'multi_specialty'){
