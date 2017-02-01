@@ -1,13 +1,9 @@
 var CreateReferralPage = function() {
     this.url = "/#/create_referral";
-    this.url_with_pid = "/#/create_referral?pid=1";
+    this.url_with_pid = "/#/create_referral?pid=";
     
     this.open = function() {
         browser.get(this.url);
-    };
-
-    this.openWithPid = function() {
-        browser.get(this.url_with_pid);
     };
     
     // TODO [ak] try out current implementation, but consider refactoring. Might be better to only operate with simple values here (strings, booleans), not elements
