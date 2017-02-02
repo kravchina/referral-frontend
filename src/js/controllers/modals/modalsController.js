@@ -515,7 +515,7 @@ angular.module('modals')
                         controller: 'ConfirmationModalController',
                         resolve: {
                             confirmMessage: function(){
-                                return 'This account will be changed to the no-login account. You can\'t login in this account any way. Do you want to continue?';
+                                return 'If you delete this user\'s email address, they will no longer be able to login. Do you want to continue?';
                             }
                         }
                     });
@@ -553,7 +553,7 @@ angular.module('modals')
                                 email: user.email,
                                 user_id: user.id
                             }).$promise.then(function () {
-                                Notification.success('Confirmation letter was sent to your new email address. Your email will be changed right after confirmation.');
+                                Notification.success('Confirmation email message was sent to the new email address. Please check your email to complete the change.');
                             });
                         }
                         ModalHandler.close($modalInstance, success);
