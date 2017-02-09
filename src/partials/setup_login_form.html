@@ -1,0 +1,19 @@
+<form id="setupLoginForm" name="setupLoginForm">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Setup login</h4>
+    </div>
+    <div class="modal-body">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.message | i18n}}</alert>
+
+        <div class="input-block">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" ng-model="email" placeholder="Enter Email &hellip;" ng-required="true">
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-green" ng-click="send(email)">Send</button>
+        <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Discard</button>
+    </div>
+</form>

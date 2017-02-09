@@ -265,8 +265,26 @@ angular.module('dentalLinksServices')
         set: function (modal) {
             modalInstance = modal;
         },
-        dismiss: function(modal){
-            modal.dismiss('cancel');
+        dismiss: function(modal, form){
+            if(typeof form !== 'undefined') {
+                var result;
+                var strUnsavedQuestion = 'You have unsaved changes. Are you sure you want to leave?';
+
+                if(form.$dirty) {
+                    result = confirm(strUnsavedQuestion);
+                    if(result) {
+                        modal.dismiss('cancel');
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    modal.dismiss('cancel');
+                    return true;
+                }
+            } else {
+                modal.dismiss('cancel');
+            }
         },
         close: function(modal, result){
             modal.close(result);

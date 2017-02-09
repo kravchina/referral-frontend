@@ -62,6 +62,33 @@ var AdminUsersSpec = function() {
                 });
             });
 
+            it('create no login user, open edit dialog, change salutation and click setup login, check setup login modal', function(){
+                adminUsersPage.getAddUserButton().click();
+                expect(adminUsersPage.getAddModal().isDisplayed()).toBe(true);
+                adminUsersPage.getAddModalFirstNameElement().sendKeys('Nologin');
+                adminUsersPage.getAddModalLastNameElement().sendKeys('LastName');
+                adminUsersPage.getAddModalNoLoginRadioElement().click();
+                adminUsersPage.getAddModalSaveButton().click();
+
+                element.all(by.css('[ng-repeat="user in practice.users.concat(invitedUsers)"]'))
+                    .then(function (rows) {
+                        rows[rows.length - 1].element(by.css('.dlicons-pencil')).click();
+                        expect(adminUsersPage.getEditModalNoLogin().isDisplayed()).toBe(true);
+                        adminUsersPage.getEditModalSalutation().element(by.cssContainingText('option', 'Mr.')).click();
+                        adminUsersPage.getEditModalNoLoginSetupLoginButton().click();
+
+                        var alertDialog = browser.switchTo().alert();
+                        alertDialog.accept();
+
+                        browser.wait(EC.invisibilityOf(adminUsersPage.getEditModalNoLogin()), 5000);
+                        expect(adminUsersPage.getEditModalNoLogin().isPresent()).toBe(false);
+                        expect(adminUsersPage.getSetupLoginModal().isDisplayed()).toBe(true);
+                        expect(adminUsersPage.getSetupLoginModalEmail().isDisplayed()).toBe(true);
+
+                        adminUsersPage.getSetupLoginModalDiscardButton().click();
+                    });
+            });
+
             it('create colleague invitation and register', function(){
                 var emailAndRegistrationToken = (new Date()).getTime().toString();
                 var newColleague = {

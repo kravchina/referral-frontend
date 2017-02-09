@@ -591,8 +591,8 @@ angular.module('modals')
 }])
 
 .controller('EditNoLoginUserModalController',
-    ['$scope', 'showNameControls', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure', 'practiceAddresses',
-    function ($scope, showNameControls, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure, practiceAddresses) {
+    ['$scope', 'showNameControls', '$modal', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure', 'practiceAddresses', 'UnsavedChanges',
+    function ($scope, showNameControls, $modal, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure, practiceAddresses, UnsavedChanges) {
         $scope.user = editUser;
         $scope.alerts = [];
         $scope.practiceTypes = [];
@@ -611,15 +611,19 @@ angular.module('modals')
             ModalHandler.dismiss($modalInstance);
         };
 
-        $scope.ok = function (user) {
-             User.sendPasswordInvitation({id: user.id}, {email: user.email, specialty_type_id: user.specialty_type_id},
-                 function(success){
-                     ModalHandler.close($modalInstance,success);
-                 },
-                 function(failure){
-                    $scope.alerts = [];
-                    Alert.error($scope.alerts, failure.data.error, true);
-                 });
+        $scope.setupLogin = function (user) {
+            if(ModalHandler.dismiss($modalInstance, $scope.editNoLoginUserForm)) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'partials/setup_login_form.html',
+                    controller: 'SetupLoginModalController',
+                    resolve: {
+                        selectedUser: function () {
+                            return user;
+                        }
+                    }
+                });
+                ModalHandler.set(modalInstance);
+            }
         };
 
         $scope.save = function(user){
@@ -789,6 +793,26 @@ angular.module('modals')
 .controller('VersionLogsModalController', ['$scope', '$modalInstance', 'ModalHandler', 'logs',
     function ($scope, $modalInstance, ModalHandler, logs) {
         $scope.logs = logs;
+
+        $scope.cancel = function(){
+            ModalHandler.dismiss($modalInstance);
+        };
+}])
+
+.controller('SetupLoginModalController', ['$scope', '$modalInstance', 'ModalHandler', 'Alert', 'User', 'selectedUser',
+    function ($scope, $modalInstance, ModalHandler, Alert, User, selectedUser) {
+        $scope.selectedUser = angular.copy(selectedUser);
+
+        $scope.send = function(email){
+            User.sendPasswordInvitation({id: $scope.selectedUser.id}, {email: email, specialty_type_id: $scope.selectedUser.specialty_type_id},
+                function(success){
+                    ModalHandler.close($modalInstance, success);
+                },
+                function(failure){
+                    $scope.alerts = [];
+                    Alert.error($scope.alerts, failure.data.error, true);
+                });
+        };
 
         $scope.cancel = function(){
             ModalHandler.dismiss($modalInstance);

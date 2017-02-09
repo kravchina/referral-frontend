@@ -47,6 +47,34 @@ var AdminUsersPage = function() {
         return element(by.css('#selectSalutation'));
     };
 
+    this.getEditModalNoLogin = function(){
+        return element(by.css('#editNoLoginUserForm'));
+    };
+
+    this.getEditModalNoLoginSetupLoginButton = function(){
+        return element(by.css('#editNoLoginUserForm button[ng-click="setupLogin(user)"].btn'));
+    };
+
+    this.getEditModalNoLoginSaveButton = function(){
+        return element(by.css('#editNoLoginUserForm button[ng-click="save(user)"].btn'));
+    };
+
+    this.getEditModalNoLoginDiscardButton = function(){
+        return element(by.css('#editNoLoginUserForm button[ng-click="cancel()"].btn'));
+    };
+
+    this.getSetupLoginModal = function(){
+      return element(by.css('#setupLoginForm'));
+    };
+
+    this.getSetupLoginModalDiscardButton = function(){
+      return element(by.css('#setupLoginForm button[ng-click="cancel()"].btn'));
+    };
+
+    this.getSetupLoginModalEmail = function(){
+      return element(by.css('#setupLoginForm button[ng-click="cancel()"].btn'));
+    };
+
     this.getAddUserButton = function(){
         return element(by.css('button[ng-click="usersDialog()"]'));
     };
@@ -63,6 +91,10 @@ var AdminUsersPage = function() {
         return element(by.css('#formNewuser input[name="lastName"]'));
     };
 
+    this.getAddModalNoLoginRadioElement = function(){
+        return element.all(by.css('#formNewuser input[ng-model="isInvite"]')).last();
+    };
+
     this.getAddModalEmailElement = function(){
         return element(by.css('#formNewuser input[name="email"]'));
     };
@@ -73,6 +105,10 @@ var AdminUsersPage = function() {
 
     this.getAddModalSendInviteButton = function(){
         return element(by.css('#formNewuser button[ng-click="ok(user)"][ng-show="isInvite"]'));
+    };
+
+    this.getAddModalSaveButton = function(){
+        return element(by.css('#formNewuser button[ng-click="ok(user)"][ng-show="!isInvite"]'));
     };
 
     this.getAddModalSpecialtyElement = function() {
