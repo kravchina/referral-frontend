@@ -66,7 +66,11 @@ angular.module('registration')
                     function (success) {
                         Auth.set({token: success.authentication_token, email: success.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
                         Auth.current_user = success;
-                        showResultDialog();
+                        if (invitation.practice_id) {
+                            showResultDialog();
+                        } else {
+                            $state.go('change_subscription', {fromRegistration: true});
+                        }
                     },
                     function (failure) {
                         Notification.error(failure.data.errors.message[0]);

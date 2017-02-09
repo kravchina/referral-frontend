@@ -1,7 +1,7 @@
 angular.module('dentalLinks')
-    .controller('SubscriptionChangeController', ['$scope', '$modal', 'ModalHandler', 'Practice', 'Auth', 'Notification',
-        function ($scope, $modal, ModalHandler, Practice, Auth, Notification) {
-
+    .controller('SubscriptionChangeController', ['$scope', '$modal', 'ModalHandler', 'Practice', 'Auth', 'Notification', '$stateParams',
+        function ($scope, $modal, ModalHandler, Practice, Auth, Notification, $stateParams) {
+            $scope.fromRegistration = $stateParams.fromRegistration;
             $scope.practice = Practice.get({practiceId: Auth.get().practice_id}, function(practice) {
                 $scope.currentPlan = $scope.practice.stripe_subscription_id ? $scope.practice.subscription_interval : 'basic';
             });
