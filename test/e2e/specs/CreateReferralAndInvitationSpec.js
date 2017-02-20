@@ -6,6 +6,7 @@ var createReferralPage = require('../pages/CreateReferralPage');
 var viewReferralPage = require('../pages/ViewReferralPage');
 var registrationPage = require('../pages/RegistrationPage');
 var historyPage = require('../pages/HistoryPage');
+var subscriptionPage = require('../pages/ChangeSubscriptionPage');
 
 var CreateReferralAndInvitationSpec = function() {
     this.run = function() {
@@ -150,10 +151,10 @@ var CreateReferralAndInvitationSpec = function() {
                 // register!
                 registrationPage.getRegisterButtonElement().click();
                 
-                // closing a successful registration dialog with OK
-                expect(registrationPage.getSuccessfulDialogElement().isDisplayed()).toBe(true);
-                registrationPage.getSuccessfulDialogOKButtonElement().click();
-                expect(registrationPage.getSuccessfulDialogElement().isPresent()).toBe(false);
+                // redirect to a subscription plan selection page
+                commonExpects.expectCurrentUrlToBe(subscriptionPage.url);
+                commonActions.clickLogo();//go to history page
+
             });
             
             it('new user sees the newly sent referral', function() {
