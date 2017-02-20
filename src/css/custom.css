@@ -2228,6 +2228,15 @@ label.tooth-label-view {
 	text-transform: uppercase;
 }
 
+#pricing-table .monthly{
+	color: #7BD553
+}
+
+#pricing-table .annual{
+	color: #3AD5A0
+}
+
+
 #pricing-table .current-plan-text.popular {
 	top: -10px;
 }

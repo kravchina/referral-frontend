@@ -30,27 +30,29 @@ angular.module('dentalLinks')
             };
 
             $scope.upgradeDialog = function (interval) {
-                var modalInstance = $modal.open({
-                    templateUrl: 'partials/upgrade_form.html',
-                    controller: 'UpgradeModalController',
-                    resolve: {
-                        practice_id: function () {
-                            return $scope.practice.id;
-                        },
-                        stripe_subscription_id: function () {
-                            return $scope.practice.stripe_subscription_id;
-                        },
-                        interval: function () {
-                            return interval
+                if ($scope.currentPlan !== interval) {
+                    var modalInstance = $modal.open({
+                        templateUrl: 'partials/upgrade_form.html',
+                        controller: 'UpgradeModalController',
+                        resolve: {
+                            practice_id: function () {
+                                return $scope.practice.id;
+                            },
+                            stripe_subscription_id: function () {
+                                return $scope.practice.stripe_subscription_id;
+                            },
+                            interval: function () {
+                                return interval
+                            }
                         }
-                    }
-                });
-                ModalHandler.set(modalInstance);
-                modalInstance.result.then(function (practice) {
-                    Notification.success('Subscription was changed successfully!');
-                    $scope.practice = practice;
-                    $scope.currentPlan = interval;
-                });
+                    });
+                    ModalHandler.set(modalInstance);
+                    modalInstance.result.then(function (practice) {
+                        Notification.success('Subscription was changed successfully!');
+                        $scope.practice = practice;
+                        $scope.currentPlan = interval;
+                    });
+                }
             };
         }
     ]);

@@ -30,7 +30,7 @@
                 </ul>
             </div>
             <div class="feature-block">
-                <a class="signup" href="" ng-click="cancelSubscription()">FREE</a>
+                <button class="btn signup" ng-disabled="currentPlan === 'basic'" ng-click="cancelSubscription()">FREE</button>
                 <div>forever</div>
             </div>
         </div>
@@ -38,8 +38,8 @@
     <div class="plan-container">
         <div class='plan-container'>
             <div id="monthlyPlanIndicator" ng-class="{'non-visible': currentPlan !== 'month'}">
-                <span class="current-plan-text popular">your plan</span>
-                <span class="glyphicon glyphicon-chevron-down current-plan popular" aria-hidden="true"></span>
+                <span class="current-plan-text popular monthly">your plan</span>
+                <span class="glyphicon glyphicon-chevron-down current-plan popular monthly" aria-hidden="true"></span>
             </div>
             <div class="plan plan2 popular-plan top ">
                 <div class="feature-block">
@@ -58,7 +58,7 @@
                     </ul>
                 </div>
                 <div class="feature-block">
-                    <a id='upgrade-month' class="signup" href="" ng-click="upgradeDialog('month')">$50 / month*</a>
+                    <button id='upgrade-month' class="btn signup" ng-disabled="currentPlan === 'month'" ng-click="upgradeDialog('month')">$50 / month*</button>
                     <div>*per practice location</div>
                 </div>
             </div>
@@ -67,8 +67,8 @@
         </div>
         <div class="plan-container">
             <div id="annualPlanIndicator" ng-class="{'non-visible': currentPlan !== 'year'}">
-                <span class="current-plan-text popular">your plan</span>
-                <span class="glyphicon glyphicon-chevron-down current-plan popular" aria-hidden="true"></span>
+                <span class="current-plan-text popular annual">your plan</span>
+                <span class="glyphicon glyphicon-chevron-down current-plan popular annual" aria-hidden="true"></span>
             </div>
 
             <div class="plan plan3 popular-plan top">
@@ -88,7 +88,7 @@
                     </ul>
                 </div>
                 <div class="feature-block">
-                    <a id='upgrade-year' class="signup" href='' ng-click="upgradeDialog('year')">$500 / year*</a>
+                    <button id='upgrade-year' class="btn signup" ng-disabled="currentPlan === 'year'" ng-click="upgradeDialog('year')">$500 / year*</button>
                     <div>*per practice location (saves $100)</div>
                 </div>
             </div>
