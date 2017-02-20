@@ -16,7 +16,7 @@
         </div>
         <input type="text" class="form-control" name="practice" placeholder="Enter existing practice..." ng-model-options="{ debounce: 300 }"
                ng-model="practiceSearch" typeahead-loading="loadingPractices" typeahead-no-results="noResults" typeahead-editable="false"
-               typeahead-on-select="onPracticeSelected($item, $model, $label)"
+               typeahead-on-select="selectPractice($item, $model, $label)"
                typeahead="practice as (practice.name == '-- pending registration --') ?
                (practice.users[0].last_name == null && practice.users[0].first_name == null ? practice.users[0].email :
                (practice.users[0].first_name + ' ' + practice.users[0].last_name)) : practice.name for practice in findPractice($viewValue)"
@@ -145,7 +145,26 @@
                         </div>
                     </div>
                 </form>
-
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>Created</td>
+                        <td><span>{{destinationPractice.created_at | date: 'mediumDate'}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Sent referrals</td>
+                        <td><span>{{practiceStats.sent_referrals}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Received referrals</td>
+                        <td><span>{{practiceStats.received_referrals}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Last login</td>
+                        <td><span>{{practiceStats.last_login_at | date: 'medium'}}</span></td>
+                    </tr>
+                    </tbody>
+                </table>
                 <!--Accordion Address-->
                 <accordion close-others="false">
                     <accordion-group  heading="{{'Address #' + ($index + 1)}}" is-open="address._isOpen"

@@ -18,6 +18,9 @@ angular.module('console')
             }, function(failure){
                 Notification.error('An error occurred during get practice...');
             });
+            Practice.getStats({practiceId: $stateParams.id}, function(success){
+                $scope.practiceStats = success;
+            });
         }
 
         $scope.editDialog = function(editUser){
@@ -151,6 +154,12 @@ angular.module('console')
                     Notification.success('Address delete fail');
                 });
             }
+        };
+        $scope.selectPractice = function(item){
+            $scope.onPracticeSelected(item);
+            Practice.getStats({practiceId: item.id}, function(success){
+                $scope.practiceStats = success;
+            });
         };
 
         $scope.saveAddress = function(addressForm, address) {
