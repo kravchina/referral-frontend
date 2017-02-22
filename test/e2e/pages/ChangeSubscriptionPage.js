@@ -6,7 +6,7 @@ var ChangeSubscriptionPage = function () {
     };
 
     this.clickBasicPlan = function () {
-        element(by.css('a[ng-click="cancelSubscription()"]')).click();
+        element(by.css('button[ng-click="cancelSubscription()"]')).click();
     };
     this.clickMonthlyPlan = function () {
         element(by.id('upgrade-month')).click();
