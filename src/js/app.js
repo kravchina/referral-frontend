@@ -132,7 +132,7 @@ angular.module('dentalLinks')
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('change_subscription', {
-            url: '/subscription/change',
+            url: '/subscription/change?fromRegistration',
             templateUrl: 'partials/change_subscription.html',
             controller: 'SubscriptionChangeController',
             params: {fromRegistration: false},

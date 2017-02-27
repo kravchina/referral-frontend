@@ -69,7 +69,7 @@ angular.module('registration')
                         if (invitation.practice_id) {
                             showResultDialog();
                         } else {
-                            $state.go('change_subscription', {fromRegistration: true});
+                            $location.url('/subscription/change?fromRegistration=true');
                         }
                     },
                     function (failure) {
