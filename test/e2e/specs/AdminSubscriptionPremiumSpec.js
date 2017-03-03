@@ -20,7 +20,7 @@ var AdminSubscriptionPremiumSpec = function() {
             });
             it('clicks change subscription button and price page is shown', function(){
                 adminSubscriptionPage.clickChangeSubscription();
-                commonExpects.expectCurrentUrlToBe(changeSubscriptionPage.url + '/fromRegistration=false')
+                commonExpects.expectCurrentUrlToBe(changeSubscriptionPage.url + '?fromRegistration=false')
             });
 
             afterEach(function() {

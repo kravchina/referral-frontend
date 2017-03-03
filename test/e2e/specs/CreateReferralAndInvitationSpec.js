@@ -152,7 +152,7 @@ var CreateReferralAndInvitationSpec = function() {
                 registrationPage.getRegisterButtonElement().click();
                 
                 // redirect to a subscription plan selection page
-                commonExpects.expectCurrentUrlToBe(subscriptionPage.url);
+                commonExpects.expectCurrentUrlToContain(subscriptionPage.url);
                 commonActions.clickLogo();//go to history page
 
             });
