@@ -13,15 +13,26 @@
 <div class="box-white box-padded">
 
 <!-- On behalf of block -->
-<div class="row" ng-if="userIsAux" >
-    <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.onbehalf.$dirty && form.onbehalf.$invalid }">
+<div class="row"  >
+    <div class="input-block col-xs-6 col-sm-6" ng-class="{'has-error': form.onbehalf.$dirty && form.onbehalf.$invalid }">
         <div class="block-title">
             <h2>On behalf of</h2>
         </div>
 
         <alert type="{{alert.type}}" ng-show="form.onbehalf.$dirty && form.behalf.$invalid">Please select provider</alert>
-        <select id="behalfProvider" name="onbehalf" class="form-control" ng-model="model.referral.orig_provider_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in currentPracticeProviders" ng-required="true">
+        <select ng-disabled="!userIsAux" id="behalfProvider" name="onbehalf" class="form-control" ng-model="model.referral.orig_provider_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in currentPracticeProviders" ng-required="true">
             <option selected="selected" class="placeholder" value="">Choose a provider &hellip;</option>
+        </select>
+
+    </div>
+    <div ng-disabled="" class="input-block col-xs-6 col-sm-6" ng-class="{'has-error': form.location.$dirty && form.location.$invalid }">
+        <div class="block-title">
+            <h2>From Location</h2>
+        </div>
+
+        <alert type="{{alert.type}}" ng-show="form.location.$dirty && form.location.$invalid">Please select location</alert>
+        <select ng-disabled='disableLocations' name="location" class="form-control" ng-model="model.referral.orig_provider_address_id" ng-options="l.id as l.street_line_1 + ', ' + l.city + ', ' + l.state for l in providerLocations" ng-required="true">
+            <option class="placeholder" value="">Choose a location &hellip;</option>
         </select>
 
     </div>

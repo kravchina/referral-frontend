@@ -530,21 +530,16 @@ angular.module('pdf')
             result += state + ' ' + zip;
             return result;
         },
-        createPracticeData: function (blockTitle, provider, practice, referralAddress) {
+        createPracticeData: function (blockTitle, provider, practice, address) {
             var practiceData = {};
             practiceData.blockTitle = blockTitle;
             practiceData.doctorName = (provider.first_name || '') + ' ' + (provider.middle_initial || '') + ' ' + (provider.last_name || '');
             practiceData.practiceName = (practice || {}).name || '';
-            if(angular.equals(referralAddress, {})) {
-                var orig_address = ((provider || {}).addresses || [{}])[0] || {};
-            } else {
-                var orig_address = referralAddress;
-            }
-            practiceData.phone = orig_address.phone || '';
-            practiceData.addressStreet = orig_address.street_line_1 || '';
-            practiceData.addressCity = this.composeAddress((orig_address.city || ''), (orig_address.state || ''), (orig_address.zip || ''));
-            if (orig_address.website) {
-                practiceData.website = orig_address.website;
+            practiceData.phone = address.phone || '';
+            practiceData.addressStreet = address.street_line_1 || '';
+            practiceData.addressCity = this.composeAddress((address.city || ''), (address.state || ''), (address.zip || ''));
+            if (address.website) {
+                practiceData.website = address.website;
             }
             return practiceData;
         },
@@ -564,7 +559,7 @@ angular.module('pdf')
                 procedureData.teeth = data.teeth;
             }
 
-            originalPracticeData = this.createPracticeData('Referred by:', data.orig_provider || {}, data.orig_provider.practice || {}, {});
+            originalPracticeData = this.createPracticeData('Referred by:', data.orig_provider || {}, data.orig_provider.practice || {}, data.orig_provider_address || (data.orig_provider.addresses || [{}])[0] );
             destinationPracticeData = this.createPracticeData('Referred to:', data.dest_provider || {}, data.dest_practice || {}, data.address || {});
             qrCodeCallback(destinationPracticeData);
             referralDate = data.created_at;
