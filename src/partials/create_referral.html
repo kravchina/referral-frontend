@@ -20,7 +20,7 @@
         </div>
 
         <alert type="{{alert.type}}" ng-show="form.onbehalf.$dirty && form.behalf.$invalid">Please select provider</alert>
-        <select ng-disabled="!userIsAux" id="behalfProvider" name="onbehalf" class="form-control" ng-model="model.referral.orig_provider_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in currentPracticeProviders" ng-required="true">
+        <select ng-disabled="!userIsAux" id="behalfProvider" name="onbehalf" class="form-control" ng-model="model.referral.orig_provider_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in currentPracticeProviders" ng-required="userIsAux">
             <option selected="selected" class="placeholder" value="">Choose a provider &hellip;</option>
         </select>
 
@@ -31,7 +31,7 @@
         </div>
 
         <alert type="{{alert.type}}" ng-show="form.location.$dirty && form.location.$invalid">Please select location</alert>
-        <select ng-disabled='disableLocations' name="location" class="form-control" ng-model="model.referral.orig_provider_address_id" ng-options="l.id as l.street_line_1 + ', ' + l.city + ', ' + l.state for l in providerLocations" ng-required="true">
+        <select ng-disabled='disableLocations' name="location" class="form-control" ng-model="model.referral.orig_provider_address_id" ng-options="l.id as l.street_line_1 + ', ' + l.city + ', ' + l.state for l in providerLocations" ng-required="!disableLocations">
             <option class="placeholder" value="">Choose a location &hellip;</option>
         </select>
 
@@ -133,7 +133,7 @@
 
 </div><!-- .box-white -->
 
-<div class="button-block">
+<div class="button-block"> {{form.$invalid}}
     <button class="btn btn-green btn-lg" ng-click="saveTemplate(model)" ng-disabled="form.$invalid || isInvalidAttachments()">Save</button>
     <button  class="btn btn-orange btn-lg" access="admin, doctor" ng-click="createReferral(model)" ng-disabled="form.$invalid || isInvalidAttachments()">Sign &amp; Send</button>
     <button class="btn btn-danger btn-lg" ng-click="discardTemplate(model.referral)" ng-show="model.referral.id">Discard draft</button>

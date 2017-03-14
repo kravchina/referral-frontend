@@ -17,6 +17,14 @@ angular.module('createReferrals')
             Notification.error(message);
         }*/
 
+        User.get({id: auth.id}, function(user){
+            $scope.providerLocations = user.addresses;
+            if (user.addresses.length < 2){
+                $scope.disableLocations = true;
+                $scope.model.referral.orig_provider_address_id = user.addresses[0].id;
+            }
+        });
+
         Procedure.practiceTypes().$promise.then(function (types) {
             $scope.practiceTypes = types;
             ReferralHelper.updatePracticeType($scope, currentReferral.procedure.practice_type_id);
