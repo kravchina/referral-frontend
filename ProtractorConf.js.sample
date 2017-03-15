@@ -15,7 +15,8 @@ exports.config = {
                 practice: {
                     name: 'MainSeedPracticeName',
                     city: 'MainSeedPracticeCity',
-                    state: 'MainSeedPracticeState'
+                    state: 'MainSeedPracticeState',
+                    address: 'MainSeedPracticeAddress'
                 }
             },
             // valid credentials for SuperUser logging in, field roles_mask must be a multiple of 8
