@@ -90,6 +90,11 @@ angular.module('dentalLinksServices')
                 'Pragma': 'no-cache',
                 'Expires': '0'
             }, skipSpinner: true},
+            getByPublicId: {method: 'GET', url: API_ENDPOINT + '/practices/public_show/:publicId', headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }},
             superUserSearchPractice: {method: 'GET', url: API_ENDPOINT + '/practices/super_user_search', isArray: true, headers: {
                 'Cache-Control': 'no-cache, no-store, must-revalidate',
                 'Pragma': 'no-cache',

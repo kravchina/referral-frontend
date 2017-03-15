@@ -1,6 +1,7 @@
 var commonActions = require('../../../commons/CommonActions');
 var commonExpects = require('../../../commons/CommonExpects');
 var createReferralPage = require('../../../pages/CreateReferralPage');
+var adminPracticePage = require('../../../pages/AdminPracticePage');
 var historyPage = require('../../../pages/HistoryPage');
 
 var CreateReferralNoSaveSpec = function() {
@@ -110,9 +111,11 @@ var CreateReferralNoSaveSpec = function() {
             var alertDialog;
 
             beforeEach(function() {
-                createReferralPage.openWithPid();
+                browser.get(adminPracticePage.url);
                 commonExpects.expectProgressDivHidden();
-                commonExpects.expectCurrentUrlToBe(createReferralPage.url_with_pid);
+                adminPracticePage.getCustomReferralLinkBlock().element(by.css('.alert a')).click();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectCurrentUrlToContain(createReferralPage.url_with_pid);
             });
 
             it('check practice selected', function(){

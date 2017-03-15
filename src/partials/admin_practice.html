@@ -100,8 +100,8 @@
         <div class="section-block">
             <div class="alert alert-warning" role="alert">
                 <label>URL:</label>&nbsp;
-                <a href="{{SITE_URL}}#/create_referral?pid={{practice.id}}">{{SITE_URL}}#/create_referral?pid={{practice.id}}</a>
-                <button class="btn btn-info pull-right" ng-click="copyToClipboard('{{SITE_URL}}#/create_referral?pid=' + practice.id, 'Referral link')" title="Copy to clipboard">
+                <a href="{{SITE_URL}}#/create_referral?pid={{practice.public_id}}">{{SITE_URL}}#/create_referral?pid={{practice.public_id}}</a>
+                <button class="btn btn-info pull-right" ng-click="copyToClipboard('{{SITE_URL}}#/create_referral?pid=' + practice.public_id, 'Referral link')" title="Copy to clipboard">
                     <span class="icon-clipboard pull-right" title="Copy to clipboard"></span>
                 </button>
             </div>

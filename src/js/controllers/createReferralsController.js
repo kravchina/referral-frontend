@@ -31,7 +31,7 @@ angular.module('createReferrals')
         ReferralHelper.watchProviders($scope);
 
         if(typeof $stateParams.pid !== 'undefined') {
-            Practice.get({practiceId: $stateParams.pid}, function(data) {
+            Practice.getByPublicId({publicId: $stateParams.pid}, function(data) {
                 $scope.onPracticeSelected(data);
                 $scope.form.$setDirty();
             }, function (failure) {
