@@ -593,7 +593,7 @@ angular.module('modals')
 .controller('EditNoLoginUserModalController',
     ['$scope', 'showNameControls', '$modal', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure', 'practiceAddresses', 'UnsavedChanges',
     function ($scope, showNameControls, $modal, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure, practiceAddresses, UnsavedChanges) {
-        $scope.user = editUser;
+        $scope.user = angular.copy(editUser);
         $scope.alerts = [];
         $scope.practiceTypes = [];
         $scope.showNameControls = showNameControls;
@@ -607,12 +607,11 @@ angular.module('modals')
         $scope.practiceAddresses = practiceAddresses;
 
         $scope.cancel = function () {
-            $scope.user.email = undefined; //reset user email if modal is closed
             ModalHandler.dismiss($modalInstance);
         };
 
         $scope.setupLogin = function (user) {
-            if(ModalHandler.dismiss($modalInstance, $scope.editNoLoginUserForm)) {
+            if(ModalHandler.safelyDismiss($modalInstance, $scope.editNoLoginUserForm)) {
                 var modalInstance = $modal.open({
                     templateUrl: 'partials/setup_login_form.html',
                     controller: 'SetupLoginModalController',
@@ -636,6 +635,10 @@ angular.module('modals')
                     user_addresses_attributes: user.user_addresses_attributes
                 }
             }, function(success){
+                editUser.title = success.title;
+                editUser.specialty_type_id = success.specialty_type_id;
+                editUser.addresses = user.addresses;
+
                 ModalHandler.dismiss($modalInstance);
             }, function(failure){
                 $scope.alerts = [];
