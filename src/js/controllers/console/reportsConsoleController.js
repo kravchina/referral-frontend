@@ -2,13 +2,13 @@ angular.module('console')
     .controller('ReportsConsoleController', ['$scope', 'Report', function($scope, Report){
         var eventLogs = [];
         $scope.invitationsRadio = $scope.practicesRadio = $scope.usersRadio = 'day';
-        $scope.currentPage = 1;
+        $scope.pager = {currentPage: 1};
         $scope.itemsPerPage = 10;
         $scope.totalItems = 0;
 
         $scope.changeEventPage = function(){
             $scope.eventLogs = eventLogs
-                .slice((($scope.currentPage - 1) * $scope.itemsPerPage), ($scope.currentPage * $scope.itemsPerPage));
+                .slice((($scope.pager.currentPage - 1) * $scope.itemsPerPage), ($scope.pager.currentPage * $scope.itemsPerPage));
         };
 
         $scope.toggleInvitations = function(timeType){
