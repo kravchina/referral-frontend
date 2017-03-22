@@ -21,11 +21,10 @@ angular.module('createReferrals')
                 }
             });
         });
-        $scope.currentPracticeProviders = User.getOtherProviders({practice_id: auth.practice_id});
-        $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
-
         $scope.userIsAux = Auth.hasRole(USER_ROLES.aux);
-
+        $scope.currentPracticeProviders = $scope.userIsAux ? User.getOtherProviders({practice_id: auth.practice_id}) : User.getProviders({practice_id: auth.practice_id});
+        $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
+        $scope.model.referral.orig_provider_id = auth.id;
         $scope.onPracticeSelected = ReferralHelper.onPracticeSelected($scope, auth);
 
         ReferralHelper.watchProviders($scope);
