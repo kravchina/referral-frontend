@@ -52,7 +52,7 @@ describe("Testing Reports Console Controller", function() {
         expect($scope.referrals).toBeDefined();
         expect($scope.eventLogs).toBeDefined();
 
-        expect($scope.currentPage).toBeDefined();
+        expect($scope.pager.currentPage).toBeDefined();
         expect($scope.itemsPerPage).toBeDefined();
         expect($scope.totalItems).toBeDefined();
 
@@ -64,7 +64,7 @@ describe("Testing Reports Console Controller", function() {
     });
 
     it('check changeEventPage function', function(){
-        $scope.currentPage = 2;
+        $scope.pager.currentPage = 2;
         $scope.itemsPerPage = 1;
         $scope.totalItems = eventLogsMock.length;
 
