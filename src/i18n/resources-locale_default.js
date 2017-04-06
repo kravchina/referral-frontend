@@ -162,8 +162,13 @@
         "description": ""
     },
     {
+        "key": "activity.attachment.update",
+        "value": "updated an attachment",
+        "description": ""
+    },
+    {
         "key": "activity.attachment.destroy",
-        "value": "removed attachment",
+        "value": "removed an attachment",
         "description": ""
     },
     {
@@ -249,6 +254,16 @@
     {
         "key": "activity.referral.destroy",
         "value": "removed a referral",
+        "description": ""
+    },
+    {
+        "key": "activity.referral.save_template",
+        "value": "saved a referral draft",
+        "description": ""
+    },
+    {
+        "key": "activity.referral.change_status",
+        "value": "changed referral status",
         "description": ""
     },
     {
