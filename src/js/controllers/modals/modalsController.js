@@ -803,4 +803,22 @@ angular.module('modals')
         $scope.cancel = function(){
             ModalHandler.close($modalInstance, false);
         };
-    }]);
+}])
+
+.controller('GuestEmailResultController', ['$scope', '$modalInstance', 'ModalHandler', 'messages',
+    function ($scope, $modalInstance, ModalHandler, messages) {
+        $scope.messages = messages;
+
+        $scope.ok = function(){
+            ModalHandler.dismiss($modalInstance);
+        };
+}])
+
+.controller('GuestEmailVerificationModalController', ['$scope', '$modalInstance', 'ModalHandler',
+    function ($scope, $modalInstance, ModalHandler) {
+        $scope.message = 'We have sent a link to your email address. Please check and click the link to continue with referral creation.';
+
+        $scope.ok = function(){
+            ModalHandler.dismiss($modalInstance);
+        };
+}]);
