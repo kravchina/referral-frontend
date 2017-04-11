@@ -70,7 +70,7 @@
                         </button>
                         <button type="button" class="btn btn-green btn-approve"
                                 ng-click="approvePractice(destinationPractice)"
-                                ng-show="destinationPractice.status == 'pending_review'">
+                                ng-show="destinationPractice.status == 'pending_review' && !destinationPractice.removed_at">
                             <span class="glyphicon glyphicon-ok-circle"></span>
                                 Approve
                         </button>
