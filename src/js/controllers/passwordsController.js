@@ -17,9 +17,13 @@ angular.module('passwords')
             function (success_result) {
                 $state.go('signIn');
             },
-            function (error_result) {
-                Notification.error('Error: can\'t change your password. Please try again later.');
-
+            function (failure) {
+                var error = failure.data.errors;
+                if (error.reset_password_token){
+                    Notification.error('reset_password_token.invalid');
+                } else {
+                    Notification.error(error.message[0]);
+                }
             });
     };
 }]);

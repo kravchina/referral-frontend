@@ -142,6 +142,11 @@
         "description": "Error is shown when user provides an email that already registered in our system"
     },
     {
+        "key": "reset_password_token.invalid",
+        "value": "Your reset password link is invalid. Most likely it is expired or was already used",
+        "description": ""
+    },
+    {
         "key": "activity.address.create",
         "value": "created a new address",
         "description": ""
