@@ -42,13 +42,12 @@
         <user-addresses user="user" practice-addresses="practiceAddresses"></user-addresses>
         <alert type="warning">If you would like to allow this user to login please enter an email address to send them an invite</alert>
         <div class="input-block">
-            <input type="email" name="email" class="form-control" ng-model="user.email" placeholder="Enter Email &hellip;" ng-required="true">
+            <input type="email" name="email" class="form-control" ng-model="user.email" placeholder="Enter Email &hellip;">
         </div>
 
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-green" ng-click="save(user)" ng-if="is_multispecialty()">Save</button>
+        <button type="submit" class="btn btn-orange" ng-click="save(user)" ng-disabled="addPasswordForm.$invalid">Save</button>
         <button type="button" class="btn btn-grey" ng-click="cancel()" data-dismiss="modal">Discard</button>
-        <button type="submit" class="btn btn-orange" ng-click="ok(user)" ng-disabled="addPasswordForm.$invalid">Send</button>
     </div>
 </form>

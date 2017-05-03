@@ -509,7 +509,7 @@ angular.module('modals')
 
 
             $scope.ok = function (user) {
-                if(user.email == '') {
+                if(user.email === '') {
                     var confirmModalInstance = $modal.open({
                         templateUrl: 'partials/confirmation.html',
                         controller: 'ConfirmationModalController',
@@ -537,7 +537,7 @@ angular.module('modals')
                             user.roles_mask += USER_ROLES.admin.mask;
                         }
                     }
-                    if (user.password != user.password_confirmation) {
+                    if (user.password !== user.password_confirmation) {
                         $scope.alerts = [];
                         Alert.error($scope.alerts, 'Error: Password does not match', true);
                         return;
@@ -580,7 +580,7 @@ angular.module('modals')
             };
 
             $scope.is_multispecialty = function(){
-                return Role.hasRoles([USER_ROLES.doctor], Role.getFromMask($scope.user.roles_mask)) && practiceType.code == 'multi_specialty';
+                return Role.hasRoles([USER_ROLES.doctor], Role.getFromMask($scope.user.roles_mask)) && practiceType.code === 'multi_specialty';
             };
 
             $scope.cancel = function () {
@@ -611,18 +611,17 @@ angular.module('modals')
             ModalHandler.dismiss($modalInstance);
         };
 
-        $scope.ok = function (user) {
-             User.sendPasswordInvitation({id: user.id}, {email: user.email, specialty_type_id: user.specialty_type_id},
-                 function(success){
-                     ModalHandler.close($modalInstance,success);
-                 },
-                 function(failure){
-                    $scope.alerts = [];
-                    Alert.error($scope.alerts, failure.data.error, true);
-                 });
-        };
-
         $scope.save = function(user){
+            if(user.email){
+                User.sendPasswordInvitation({id: user.id}, {email: user.email, specialty_type_id: user.specialty_type_id},
+                    function(success){
+                        ModalHandler.close($modalInstance,success);
+                    },
+                    function(failure){
+                        $scope.alerts = [];
+                        Alert.error($scope.alerts, failure.data.error, true);
+                    });
+            }
             User.update({id: user.id}, {
                 user: {
                     title: user.title,
