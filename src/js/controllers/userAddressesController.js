@@ -3,11 +3,11 @@ angular.module('dentalLinks')
         function ($scope, $element, $attrs) {
 
         $scope.practiceAddressesCopy = angular.copy($scope.practiceAddresses).map(function(pAddress){
-            if(typeof $scope.user.addresses == 'undefined') {
+            if(typeof $scope.user.addresses === 'undefined') {
                 return pAddress;
             }
             $scope.user.addresses.forEach(function(uAddress){
-                if(uAddress.id == pAddress.id) {
+                if(uAddress.id === pAddress.id) {
                     pAddress.checked = true;
                 }
             });
@@ -21,12 +21,12 @@ angular.module('dentalLinks')
                 }
             }
             return -1;
-        };
+        }
 
         $scope.toggleAddresses = function(selectedItem){
             var index = arrayObjectIndexOf($scope.user.addresses, selectedItem.id, 'id');
 
-            if(index != -1){
+            if(index !== -1){
                 if($scope.user.addresses.length > 1) {
                     $scope.user.addresses.splice(index, 1);
                     selectedItem.checked = false;
@@ -41,9 +41,9 @@ angular.module('dentalLinks')
             $scope.user.user_addresses_attributes = $scope.practiceAddressesCopy.map(function(item){
                 var selectAddressIndex = arrayObjectIndexOf($scope.user.addresses, item.id, 'id');
 
-                if(selectAddressIndex == -1) {
+                if(selectAddressIndex === -1) {
                     var userAddressesIndex  = arrayObjectIndexOf($scope.user.user_addresses, item.id, 'address_id');
-                    if(userAddressesIndex != -1) {
+                    if(userAddressesIndex !== -1) {
                         return {id: $scope.user.user_addresses[userAddressesIndex].id, _destroy: true};
                     } else {
                         return {};
