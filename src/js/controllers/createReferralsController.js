@@ -5,8 +5,7 @@ angular.module('createReferrals')
         var auth = $scope.auth = Auth.get() || {};
 
         $scope.immediateUpdate = false;
-        $scope.procedures = Procedure.query();
-        $scope.practiceTypes = [];
+
         User.get({id: auth.id}, function(user){
            $scope.providerLocations = user.addresses;
            if (user.addresses.length < 2){
@@ -14,18 +13,9 @@ angular.module('createReferrals')
                 $scope.model.referral.orig_provider_address_id = user.addresses[0].id;
            }
         });
-        Procedure.practiceTypes(function(success){
-            success.map(function(item){
-                if(item.code !== 'multi_specialty'){
-                    $scope.practiceTypes.push(item);
-                }
-            });
-        });
-        $scope.userIsAux = Auth.hasRole(USER_ROLES.aux);
-        $scope.currentPracticeProviders = $scope.userIsAux ? User.getOtherProviders({practice_id: auth.practice_id}) : User.getProviders({practice_id: auth.practice_id});
+
         $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
         $scope.model.referral.orig_provider_id = auth.id;
-        $scope.onPracticeSelected = ReferralHelper.onPracticeSelected($scope, auth);
 
         ReferralHelper.watchProviders($scope);
 
@@ -73,16 +63,6 @@ angular.module('createReferrals')
             ReferralHelper.prepareSubmit($scope, model.referral);
             Referral.save(model, resultHandlers.success, resultHandlers.failure);
         };
-
-        $scope.findPatient = ReferralHelper.findPatient(auth);
-
-        $scope.findPractice = ReferralHelper.findPractice($scope);
-
-        $scope.patientDialog = ReferralHelper.patientDialog($scope);
-
-        $scope.editPatientDialog = ReferralHelper.editPatientDialog($scope);
-
-        $scope.providerDialog = ReferralHelper.providerDialog($scope);
 
         ReferralHelper.trackUnsavedChanges($scope);
 

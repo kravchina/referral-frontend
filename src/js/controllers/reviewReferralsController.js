@@ -10,8 +10,8 @@ angular.module('createReferrals')
         $scope.attachments = currentReferral.attachments;
         $scope.teeth = currentReferral.teeth.split('+');
         $scope.procedures = Procedure.query();
-        $scope.currentPracticeProviders = User.getOtherProviders({practice_id: auth.practice_id});
-        $scope.userIsAux = auth.roles.indexOf('aux') >= 0;
+        //$scope.currentPracticeProviders = User.getOtherProviders({practice_id: auth.practice_id});
+        //$scope.userIsAux = auth.roles.indexOf('aux') >= 0;
 
         /*if(message){
             Notification.error(message);
@@ -86,12 +86,6 @@ angular.module('createReferrals')
                     Notification.error('An error occurred during template removal. Please try again later.');
                 });
         };
-
-        $scope.findPatient = ReferralHelper.findPatient(auth);
-
-        $scope.findPractice = ReferralHelper.findPractice($scope);
-
-        $scope.patientDialog = ReferralHelper.patientDialog($scope);
 
         $scope.editPatientDialog = ReferralHelper.editPatientDialog($scope);
 
