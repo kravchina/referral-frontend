@@ -612,16 +612,6 @@ angular.module('modals')
         };
 
         $scope.save = function(user){
-            if(user.email){
-                User.sendPasswordInvitation({id: user.id}, {email: user.email, specialty_type_id: user.specialty_type_id},
-                    function(success){
-                        ModalHandler.close($modalInstance,success);
-                    },
-                    function(failure){
-                        $scope.alerts = [];
-                        Alert.error($scope.alerts, failure.data.error, true);
-                    });
-            }
             User.update({id: user.id}, {
                 user: {
                     title: user.title,
@@ -630,9 +620,21 @@ angular.module('modals')
                     specialty_type_id: user.specialty_type_id,
                     user_addresses_attributes: user.user_addresses_attributes
                 }
-            }, function(success){
-                ModalHandler.dismiss($modalInstance);
-            }, function(failure){
+            }, function (success) {
+                if (user.email) {
+
+                    User.sendPasswordInvitation({id: user.id}, { email: user.email, specialty_type_id: user.specialty_type_id},
+                        function (success) {
+                            ModalHandler.close($modalInstance, user);
+                        },
+                        function (failure) {
+                            $scope.alerts = [];
+                            Alert.error($scope.alerts, failure.data.error, true);
+                        });
+                }else{
+                    ModalHandler.close($modalInstance, success);
+                }
+            }, function (failure) {
                 $scope.alerts = [];
                 Alert.error($scope.alerts, failure.data.error, true);
             });

@@ -83,7 +83,9 @@ angular.module('admin')
                 });
                 ModalHandler.set(modalInstance);
                 modalInstance.result.then(function (data) {
-                    Notification.success('A verification email has been sent to ' + data.email + '. After the address is verified the provider will be able to login.');
+                    if (data.email){
+                        Notification.success('A verification email has been sent to ' + data.email + '. After the address is verified the provider will be able to login.');
+                    }
                 });
             } else {
                 modalInstance = $modal.open({

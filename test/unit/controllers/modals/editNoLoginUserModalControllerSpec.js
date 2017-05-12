@@ -9,7 +9,9 @@ describe("EditNoLoginUserModalController", function() {
     beforeEach(function(){
         module('ui.router');
         module('modals');
-        spyOn(userServiceMock, 'update').and.callThrough();
+        spyOn(userServiceMock, 'update').and.callFake(function(id, object, callback){
+            callback();
+        });
         spyOn(userServiceMock, 'sendPasswordInvitation').and.callThrough();
         module(function($provide){
             $provide.service('User', function(){
@@ -36,15 +38,15 @@ describe("EditNoLoginUserModalController", function() {
     it('updates user and sends user password invitation if email is entered', function(){
         var user = {email: 'email@example.com'};
         $scope.save(user);
-        expect(userServiceMock.sendPasswordInvitation).toHaveBeenCalled();
         expect(userServiceMock.update).toHaveBeenCalled();
+        expect(userServiceMock.sendPasswordInvitation).toHaveBeenCalled();
     });
 
     it('updates user and do not send user password invitation if email is not entered', function(){
         var user = {};
         $scope.save(user);
-        expect(userServiceMock.sendPasswordInvitation).not.toHaveBeenCalled();
         expect(userServiceMock.update).toHaveBeenCalled();
+        expect(userServiceMock.sendPasswordInvitation).not.toHaveBeenCalled();
     });
 
 });
