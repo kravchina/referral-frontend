@@ -198,6 +198,11 @@ angular.module('dentalLinks')
             controller: 'PluginConsoleController',
             access: [USER_ROLES.super]
         }).
+        state('guestRegistration', {
+            url: '/guest/registration/:practice_pid',
+            templateUrl: 'partials/guest/guest_registration.html',
+            controller: 'GuestRegistrationController'
+        }).
         state('activity', {
             url: '/activity',
             templateUrl: 'partials/activity.html',
@@ -233,6 +238,31 @@ angular.module('dentalLinks')
                         if(response.status === 422) {
                             $state.go('error_page', {error_key: 'confirmation_token.invalid'});
                         }
+                    });
+            }]
+
+        }).
+        state('confirmGuestEmail', {
+            url: '/guest/confirm_email/:token',
+            onEnter: ['$state', '$stateParams', 'Guest', 'Notification', '$modal', 'ModalHandler', function($state, $stateParams, Guest, Notification, $modal, ModalHandler) {
+                Guest.confirmEmail({confirmation_token: $stateParams.token}).$promise
+                    .then(function(success){
+                        //$state.go('') - go to create referral page for guest
+                    }, function(response){
+                        console.log(response);
+                        var modalInstance = $modal.open({
+                            templateUrl: 'partials/guest/guest_email_result.html',
+                            controller: 'GuestEmailResultController',
+                            resolve: {
+                                messages: function() {
+                                    var _messages = Object.keys(response.data).map(function(key){
+                                        return key.split('_').join(' ') + ' ' +  response.data[key]
+                                    });
+                                    return _messages;
+                                }
+                            }
+                        });
+                        ModalHandler.set(modalInstance);
                     });
             }]
 
@@ -309,6 +339,12 @@ angular.module('dentalLinks')
 
 .config(['$locationProvider', function ($locationProvider) {
     /*$locationProvider.html5Mode(true);*/ //doesn't work without server-side url rewriting, to return on every request only the entrypoint page (like index.html)
+}])
+
+.config(['vcRecaptchaServiceProvider', function (vcRecaptchaServiceProvider) {
+    vcRecaptchaServiceProvider.setDefaults({
+        key: '{{GOOGLE_RECAPCHA_KEY}}'
+    });
 }])
 
 .config(['$httpProvider', function ($httpProvider) {
