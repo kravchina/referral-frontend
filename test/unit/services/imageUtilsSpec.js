@@ -1,4 +1,4 @@
-describe('imageUtils', function() {
+xdescribe('imageUtils', function() {
     var imageUtils;
     
     beforeEach(function() {
