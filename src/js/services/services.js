@@ -317,9 +317,9 @@ angular.module('dentalLinksServices')
 }])
 
 .factory('Guest', ['$resource', 'API_ENDPOINT', function($resource, API_ENDPOINT){
-    return $resource(API_ENDPOINT + '/guests/:id', {}, {
-        validateEmail: {method: 'POST', url: API_ENDPOINT + '/guests/validate_email'},
-        confirmEmail: {method: 'POST', url: API_ENDPOINT + '/guests/confirm'}
+    return $resource(API_ENDPOINT + '/guest/:id', {}, {
+        register: {method: 'POST', url: API_ENDPOINT + '/guest'},
+        verifyGuest: {method: 'GET', url: API_ENDPOINT + '/verify_guest'}
     });
 }])
 

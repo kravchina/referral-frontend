@@ -4,9 +4,7 @@
 <div class="modal-body">
     <div class="block-title">
         <p ng-repeat="message in messages">
-            <alert type="danger">
-                {{message}}
-            </alert>
+            <alert type="danger" dynamic-html="message | i18n"></alert>
         </p>
     </div>
 </div>

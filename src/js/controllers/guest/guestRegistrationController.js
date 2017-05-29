@@ -5,21 +5,17 @@ angular.module('guest')
         $scope.alerts = [];
 
         $scope.continue = function(guest) {
-            guest.practice_pid = $state.params.practice_pid;
-            Guest.validateEmail({email: guest.email}, function(success){
-                $scope.alerts = [];
-                Guest.save({guest: guest}, function(success){
-                    var modalInstance = $modal.open({
-                        templateUrl: 'partials/guest/guest_email_verification_modal.html',
-                        controller: 'GuestEmailVerificationModalController'
-                    });
-                    ModalHandler.set(modalInstance);
-                }, function(failure){
-                    console.log('failure: ', failure);
+            guest.pid = $state.params.practice_pid;
+            $scope.alerts = [];
+            Guest.register({guest_registration: guest}, function(success){
+                var modalInstance = $modal.open({
+                    templateUrl: 'partials/guest/guest_email_verification_modal.html',
+                    controller: 'GuestEmailVerificationModalController'
                 });
+                ModalHandler.set(modalInstance);
             }, function(failure){
                 $scope.alerts = [];
-                Alert.error($scope.alerts, failure.data.message, true);
+                Alert.error($scope.alerts, failure.data.message[0], true);
             });
         };
     }]);

@@ -245,9 +245,9 @@ angular.module('dentalLinks')
         state('confirmGuestEmail', {
             url: '/guest/confirm_email/:token',
             onEnter: ['$state', '$stateParams', 'Guest', 'Notification', '$modal', 'ModalHandler', function($state, $stateParams, Guest, Notification, $modal, ModalHandler) {
-                Guest.confirmEmail({confirmation_token: $stateParams.token}).$promise
+                Guest.verifyGuest({token: $stateParams.token}).$promise
                     .then(function(success){
-                        //$state.go('') - go to create referral page for guest
+                        $state.go('createReferral');
                     }, function(response){
                         console.log(response);
                         var modalInstance = $modal.open({
@@ -255,10 +255,7 @@ angular.module('dentalLinks')
                             controller: 'GuestEmailResultController',
                             resolve: {
                                 messages: function() {
-                                    var _messages = Object.keys(response.data).map(function(key){
-                                        return key.split('_').join(' ') + ' ' +  response.data[key]
-                                    });
-                                    return _messages;
+                                    return response.data.errors.message;
                                 }
                             }
                         });
