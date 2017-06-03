@@ -3,10 +3,13 @@ angular.module('createReferrals')
     function ($scope, $state, $stateParams, Notification, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User, USER_ROLES, Practice) {
 
         var auth = $scope.auth = Auth.get() || {};
+        $scope.current_user = Auth.current_user;
 
         $scope.immediateUpdate = false;
 
         User.get({id: auth.id}, function(user){
+           if(user.guest)
+            return;
            $scope.providerLocations = user.addresses;
            if (user.addresses.length < 2){
                 $scope.disableLocations = true;

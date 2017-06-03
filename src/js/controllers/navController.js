@@ -53,7 +53,7 @@ angular.module('dentalLinks').controller('NavController', ['$scope', '$state', '
         };
 
         $scope.logged = function () {
-            return Auth.get() != undefined;
+            return Auth.get() != undefined && !Auth.current_user.guest;
         };
 
         $scope.logout = function(){

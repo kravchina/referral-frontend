@@ -6,7 +6,8 @@ angular.module('dentalLinks')
         doctor: {id: 'doctor', name: 'Doctor', desc: 'Dental Services Provider', mask: 2},
         aux: {id: 'aux', name: 'Aux',desc: 'Auxiliary', mask: 4},
         super: {id: 'super', name: 'Super', desc: 'Super User', mask: 8},
-        public: {id: 'public', name: 'Public', desc: 'Public Access', mask: 16}
+        public: {id: 'public', name: 'Public', desc: 'Public Access', mask: 16},
+        guest: {id: 'guest', name: 'Guest', desc: 'Guest Access', mask: 32}
 })
 
 .constant('FREE_TRIAL_PERIOD', 30)
@@ -62,7 +63,7 @@ angular.module('dentalLinks')
             templateUrl: 'partials/create_referral.html',
             controller: 'CreateReferralsController',
             reloadOnSearch: false,
-            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux, USER_ROLES.guest]
         }).
         state('reviewReferral', {
             url: '/create_referral/:referral_id',
@@ -243,11 +244,13 @@ angular.module('dentalLinks')
 
         }).
         state('confirmGuestEmail', {
-            url: '/guest/confirm_email/:token',
-            onEnter: ['$state', '$stateParams', 'Guest', 'Notification', '$modal', 'ModalHandler', function($state, $stateParams, Guest, Notification, $modal, ModalHandler) {
+            url: '/guest/confirm_email/:token/:pid',
+            onEnter: ['$state', '$stateParams', 'Guest', 'Notification', '$modal', 'ModalHandler', 'Auth', 'User', function($state, $stateParams, Guest, Notification, $modal, ModalHandler, Auth, User) {
                 Guest.verifyGuest({token: $stateParams.token}).$promise
                     .then(function(success){
-                        $state.go('createReferral');
+                        Auth.set({token: success.user.authentication_token, email: success.user.email, roles: ['guest'], id: success.user.id, practice_id: success.user.practice_id});
+                        Auth.current_user = success.user;
+                        $state.go('createReferral', {pid: $stateParams.pid});
                     }, function(response){
                         console.log(response);
                         var modalInstance = $modal.open({
