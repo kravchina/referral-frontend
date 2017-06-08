@@ -1,6 +1,6 @@
 angular.module('createReferrals')
-    .service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 'Patient', 'Practice', 'ProviderInvitation', 'Spinner', 'UnsavedChanges', 'User', 'Auth',
-    function ($modal, $q, ModalHandler, Patient, Practice, ProviderInvitation, Spinner, UnsavedChanges, User, Auth) {
+    .service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Spinner', 'UnsavedChanges',
+    function ($modal, $q, ModalHandler, Practice, ProviderInvitation, Spinner, UnsavedChanges) {
         return {
 
             prepareSubmit: function (scope, referral) {

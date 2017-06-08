@@ -804,9 +804,13 @@ angular.module('modals')
         };
 }])
 
-.controller('GuestEmailResultController', ['$scope', '$modalInstance', 'ModalHandler', 'messages',
-    function ($scope, $modalInstance, ModalHandler, messages) {
-        $scope.messages = messages;
+.controller('GuestEmailResultController', ['$scope', '$modalInstance', 'ModalHandler', 'errors',
+    function ($scope, $modalInstance, ModalHandler, errors) {
+        if(Array.isArray(errors.message)) {
+            $scope.errors = errors.message;
+        } else {
+            $scope.errors = [errors];
+        }
 
         $scope.ok = function(){
             ModalHandler.dismiss($modalInstance);

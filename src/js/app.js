@@ -244,21 +244,21 @@ angular.module('dentalLinks')
 
         }).
         state('confirmGuestEmail', {
-            url: '/guest/confirm_email/:token/:pid',
+            url: '/guest/:token',
             onEnter: ['$state', '$stateParams', 'Guest', 'Notification', '$modal', 'ModalHandler', 'Auth', 'User', function($state, $stateParams, Guest, Notification, $modal, ModalHandler, Auth, User) {
                 Guest.verifyGuest({token: $stateParams.token}).$promise
                     .then(function(success){
                         Auth.set({token: success.user.authentication_token, email: success.user.email, roles: ['guest'], id: success.user.id, practice_id: success.user.practice_id});
                         Auth.current_user = success.user;
-                        $state.go('createReferral', {pid: $stateParams.pid});
+                        $state.go('createReferral', {pid: success.guest_registration.dest_practice_public_id});
                     }, function(response){
                         console.log(response);
                         var modalInstance = $modal.open({
                             templateUrl: 'partials/guest/guest_email_result.html',
                             controller: 'GuestEmailResultController',
                             resolve: {
-                                messages: function() {
-                                    return response.data.errors.message;
+                                errors: function() {
+                                    return response.data.errors;
                                 }
                             }
                         });
