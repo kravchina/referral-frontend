@@ -289,18 +289,14 @@ angular.module('viewReferrals')
         };
 
         $scope.completeReferral = function (referral) {
-            if(referral.dest_provider.id == -1){
-                Notification.error('To complete this referral a treating provider should be selected, currently First Available is selected');
-            } else {
-                Referral.updateStatus({id: referral.id }, {status: 'completed'},
-                    function (success) {
-                        referral.status = 'completed';
-                        Notification.success('Status was updated successfully!');
-                    },
-                    function (failure) {
-                        Notification.error('Something went wrong while updating referral status...');
-                    });
-            }
+            Referral.updateStatus({id: referral.id }, {status: 'completed'},
+                function (success) {
+                    referral.status = 'completed';
+                    Notification.success('Status was updated successfully!');
+                },
+                function (failure) {
+                    Notification.error('Something went wrong while updating referral status...');
+                });
         };
 
         $scope.deleteAttachment = function(attachment){
