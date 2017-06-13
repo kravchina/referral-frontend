@@ -284,7 +284,7 @@ angular.module('viewReferrals')
                     Notification.success('Status was updated successfully!');
                 },
                 function (failure) {
-                    Notification.error('Something went wrong while changing status...');
+                    Notification.error('Something went wrong while updating referral status...');
                 });
         };
 
@@ -298,15 +298,10 @@ angular.module('viewReferrals')
                         Notification.success('Status was updated successfully!');
                     },
                     function (failure) {
-                        Notification.error('Something went wrong while changing status...');
+                        Notification.error('Something went wrong while updating referral status...');
                     });
             }
         };
-
-        $scope.userBelongsToDestPractice = function () {
-            return Auth.get().practice_id == $scope.referral.dest_practice_id;
-        };
-
 
         $scope.deleteAttachment = function(attachment){
             var modalInstance = $modal.open({
