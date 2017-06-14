@@ -5,9 +5,8 @@ angular.module('guest')
         $scope.alerts = [];
 
         $scope.continue = function(guest) {
-            guest.pid = $state.params.practice_pid;
             $scope.alerts = [];
-            Guest.register({guest_registration: guest}, function(success){
+            Guest.register({guest_user: guest, dest_practice_public_id: $state.params.practice_pid}, function(success){
                 var modalInstance = $modal.open({
                     templateUrl: 'partials/guest/guest_email_verification_modal.html',
                     controller: 'GuestEmailVerificationModalController'
