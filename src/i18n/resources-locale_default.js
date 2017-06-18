@@ -138,7 +138,7 @@
     },
     {
         "key": "email.exists",
-        "value": "Your email is already registered. Please provide a new one.",
+        "value": "This email is already registered. Please provide a new one.",
         "description": "Error is shown when user provides an email that already registered in our system"
     },
     {
