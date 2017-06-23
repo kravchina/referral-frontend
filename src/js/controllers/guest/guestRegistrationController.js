@@ -1,8 +1,16 @@
 angular.module('guest')
-    .controller('GuestRegistrationController', ['$scope', '$state', 'Guest', 'Alert', '$modal', 'ModalHandler',
-    function($scope, $state, Guest, Alert, $modal, ModalHandler){
+    .controller('GuestRegistrationController', ['$scope', '$state', 'Guest', 'Alert', '$modal', 'ModalHandler', 'Auth',
+    function($scope, $state, Guest, Alert, $modal, ModalHandler, Auth){
         $scope.guest = {};
         $scope.alerts = [];
+        $scope.auth = Auth.get();
+
+        if($scope.auth && $scope.auth.email) {
+            $state.go('createReferral', {pid: $state.params.practice_pid});
+        }
+
+        console.log('GuestRegistrationController', $scope);
+        console.log('GuestRegistrationController', Auth.get());
 
         $scope.continue = function(guest) {
             $scope.alerts = [];

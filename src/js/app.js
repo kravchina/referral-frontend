@@ -251,6 +251,7 @@ angular.module('dentalLinks')
                         Auth.set({token: success.user.authentication_token, email: success.user.email, roles: ['guest'], id: success.user.id, practice_id: success.user.practice_id});
                         Auth.current_user = success.user;
                         $state.go('createReferral', {pid: $stateParams.pid});
+                        //$state.go('error_page', {error_key: 'access.denied'});
                     }, function(response){
                         console.log(response);
                         var modalInstance = $modal.open({

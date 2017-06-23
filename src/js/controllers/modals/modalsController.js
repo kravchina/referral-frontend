@@ -819,11 +819,12 @@ angular.module('modals')
         };
 }])
 
-.controller('GuestEmailVerificationModalController', ['$scope', '$modalInstance', 'ModalHandler',
-    function ($scope, $modalInstance, ModalHandler) {
+.controller('GuestEmailVerificationModalController', ['$scope', '$state', '$modalInstance', 'ModalHandler',
+    function ($scope, $state, $modalInstance, ModalHandler) {
         $scope.message = 'We have sent a link to your email address. Please check and click the link to continue with referral creation.';
 
         $scope.ok = function(){
             ModalHandler.dismiss($modalInstance);
+            $state.go('signIn');
         };
 }]);

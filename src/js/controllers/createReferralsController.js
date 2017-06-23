@@ -27,7 +27,7 @@ angular.module('createReferrals')
                 $scope.onPracticeSelected(data);
                 $scope.form.$setDirty();
             }, function (failure) {
-                Notification.error('An error occurred during practice search...');
+                Notification.error(failure.data.message);
             });
         }
 
