@@ -69,7 +69,12 @@
                             <span class="ref-date">{{referral.updated_at | date: 'mediumDate'}}</span>
                         </td>
                         <td class="cell-patient">{{referral.patient.first_name}} {{referral.patient.last_name}}</td>
-                        <td class="cell-from">
+
+                        <td ng-if="referral.orig_practice.guest" class="cell-from">
+                            <span class="provider">{{referral.orig_provider.first_name}} {{referral.orig_provider.last_name}} ({{referral.orig_provider.email}})</span>
+                            <span class="practice">From Guest via Custom Referral Link</span>
+                        </td>
+                        <td ng-if="!referral.orig_practice.guest" class="cell-from">
                             <span class="provider">{{referral.orig_provider.first_name}} {{referral.orig_provider.middle_initial}} {{referral.orig_provider.last_name}}</span>
                             <span class="practice">{{referral.orig_practice.name}}</span>
                         </td>

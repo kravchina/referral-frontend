@@ -804,4 +804,27 @@ angular.module('modals')
         $scope.cancel = function(){
             ModalHandler.close($modalInstance, false);
         };
-    }]);
+}])
+
+.controller('GuestEmailResultController', ['$scope', '$modalInstance', 'ModalHandler', 'errors',
+    function ($scope, $modalInstance, ModalHandler, errors) {
+        if(Array.isArray(errors.message)) {
+            $scope.errors = errors.message;
+        } else {
+            $scope.errors = [errors];
+        }
+
+        $scope.ok = function(){
+            ModalHandler.dismiss($modalInstance);
+        };
+}])
+
+.controller('GuestEmailVerificationModalController', ['$scope', '$state', '$modalInstance', 'ModalHandler',
+    function ($scope, $state, $modalInstance, ModalHandler) {
+        $scope.message = 'We have sent a link to your email address. Please check and click the link to continue with referral creation.';
+
+        $scope.ok = function(){
+            ModalHandler.dismiss($modalInstance);
+            $state.go('signIn');
+        };
+}]);
