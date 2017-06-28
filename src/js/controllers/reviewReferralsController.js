@@ -38,8 +38,6 @@ angular.module('createReferrals')
         }
         $scope.practiceSearchText = $scope.destinationPractice.name;
 
-        $scope.onPracticeSelected = ReferralHelper.onPracticeSelected($scope, auth);
-
         ReferralHelper.watchProviders($scope);
 
         $scope.saveTemplate = function (model) {
@@ -86,10 +84,6 @@ angular.module('createReferrals')
                     Notification.error('An error occurred during template removal. Please try again later.');
                 });
         };
-
-        $scope.editPatientDialog = ReferralHelper.editPatientDialog($scope);
-
-        $scope.providerDialog = ReferralHelper.providerDialog($scope);
 
         ReferralHelper.trackUnsavedChanges($scope);
 
