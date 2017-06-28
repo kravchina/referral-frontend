@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.patient.$dirty && form.patient.$invalid }">
+        <div class="block-title">
+            <h2>Patient</h2>
+            <button ng-if="patient.id" type="button" ng-click="editPatientDialog()" class="btn btn-orange btn-toggle-shifted btn-toggle-modal-note" data-toggle="tooltip"
+                    data-placement="top" title="Edit Patient" >
+                <span class="dlicons-pencil"></span>
+            </button>
+            <button type="button" class="btn btn-orange btn-toggle" ng-click="patientDialog()" data-toggle="tooltip" data-placement="top"
+                    title="Create a New Patient Record" data-target="#modalPatient">
+                <span class="dlicons-user-add"></span>
+            </button>
+        </div>
+
+        <alert type="{{alert.type}}" ng-show="form.patient.$dirty && form.patient.$invalid">Please select existing or create a new patient record</alert>
+        <input type="text" class="form-control" name="patient" ng-model-options="{ debounce: 300 }"
+               placeholder="Enter existing patient or add new with button on the right ..."
+               ng-model="patient" typeahead-editable="false"
+               typeahead="p as p.first_name +' ' +  p.last_name + (p.birthday ? ' (' + (p.birthday | date: 'shortDate') + ')' : '') for p in findPatient($viewValue)"
+               ng-required="true"
+               autocomplete="off">
+
+    </div>
+</div>

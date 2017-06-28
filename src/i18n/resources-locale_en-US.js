@@ -320,6 +320,11 @@
         "key": "referral.not.found",
         "value": "Sorry, referral not found or deleted",
         "description": "Message shown when referral not found or delete"
+    },
+    {
+        "key": "guest_registration.not_found",
+        "value": "Sorry, guest not found or deleted",
+        "description": "Message shown when guest not found or delete"
     }
 
 ]

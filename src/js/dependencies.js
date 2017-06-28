@@ -22,11 +22,13 @@ require('jsPDFfonts');
 require('angularStripe');
 require('angularCreditCards');
 require('angular-clipboard');
+require('angular-recaptcha');
 
 angular.module('jsPDF', []).factory('jsPDF', function(){ return require('jsPDF');});
 
 angular.module('admin', ['ui.bootstrap', 'angular-stripe', 'credit-cards', 'angular-clipboard']);
 angular.module('console', ['ui.bootstrap']);
+angular.module('guest', ['ui.bootstrap']);
 angular.module('history', ['ui.bootstrap', 'infinite-scroll']);
 angular.module('activity', ['ui.bootstrap', 'infinite-scroll']);
 angular.module('login', []);
@@ -52,6 +54,7 @@ require('./controllers/console/practiceConsoleController.js');
 require('./controllers/console/reportsConsoleController.js');
 require('./controllers/console/utilitiesConsoleController.js');
 require('./controllers/console/pluginConsoleController.js');
+require('./controllers/guest/guestRegistrationController.js');
 require('./controllers/modals/modalsController.js');
 require('./controllers/createReferralsController.js');
 require('./controllers/errorController.js');
@@ -65,6 +68,11 @@ require('./controllers/savePasswordsController.js');
 require('./controllers/viewReferralsController.js');
 require('./controllers/unsubscribeController.js');
 require('./directives/directives.js');
+require('./directives/referral/findPatientDirective.js');
+require('./directives/referral/findPracticeDirective.js');
+require('./directives/referral/fromProviderDirective.js');
+require('./directives/referral/toProviderDirective.js');
+require('./directives/referral/procedureBlockDirective.js');
 require('./services/pdf.js');
 require('./services/referralHelper.js');
 require('./services/consoleHelper.js');
@@ -72,11 +80,13 @@ require('./services/services.js');
 require('./services/unsavedChanges.js');
 
 angular.module('dentalLinks', [
+    'vcRecaptcha',
     'ui.router',
     'ui.router.tabs',
     'ngCookies',
     'admin',
     'console',
+    'guest',
     'history',
     'activity',
     'login',
@@ -98,6 +108,11 @@ angular.module('dentalLinks', [
     'dentalLinksPartials'
 ]);
 
+require('./directives/referral/findPatientController.js');
+require('./directives/referral/findPracticeController.js');
+require('./directives/referral/fromProviderController.js');
+require('./directives/referral/toProviderController.js');
+require('./directives/referral/procedureBlockController.js');
 require('./controllers/subscriptionChangeController.js');
 require('./controllers/attachmentsController.js');
 require('./controllers/navController.js');

@@ -559,7 +559,7 @@ angular.module('pdf')
                 procedureData.teeth = data.teeth;
             }
 
-            originalPracticeData = this.createPracticeData('Referred by:', data.orig_provider || {}, data.orig_provider.practice || {}, data.orig_provider_address || (data.orig_provider.addresses || [{}])[0] );
+            originalPracticeData = this.createPracticeData('Referred by:', data.orig_provider || {}, data.orig_provider.practice || {}, data.orig_provider_address || (data.orig_provider.addresses.length && data.orig_provider.addresses || [{}])[0] );
             destinationPracticeData = this.createPracticeData('Referred to:', data.dest_provider || {}, data.dest_practice || {}, data.address || {});
             qrCodeCallback(destinationPracticeData);
             referralDate = data.created_at;
