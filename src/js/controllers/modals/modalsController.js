@@ -694,7 +694,7 @@ angular.module('modals')
 
 .controller('ReferralSuccessModalController', ['$scope', '$modalInstance', 'ModalHandler', function($scope, $modalInstance, ModalHandler){
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.close($modalInstance);
     };
     $scope.goDownload = function () {
         ModalHandler.close($modalInstance);
