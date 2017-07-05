@@ -9,6 +9,7 @@ angular.module('login')
         if($stateParams.alreadyRegister){
             Notification.error("invitation.exist");
         }
+        $scope.pid = $stateParams.pid;
         $scope.login = function (user) {   /*{'user': {'email': user.email, 'password': user.password }}*/
 
             Login.login({'user': user},
@@ -24,7 +25,7 @@ angular.module('login')
                     Logger.log(failure);
                     Auth.remove();
                     user.password = undefined;
-                    Notification.error(failure.status == 0 ?'Upstream server connectivity error.  Please try again later' : 'Unable to login with provided credentials');
+                    Notification.error(failure.status === 0 ?'Upstream server connectivity error.  Please try again later' : 'Unable to login with provided credentials');
                     $scope.$broadcast('focusPassword');
                 });
         };
