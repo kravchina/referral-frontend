@@ -3,7 +3,7 @@ angular.module('dentalLinks')
         function ($scope, Practice, User, ProviderInvitation, $q) {
             $scope.findPractice = function (searchValue) {
                 if($scope.model.referral.isCreatedNow) {
-                    $scope.tempDestinationPractice = scope.destinationPractice;
+                    $scope.tempDestinationPractice = $scope.destinationPractice;
                 }
                 $scope.destinationPractice = [];
                 var providersPromise = Practice.searchPractice({search: searchValue}).$promise;

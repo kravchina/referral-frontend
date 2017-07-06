@@ -55,15 +55,22 @@ angular.module('createReferrals')
                 success: function (referral) {
                     Logger.debug('Sent referral #' + referral.id);
                     ReferralHelper.uploadAttachments($scope, referral.id, function(message){
-                        var modalInstance = $modal.open({
-                            templateUrl: 'partials/referral_create_message.html',
-                            controller: 'ReferralSuccessModalController'
-                        });
-                        ModalHandler.set(modalInstance);
-                        modalInstance.result.then(function() {
+                        function afterCreateReferral() {
                             UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
                             $state.go('viewReferral', {referral_id: referral.id, message: message, isNew: true});
-                        });
+                        }
+                        if($scope.current_user.guest) {
+                            var modalInstance = $modal.open({
+                                templateUrl: 'partials/referral_create_message.html',
+                                controller: 'ReferralSuccessModalController'
+                            });
+                            ModalHandler.set(modalInstance);
+                            modalInstance.result.then(function() {
+                                afterCreateReferral();
+                            });
+                        } else {
+                            afterCreateReferral();
+                        }
                     });
                 },
                 failure: function (failure) {
