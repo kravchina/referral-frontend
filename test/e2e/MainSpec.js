@@ -12,6 +12,7 @@ var adminSubscriptionPremiumSpec = require('./specs/AdminSubscriptionPremiumSpec
 var createReferralAndInvitationSpec = require('./specs/CreateReferralAndInvitationSpec');
 var promoRegistrationSpec = require('./specs/PromoRegistrationSpec');
 var changeSubscriptionSpec = require('./specs/ChangeSubscriptionSpec');
+var guestLoginSpec = require('./specs/GuestLogin/GuestLoginSpec');
 
 describe('when user navigates to Sign In page', function() {
     commonActions.maximizeBrowser();
@@ -39,6 +40,7 @@ describe('when user navigates to Sign In page', function() {
     describe('and user tries to login with correct credentials', function(){
         standardLoginSpec.run();
         promoRegistrationSpec.run();
+        guestLoginSpec.run();
         superUserLoginSpec.run();
         createReferralAndInvitationSpec.run();
         adminPracticePremiumSpec.run();
