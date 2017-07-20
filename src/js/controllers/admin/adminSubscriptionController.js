@@ -5,18 +5,18 @@ angular.module('admin')
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function(practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
             $scope.designation = practice.designation;
-            $scope.paymentNotification = {
-                /*showTrial: !practice.stripe_customer_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
-                showTrialExpired: !practice.stripe_customer_id && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
-                showSubscriptionSuccess: false,
-                showSubscriptionCancelled: practice.stripe_customer_id && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
-                showSubscriptionExpired: practice.stripe_customer_id && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
-                */
-                showBasic: !practice.stripe_subscription_id,
-                showMonthly: practice.stripe_subscription_id && practice.subscription_interval === 'month',
-                showAnnual: practice.stripe_subscription_id && practice.subscription_interval === 'year',
-                showDesignation: $scope.designation
-            };
+//            $scope.paymentNotification = {
+//                /*showTrial: !practice.stripe_customer_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
+//                showTrialExpired: !practice.stripe_customer_id && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
+//                showSubscriptionSuccess: false,
+//                showSubscriptionCancelled: practice.stripe_customer_id && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
+//                showSubscriptionExpired: practice.stripe_customer_id && new Date().getTime() > new Date(practice.subscription_active_until).getTime(),
+//                */
+//                showBasic: !practice.stripe_subscription_id,
+//                showMonthly: practice.stripe_subscription_id && practice.subscription_interval === 'month',
+//                showAnnual: practice.stripe_subscription_id && practice.subscription_interval === 'year',
+//                showDesignation: $scope.designation
+//            };
             $scope.subscriptionPrice = practice.subscription_price;
             $scope.subscriptionInterval = practice.subscription_interval;
             $scope.locationsNumber = practice.addresses.length;

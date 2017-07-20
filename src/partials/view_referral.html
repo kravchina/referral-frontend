@@ -3,8 +3,10 @@
 
     <p class="page-subheader">Attach post-op images and notes</p>
 
+<!--
     <alert ng-show="paymentNotification.showTrial" type="{{alert.type}}">It is always free to send referrals to anyone and free to receive referrals from premium accounts. But you will need a premium membership to receive referrals from basic accounts after {{ paymentNotification.expirationDate | date: 'short'}}. You can upgrade at any time in the account settings.</alert>
     <alert ng-show="paymentNotification.showSubscriptionCancelled" type="{{alert.type}}">Your premium subscription will expire on {{paymentNotification.expirationDate | date: 'short' }}, you will need to enter new payment information for your premium account to stay active.</alert>
+-->
 </header><!-- .page-header -->
 
 <alert id="topAlert" ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.message}}</alert>
