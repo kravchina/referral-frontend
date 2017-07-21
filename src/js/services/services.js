@@ -41,6 +41,9 @@ angular.module('dentalLinksServices')
             $cookies.remove('auth');
         },
         hasRole: function(role){
+            if(!auth.roles){
+                return false;
+            }
             if(Array.isArray(role) && typeof(roles[0]) === 'string'){
                 role = Role.getRolesByNames(role);
             }
@@ -314,13 +317,6 @@ angular.module('dentalLinksServices')
             url: API_ENDPOINT + '/promo/validate/:code'
         }
     })
-}])
-
-.factory('Guest', ['$resource', 'API_ENDPOINT', function($resource, API_ENDPOINT){
-    return $resource(API_ENDPOINT + '/guest/:id', {}, {
-        register: {method: 'POST', url: API_ENDPOINT + '/guest'},
-        verifyGuest: {method: 'GET', url: API_ENDPOINT + '/verify_guest'}
-    });
 }])
 
 .factory('PracticeEditMode', [function(){

@@ -22,13 +22,11 @@ require('jsPDFfonts');
 require('angularStripe');
 require('angularCreditCards');
 require('angular-clipboard');
-require('angular-recaptcha');
 
 angular.module('jsPDF', []).factory('jsPDF', function(){ return require('jsPDF');});
 
 angular.module('admin', ['ui.bootstrap', 'angular-stripe', 'credit-cards', 'angular-clipboard']);
 angular.module('console', ['ui.bootstrap']);
-angular.module('guest', ['ui.bootstrap']);
 angular.module('history', ['ui.bootstrap', 'infinite-scroll']);
 angular.module('activity', ['ui.bootstrap', 'infinite-scroll']);
 angular.module('login', []);
@@ -54,7 +52,6 @@ require('./controllers/console/practiceConsoleController.js');
 require('./controllers/console/reportsConsoleController.js');
 require('./controllers/console/utilitiesConsoleController.js');
 require('./controllers/console/pluginConsoleController.js');
-require('./controllers/guest/guestRegistrationController.js');
 require('./controllers/modals/modalsController.js');
 require('./controllers/createReferralsController.js');
 require('./controllers/errorController.js');
@@ -80,13 +77,11 @@ require('./services/services.js');
 require('./services/unsavedChanges.js');
 
 angular.module('dentalLinks', [
-    'vcRecaptcha',
     'ui.router',
     'ui.router.tabs',
     'ngCookies',
     'admin',
     'console',
-    'guest',
     'history',
     'activity',
     'login',
