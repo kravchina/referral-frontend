@@ -1,6 +1,6 @@
 angular.module('createReferrals')
-    .controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Notification', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper', 'User', 'USER_ROLES', 'Practice',
-    function ($scope, $state, $stateParams, Notification, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User, USER_ROLES, Practice) {
+    .controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Notification', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper', 'User', 'USER_ROLES', 'Practice', '$modal', 'ModalHandler',
+    function ($scope, $state, $stateParams, Notification, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User, USER_ROLES, Practice, $modal, ModalHandler) {
 
         var auth = $scope.auth = Auth.get() || {};
         $scope.current_user = Auth.current_user;
@@ -55,8 +55,22 @@ angular.module('createReferrals')
                 success: function (referral) {
                     Logger.debug('Sent referral #' + referral.id);
                     ReferralHelper.uploadAttachments($scope, referral.id, function(message){
-                        UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-                        $state.go('viewReferral', {referral_id: referral.id, message: message, isNew: true});
+                        function afterCreateReferral() {
+                            UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
+                            $state.go('viewReferral', {referral_id: referral.id, message: message, isNew: true});
+                        }
+                        if($scope.current_user.guest) {
+                            var modalInstance = $modal.open({
+                                templateUrl: 'partials/referral_create_message.html',
+                                controller: 'ReferralSuccessModalController'
+                            });
+                            ModalHandler.set(modalInstance);
+                            modalInstance.result.then(function() {
+                                afterCreateReferral();
+                            });
+                        } else {
+                            afterCreateReferral();
+                        }
                     });
                 },
                 failure: function (failure) {

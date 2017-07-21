@@ -30,7 +30,7 @@ var ConsolePracticeSpec = function() {
             });
 
             it('check approve button', function(){
-                consolePracticePage.setPractice('Promo');
+                consolePracticePage.setPractice('Pending');
                 consolePracticePage.getPracticeDropDownFirstRowElement().click();
 
                 expect(consolePracticePage.getPracticeApproveButton().isDisplayed()).toBe(true);
