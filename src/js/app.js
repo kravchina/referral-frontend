@@ -169,6 +169,11 @@ angular.module('dentalLinks')
             controller: 'AdminSubscriptionController',
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
+        state('admin.support', {
+            url: '/support',
+            templateUrl: 'partials/support.html',
+            controller: 'SupportController'
+        }).
         state('console', {
             abstract: true,
             url: '/console',

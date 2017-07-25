@@ -429,6 +429,11 @@ angular.module('dentalLinksServices')
         getEvents: {method: 'GET', isArray: true}
     })
 }])
+    .factory('Support', ['$resource', 'API_ENDPOINT', function($resource, API_ENDPOINT){
+        return $resource(API_ENDPOINT + '/support', {}, {
+            sendQuestion: {method: 'POST', url: API_ENDPOINT + '/support/send_question'}
+        })
+    }])
 
 .factory('Role', ['USER_ROLES', function(USER_ROLES){
     var ROLES = [];

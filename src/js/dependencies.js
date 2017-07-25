@@ -121,6 +121,7 @@ require('./controllers/notesController.js');
 require('./controllers/rolesSelectorController.js');
 require('./controllers/userAddressesController.js');
 require('./controllers/notificationAreaController.js');
+require('./controllers/supportController.js');
 require('./services/imageUtils.js');
 require('./services/logger.js');
 

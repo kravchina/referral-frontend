@@ -1,0 +1,45 @@
+<header class="page-header">
+    <div class="row">
+        <div class="input-block col-xs-12 col-sm-4">
+            <h1>Support</h1>
+
+            <p class="page-subheader">Leave your question to our support team.</p>
+        </div>
+    </div>
+</header><!-- .page-header -->
+
+<div class="box-white">
+
+    <div class="row" ng-repeat="questionItem in questions">
+        <div class="input-block">
+            <h3>{{questionItem.question}}</h3>
+            {{questionItem.answer}}
+        </div>
+    </div>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <div class="row">
+                <h3>If you don't see answer to your question, please enter your question below and press submit - we will let answer as soon as we can.</h3>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="input-block">
+            <textarea ng-focus-me placeholder="Write your question here &hellip;" name="question" class="form-control" ng-model="support.question"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-9">
+            <div class="input-block">
+                <input type="email" ng-model="support.email" ng-required="true" placeholder="Enter your email here" class="form-control"/>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="input-block">
+                <button class="btn btn-green btn-lg" ng-click="send(support)" ng-disabled="!support.email || !support.question">Send</button>
+            </div>
+        </div>
+    </div>
+
+</div><!-- .box-white -->
