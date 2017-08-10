@@ -21,7 +21,7 @@ angular.module('modals')
     }
 
     $scope.ok = function (patient) {
-        patient.practice_id = Auth.getOrRedirect().practice_id;
+        patient.practice_id = Auth.get() ? Auth.get().practice_id : '';
         patient.birthday = moment(patient.birthday).format('YYYY-MM-DD');//fix for #114475519
         function createPatient(){
             Patient.save({patient: patient},
@@ -34,30 +34,34 @@ angular.module('modals')
                 });
         };
 
-        Patient.searchPatientDuplicate(patient, function (success) {
-            if (success.patient) {
-                var dedupingModalInstance = $modal.open({
-                    templateUrl: 'partials/patient_deduping_form.html',
-                    controller: 'DedupingPatientModalController',
-                    resolve: {
-                        isCreatingPatient: function(){
-                            return true;
+        if(patient.practice_id) {
+            Patient.searchPatientDuplicate(patient, function (success) {
+                if (success.patient) {
+                    var dedupingModalInstance = $modal.open({
+                        templateUrl: 'partials/patient_deduping_form.html',
+                        controller: 'DedupingPatientModalController',
+                        resolve: {
+                            isCreatingPatient: function(){
+                                return true;
+                            }
                         }
-                    }
-                });
+                    });
 
-                dedupingModalInstance.result.then(function (useExistingPatient) {
-                    if (useExistingPatient) {
-                        ModalHandler.close($modalInstance, success.patient);
-                    } else {
-                        createPatient();
-                    }
-                });
-            } else {
-                createPatient();
-            }
+                    dedupingModalInstance.result.then(function (useExistingPatient) {
+                        if (useExistingPatient) {
+                            ModalHandler.close($modalInstance, success.patient);
+                        } else {
+                            createPatient();
+                        }
+                    });
+                } else {
+                    createPatient();
+                }
 
-        });
+            });
+        } else {
+            ModalHandler.close($modalInstance, patient);
+        }
 
     };
     $scope.openDatePicker = function($event){

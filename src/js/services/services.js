@@ -136,7 +136,8 @@ angular.module('dentalLinksServices')
         updateStatus: {method: 'PUT', url: API_ENDPOINT + '/referrals/:id/status'},
         findByPractice: {method: 'GET', url: API_ENDPOINT + '/referrals/practice/:id', isArray: false},
         countByInvited: {method: 'GET', url: API_ENDPOINT + '/referrals/count/:id', isArray: false},
-        countByPractice: {method: 'GET', url: API_ENDPOINT + '/referrals/count_by_practice/:id', isArray: false}
+        countByPractice: {method: 'GET', url: API_ENDPOINT + '/referrals/count_by_practice/:id', isArray: false},
+        createGuestReferral: {method: 'POST', url: API_ENDPOINT + '/referrals/new/guest_referral', isArray: false}
     });
 }])
 
@@ -223,6 +224,7 @@ angular.module('dentalLinksServices')
         changePassword: {method: 'PUT', url: API_ENDPOINT + '/users/:id/change_password'},
         sendPasswordInvitation: {method: 'PUT', url: API_ENDPOINT + '/users/:id/password'},
         savePassword: {method: 'POST', url: API_ENDPOINT + '/save_password'},
+        createGuest: {method: 'POST', url: API_ENDPOINT + '/guest'},
         mailUnsubscribe: {method: 'GET', params: {md_id: '@md_id', confirm: '@confirm'}, url: API_ENDPOINT + '/user/mail_unsubscribe'}
     })
 }])

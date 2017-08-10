@@ -57,6 +57,11 @@ angular.module('dentalLinks')
             templateUrl: 'partials/error.html',
             controller: 'ErrorController'
         }).
+        state('createGuestReferral', {
+            url: '/create_guest_referral?pid',
+            templateUrl: 'partials/create_guest_referral.html',
+            controller: 'CreateGuestReferralsController',
+        }).
         state('createReferral', {
             url: '/create_referral?pid',
             templateUrl: 'partials/create_referral.html',

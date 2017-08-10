@@ -10,6 +10,14 @@ angular.module('createReferrals')
                 referral.teeth = scope.teeth.join('+');
             },
 
+            prepareGuestSubmit: function (scope, referral) {
+                referral.orig_practice_id = scope.guest.practice_id;
+                referral.orig_provider_id = scope.guest.id;
+                referral.dest_practice_id = scope.destinationPractice.id;
+                referral.patient_id = scope.patient.id;
+                referral.teeth = scope.teeth.join('+');
+            },
+
             uploadAttachments: function (scope, referral_id, redirectCallback) {
                 if (scope.uploader.queue.length > 0) {
                     scope.uploader.queue.redirectCallback = redirectCallback;

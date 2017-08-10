@@ -31,7 +31,15 @@ angular.module('dentalLinks')
                     if(typeof $scope.$parent.form !== 'undefined' && $scope.$parent.form !== null) {
                         $scope.$parent.form.$setDirty(); // for UnsavedChanges to notice notes being changed
                     }
-                    var note = {message: message, created_at: Date.now(), user_id: $scope.auth.id, user: {first_name: Auth.current_user.first_name, last_name: Auth.current_user.last_name}};
+                    var note = {
+                        message: message,
+                        created_at: Date.now(),
+                        user_id: $scope.auth ? $scope.auth.id : '',
+                        user: {
+                            first_name: Auth.current_user ? Auth.current_user.first_name : '',
+                            last_name: Auth.current_user ? Auth.current_user.last_name : ''
+                        }
+                    };
                     $scope.inputModel.notes = $scope.inputModel.notes || [];
                     $scope.inputModel.notes_attributes = $scope.inputModel.notes_attributes || [];
                     $scope.inputModel.notes.push(note);
