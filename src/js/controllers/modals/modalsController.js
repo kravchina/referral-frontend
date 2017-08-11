@@ -772,6 +772,15 @@ angular.module('modals')
         };
 }])
 
+.controller('SuccessGuestReferralModalController', ['$scope', '$modalInstance', 'ModalHandler',
+    function($scope, $modalInstance, ModalHandler){
+        $scope.message = 'Almost done! Please verify your email address by clicking the link in email message. Look for the message we just sent.';
+
+        $scope.ok = function(){
+            ModalHandler.close($modalInstance);
+        };
+}])
+
 .controller('RegistrationEmailResendModalController', ['$scope', '$modalInstance', 'ModalHandler',
     function ($scope, $modalInstance, ModalHandler) {
         $scope.ok = function () {
