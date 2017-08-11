@@ -22,13 +22,18 @@ angular.module('admin')
             route: 'admin.invite',
             class: 'dlicons-user-add',
             active: false
-        },
-        {
+        },{
+            heading: 'Support',
+                route: 'admin.support',
+                class: 'dlicons-user',
+                active: false
+            }
+        /*{
             heading: 'Subscription',
             route: 'admin.subscription',
             class: 'dlicons-user',
             active: false
-        }];
+        }*/];
 
         var currentYear = moment().year();
         $scope.years = [ currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4 ];

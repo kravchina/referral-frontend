@@ -82,13 +82,13 @@ angular.module('dentalLinksDirectives')
                     if (/trident/i.test($window.navigator.userAgent)){
                     //TODO: workaround for https://www.pivotaltracker.com/story/show/86373800. Need to change that to use cookies for image authentication.
                         var auth = Auth.get();
-                        element.attr( 'style',  "background: url(" + attributes.attachmentThumb + '&token=' + auth.token + '&from=' + auth.email + "&is_thumb=true) no-repeat top/contain, url('img/loader.gif') no-repeat top");
+                        element.attr( 'style',  "background: url('" + attributes.attachmentThumb + '&token=' + auth.token + '&from=' + auth.email + "&is_thumb=true') no-repeat top/contain, url('img/loader.gif') no-repeat top");
                         cssClass = '';
                     }else{
                         element.attr( 'style',  "background: url('img/loader.gif') no-repeat top");
                         angular.element('<img/>').attr('src', attributes.attachmentThumb + "&is_thumb=true").load(function() {
                             angular.element(this).remove();
-                            element.attr('style', "background: url(" + attributes.attachmentThumb + "&is_thumb=true) no-repeat top/contain");
+                            element.attr('style', "background: url('" + attributes.attachmentThumb + "&is_thumb=true') no-repeat top/contain");
                         });
                         cssClass = '';
                     }

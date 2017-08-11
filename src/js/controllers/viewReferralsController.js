@@ -11,6 +11,7 @@ angular.module('viewReferrals')
             Notification.error(message);
         } */
 
+/*
         Practice.get({practiceId: $scope.auth.practice_id}, function(practice){
             $scope.paymentNotification = {
                 showTrial: !practice.stripe_customer_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime(),
@@ -18,6 +19,7 @@ angular.module('viewReferrals')
                 showSubscriptionCancelled: practice.stripe_customer_id && !practice.stripe_subscription_id && new Date().getTime() < new Date(practice.subscription_active_until).getTime()
             }
         });
+*/
 
         $scope.initModel = function() {
             $scope.referral = Referral.get({id: $stateParams.referral_id}, function (data) {

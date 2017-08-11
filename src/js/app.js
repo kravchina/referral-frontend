@@ -24,7 +24,7 @@ angular.module('dentalLinks')
 .config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', '$provide', function ($stateProvider, $urlRouterProvider, USER_ROLES, $provide) {
     $stateProvider.
         state('signIn', {
-            url: '/sign_in',
+            url: '/sign_in?pid',
             params: {alreadyRegister: false},
             templateUrl: 'partials/login.html',
             controller: 'LoginController'
@@ -173,6 +173,11 @@ angular.module('dentalLinks')
             controller: 'AdminSubscriptionController',
             access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
+        state('admin.support', {
+            url: '/support',
+            templateUrl: 'partials/support.html',
+            controller: 'SupportController'
+        }).
         state('console', {
             abstract: true,
             url: '/console',
@@ -276,7 +281,7 @@ angular.module('dentalLinks')
             ModalHandler.dismissIfOpen();  //close dialog if open.
             if (!Auth.authorize(toState.access)) {
                 event.preventDefault();
-                $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.url()});
+                $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.url(), params: $location.search()});
             }
         });
 
@@ -291,7 +296,7 @@ angular.module('dentalLinks')
             Logger.log('notAuthenticated');
             Auth.remove();
             redirect.path = args.redirect;
-            $state.go('signIn', {}, {reload: true});
+            $state.go('signIn', args.params, {reload: true});
         });
 
         $rootScope.$on(AUTH_EVENTS.paymentRequired, function(event, args){
