@@ -92,7 +92,6 @@
     "angular-bootstrap-npm": "^0.13.3",
     "angular-clipboard": "1.6.0",
     "angular-cookies": "1.5.8",
-    "angular-recaptcha": "^4.0.4",
     "angular-resource": "1.5.8",
     "angular-sanitize": "1.5.8",
     "angular-ui-mask": "git+https://github.com/angular-ui/ui-mask.git",

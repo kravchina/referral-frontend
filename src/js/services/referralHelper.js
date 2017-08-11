@@ -10,6 +10,27 @@ angular.module('createReferrals')
                 referral.teeth = scope.teeth.join('+');
             },
 
+            prepareGuestSubmit: function (scope, referral) {
+                function prepareNotes(notes) {
+                    return notes.map(function(note){
+                        if(!note.user.first_name)
+                            note.user.first_name = scope.guest.first_name;
+                        if(!note.user.last_name)
+                            note.user.last_name = scope.guest.last_name;
+                        if(!note.user_id)
+                            note.user_id = scope.guest.id;
+                        return note;
+                    });
+                }
+                referral.orig_practice_id = scope.guest.practice_id;
+                referral.orig_provider_id = scope.guest.id;
+                referral.dest_practice_id = scope.destinationPractice.id;
+                referral.patient_id = scope.patient.id;
+                referral.teeth = scope.teeth.join('+');
+                referral.notes = prepareNotes(referral.notes);
+                referral.notes_attributes = prepareNotes(referral.notes_attributes);
+            },
+
             uploadAttachments: function (scope, referral_id, redirectCallback) {
                 if (scope.uploader.queue.length > 0) {
                     scope.uploader.queue.redirectCallback = redirectCallback;

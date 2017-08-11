@@ -1,0 +1,109 @@
+<header class="page-header">
+    <h1>Referral</h1>
+    <p class="page-subheader">Fill out information for a new referral.</p>
+</header><!-- .page-header -->
+
+<div class="form-wrapper">
+    <form id="formCreateReferral" name="form" novalidate="novalidate">
+        <div class="box-white box-padded">
+            <!-- GUEST -->
+            <div class="row">
+                <div class="input-block col-xs-12 col-sm-12">
+                    <div class="block-title">
+                        <h2>Referring doctor's name</h2>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6" ng-class="{'has-error': form.guest.first_name.$dirty && form.guest.first_name.$invalid }">
+                            <alert type="warning" ng-show="form.guest.first_name.$dirty && form.guest.first_name.$invalid">Please enter first name</alert>
+                            <input type="text" class="form-control" name="first_name" placeholder="First name"
+                                   ng-model="guest.first_name" ng-required="true">
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6" ng-class="{'has-error': form.guest.last_name.$dirty && form.guest.last_name.$invalid }">
+                            <alert type="warning" ng-show="form.guest.last_name.$dirty && form.guest.last_name.$invalid">Please enter last name</alert>
+                            <input type="text" class="form-control" name="last_name" placeholder="Last name"
+                                   ng-model="guest.last_name" ng-required="true">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.guest.first_name.$dirty && form.guest.first_name.$invalid }">
+                    <div class="block-title">
+                        <h2>Referring doctor's email address</h2>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6" ng-class="{'has-error': form.guest.first_name.$dirty && form.guest.first_name.$invalid }">
+                            <alert type="warning" ng-show="form.guest.first_name.$dirty && form.guest.first_name.$invalid">Please enter email address</alert>
+                            <input type="text" class="form-control" name="email" placeholder="Email address"
+                                   ng-model="guest.email" ng-required="true">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- GUEST -->
+
+            <!-- Patient block -->
+            <div class="row">
+                <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.patient.$dirty && form.patient.$invalid }">
+                    <div class="block-title">
+                        <h2>Patient</h2>
+                        <button ng-if="patient.id" type="button" ng-click="editPatientDialog()" class="btn btn-orange btn-toggle-shifted btn-toggle-modal-note" data-toggle="tooltip"
+                                data-placement="top" title="Edit Patient" >
+                            <span class="dlicons-pencil"></span>
+                        </button>
+                        <button type="button" class="btn btn-orange btn-toggle" ng-click="patientDialog()" data-toggle="tooltip" data-placement="top"
+                                title="Create a New Patient Record" data-target="#modalPatient">
+                            <span class="dlicons-user-add"></span>
+                        </button>
+                    </div>
+
+                    <alert type="{{alert.type}}" ng-show="form.patient.$dirty && form.patient.$invalid">Please create a new patient record</alert>
+                    <input type="text" class="form-control" name="patient" ng-model-options="{ debounce: 300 }"
+                           placeholder="Enter existing patient or add new with button on the right ..."
+                           ng-model="patient" typeahead-editable="false"
+                           typeahead="p as p.first_name +' ' +  p.last_name + (p.birthday ? ' (' + (p.birthday | date: 'shortDate') + ')' : '') for p in findPatient($viewValue)"
+                           ng-required="true"
+                           autocomplete="off">
+
+                </div>
+            </div>
+            <!-- .row -->
+
+            <!-- Practice / Provider block -->
+            <div class="row">
+                <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.practice.$dirty && form.practice.$invalid }">
+                    <div class="block-title">
+                        <h2>Practice</h2>
+                    </div>
+                    <alert type="warning" ng-show="form.practice.$dirty && form.practice.$invalid">Please select existing practice or invite new provider</alert>
+                    <input type="text" class="form-control" name="practice" placeholder="Enter existing practice/provider or add new provider with button on the right..."
+                           ng-model="practiceSearchText" typeahead-on-select="onPracticeSelected($item, $model, $label)" ng-model-options="{ debounce: 300 }"
+                           typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].last_name == null && practice.users[0].first_name == null ? practice.users[0].email : (practice.users[0].first_name + ' ' + practice.users[0].last_name)) : practice.name for practice in findPractice($viewValue) "
+                           autocomplete="off" ng-disabled="true">
+                </div>
+            </div>
+
+            <referral-to-provider></referral-to-provider>
+            <!-- .row -->
+
+            <!-- Procedure block -->
+            <referral-procedure-block></referral-procedure-block>
+            <!-- .row -->
+
+            <teeth-chart></teeth-chart>
+            <attachments></attachments>
+            <notes input-model="model.referral" immediate-update="immediateUpdate"></notes>
+
+        </div><!-- .box-white -->
+
+        <div class="button-block">
+            <button  class="btn btn-orange btn-lg"  ng-click="createReferral(model)" ng-disabled="form.$invalid || isInvalidAttachments()">Sign &amp; Send</button>
+        </div><!-- .button-block -->
+    </form>
+</div><!-- .form-wrapper -->
+

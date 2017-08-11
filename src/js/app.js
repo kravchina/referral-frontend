@@ -6,8 +6,7 @@ angular.module('dentalLinks')
         doctor: {id: 'doctor', name: 'Doctor', desc: 'Dental Services Provider', mask: 2},
         aux: {id: 'aux', name: 'Aux',desc: 'Auxiliary', mask: 4},
         super: {id: 'super', name: 'Super', desc: 'Super User', mask: 8},
-        public: {id: 'public', name: 'Public', desc: 'Public Access', mask: 16},
-        guest: {id: 'guest', name: 'Guest', desc: 'Guest Access', mask: 32}
+        public: {id: 'public', name: 'Public', desc: 'Public Access', mask: 16}
 })
 
 .constant('FREE_TRIAL_PERIOD', 30)
@@ -57,6 +56,11 @@ angular.module('dentalLinks')
             url: '/error/:error_key',
             templateUrl: 'partials/error.html',
             controller: 'ErrorController'
+        }).
+        state('createGuestReferral', {
+            url: '/create_guest_referral?pid',
+            templateUrl: 'partials/create_guest_referral.html',
+            controller: 'CreateGuestReferralsController',
         }).
         state('createReferral', {
             url: '/create_referral?pid',
@@ -204,11 +208,6 @@ angular.module('dentalLinks')
             controller: 'PluginConsoleController',
             access: [USER_ROLES.super]
         }).
-        state('guestRegistration', {
-            url: '/guest/registration/:practice_pid',
-            templateUrl: 'partials/guest/guest_registration.html',
-            controller: 'GuestRegistrationController'
-        }).
         state('activity', {
             url: '/activity',
             templateUrl: 'partials/activity.html',
@@ -244,31 +243,6 @@ angular.module('dentalLinks')
                         if(response.status === 422) {
                             $state.go('error_page', {error_key: 'confirmation_token.invalid'});
                         }
-                    });
-            }]
-
-        }).
-        state('confirmGuestEmail', {
-            url: '/guest/:token?pid',
-            onEnter: ['$state', '$stateParams', 'Guest', 'Notification', '$modal', 'ModalHandler', 'Auth', 'User', function($state, $stateParams, Guest, Notification, $modal, ModalHandler, Auth, User) {
-                Guest.verifyGuest({token: $stateParams.token}).$promise
-                    .then(function(success){
-                        Auth.set({token: success.user.authentication_token, email: success.user.email, roles: ['guest'], id: success.user.id, practice_id: success.user.practice_id});
-                        Auth.current_user = success.user;
-                        $state.go('createReferral', {pid: $stateParams.pid});
-                        //$state.go('error_page', {error_key: 'access.denied'});
-                    }, function(response){
-                        console.log(response);
-                        var modalInstance = $modal.open({
-                            templateUrl: 'partials/guest/guest_email_result.html',
-                            controller: 'GuestEmailResultController',
-                            resolve: {
-                                errors: function() {
-                                    return response.data.errors;
-                                }
-                            }
-                        });
-                        ModalHandler.set(modalInstance);
                     });
             }]
 
@@ -345,12 +319,6 @@ angular.module('dentalLinks')
 
 .config(['$locationProvider', function ($locationProvider) {
     /*$locationProvider.html5Mode(true);*/ //doesn't work without server-side url rewriting, to return on every request only the entrypoint page (like index.html)
-}])
-
-.config(['vcRecaptchaServiceProvider', function (vcRecaptchaServiceProvider) {
-    vcRecaptchaServiceProvider.setDefaults({
-        key: '{{GOOGLE_RECAPCHA_KEY}}'
-    });
 }])
 
 .config(['$httpProvider', function ($httpProvider) {

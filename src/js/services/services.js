@@ -41,6 +41,9 @@ angular.module('dentalLinksServices')
             $cookies.remove('auth');
         },
         hasRole: function(role){
+            if(!auth.roles){
+                return false;
+            }
             if(Array.isArray(role) && typeof(roles[0]) === 'string'){
                 role = Role.getRolesByNames(role);
             }
@@ -133,7 +136,8 @@ angular.module('dentalLinksServices')
         updateStatus: {method: 'PUT', url: API_ENDPOINT + '/referrals/:id/status'},
         findByPractice: {method: 'GET', url: API_ENDPOINT + '/referrals/practice/:id', isArray: false},
         countByInvited: {method: 'GET', url: API_ENDPOINT + '/referrals/count/:id', isArray: false},
-        countByPractice: {method: 'GET', url: API_ENDPOINT + '/referrals/count_by_practice/:id', isArray: false}
+        countByPractice: {method: 'GET', url: API_ENDPOINT + '/referrals/count_by_practice/:id', isArray: false},
+        createGuestReferral: {method: 'POST', url: API_ENDPOINT + '/referrals/new/guest_referral', isArray: false}
     });
 }])
 
@@ -220,6 +224,7 @@ angular.module('dentalLinksServices')
         changePassword: {method: 'PUT', url: API_ENDPOINT + '/users/:id/change_password'},
         sendPasswordInvitation: {method: 'PUT', url: API_ENDPOINT + '/users/:id/password'},
         savePassword: {method: 'POST', url: API_ENDPOINT + '/save_password'},
+        createGuest: {method: 'POST', url: API_ENDPOINT + '/guest'},
         mailUnsubscribe: {method: 'GET', params: {md_id: '@md_id', confirm: '@confirm'}, url: API_ENDPOINT + '/user/mail_unsubscribe'}
     })
 }])
@@ -314,13 +319,6 @@ angular.module('dentalLinksServices')
             url: API_ENDPOINT + '/promo/validate/:code'
         }
     })
-}])
-
-.factory('Guest', ['$resource', 'API_ENDPOINT', function($resource, API_ENDPOINT){
-    return $resource(API_ENDPOINT + '/guest/:id', {}, {
-        register: {method: 'POST', url: API_ENDPOINT + '/guest'},
-        verifyGuest: {method: 'GET', url: API_ENDPOINT + '/verify_guest'}
-    });
 }])
 
 .factory('PracticeEditMode', [function(){

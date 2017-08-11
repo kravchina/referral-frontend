@@ -8,8 +8,6 @@ angular.module('createReferrals')
         $scope.immediateUpdate = false;
 
         User.get({id: auth.id}, function(user){
-           if(user.guest)
-            return;
            $scope.providerLocations = user.addresses;
            if (user.addresses.length < 2){
                 $scope.disableLocations = true;
@@ -55,22 +53,8 @@ angular.module('createReferrals')
                 success: function (referral) {
                     Logger.debug('Sent referral #' + referral.id);
                     ReferralHelper.uploadAttachments($scope, referral.id, function(message){
-                        function afterCreateReferral() {
-                            UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-                            $state.go('viewReferral', {referral_id: referral.id, message: message, isNew: true});
-                        }
-                        if($scope.current_user.guest) {
-                            var modalInstance = $modal.open({
-                                templateUrl: 'partials/referral_create_message.html',
-                                controller: 'ReferralSuccessModalController'
-                            });
-                            ModalHandler.set(modalInstance);
-                            modalInstance.result.then(function() {
-                                afterCreateReferral();
-                            });
-                        } else {
-                            afterCreateReferral();
-                        }
+                        UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
+                        $state.go('viewReferral', {referral_id: referral.id, message: message, isNew: true});
                     });
                 },
                 failure: function (failure) {

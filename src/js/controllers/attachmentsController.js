@@ -69,8 +69,9 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
 
         $scope.current_user = Auth.current_user;
 
-        $scope.token = Auth.get().token;
-        $scope.from = Auth.get().email;
+        var auth = Auth.get();
+        $scope.token = auth ? auth.token : '';
+        $scope.from = auth ? auth.email : '';
 
         // non-displayed list of attachments to be uploaded on Save or Send
         $scope.model.attachments = [];

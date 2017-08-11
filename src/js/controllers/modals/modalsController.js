@@ -21,7 +21,7 @@ angular.module('modals')
     }
 
     $scope.ok = function (patient) {
-        patient.practice_id = Auth.getOrRedirect().practice_id;
+        patient.practice_id = Auth.get() ? Auth.get().practice_id : '';
         patient.birthday = moment(patient.birthday).format('YYYY-MM-DD');//fix for #114475519
         function createPatient(){
             Patient.save({patient: patient},
@@ -34,30 +34,34 @@ angular.module('modals')
                 });
         };
 
-        Patient.searchPatientDuplicate(patient, function (success) {
-            if (success.patient) {
-                var dedupingModalInstance = $modal.open({
-                    templateUrl: 'partials/patient_deduping_form.html',
-                    controller: 'DedupingPatientModalController',
-                    resolve: {
-                        isCreatingPatient: function(){
-                            return true;
+        if(patient.practice_id) {
+            Patient.searchPatientDuplicate(patient, function (success) {
+                if (success.patient) {
+                    var dedupingModalInstance = $modal.open({
+                        templateUrl: 'partials/patient_deduping_form.html',
+                        controller: 'DedupingPatientModalController',
+                        resolve: {
+                            isCreatingPatient: function(){
+                                return true;
+                            }
                         }
-                    }
-                });
+                    });
 
-                dedupingModalInstance.result.then(function (useExistingPatient) {
-                    if (useExistingPatient) {
-                        ModalHandler.close($modalInstance, success.patient);
-                    } else {
-                        createPatient();
-                    }
-                });
-            } else {
-                createPatient();
-            }
+                    dedupingModalInstance.result.then(function (useExistingPatient) {
+                        if (useExistingPatient) {
+                            ModalHandler.close($modalInstance, success.patient);
+                        } else {
+                            createPatient();
+                        }
+                    });
+                } else {
+                    createPatient();
+                }
 
-        });
+            });
+        } else {
+            ModalHandler.close($modalInstance, patient);
+        }
 
     };
     $scope.openDatePicker = function($event){
@@ -768,6 +772,15 @@ angular.module('modals')
         };
 }])
 
+.controller('SuccessGuestReferralModalController', ['$scope', '$modalInstance', 'ModalHandler',
+    function($scope, $modalInstance, ModalHandler){
+        $scope.message = 'Almost done! Please verify your email address by clicking the link in email message. Look for the message we just sent.';
+
+        $scope.ok = function(){
+            ModalHandler.close($modalInstance);
+        };
+}])
+
 .controller('RegistrationEmailResendModalController', ['$scope', '$modalInstance', 'ModalHandler',
     function ($scope, $modalInstance, ModalHandler) {
         $scope.ok = function () {
@@ -805,26 +818,3 @@ angular.module('modals')
             ModalHandler.close($modalInstance, false);
         };
 }])
-
-.controller('GuestEmailResultController', ['$scope', '$modalInstance', 'ModalHandler', 'errors',
-    function ($scope, $modalInstance, ModalHandler, errors) {
-        if(Array.isArray(errors.message)) {
-            $scope.errors = errors.message;
-        } else {
-            $scope.errors = [errors];
-        }
-
-        $scope.ok = function(){
-            ModalHandler.dismiss($modalInstance);
-        };
-}])
-
-.controller('GuestEmailVerificationModalController', ['$scope', '$state', '$modalInstance', 'ModalHandler',
-    function ($scope, $state, $modalInstance, ModalHandler) {
-        $scope.message = 'We have sent a link to your email address. Please check and click the link to continue with referral creation.';
-
-        $scope.ok = function(){
-            ModalHandler.dismiss($modalInstance);
-            $state.go('signIn');
-        };
-}]);
