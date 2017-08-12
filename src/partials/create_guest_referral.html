@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xs-12 col-sm-6" ng-class="{'has-error': form.guest.first_name.$dirty && form.guest.first_name.$invalid }">
+                        <div class="col-xs-12 col-sm-12" ng-class="{'has-error': form.guest.first_name.$dirty && form.guest.first_name.$invalid }">
                             <alert type="warning" ng-show="form.guest.first_name.$dirty && form.guest.first_name.$invalid">Please enter email address</alert>
                             <input type="text" class="form-control" name="email" placeholder="Email address"
                                    ng-model="guest.email" ng-required="true">

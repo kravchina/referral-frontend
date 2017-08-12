@@ -95,7 +95,7 @@ angular.module('createReferrals')
                         $scope.patient = success;
                         ReferralHelper.prepareGuestSubmit($scope, model.referral);
                         Referral.createGuestReferral(model, function(success){
-                            console.log('createGuestReferral', success);
+                            UnsavedChanges.resetCbHaveUnsavedChanges();
                             var modalInstance = $modal.open({
                                 templateUrl: 'partials/success_guest_referral_modal.html',
                                 controller: 'SuccessGuestReferralModalController',

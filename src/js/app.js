@@ -67,7 +67,7 @@ angular.module('dentalLinks')
             templateUrl: 'partials/create_referral.html',
             controller: 'CreateReferralsController',
             reloadOnSearch: false,
-            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux, USER_ROLES.guest]
+            access: [USER_ROLES.doctor, USER_ROLES.admin, USER_ROLES.aux]
         }).
         state('reviewReferral', {
             url: '/create_referral/:referral_id',
