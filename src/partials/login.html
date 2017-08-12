@@ -33,7 +33,7 @@
                     </p>
 
                     <p ng-if="pid" class="text-right">
-                        <a ng-href="/#/guest/registration/{{pid}}">Continue as guest</a>
+                        <a ui-sref="createGuestReferral({pid: pid})">Continue as guest</a>
                     </p>
 
                 </div>
