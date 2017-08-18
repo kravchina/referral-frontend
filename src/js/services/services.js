@@ -225,6 +225,7 @@ angular.module('dentalLinksServices')
         sendPasswordInvitation: {method: 'PUT', url: API_ENDPOINT + '/users/:id/password'},
         savePassword: {method: 'POST', url: API_ENDPOINT + '/save_password'},
         createGuest: {method: 'POST', url: API_ENDPOINT + '/guest'},
+        verifyGuest: {method: 'GET', params: {pid: '@pid'}, url: API_ENDPOINT + '/verify_guest_referral'},
         mailUnsubscribe: {method: 'GET', params: {md_id: '@md_id', confirm: '@confirm'}, url: API_ENDPOINT + '/user/mail_unsubscribe'}
     })
 }])

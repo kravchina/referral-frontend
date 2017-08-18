@@ -55,38 +55,7 @@ angular.module('createReferrals')
                 });
             }
 
-            $scope.saveTemplate = function (model) {
-                ReferralHelper.prepareSubmit($scope, model.referral);
-                var resultHandlers = {
-                    success: function (success) {
-                        $scope.model.referral.id = success.id;
-                        $scope.model.attachments = [];
-                        $scope.model.referral.notes_attributes = [];
-                        Notification.success('Template was saved successfully!');
-                        ReferralHelper.uploadAttachments($scope, success.id, function(message){
-                            UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-                            $state.go('reviewReferral', {referral_id: success.id, message: message}, {reload: true});
-                        });
-                    }, failure: function (failure) {
-                        Notification.error('An error occurred during referral template creation...');
-
-                    }};
-                Referral.saveTemplate(model, resultHandlers.success, resultHandlers.failure);
-            };
-
             $scope.createReferral = function (model) {
-                var resultHandlers = {
-                    success: function (referral) {
-                        Logger.debug('Sent referral #' + referral.id);
-                        ReferralHelper.uploadAttachments($scope, referral.id, function(message){
-                            UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-                            $state.go('viewReferral', {referral_id: referral.id, message: message, isNew: true});
-                        });
-                    },
-                    failure: function (failure) {
-                        Notification.error('An error occurred during referral creation...');
-                    }
-                };
                 User.createGuest({guest_user: $scope.guest, dest_practice_public_id: $stateParams.pid}, function(success){
                     $scope.guest = success;
                     $scope.patient.practice_id = $scope.guest.practice_id;

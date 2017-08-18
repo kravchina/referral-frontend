@@ -1,0 +1,26 @@
+<div class="row" ng-if="message">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Verification</h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>
+                            {{message}}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-6">
+                        <button ui-sref="signIn" class="btn btn-success pull-right">Ok</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

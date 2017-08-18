@@ -252,6 +252,11 @@ angular.module('dentalLinks')
             templateUrl: 'partials/unsubscribe.html',
             controller: 'UnsubscribeController'
         }).
+        state('verifyGuest', {
+            url: '/verify_guest?pid',
+            templateUrl: 'partials/verify_guest.html',
+            controller: 'VerifyGuestController'
+        }).
         state('debug', {
             url: '/debug',
             templateUrl: 'partials/debug.html'
