@@ -41,6 +41,7 @@ angular.module('dentalLinksServices', ['ngResource']);
 angular.module('dentalLinksDirectives', ['angularFileUpload']);
 angular.module('error', []);
 angular.module('unsubscribe', []);
+angular.module('guest', []);
 
 require('./controllers/admin/adminController.js');
 require('./controllers/admin/adminInviteController.js');
@@ -65,6 +66,7 @@ require('./controllers/reviewReferralsController.js');
 require('./controllers/savePasswordsController.js');
 require('./controllers/viewReferralsController.js');
 require('./controllers/unsubscribeController.js');
+require('./controllers/verifyGuestController.js');
 require('./directives/directives.js');
 require('./directives/referral/findPatientDirective.js');
 require('./directives/referral/findPracticeDirective.js');
@@ -99,6 +101,7 @@ angular.module('dentalLinks', [
     'localization',
     'error',
     'unsubscribe',
+    'guest',
     'isteven-multi-select',
     'angularFileUpload',
     'dentalLinksPartials'

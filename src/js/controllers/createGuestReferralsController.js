@@ -55,38 +55,7 @@ angular.module('createReferrals')
                 });
             }
 
-            $scope.saveTemplate = function (model) {
-                ReferralHelper.prepareSubmit($scope, model.referral);
-                var resultHandlers = {
-                    success: function (success) {
-                        $scope.model.referral.id = success.id;
-                        $scope.model.attachments = [];
-                        $scope.model.referral.notes_attributes = [];
-                        Notification.success('Template was saved successfully!');
-                        ReferralHelper.uploadAttachments($scope, success.id, function(message){
-                            UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-                            $state.go('reviewReferral', {referral_id: success.id, message: message}, {reload: true});
-                        });
-                    }, failure: function (failure) {
-                        Notification.error('An error occurred during referral template creation...');
-
-                    }};
-                Referral.saveTemplate(model, resultHandlers.success, resultHandlers.failure);
-            };
-
             $scope.createReferral = function (model) {
-                var resultHandlers = {
-                    success: function (referral) {
-                        Logger.debug('Sent referral #' + referral.id);
-                        ReferralHelper.uploadAttachments($scope, referral.id, function(message){
-                            UnsavedChanges.resetCbHaveUnsavedChanges(); // to make redirect
-                            $state.go('viewReferral', {referral_id: referral.id, message: message, isNew: true});
-                        });
-                    },
-                    failure: function (failure) {
-                        Notification.error('An error occurred during referral creation...');
-                    }
-                };
                 User.createGuest({guest_user: $scope.guest, dest_practice_public_id: $stateParams.pid}, function(success){
                     $scope.guest = success;
                     $scope.patient.practice_id = $scope.guest.practice_id;
@@ -95,19 +64,21 @@ angular.module('createReferrals')
                         $scope.patient = success;
                         ReferralHelper.prepareGuestSubmit($scope, model.referral);
                         Referral.createGuestReferral(model, function(success){
-                            UnsavedChanges.resetCbHaveUnsavedChanges();
-                            var modalInstance = $modal.open({
-                                templateUrl: 'partials/success_guest_referral_modal.html',
-                                controller: 'SuccessGuestReferralModalController',
-                                resolve: {
-                                    fullname: function () {
-                                        return $scope.form.patient.$invalid ? $scope.form.patient.$viewValue : '';
+                            ReferralHelper.uploadAttachments($scope, success.id, function(message){
+                                UnsavedChanges.resetCbHaveUnsavedChanges();
+                                var modalInstance = $modal.open({
+                                    templateUrl: 'partials/success_guest_referral_modal.html',
+                                    controller: 'SuccessGuestReferralModalController',
+                                    resolve: {
+                                        fullname: function () {
+                                            return $scope.form.patient.$invalid ? $scope.form.patient.$viewValue : '';
+                                        }
                                     }
-                                }
-                            });
-                            ModalHandler.set(modalInstance);
-                            modalInstance.result.then(function () {
-                                $state.go('signIn');
+                                });
+                                ModalHandler.set(modalInstance);
+                                modalInstance.result.then(function () {
+                                    $state.go('signIn');
+                                });
                             });
                         }, function(failure){
                             Notification.error(failure.data.message[0]);
@@ -116,7 +87,7 @@ angular.module('createReferrals')
                         Notification.error(failure.data.message[0]);
                     });
                 }, function(failure){
-                    Notification.error(failure.data.message[0]);
+                    Notification.error('user_or_provider_invitation.exists');
                 });
             };
 

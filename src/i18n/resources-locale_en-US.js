@@ -320,6 +320,11 @@
         "key": "referral.not.found",
         "value": "Sorry, referral not found or deleted",
         "description": "Message shown when referral not found or delete"
+    },
+    {
+        "key": "user_or_provider_invitation.exists",
+        "value": "This email already exists in the system, please sign in and send referral there.",
+        "description": "Message shown when provider invitation or user was found"
     }
 
 ]
