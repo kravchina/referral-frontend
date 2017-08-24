@@ -39,6 +39,10 @@ angular.module('createReferrals')
                 }
                 for (var i = 0; i < scope.uploader.queue.length; i++) {
                     var item = scope.uploader.queue[i];
+                    if(!item.headers.Authorization || !item.headers.From) {
+                        item.headers.Authorization = scope.guest.authentication_token;
+                        item.headers.From = scope.guest.email;
+                    }
                     item.formData.push({referral_id: referral_id});
                     item.upload();
                 }

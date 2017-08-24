@@ -64,19 +64,21 @@ angular.module('createReferrals')
                         $scope.patient = success;
                         ReferralHelper.prepareGuestSubmit($scope, model.referral);
                         Referral.createGuestReferral(model, function(success){
-                            UnsavedChanges.resetCbHaveUnsavedChanges();
-                            var modalInstance = $modal.open({
-                                templateUrl: 'partials/success_guest_referral_modal.html',
-                                controller: 'SuccessGuestReferralModalController',
-                                resolve: {
-                                    fullname: function () {
-                                        return $scope.form.patient.$invalid ? $scope.form.patient.$viewValue : '';
+                            ReferralHelper.uploadAttachments($scope, success.id, function(message){
+                                UnsavedChanges.resetCbHaveUnsavedChanges();
+                                var modalInstance = $modal.open({
+                                    templateUrl: 'partials/success_guest_referral_modal.html',
+                                    controller: 'SuccessGuestReferralModalController',
+                                    resolve: {
+                                        fullname: function () {
+                                            return $scope.form.patient.$invalid ? $scope.form.patient.$viewValue : '';
+                                        }
                                     }
-                                }
-                            });
-                            ModalHandler.set(modalInstance);
-                            modalInstance.result.then(function () {
-                                $state.go('signIn');
+                                });
+                                ModalHandler.set(modalInstance);
+                                modalInstance.result.then(function () {
+                                    $state.go('signIn');
+                                });
                             });
                         }, function(failure){
                             Notification.error(failure.data.message[0]);
@@ -85,7 +87,7 @@ angular.module('createReferrals')
                         Notification.error(failure.data.message[0]);
                     });
                 }, function(failure){
-                    Notification.error(failure.data.message[0]);
+                    Notification.error('user_or_provider_invitation.exists');
                 });
             };
 

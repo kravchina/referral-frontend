@@ -1,11 +1,10 @@
 angular.module('guest')
     .controller('VerifyGuestController', ['$scope', '$state', '$stateParams', 'User', '$modal', 'ModalHandler', '$location',
     function($scope, $state, $stateParams, User, $modal, ModalHandler, $location){
-        $scope.message = '';
+        $scope.isVerified = false;
 
         User.verifyGuest({pid: $stateParams.pid}, function(success) {
-            $scope.message = 'Success verified.';
-            console.log('verifyGuest', success);
+            $scope.isVerified = true;
         }, function(failure){
             $state.go('error_page', {error_key: failure.data.errors});
         });
