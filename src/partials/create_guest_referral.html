@@ -10,35 +10,27 @@
             <div class="row">
                 <div class="input-block col-xs-12 col-sm-12">
                     <div class="block-title">
-                        <h2>Referring doctor's name</h2>
+                        <h2>Referring doctor</h2>
                     </div>
 
                     <div class="row">
-                        <div class="col-xs-12 col-sm-6" ng-class="{'has-error': form.guest.first_name.$dirty && form.guest.first_name.$invalid }">
-                            <alert type="warning" ng-show="form.guest.first_name.$dirty && form.guest.first_name.$invalid">Please enter first name</alert>
-                            <input type="text" class="form-control" name="first_name" placeholder="First name"
+                        <div class="col-xs-12 col-sm-6 field-margin" ng-class="{'has-error': form.guestFirstName.$dirty && form.guestFirstName.$invalid }">
+                            <alert type="warning" ng-show="form.guestFirstName.$dirty && form.guestFirstName.$invalid">Please enter first name</alert>
+                            <input type="text" class="form-control" name="guestFirstName" placeholder="First name"
                                    ng-model="guest.first_name" ng-required="true">
                         </div>
 
-                        <div class="col-xs-12 col-sm-6" ng-class="{'has-error': form.guest.last_name.$dirty && form.guest.last_name.$invalid }">
-                            <alert type="warning" ng-show="form.guest.last_name.$dirty && form.guest.last_name.$invalid">Please enter last name</alert>
-                            <input type="text" class="form-control" name="last_name" placeholder="Last name"
+                        <div class="col-xs-12 col-sm-6 field-margin" ng-class="{'has-error': form.guestLastName.$dirty && form.guestLastName.$invalid }">
+                            <alert type="warning" ng-show="form.guestLastName.$dirty && form.guestLastName.$invalid">Please enter last name</alert>
+                            <input type="text" class="form-control" name="guestLastName" placeholder="Last name"
                                    ng-model="guest.last_name" ng-required="true">
                         </div>
                     </div>
 
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.guest.email.$dirty && form.guest.email.$invalid }">
-                    <div class="block-title">
-                        <h2>Referring doctor's email address</h2>
-                    </div>
-
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12" ng-class="{'has-error': form.guest.email.$dirty && form.guest.email.$invalid }">
-                            <alert type="warning" ng-show="form.guest.email.$dirty && form.guest.email.$invalid">Please enter email address</alert>
-                            <input type="text" class="form-control" name="email" placeholder="Email address"
+                        <div class="col-xs-12 col-sm-12" ng-class="{'has-error': form.guestEmail.$dirty && form.guestEmail.$invalid }">
+                            <alert type="warning" ng-show="form.guestEmail.$dirty && form.guestEmail.$invalid">Please enter email address</alert>
+                            <input type="text" class="form-control" name="guestEmail" placeholder="Email address"
                                    ng-model="guest.email" ng-required="true">
                         </div>
                     </div>
