@@ -6,6 +6,7 @@ angular.module('createReferrals')
             $scope.current_user = Auth.current_user;
 
             $scope.immediateUpdate = false;
+            $scope.datepickerStatus = {opened: false};
 
             $scope.model = {referral: {notes_attributes: [], notes: []}, practice: {}};
             $scope.model.referral.orig_provider_id = auth.id;
@@ -68,12 +69,7 @@ angular.module('createReferrals')
                                 UnsavedChanges.resetCbHaveUnsavedChanges();
                                 var modalInstance = $modal.open({
                                     templateUrl: 'partials/success_guest_referral_modal.html',
-                                    controller: 'SuccessGuestReferralModalController',
-                                    resolve: {
-                                        fullname: function () {
-                                            return $scope.form.patient.$invalid ? $scope.form.patient.$viewValue : '';
-                                        }
-                                    }
+                                    controller: 'SuccessGuestReferralModalController'
                                 });
                                 ModalHandler.set(modalInstance);
                                 modalInstance.result.then(function () {
@@ -91,37 +87,8 @@ angular.module('createReferrals')
                 });
             };
 
-            $scope.patientDialog = function () {
-                var modalInstance = $modal.open({
-                    templateUrl: 'partials/patient_form.html',
-                    controller: 'PatientModalController',
-                    resolve: {
-                        fullname: function () {
-                            return $scope.form.patient.$invalid ? $scope.form.patient.$viewValue : '';
-                        }
-                    }
-                });
-                ModalHandler.set(modalInstance);
-                modalInstance.result.then(function (patient) {
-                    $scope.patient = patient;
-                    $scope.form.patient.$setValidity('editable', true);
-                });
-            };
-
-            $scope.editPatientDialog = function() {
-                var modalInstance = $modal.open({
-                    templateUrl: 'partials/patient_form.html',
-                    controller: 'EditPatientModalController',
-                    resolve: {
-                        patientForEdit: function(){
-                            return $scope.patient;
-                        }
-                    }
-                });
-                ModalHandler.set(modalInstance);
-                modalInstance.result.then(function (patient) {
-                    $scope.patient = patient;
-                });
+            $scope.openPatientDatePicker = function($event){
+                $scope.datepickerStatus.opened = true;
             };
 
             ReferralHelper.trackUnsavedChanges($scope);
