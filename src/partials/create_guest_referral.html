@@ -30,14 +30,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.guest.first_name.$dirty && form.guest.first_name.$invalid }">
+                <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.guest.email.$dirty && form.guest.email.$invalid }">
                     <div class="block-title">
                         <h2>Referring doctor's email address</h2>
                     </div>
 
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12" ng-class="{'has-error': form.guest.first_name.$dirty && form.guest.first_name.$invalid }">
-                            <alert type="warning" ng-show="form.guest.first_name.$dirty && form.guest.first_name.$invalid">Please enter email address</alert>
+                        <div class="col-xs-12 col-sm-12" ng-class="{'has-error': form.guest.email.$dirty && form.guest.email.$invalid }">
+                            <alert type="warning" ng-show="form.guest.email.$dirty && form.guest.email.$invalid">Please enter email address</alert>
                             <input type="text" class="form-control" name="email" placeholder="Email address"
                                    ng-model="guest.email" ng-required="true">
                         </div>
@@ -52,24 +52,33 @@
                 <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.patient.$dirty && form.patient.$invalid }">
                     <div class="block-title">
                         <h2>Patient</h2>
-                        <button ng-if="patient.id" type="button" ng-click="editPatientDialog()" class="btn btn-orange btn-toggle-shifted btn-toggle-modal-note" data-toggle="tooltip"
-                                data-placement="top" title="Edit Patient" >
-                            <span class="dlicons-pencil"></span>
-                        </button>
-                        <button type="button" class="btn btn-orange btn-toggle" ng-click="patientDialog()" data-toggle="tooltip" data-placement="top"
-                                title="Create a New Patient Record" data-target="#modalPatient">
-                            <span class="dlicons-user-add"></span>
-                        </button>
                     </div>
 
-                    <alert type="{{alert.type}}" ng-show="form.patient.$dirty && form.patient.$invalid">Please create a new patient record</alert>
-                    <input type="text" class="form-control" name="patient" ng-model-options="{ debounce: 300 }"
-                           placeholder="Enter existing patient or add new with button on the right ..."
-                           ng-model="patient" typeahead-editable="false"
-                           typeahead="p as p.first_name +' ' +  p.last_name + (p.birthday ? ' (' + (p.birthday | date: 'shortDate') + ')' : '') for p in findPatient($viewValue)"
-                           ng-required="true"
-                           autocomplete="off">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 field-margin" ng-class="{ 'has-error': form.patientFirstName.$dirty && form.patientFirstName.$invalid }">
+                            <input type="text" name="patientFirstName" class="form-control" ng-model="patient.first_name" placeholder="Enter first name &hellip;" ng-required="true">
+                        </div>
 
+                        <div class="col-xs-12 col-sm-6 field-margin" ng-class="{ 'has-error': form.patientLastName.$dirty && form.patientLastName.$invalid }" >
+                            <input type="text" name="patientLastName" class="form-control" ng-model="patient.last_name" placeholder="Enter last name &hellip;" ng-required="true">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6" ng-class="{ 'has-error': form.patientPhone.$dirty && form.patientPhone.$invalid }" >
+                            <input type="tel" name="patientPhone" class="form-control" ng-model="patient.phone" phone-formatter>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="datepicker" ng-class="{ 'has-error': form.patientBirthday.$dirty && form.patientBirthday.$invalid }">
+                                <p class="input-group">
+                                    <input type="text" class="form-control" name="patientBirthday" datepicker-popup="M/d/yyyy" placeholder="m/d/yyyy" ng-model="patient.birthday" is-open="datepickerStatus.opened"  ng-required="true" close-text="Close"/>
+                                    <span class="input-group-btn datepicker-btn">
+                                        <button type="button" class="btn btn-default" ng-click="openPatientDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- .row -->
