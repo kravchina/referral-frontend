@@ -77,8 +77,9 @@
             <a class="navbar-brand" ng-href="#/history" ng-if="logged()" >{{env}}
                 <img src="img/DCL_banner-300x82.jpg" alt="Dental Care Links"/>
             </a>
-
-            <img src="img/DCL_wordmark-01.png" alt="Dental Care Links" ng-if="!logged()"/>
+            <a ng-href="#/sign_in">
+                <img src="img/DCL_wordmark-01.png" alt="Dental Care Links" ng-if="!logged()"/>
+            </a>
 
         </div>
         <!--<div class="navbar-collapse collapse">-->
