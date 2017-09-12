@@ -10,6 +10,13 @@ angular.module('login')
             Notification.error("invitation.exist");
         }
         $scope.pid = $stateParams.pid;
+
+        $scope.loginMode = false;
+
+        $scope.turnOnLoginMode = function() {
+            $scope.loginMode = true;
+        };
+
         $scope.login = function (user) {   /*{'user': {'email': user.email, 'password': user.password }}*/
 
             Login.login({'user': user},
