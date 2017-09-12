@@ -1,6 +1,12 @@
 <form name="form" novalidate class="simple-form signin-form">
     <div class="row">
         <div class="col-xs-10 col-md-4 center-block">
+            <a class="btn btn-orange btn-lg" ui-sref="createGuestReferral({pid: pid})">Continue as guest</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-10 col-md-4 center-block">
             <div class="form-group" ng-class="{'has-error': form.email.$invalid && form.email.$dirty}">
                 <label>E-Mail:</label>
                 <input type="email" name="email" id="email" ng-model="user.email" ng-required="true" class="form-control login"/>
@@ -31,11 +37,6 @@
                     <p class="text-right">
                         <a ng-href="#/register/promo/getstarted">Register</a>
                     </p>
-
-                    <p ng-if="pid" class="text-right">
-                        <a ui-sref="createGuestReferral({pid: pid})">Continue as guest</a>
-                    </p>
-
                 </div>
             </div>
         </div>
