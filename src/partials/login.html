@@ -1,5 +1,5 @@
 <form name="form" novalidate class="simple-form signin-form">
-    <div class="row">
+    <div class="row" ng-if="pid">
         <div class="col-xs-10 col-md-4 center-block">
             <a class="btn btn-orange btn-lg" ui-sref="createGuestReferral({pid: pid})">Continue as guest</a>
         </div>
