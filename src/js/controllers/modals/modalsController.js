@@ -5,7 +5,6 @@ angular.module('modals')
     $scope.title = 'Create a New Patient Record';
     $scope.alerts = [];
     $scope.datepickerStatus = {opened: false};
-    $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
 
     if (fullname) {
         var spacePosition = fullname.lastIndexOf(' '); //lastIndexOf is needed for names with several words, like Jean Francois Moullin, where Jean Francois is a name and Moullin is a surname
@@ -91,8 +90,7 @@ angular.module('modals')
     $scope.title = 'Edit Patient Record';
     $scope.datepickerStatus = {opened: false};
     $scope.alerts = [];
-    $scope.salutations = ['Mr.', 'Ms.', 'Mrs.', 'Dr.'];
-    $scope.patient = {salutation: patientForEdit.salutation, first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, middle_initial: patientForEdit.middle_initial, birthday: moment(patientForEdit.birthday).toDate(), email: patientForEdit.email, phone: patientForEdit.phone};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
+    $scope.patient = {first_name: patientForEdit.first_name, last_name: patientForEdit.last_name, birthday: moment(patientForEdit.birthday).toDate(), email: patientForEdit.email, phone: patientForEdit.phone};//we need a copy of the object to be able to cancel changes (otherwise two-way binding changes the patient's data on parent page right away)
     $scope.ok = function (patient) {
         patient.birthday = moment(patient.birthday).format('YYYY-MM-DD');//fix for #114475519
         function updatePatient () {
