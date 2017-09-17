@@ -254,8 +254,12 @@ angular.module('dentalLinks')
         }).
         state('verifyGuest', {
             url: '/verify_guest?pid',
-            templateUrl: 'partials/verify_guest.html',
+            template: '',
             controller: 'VerifyGuestController'
+        }).
+        state('verifyGuestSuccess', {
+            url: '/verify_guest_success',
+            templateUrl: 'partials/verify_guest.html'
         }).
         state('debug', {
             url: '/debug',
