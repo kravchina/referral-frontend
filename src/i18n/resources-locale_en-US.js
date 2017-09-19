@@ -325,6 +325,15 @@
         "key": "user_or_provider_invitation.exists",
         "value": "This email already exists in the system, please sign in and send referral there.",
         "description": "Message shown when provider invitation or user was found"
+    },
+    {
+        "key": "referral.already_verified.header",
+        "value": "Referral already verified",
+        "description": "Header shown when referral is already verified"
+    },
+    {
+        "key": "referral.already_verified",
+        "value": "The referral you're trying to verify has been verified already.",
+        "description": "Message shown when referral is already verified"
     }
-
 ]
