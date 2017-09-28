@@ -1,11 +1,11 @@
 angular.module('registration')
 // Just for invited providers to some existing practice or to a new practice
-    .controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Notification', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Referral', 'USER_ROLES',
-    function ($scope, $location, $stateParams, $modal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral, USER_ROLES) {
+    .controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Notification', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Referral', 'USER_ROLES', 'Promo',
+    function ($scope, $location, $stateParams, $modal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral, USER_ROLES, Promo) {
         $scope.practice = {};
         $scope.isResend = false;
 
-        $scope.promo = $stateParams.promo;
+        $scope.originalPromo = $scope.promo = $stateParams.promo;
 
         $scope.practiceTypes = Procedure.practiceTypes();
 
@@ -16,7 +16,7 @@ angular.module('registration')
 
 
         $scope.initInvitation = function () {
-            if ($scope.promo) {
+            if ($scope.promo || $scope.promo === '') {
                 $scope.invitation = { roles_mask: USER_ROLES.doctor.mask};
             } else {
                 $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
@@ -86,27 +86,39 @@ angular.module('registration')
             if ($scope.form.$valid) {
                 //we check first, that email is new and was not used for invitation
                 ProviderInvitation.validate({email: invitation.email}, function(success){
-                    Registration.register_with_promo({
-                            user: invitation,
-                            practice: practice,
-                            security_code: $scope.security_code,
-                            skip_security_code: true,
-                            promo: $scope.promo
-                        },
-                        function(success){
-                            var modalInstance = $modal.open({
-                                templateUrl: 'partials/promo_registration_result.html',
-                                controller: 'PromoRegistrationResultController'
-                            });
-                            ModalHandler.set(modalInstance);
-                            modalInstance.result.then(function (res) {
-                                $state.go('signIn');
-                            });
-                            console.log('registered a new account: ' + JSON.stringify(success));
-                        },
-                        function(fail){
-                            Notification.error(fail.data.message);
+                    Promo.validate({code: $scope.promo}).$promise
+                        .then(function(){
+                            Registration.register_with_promo({
+                                    user: invitation,
+                                    practice: practice,
+                                    security_code: $scope.security_code,
+                                    skip_security_code: true,
+                                    promo: $scope.promo
+                                },
+                                function(success){
+                                    var modalInstance = $modal.open({
+                                        templateUrl: 'partials/promo_registration_result.html',
+                                        controller: 'PromoRegistrationResultController'
+                                    });
+                                    ModalHandler.set(modalInstance);
+                                    modalInstance.result.then(function (res) {
+                                        $state.go('signIn');
+                                    });
+                                    console.log('registered a new account: ' + JSON.stringify(success));
+                                },
+                                function(fail){
+                                    Notification.error(fail.data.message);
 
+                                });
+                        }, function(response){
+                            if(response.status === 404) {
+                                Notification.error('promotion.not.found');
+                            }
+                            if(response.status === 422) {
+                                Notification.error('promotion.expired');
+                            }
+                            $scope.form.promo.$invalid = true;
+                            $scope.form.promo.$valid = false;
                         });
                 },
                 function(error){
@@ -182,6 +194,11 @@ angular.module('registration')
             if(invitation.roles_mask == USER_ROLES.aux.mask) {
                 invitation.specialty_type_id = '';
             }
+        };
+
+        $scope.promoChange = function() {
+            if($scope.promo === undefined)
+                $scope.promo = '';
         };
 
         $scope.resend = function(){

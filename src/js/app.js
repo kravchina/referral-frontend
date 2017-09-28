@@ -35,10 +35,12 @@ angular.module('dentalLinks')
             controller: 'RegistrationController'
         }).
         state('promotion', {
-            url: '/register/promo/:promo',
+            url: '/promo/register/:promo',
             templateUrl: 'partials/registration.html',
             controller: 'RegistrationController',
             onEnter: ['$state', '$stateParams', 'Promo', function($state, $stateParams, Promo) {
+                if(!$stateParams.promo) return;
+
                 Promo.validate({code: $stateParams.promo}).$promise
                     .then(function(){
                         // Promo code is valid, do nothing

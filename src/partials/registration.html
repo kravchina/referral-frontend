@@ -18,6 +18,14 @@
                 </div>
             </div>
 
+
+                        <div class="row">
+                            <div class="input-block col-md-6" ng-class="{'has-error': (submitted || form.promo.$dirty) && form.promo.$invalid }">
+                                <input type="text" name="promo" class="form-control" ng-model="promo" placeholder="Enter promo &hellip;" ng-change="promoChange()" ng-disabled="originalPromo && originalPromo.length" ng-required="true">
+                                <label>Promo code</label>
+                            </div>
+                        </div>
+
                         <div class="row text-block">
                             <h3>Access details</h3>
                         </div>
@@ -120,8 +128,8 @@
                             </div>
                         </div>
                         <div class="button-block" style="padding-top: 20px;">
-                            <button class="btn btn-green btn-lg" ng-click="register(practice, invitation)" ng-hide="promo">Register</button>
-                            <button class="btn btn-green btn-lg" ng-click="createPracticeAndRegister(practice, invitation)" ng-show="promo" ng-disabled="form.$invalid || invitation.password_confirmation !== invitation.password || isResend">Register</button>
+                            <button class="btn btn-green btn-lg" ng-click="register(practice, invitation)" ng-hide="promo || promo === ''">Register1</button>
+                            <button class="btn btn-green btn-lg" ng-click="createPracticeAndRegister(practice, invitation)" ng-show="promo || promo === ''" ng-disabled="form.$invalid || invitation.password_confirmation !== invitation.password || isResend">Register2</button>
                             <button class="btn btn-green btn-lg" ng-click="discard()">Discard</button>
                         </div>
         </div>
