@@ -8,7 +8,7 @@ var GuestPage = function() {
     };
 
     this.continueGuestLink = function() {
-        return element(by.css('p a[ui-sref="createGuestReferral({pid: pid})"]'));
+        return element(by.css('a[ui-sref="createGuestReferral({pid: pid})"]'));
     };
 
     this.openReferral = function() {
