@@ -71,11 +71,6 @@
         "description":"Error message for the case when attachment file is not supported"
     },
     {
-        "key":"user.exists",
-        "value":"Sorry an account with this email address already exists. If this is your email address, please login into your existing account at <a href='www.dentalcarelinks.com'>www.dentalcarelinks.com</a>. If you need further assistance please email us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
-        "description":"Error message for when person is trying to register with an email that we already have as a registered user or an invitation"
-    },
-    {
         "key":"referral.success.create",
         "value":"Your referral was sent successfully",
         "description":"Your referral was sent successfully"
@@ -322,9 +317,9 @@
         "description": "Message shown when referral not found or delete"
     },
     {
-        "key": "user_or_provider_invitation.exists",
-        "value": "This email already exists in the system, please sign in and send referral there.",
-        "description": "Message shown when provider invitation or user was found"
+        "key":"user.exists",
+        "value":"Sorry an account with this email address already exists. If this is your email address, please login to your existing account at <a href='www.dentalcarelinks.com'>www.dentalcarelinks.com</a>. If you need further assistance please email us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
+        "description":"Error message for when person is trying to register with an email that we already have as a provider invitation"
     },
     {
         "key": "referral.already_verified.header",

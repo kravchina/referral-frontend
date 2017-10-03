@@ -500,6 +500,7 @@ angular.module('modals')
             $scope.listOutputUsers = [];
 
             $scope.checkEmail = function (email) {
+                // this checks for the same email address among existing invitations in the database
                 ProviderInvitation.validate({email: email}, function (success) {
                     $scope.userForm.email.$setValidity('email', true);
                 }, function (failure) {

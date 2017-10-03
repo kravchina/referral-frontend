@@ -83,7 +83,7 @@ angular.module('createReferrals')
                         Notification.error(failure.data.message[0]);
                     });
                 }, function(failure){
-                    Notification.error('user_or_provider_invitation.exists');
+                    Notification.error('user.exists');
                 });
             };
 
