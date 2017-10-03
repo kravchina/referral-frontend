@@ -318,7 +318,7 @@
     },
     {
         "key":"user.exists",
-        "value":"Sorry an account with this email address already exists. If this is your email address, please login to your existing account at <a href='www.dentalcarelinks.com'>www.dentalcarelinks.com</a>. If you need further assistance please email us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
+        "value":"Sorry an account with this email address already exists. If this is your email address, please login to your existing account at <a href='http://www.dentalcarelinks.com/referrals/'>http://www.dentalcarelinks.com/referrals/</a>. If you need further assistance please email us at <a href='mailto:info@dentalcarelinks.com'>info@dentalcarelinks.com</a>",
         "description":"Error message for when person is trying to register with an email that we already have as a provider invitation"
     },
     {
