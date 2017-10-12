@@ -4,7 +4,7 @@ angular.module('registration')
     function ($scope, $location, $stateParams, $modal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral, USER_ROLES, Promo) {
         $scope.practice = {};
         $scope.isResend = false;
-
+        $scope.isPromoRegistration = $stateParams.isPromoRegistration;
         $scope.originalPromo = $scope.promo = $stateParams.promo;
 
         $scope.practiceTypes = Procedure.practiceTypes();
@@ -16,7 +16,7 @@ angular.module('registration')
 
 
         $scope.initInvitation = function () {
-            if ($scope.promo || $scope.promo === '') {
+            if ($scope.isPromoRegistration) {
                 $scope.invitation = { roles_mask: USER_ROLES.doctor.mask};
             } else {
                 $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
@@ -194,11 +194,6 @@ angular.module('registration')
             if(invitation.roles_mask == USER_ROLES.aux.mask) {
                 invitation.specialty_type_id = '';
             }
-        };
-
-        $scope.promoChange = function() {
-            if($scope.promo === undefined)
-                $scope.promo = '';
         };
 
         $scope.resend = function(){
