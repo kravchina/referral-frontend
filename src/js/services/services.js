@@ -408,6 +408,40 @@ angular.module('dentalLinksServices')
     }
 })
 
+.factory('CssInjector', ['$compile', '$rootScope', function ($compile, $rootScope) {
+    var scope;
+    var head = angular.element(document.getElementsByTagName('head')[0]);
+    var _initScope = function()
+    {
+        if(scope === undefined)
+        {
+            scope = $rootScope.$new(true);
+        }
+    };
+
+    return {
+        add: function(href) {
+            _initScope();
+            if(scope.injectedStylesheets === undefined)
+            {
+                scope.injectedStylesheets = [];
+                head.append($compile("<link ng-repeat='stylesheet in injectedStylesheets' ng-href='{{stylesheet.href}}' rel='stylesheet' />")(scope));
+            }
+            else
+            {
+                for(var i in scope.injectedStylesheets)
+                {
+                    if(scope.injectedStylesheets[i].href == href) {
+                        return;
+                    }
+                }
+            }
+
+            scope.injectedStylesheets.push({href: href});
+        }
+    };
+}])
+
 .factory('Report', ['$resource', 'API_ENDPOINT', function ($resource, API_ENDPOINT) {
     return $resource(API_ENDPOINT + '/report', {}, {
         getInvitations: {method: 'POST', url: API_ENDPOINT + '/report/show_invitations', isArray: true},
