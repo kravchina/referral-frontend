@@ -19,7 +19,7 @@
             </div>
 
 
-                        <div class="row">
+                        <div class="row" ng-if="isPromoRegistration">
                             <div class="input-block col-md-6" ng-class="{'has-error': (submitted || form.promo.$dirty) && form.promo.$invalid }">
                                 <input type="text" name="promo" class="form-control" ng-model="promo" placeholder="Enter promo &hellip;" ng-disabled="originalPromo && originalPromo.length" ng-required="true">
                                 <label>Promo code</label>
