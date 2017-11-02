@@ -59,7 +59,7 @@ gulp.task('publish', ['build'], function() {
 
 gulp.task('run', ['build', 'watch', 'server']);
 
-gulp.task('build', ['copy-files']);
+gulp.task('build', ['copy-files', 'copy-brandings-css', 'copy-brandings-img']);
 
 gulp.task('git-revision', function(cb){
     git.revParse({args : '--verify HEAD'}, function (err, revision) {
@@ -144,6 +144,20 @@ gulp.task('copy-files', ['build-js', 'build-css', 'build-templates'], function()
 
     gulp.src('src/docs/**/*')
         .pipe(gulp.dest(buildPath + '/docs'));
+});
+
+gulp.task('copy-brandings-css', function() {
+    return gulp.src('src/brandings/*.css')
+        .pipe(sourcemaps.init())
+        .pipe(minifyCss())
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest(buildPath + '/brandings'));
+});
+
+gulp.task('copy-brandings-img', function() {
+    return gulp.src('src/brandings/img/**/*')
+        .pipe(gulp.dest(buildPath + '/brandings/img'));
+
 });
 
 gulp.task('build-templates', ['git-revision'], function(){
