@@ -291,13 +291,18 @@ angular.module('dentalLinks')
         };
     }]);
 }])
-    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', '$modal', 'Logger', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, $modal, Logger) {
+    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', '$modal', 'Logger', 'CustomBranding', 'BrandingSettings', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, $modal, Logger, CustomBranding, BrandingSettings) {
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
             ModalHandler.dismissIfOpen();  //close dialog if open.
             if (!Auth.authorize(toState.access)) {
                 event.preventDefault();
                 $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.url(), params: $location.search()});
+            }
+            if ($location.search().pid){
+                BrandingSettings.get({pid: $location.search().pid}, function(success){
+                    CustomBranding.apply({pidBased: true, settings: success.ui_data });
+                })
             }
         });
 
