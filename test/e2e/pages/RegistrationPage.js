@@ -1,6 +1,6 @@
 var RegistrationPage = function() {
     this.urlPart = "/#/register/";
-    this.urlPromoPart = "/#/promo/register/";
+    this.urlPromoPart = "/#/register/promo/";
 
     this.open = function(token) {
         // TODO [ak] inherit this code somehow?..
