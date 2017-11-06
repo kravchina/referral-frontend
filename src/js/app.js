@@ -32,13 +32,20 @@ angular.module('dentalLinks')
         state('registration', {
             url: '/register/:invitation_token',
             templateUrl: 'partials/registration.html',
-            controller: 'RegistrationController'
+            controller: 'RegistrationController',
+            onEnter: ['$stateParams', function($stateParams){
+                $stateParams.isPromoRegistration = false;
+            }]
         }).
         state('promotion', {
-            url: '/register/promo/:promo',
+            url: '/promo/register/:promo',
             templateUrl: 'partials/registration.html',
             controller: 'RegistrationController',
             onEnter: ['$state', '$stateParams', 'Promo', function($state, $stateParams, Promo) {
+                $stateParams.isPromoRegistration = true;
+
+                if(!$stateParams.promo) return;
+
                 Promo.validate({code: $stateParams.promo}).$promise
                     .then(function(){
                         // Promo code is valid, do nothing
@@ -284,13 +291,18 @@ angular.module('dentalLinks')
         };
     }]);
 }])
-    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', '$modal', 'Logger', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, $modal, Logger) {
+    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', '$modal', 'Logger', 'CustomBranding', 'BrandingSettings', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, $modal, Logger, CustomBranding, BrandingSettings) {
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
             ModalHandler.dismissIfOpen();  //close dialog if open.
             if (!Auth.authorize(toState.access)) {
                 event.preventDefault();
                 $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.url(), params: $location.search()});
+            }
+            if ($location.search().pid){
+                BrandingSettings.get({pid: $location.search().pid}, function(success){
+                    CustomBranding.apply({pidBased: true, settings: success.ui_data });
+                })
             }
         });
 
