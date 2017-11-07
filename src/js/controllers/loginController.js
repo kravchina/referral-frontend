@@ -1,6 +1,6 @@
 angular.module('login')
-    .controller('LoginController', ['$scope', '$stateParams', 'Auth', 'User', '$location', 'Login', 'redirect', 'Logger', 'Notification', 'CustomBranding',
-    function ($scope, $stateParams, Auth, User, $location, Login, redirect, Logger, Notification, CustomBranding) {
+    .controller('LoginController', ['$scope', '$stateParams', 'Auth', 'User', '$location', 'Login', 'redirect', 'Logger', 'Notification', 'CustomBranding', '$css',
+    function ($scope, $stateParams, Auth, User, $location, Login, redirect, Logger, Notification, CustomBranding, $css) {
         var auth = Auth.get();
         if (auth) { // user is authenticated but tries to open login window
             $location.path('/history');
@@ -23,6 +23,7 @@ angular.module('login')
                 function (success) {
                     Auth.set({token: success.token, email: user.email, roles: success.roles, id: success.id, practice_id: success.practice_id});
                     user = User.get({id: success.id}, function(success){
+                        $css.removeAll();
                         if(user.practice && user.practice.designation && user.practice.designation.branding){
                             CustomBranding.apply({pidBased: false, settings: user.practice.designation.branding.ui_data });
                         }
