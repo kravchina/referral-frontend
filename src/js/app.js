@@ -293,6 +293,10 @@ angular.module('dentalLinks')
 }])
     .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', '$modal', 'Logger', 'CustomBranding', 'BrandingSettings', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, $modal, Logger, CustomBranding, BrandingSettings) {
 
+        if(CustomBranding.get()) {
+            CustomBranding.apply(CustomBranding.get());
+        }
+
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
             ModalHandler.dismissIfOpen();  //close dialog if open.
             if (!Auth.authorize(toState.access)) {

@@ -433,17 +433,28 @@ angular.module('dentalLinksServices')
             sendQuestion: {method: 'POST', url: API_ENDPOINT + '/support/send_question'}
         })
 }])
-.factory('CustomBranding', ['$css', function($css){
+.factory('CustomBranding', ['$css', '$cookies', function($css, $cookies){
     var currentBranding = {};
     return {
         apply: function(brandingSettings){
             if (brandingSettings.pidBased || !currentBranding.pidBased){
                 //apply branding if from pid or if current branding is not from pid (don't allow to override pid-based branding by non-pid-based branding)
+                this.save(brandingSettings);
                 currentBranding = brandingSettings;
                 var parsedSetting = JSON.parse(brandingSettings.settings);
                 $css.removeAll();
                 $css.add('brandings/' + parsedSetting.path)
             }
+        },
+        save: function(value) {
+            $cookies.putObject('branding', value);
+        },
+        get: function() {
+            return $cookies.getObject('branding');
+        },
+        remove: function() {
+            $css.removeAll();
+            $cookies.remove('branding');
         }
     }
 }])
