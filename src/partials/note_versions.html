@@ -13,14 +13,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="version in versions" ng-if="version.event === 'update'">
+                    <tr ng-repeat="version in versions | limitTo: -10" ng-if="version.event === 'update'">
                         <td>{{version.reify.updated_at | date: 'short'}}</td>
                         <td>{{version.reify.message}}</td>
                         <td>{{version.whodunnit}}</td>
                     </tr>
                 </tbody>
         </table>
-        <p>{{version.reify.message}}</p>
     </div>
 </div>
 <div class="modal-footer">
