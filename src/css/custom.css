@@ -1835,8 +1835,8 @@ label.tooth-label-view {
 	margin-left: 1%;
 }
 
-.note-block .edit.ng-hide + .datestamp {
-	margin-left: 4.7% !important;
+.note-icons {
+	width: 5%;
 }
 
 .resend-link{

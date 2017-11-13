@@ -24,13 +24,16 @@
                         <span class="note-content" ng-if="!note.trackable_id">{{note.message}}</span>
                     <span class="note-expand more">See more</span>
                     <span class="note-expand less">See less</span>
-                    <span class="edit" ng-click="editNote(note, $index)" ng-if="!note.trackable_id" ng-hide="auth.id != note.user_id">
-                        <span class="dlicons-pencil" title="Edit note"></span>
+                    <span class="note-icons">
+                        <span class="edit" ng-click="editNote(note, $index)" ng-if="!note.trackable_id"
+                              ng-hide="auth.id != note.user_id">
+                            <span class="dlicons-pencil" title="Edit note"></span>
+                        </span>
+                        <span class="edit" ng-click="showHistory(note)" ng-if="hasUpdates(note)">
+                            <span class="glyphicon glyphicon-list-alt" title="Changes history"></span>
+                        </span>
                     </span>
-                    <span class="edit" ng-click="showHistory(note)" ng-if="hasUpdates(note)">
-                        <span class="glyphicon glyphicon-list-alt" title="Changes history"></span>
-                    </span>
-                    <span class="datestamp">{{note.updated_at | date: 'short' }}</span>
+                    <span class="datestamp datestamp-note">{{note.updated_at | date: 'short' }}</span>
                 </li>
 
             </ul>
