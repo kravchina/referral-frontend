@@ -45,6 +45,16 @@
         "description":"Error message for the case when promo code was not found"
     },
     {
+        "key":"promotion.required.header",
+        "value":"Promo",
+        "description":"Error message for the case when promo code was empty"
+    },
+    {
+        "key":"promotion.required",
+        "value":"Promo code can`t be empty",
+        "description":"Error message for the case when promo code was empty"
+    },
+    {
         "key":"practice.create.failed",
         "value":"Unable to create practice",
         "description":"Error message for the case when practice creation was failed"
