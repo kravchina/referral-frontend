@@ -44,6 +44,10 @@ angular.module('dentalLinks')
             onEnter: ['$state', '$stateParams', 'Promo', function($state, $stateParams, Promo) {
                 $stateParams.isPromoRegistration = true;
 
+                if(!$stateParams.promo) {
+                    return $state.go('error_page', {error_key: 'promotion.required'});
+                }
+
                 Promo.validate({code: $stateParams.promo}).$promise
                     .then(function(){
                         // Promo code is valid, do nothing
