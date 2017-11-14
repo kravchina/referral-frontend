@@ -257,14 +257,14 @@ angular.module('dentalLinks')
             templateUrl: 'partials/unsubscribe.html',
             controller: 'UnsubscribeController'
         }).
-        state('verifyGuest', {
-            url: '/verify_guest?pid',
+        state('activateGuestReferral', {
+            url: '/activate_guest_referral?activation_token',
             template: '',
-            controller: 'VerifyGuestController'
+            controller: 'ActivateGuestReferralController'
         }).
-        state('verifyGuestSuccess', {
-            url: '/verify_guest_success',
-            templateUrl: 'partials/verify_guest.html'
+        state('guestReferralActivated', {
+            url: '/guest_referral_activated',
+            templateUrl: 'partials/guest_referral_activated.html'
         }).
         state('debug', {
             url: '/debug',
