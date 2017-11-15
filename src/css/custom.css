@@ -1426,7 +1426,6 @@ td.cell-from .practice, td.cell-to .practice {
 		text-decoration: underline;
 	}
 	.note-block .datestamp {
-		margin-left: 2%;
 		width: 10.5%;
 	}
 	.filter-controls-block {
@@ -1637,7 +1636,7 @@ td.cell-from .practice, td.cell-to .practice {
 
 	.modal-dialog {
 		margin: 80px auto;
-		width: 450px;
+		/*width: 450px;*/
 	}
     .modal-sm {
         width: 300px;
@@ -1836,8 +1835,8 @@ label.tooth-label-view {
 	margin-left: 1%;
 }
 
-.note-block .edit.ng-hide + .datestamp {
-	margin-left: 4.7% !important;
+.note-icons {
+	width: 5%;
 }
 
 .resend-link{

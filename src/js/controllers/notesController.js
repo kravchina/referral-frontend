@@ -48,6 +48,25 @@ angular.module('dentalLinks')
             });
         };
 
+        $scope.showHistory = function(note){
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/note_versions.html',
+                controller: 'NoteVersionsModalController',
+                size: 'lg',
+                resolve: {
+                    versions : function(){
+                        return note.versions;
+                    }
+                }
+            });
+        };
+        
+        $scope.hasUpdates = function (note) {
+            return note.versions.some(function (version) {
+                return version.event === 'update'
+            });
+        };
+
         $scope.editNote = function(note, index){
             var modalInstance = $modal.open({
                 templateUrl: 'partials/edit_note_form.html',

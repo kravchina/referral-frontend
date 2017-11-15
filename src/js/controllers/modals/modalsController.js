@@ -210,6 +210,13 @@ angular.module('modals')
     };
 
 }])
+.controller('NoteVersionsModalController', ['$scope', '$modalInstance', 'ModalHandler', 'versions', function ($scope, $modalInstance, ModalHandler, versions) {
+    $scope.versions = versions;
+    $scope.ok = function () {
+        ModalHandler.close($modalInstance);
+    };
+
+}])
 
 .controller('ProviderModalController',
     ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Spinner', 'sendEmailNotification', 'inviterId',
