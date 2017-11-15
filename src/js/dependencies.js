@@ -22,6 +22,7 @@ require('jsPDFfonts');
 require('angularStripe');
 require('angularCreditCards');
 require('angular-clipboard');
+require('angular-css');
 
 angular.module('jsPDF', []).factory('jsPDF', function(){ return require('jsPDF');});
 
@@ -104,7 +105,8 @@ angular.module('dentalLinks', [
     'guest',
     'isteven-multi-select',
     'angularFileUpload',
-    'dentalLinksPartials'
+    'dentalLinksPartials',
+    'angularCSS'
 ]);
 
 require('./directives/referral/findPatientController.js');
