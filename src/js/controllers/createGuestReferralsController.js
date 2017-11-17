@@ -83,7 +83,11 @@ angular.module('createReferrals')
                         Notification.error(failure.data.message[0]);
                     });
                 }, function(failure){
-                    Notification.error('user.exists');
+                    if(failure.status >= 500) {
+                        Notification.error('error.http.serverError');
+                    } else {
+                        Notification.error(failure.data.message[0]);
+                    }
                 });
             };
 
