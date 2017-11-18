@@ -322,6 +322,11 @@
         "description":"Error message for when person is trying to register with an email that we already have as a registered user or an invitation"
     },
     {
+        "key":"provider_invitation.exists",
+        "value":"Sorry an account with this email address already exists",
+        "description":"Error message for when person is trying to register with an email that we already have as a registered user or an invitation"
+    },
+    {
         "key": "referral.already_verified.header",
         "value": "Referral already verified",
         "description": "Header shown when referral is already verified"
