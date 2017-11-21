@@ -773,7 +773,7 @@ angular.module('modals')
 
 .controller('SuccessGuestReferralModalController', ['$scope', '$modalInstance', 'ModalHandler',
     function($scope, $modalInstance, ModalHandler){
-        $scope.message = 'Almost done! Please verify your email address by clicking the link in email message we just sent.';
+        $scope.message = "Almost done! We need you to confirm the entered email is yours. Please activate the referral by clicking the link in the email message we've sent to you.";
 
         $scope.ok = function(){
             ModalHandler.close($modalInstance);
