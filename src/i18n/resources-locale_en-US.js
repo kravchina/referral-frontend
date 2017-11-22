@@ -332,13 +332,13 @@
         "description":"Error message for when person is trying to register with an email that we already have as a provider invitation"
     },
     {
-        "key": "referral.already_verified.header",
-        "value": "Referral already verified",
-        "description": "Header shown when referral is already verified"
+        "key": "referral.already_activated.header",
+        "value": "Referral already activated",
+        "description": "Header shown when referral is already activated"
     },
     {
-        "key": "referral.already_verified",
-        "value": "The referral you're trying to verify has been verified already.",
-        "description": "Message shown when referral is already verified"
+        "key": "referral.already_activated",
+        "value": "The referral you're trying to activate has been activated already.",
+        "description": "Message shown when referral is already activated"
     }
 ]
