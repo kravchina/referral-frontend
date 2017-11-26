@@ -306,8 +306,10 @@ angular.module('dentalLinks')
                 $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.url(), params: $location.search()});
             }
             if ($location.search().pid){
-                BrandingSettings.get({pid: $location.search().pid}, function(success){
-                    CustomBranding.apply({pidBased: true, settings: success.ui_data });
+                BrandingSettings.get({pid: $location.search().pid}, function(branding){
+                    if(branding.id){
+                        CustomBranding.apply({pidBased: true, settings: branding.ui_data });
+                    }
                 })
             }
         });
