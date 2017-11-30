@@ -350,10 +350,12 @@ textarea.form-control {
 	height: auto;
 	padding: 20px 10px;
 }
+/*
 .navbar .navbar-brand img {
     width: 453px;
     height: 82px;
 }
+*/
 .navbar .navbar-brand > strong {
 	font-weight: 900;
 }
