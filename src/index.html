@@ -74,10 +74,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" ng-href="#/history" ng-if="logged()">{{env}}
+            {{env}}
+            <a class="navbar-brand" ng-href="#/history" ng-if="logged()">
                 <img src="img/DCL_wordmark-02.png" alt="Dental Care Links"/>
             </a>
-            <a ng-href="#/sign_in" ng-if="!logged()">{{env}}
+            <a ng-href="#/sign_in" ng-if="!logged()">
                 <img src="img/DCL_wordmark-01.png" alt="Dental Care Links"/>
             </a>
 
