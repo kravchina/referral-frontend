@@ -21,7 +21,9 @@
 .navbar-nav > li > a {
     color: #34495e;
 }
-
+.navbar .powered-by {
+    display: inherit;
+}
 .nav > li > a:hover, .nav > li > a:focus {
     background-color: #029ACC;
 }

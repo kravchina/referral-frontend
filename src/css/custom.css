@@ -338,7 +338,7 @@ textarea.form-control {
 }
 
 .navbar-fixed-top {
-    position: fixed;
+    position: inherit;
 	border-width: 0;
 	z-index: 1050;
 }
@@ -375,6 +375,14 @@ textarea.form-control {
 }
 .navbar .env-indicator {
     color: #fff;
+}
+.navbar .powered-by {
+    display: none;
+    float: left;
+    margin-top: 40px;
+}
+.navbar .powered-by img {
+    height: 55px;
 }
 .nav > li > a:hover, .nav > li > a:focus {
 	background-color: #2c3e50;
@@ -1290,30 +1298,8 @@ td.cell-from .practice, td.cell-to .practice {
 .another-file-over-class { border: dotted 3px green; }
 
 
-/* RESPONSIVE CSS */
-@media (max-width: 768px){
-	.signin-form {
-		padding-top: 20px;
-	}
-}
-@media (min-width: 450px){
-	.page-header{
-		padding-top: 60px;
-	}
-}
-
-@media (max-width:450px){
-	.page-header{
-		display: none;
-	}
-}
-
 /* Mobile devices (mobile, 540px and up) */
 @media (min-width: 540px) {
-	.page-header{
-		padding-top: 50px;
-	}
-
 	.global-notification-bar{
 		margin-top: 5px;
 		padding: 5px 10px;
@@ -1330,10 +1316,6 @@ td.cell-from .practice, td.cell-to .practice {
 }
 /* Mobile devices (mobile, 620px and up) */
 @media (min-width: 620px) {
-	.page-header{
-		padding-top: 50px;
-	}
-
 	.global-notification-bar{
 		margin-top: 5px;
 		padding: 5px 10px;
@@ -1375,6 +1357,14 @@ td.cell-from .practice, td.cell-to .practice {
 		padding-top: 10px;
 		text-align: right;
 	}
+
+    .navbar .powered-by {
+        margin-top: 60px;
+    }
+    .navbar .powered-by img {
+        height: 55px;
+    }
+
 	.page-header {
 		text-align: left;
 	}
@@ -2034,10 +2024,6 @@ label.tooth-label-view {
 
 .cell-copy > span:hover {
 	cursor: pointer;
-}
-
-.content-container {
-	margin-top: 135px;
 }
 
 .light-background img {
