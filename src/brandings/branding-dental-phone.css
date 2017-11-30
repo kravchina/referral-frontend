@@ -1,5 +1,4 @@
 .dark-background {
-    /*background-color: #517b50;*/
     background-color: #f2e8d0;
 }
 
@@ -21,3 +20,9 @@
     color: #34495e;
 }
 
+.nav > li > a:hover, .nav > li > a:focus {
+    background-color: #029ACC;
+}
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+    background-color: #029ACC;
+}
