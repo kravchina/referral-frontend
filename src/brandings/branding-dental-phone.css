@@ -15,7 +15,9 @@
 .navbar .navbar-brand {
     color: #34495e;
 }
-
+.navbar .env-indicator {
+    color: #34495e;
+}
 .navbar-nav > li > a {
     color: #34495e;
 }

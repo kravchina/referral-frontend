@@ -373,6 +373,9 @@ textarea.form-control {
 	padding-top: 10px;
 	text-align: right;
 }
+.navbar .env-indicator {
+    color: #fff;
+}
 .nav > li > a:hover, .nav > li > a:focus {
 	background-color: #2c3e50;
 }
