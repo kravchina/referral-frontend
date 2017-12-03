@@ -21,6 +21,7 @@ angular.module('dentalLinks')
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (message) {
+                $scope.showOfferToInviteGuest();
                 if($scope.immediateUpdate){
                     Note.save({note: {message: message, referral_id: $scope.inputModel.id, user_id: $scope.auth.id}}, function (success) {
                         $scope.inputModel.notes.push(success);
@@ -78,6 +79,7 @@ angular.module('dentalLinks')
                 }
             });
             modalInstance.result.then(function (note) {
+                $scope.showOfferToInviteGuest();
                 if($scope.immediateUpdate){
                     Note.update({id: note.id}, {note: note}, function(success){
                         $scope.inputModel.notes[index] = success;

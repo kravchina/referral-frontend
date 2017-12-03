@@ -71,6 +71,7 @@ angular.module('viewReferrals')
             modalInstance.result.then(function (date) {
                 Attachment.update({id:attachment.id}, {last_modified: date}, function(success){
                     attachment.last_modified = date;
+                    $scope.showOfferToInviteGuest();
                 });
             });
         };
@@ -203,6 +204,7 @@ angular.module('viewReferrals')
 
                 // show the loading indicator
                 ProgressIndicator.finish();
+                $scope.showOfferToInviteGuest();
             };
         });
 
@@ -239,6 +241,7 @@ angular.module('viewReferrals')
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (patient) {
                 $scope.referral.patient = patient;
+                $scope.showOfferToInviteGuest();
             });
         };
 
@@ -256,6 +259,7 @@ angular.module('viewReferrals')
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (providerId) {
                 $scope.initModel();  // have to reload referrer object from server, because it needs to provide object that has dest_provider attribute and many other customizations.
+                $scope.showOfferToInviteGuest();
             });
         };
 
@@ -284,6 +288,7 @@ angular.module('viewReferrals')
                 function (success) {
                     referral.status = 'active';
                     Notification.success('Status was updated successfully!');
+                    $scope.showOfferToInviteGuest();
                 },
                 function (failure) {
                     Notification.error('Something went wrong while updating referral status...');
@@ -295,6 +300,7 @@ angular.module('viewReferrals')
                 function (success) {
                     referral.status = 'completed';
                     Notification.success('Status was updated successfully!');
+                    $scope.showOfferToInviteGuest();
                 },
                 function (failure) {
                     Notification.error('Something went wrong while updating referral status...');
@@ -315,7 +321,24 @@ angular.module('viewReferrals')
             modalInstance.result.then(function() {
                 $scope.referral.attachments.splice($scope.referral.attachments.indexOf(attachment),1);
                 Attachment.delete({id: attachment.id});
+                $scope.showOfferToInviteGuest();
             });
         };
+
+        $scope.showOfferToInviteGuest = function () {
+            if($scope.referral.requires_guest_activation) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'partials/invite_guest_modal.html',
+                    controller: 'InviteGuestModalController',
+                    resolve: {
+                        referral: function(){
+                            return $scope.referral;
+                        }
+                    }
+                });
+                ModalHandler.set(modalInstance);
+            }
+        };
+
     }]);
 

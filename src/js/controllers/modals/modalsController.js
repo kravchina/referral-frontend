@@ -815,6 +815,24 @@ angular.module('modals')
         };
 }])
 
+.controller('InviteGuestModalController', ['$scope', '$modalInstance', 'ModalHandler', 'Referral', 'referral', 'Notification',
+    function ($scope, $modalInstance, ModalHandler, Referral, referral, Notification) {
+
+        $scope.invite = function() {
+            Referral.inviteGuest({id: referral.id}, function(success) {
+                Notification.success('Offer to guest was sent successfully!');
+                ModalHandler.dismiss($modalInstance);
+            }, function(error) {
+                Notification.error('Oops! Something wrong');
+                ModalHandler.dismiss($modalInstance);
+            });
+        };
+
+        $scope.skip = function() {
+            ModalHandler.dismiss($modalInstance);
+        };
+}])
+
 .controller('DeleteProviderModalController', ['$scope', '$modalInstance', 'ModalHandler',
     function ($scope, $modalInstance, ModalHandler) {
         $scope.ok = function(){
@@ -823,4 +841,4 @@ angular.module('modals')
         $scope.cancel = function(){
             ModalHandler.close($modalInstance, false);
         };
-}])
+}]);
