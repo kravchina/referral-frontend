@@ -1297,6 +1297,13 @@ td.cell-from .practice, td.cell-to .practice {
 .ng-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
 .another-file-over-class { border: dotted 3px green; }
 
+.login-message {
+    font-size: 1.8em;
+}
+.login-choice {
+    margin: 20px auto;
+}
+
 
 /* Mobile devices (mobile, 540px and up) */
 @media (min-width: 540px) {
