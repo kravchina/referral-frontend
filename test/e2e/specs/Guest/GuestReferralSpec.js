@@ -1,3 +1,4 @@
+var commonActions = require('../../commons/CommonActions');
 var commonExpects = require('../../commons/CommonExpects');
 var guestPage = require('../../pages/GuestPage');
 
@@ -51,7 +52,7 @@ var GuestReferralSpec = function() {
                 expect(guestPage.practiceTypeSelectField().isPresent()).toBe(true);
                 expect(guestPage.procedureSelectField().isPresent()).toBe(true);
 
-                guestPage.clickLogo();
+                commonActions.clickLogo();
                 browser.wait(EC.alertIsPresent(), 10000);
                 var alertDialog = browser.switchTo().alert();
                 alertDialog.accept();
