@@ -66,7 +66,7 @@ var AdminSubscriptionPremiumSpec = function() {
                 expect(saveButton.isEnabled()).toBe(true);
                 saveButton.click();
                 //expect(adminSubscriptionPage.getSubscriptionDialogNameElement().isPresent()).toBe(false);
-                browser.wait(protractor.until.elementIsNotVisible(element(by.css('div#resultLoading'))), 8000);
+                browser.wait(EC.not(EC.visibilityOf(element(by.css('div#resultLoading')), 8000)));
                 commonExpects.expectProgressDivHidden();
                 expect(adminSubscriptionPage.getSubscriptionDialogElement().isPresent()).not.toBe(true);
 
