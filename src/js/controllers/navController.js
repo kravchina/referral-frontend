@@ -1,5 +1,5 @@
-angular.module('dentalLinks').controller('NavController', ['$scope', '$state', '$modal', 'Auth', 'Logger', 'Login', 'Spinner', 'UnsavedChanges', 'User', 'API_ENDPOINT', 'HTTP_ERROR_EVENTS', 'Notification', 'ProgressIndicator',
-    function ($scope, $state, $modal, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT, HTTP_ERROR_EVENTS, Notification, ProgressIndicator) {
+angular.module('dentalLinks').controller('NavController', ['$scope', '$state', '$modal', 'Auth', 'Logger', 'Login', 'Spinner', 'UnsavedChanges', 'User', 'API_ENDPOINT', 'HTTP_ERROR_EVENTS', 'Notification', 'ProgressIndicator', '$css', 'CustomBranding',
+    function ($scope, $state, $modal, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT, HTTP_ERROR_EVENTS, Notification, ProgressIndicator, $css, CustomBranding) {
 
         $scope.env = '[unknown]';
         if (API_ENDPOINT.indexOf('dental-links-prod-1') > -1) $scope.env = '';
@@ -63,12 +63,14 @@ angular.module('dentalLinks').controller('NavController', ['$scope', '$state', '
                     Logger.debug('Logout succeeded', success);
                     Auth.remove();
                     Auth.current_user = null;
+                    CustomBranding.remove();
                     $state.go('signIn', {}, {reload: true});
                 },
                 function (failure) {
                     Logger.debug('Logout failed', failure);
                     Auth.remove();
                     Auth.current_user = null;
+                    CustomBranding.remove();
                     $state.go('signIn', {}, {reload: true});
                 });
             } else {

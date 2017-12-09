@@ -1,3 +1,4 @@
+var commonActions = require('../../commons/CommonActions');
 var commonExpects = require('../../commons/CommonExpects');
 var guestPage = require('../../pages/GuestPage');
 
@@ -24,7 +25,7 @@ var GuestSignInSpec = function() {
                 guestPage.continueGuestLink().click();
                 commonExpects.expectCurrentUrlToBe(guestPage.guest_referral_url);
 
-                guestPage.clickLogo();
+                commonActions.clickLogo();
                 browser.wait(EC.alertIsPresent(), 10000);
                 var alertDialog = browser.switchTo().alert();
                 alertDialog.accept();

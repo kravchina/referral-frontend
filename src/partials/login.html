@@ -1,6 +1,13 @@
 <form name="form" novalidate class="simple-form signin-form">
     <div class="row" ng-if="pid && !loginMode">
-        <div class="col-xs-10 col-md-4 center-block">
+        <div class="row">
+            <div class="col-md-12 text-block login-message">
+                If you have an existing account, please login to send your referral.<br/>
+                If you do not have an account you may send a referral by continuing as a guest.
+            </div>
+        </div>
+
+        <div class="col-xs-10 col-md-4 center-block login-choice">
             <a class="btn btn-orange btn-lg" ui-sref="createGuestReferral({pid: pid})">Continue as guest</a>
             OR
             <a class="btn btn-green btn-lg" href="" ng-click="turnOnLoginMode()">Login</a>

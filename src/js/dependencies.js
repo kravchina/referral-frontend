@@ -22,6 +22,7 @@ require('jsPDFfonts');
 require('angularStripe');
 require('angularCreditCards');
 require('angular-clipboard');
+require('angular-css');
 
 angular.module('jsPDF', []).factory('jsPDF', function(){ return require('jsPDF');});
 
@@ -66,7 +67,7 @@ require('./controllers/reviewReferralsController.js');
 require('./controllers/savePasswordsController.js');
 require('./controllers/viewReferralsController.js');
 require('./controllers/unsubscribeController.js');
-require('./controllers/verifyGuestController.js');
+require('./controllers/activateGuestReferralController.js');
 require('./directives/directives.js');
 require('./directives/referral/findPatientDirective.js');
 require('./directives/referral/findPracticeDirective.js');
@@ -104,7 +105,8 @@ angular.module('dentalLinks', [
     'guest',
     'isteven-multi-select',
     'angularFileUpload',
-    'dentalLinksPartials'
+    'dentalLinksPartials',
+    'angularCSS'
 ]);
 
 require('./directives/referral/findPatientController.js');

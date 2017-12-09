@@ -35,7 +35,7 @@ var ChangeSubscriptionSpec = function () {
                 element.all(by.repeater('year in years')).last().click();
                 expect(changeSubscriptionPage.getSubscriptionDialogUpgradeButton().isEnabled()).toBe(true);
                 changeSubscriptionPage.getSubscriptionDialogUpgradeButton().click();
-                browser.wait(protractor.until.elementIsNotVisible(element(by.css('div#resultLoading'))), TIMEOUT_MS);
+                browser.wait(EC.not(EC.visibilityOf(element(by.css('div#resultLoading')), TIMEOUT_MS)));
                 commonExpects.expectProgressDivHidden();
             });
 
@@ -70,7 +70,7 @@ var ChangeSubscriptionSpec = function () {
                 element.all(by.repeater('year in years')).last().click();
                 expect(changeSubscriptionPage.getSubscriptionDialogUpgradeButton().isEnabled()).toBe(true);
                 changeSubscriptionPage.getSubscriptionDialogUpgradeButton().click();
-                browser.wait(protractor.until.elementIsNotVisible(element(by.css('div#resultLoading'))), TIMEOUT_MS);
+                browser.wait(EC.not(EC.visibilityOf(element(by.css('div#resultLoading')), TIMEOUT_MS)));
                 commonExpects.expectProgressDivHidden() ;
                 /*expect(changeSubscriptionPage.getSubscriptionDialogElement().isDisplayed()).toBe(false);*/
                 /*commonExpects.expectSuccessNotificationShown();*/
@@ -103,7 +103,7 @@ var ChangeSubscriptionSpec = function () {
                   expect(changeSubscriptionPage.getDowngradeConfirmationDialog().isDisplayed()).toBe(true);
                   expect(changeSubscriptionPage.getDowngradeButton().isEnabled()).toBe(true);
                   changeSubscriptionPage.getDowngradeButton().click();
-                  browser.wait(protractor.until.elementIsNotVisible(element(by.css('div#resultLoading'))), TIMEOUT_MS);
+                  browser.wait(EC.not(EC.visibilityOf(element(by.css('div#resultLoading')), TIMEOUT_MS)));
                   commonExpects.expectProgressDivHidden();
                   expect(changeSubscriptionPage.getFreePlanIndicator().isDisplayed()).toBe(true);
                   expect(changeSubscriptionPage.getMonthlyPlanIndicator().isDisplayed()).toBe(false);

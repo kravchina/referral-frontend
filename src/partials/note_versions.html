@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <h4 class="modal-title">Note changes history:</h4>
+</div>
+<div class="modal-body">
+    <div class="block-title">
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr>
+                    <th class="cell-datetime">Date</th>
+                    <th class="cell-patient">Message</th>
+                    <th class="cell-from">Author</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="version in versions | limitTo: -10" ng-if="version.event === 'update'">
+                        <td>{{version.reify.updated_at | date: 'short'}}</td>
+                        <td>{{version.reify.message}}</td>
+                        <td>{{version.whodunnit}}</td>
+                    </tr>
+                </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-orange" ng-click="ok()">Ok</button>
+</div>

@@ -210,6 +210,13 @@ angular.module('modals')
     };
 
 }])
+.controller('NoteVersionsModalController', ['$scope', '$modalInstance', 'ModalHandler', 'versions', function ($scope, $modalInstance, ModalHandler, versions) {
+    $scope.versions = versions;
+    $scope.ok = function () {
+        ModalHandler.close($modalInstance);
+    };
+
+}])
 
 .controller('ProviderModalController',
     ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Spinner', 'sendEmailNotification', 'inviterId',
@@ -773,7 +780,7 @@ angular.module('modals')
 
 .controller('SuccessGuestReferralModalController', ['$scope', '$modalInstance', 'ModalHandler',
     function($scope, $modalInstance, ModalHandler){
-        $scope.message = 'Almost done! Please verify your email address by clicking the link in email message we just sent.';
+        $scope.message = "Almost done! We need you to confirm the entered email is yours. Please activate the referral by clicking the link in the email message we've sent to you.";
 
         $scope.ok = function(){
             ModalHandler.close($modalInstance);

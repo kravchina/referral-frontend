@@ -15,10 +15,6 @@ var GuestPage = function() {
         browser.get(this.guest_referral_url);
     };
 
-    this.clickLogo = function() {
-        element(by.css('.navbar-header a')).click()
-    };
-
     // referral page
 
     // guest

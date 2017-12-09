@@ -10,7 +10,12 @@ var CommonActions = function() {
     };
     
     this.clickLogo = function() {
-        element(by.css('a.navbar-brand')).click();
+        var logoElement = element(by.css('a.navbar-brand'));
+        
+        // sometimes logo gets overlapped by the error or success notification
+        // in this case, simple logoElement.click() may not work, clicking the notification div
+        // let's click the top left corner of the logo, which shouldn't get overlapped
+        browser.actions().mouseMove(logoElement, {x: 1, y: 1}).click().perform();
     };
 
     // TODO [ak] after #84550008 is fixed, run the same tests on narrow screen as well

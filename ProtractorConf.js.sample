@@ -77,12 +77,13 @@ exports.config = {
     onPrepare: function() {
         // adding a parameter allowing to recognize current browser name. Unfortunately, some tests need to "click differently" depending on the browser
         browser.getCapabilities().then(function (cc) {
-            browser.currentRunBrowserName = cc.caps_.browserName;
+            browser.currentRunBrowserName = cc.get('browserName');
         });
         global.EC = protractor.ExpectedConditions;
     },
     jasmineNodeOpts: {
-        defaultTimeoutInterval: 60000
+        defaultTimeoutInterval: 60000,
+        realtimeFailure: true
     },
     allScriptsTimeout: 40000
 };

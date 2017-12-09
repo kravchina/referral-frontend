@@ -45,6 +45,16 @@
         "description":"Error message for the case when promo code was not found"
     },
     {
+        "key":"promotion.required.header",
+        "value":"Promo",
+        "description":"Error message for the case when promo code was empty"
+    },
+    {
+        "key":"promotion.required",
+        "value":"Promo code can`t be empty",
+        "description":"Error message for the case when promo code was empty"
+    },
+    {
         "key":"practice.create.failed",
         "value":"Unable to create practice",
         "description":"Error message for the case when practice creation was failed"
@@ -327,13 +337,13 @@
         "description":"Error message for when person is trying to register with an email that we already have as a registered user or an invitation"
     },
     {
-        "key": "referral.already_verified.header",
-        "value": "Referral already verified",
-        "description": "Header shown when referral is already verified"
+        "key": "referral.already_activated.header",
+        "value": "Referral already activated",
+        "description": "Header shown when referral is already activated"
     },
     {
-        "key": "referral.already_verified",
-        "value": "The referral you're trying to verify has been verified already.",
-        "description": "Message shown when referral is already verified"
+        "key": "referral.already_activated",
+        "value": "The referral you're trying to activate has been activated already.",
+        "description": "Message shown when referral is already activated"
     }
 ]

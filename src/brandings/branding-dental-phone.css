@@ -1,0 +1,32 @@
+.dark-background {
+    background-color: #f2e8d0;
+}
+
+.navbar-brand img, .navbar-header .logged-out img {
+    display: block;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: url("img/DentalFone-353x82.png") no-repeat;
+    width: 353px;
+    height: 82px;
+    padding-left: 353px;
+}
+
+.navbar .navbar-brand {
+    color: #34495e;
+}
+.navbar .env-indicator {
+    color: #34495e;
+}
+.navbar-nav > li > a {
+    color: #34495e;
+}
+.navbar .powered-by {
+    display: inherit;
+}
+.nav > li > a:hover, .nav > li > a:focus {
+    background-color: #029ACC;
+}
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+    background-color: #029ACC;
+}

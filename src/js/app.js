@@ -44,6 +44,10 @@ angular.module('dentalLinks')
             onEnter: ['$state', '$stateParams', 'Promo', function($state, $stateParams, Promo) {
                 $stateParams.isPromoRegistration = true;
 
+                if(!$stateParams.promo) {
+                    return $state.go('error_page', {error_key: 'promotion.required'});
+                }
+
                 Promo.validate({code: $stateParams.promo}).$promise
                     .then(function(){
                         // Promo code is valid, do nothing
@@ -257,14 +261,14 @@ angular.module('dentalLinks')
             templateUrl: 'partials/unsubscribe.html',
             controller: 'UnsubscribeController'
         }).
-        state('verifyGuest', {
-            url: '/verify_guest?pid',
+        state('activateGuestReferral', {
+            url: '/activate_guest_referral?activation_token',
             template: '',
-            controller: 'VerifyGuestController'
+            controller: 'ActivateGuestReferralController'
         }).
-        state('verifyGuestSuccess', {
-            url: '/verify_guest_success',
-            templateUrl: 'partials/verify_guest.html'
+        state('guestReferralActivated', {
+            url: '/guest_referral_activated',
+            templateUrl: 'partials/guest_referral_activated.html'
         }).
         state('debug', {
             url: '/debug',
@@ -289,13 +293,24 @@ angular.module('dentalLinks')
         };
     }]);
 }])
-    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', '$modal', 'Logger', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, $modal, Logger) {
+    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', '$modal', 'Logger', 'CustomBranding', 'BrandingSettings', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, $modal, Logger, CustomBranding, BrandingSettings) {
+
+        if(CustomBranding.get()) {
+            CustomBranding.apply(CustomBranding.get());
+        }
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
             ModalHandler.dismissIfOpen();  //close dialog if open.
             if (!Auth.authorize(toState.access)) {
                 event.preventDefault();
                 $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated, {redirect: $location.url(), params: $location.search()});
+            }
+            if ($location.search().pid){
+                BrandingSettings.get({pid: $location.search().pid}, function(branding){
+                    if(branding.id){
+                        CustomBranding.apply({pidBased: true, settings: branding.ui_data });
+                    }
+                })
             }
         });
 
