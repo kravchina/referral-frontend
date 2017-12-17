@@ -124,7 +124,7 @@ var ConsolePracticeSpec = function() {
 
             it('check multi specialty practice and user', function(){
                 expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
-                consolePracticePage.setPractice(browser.params.login.correct.practice.name);
+                consolePracticePage.setPractice(browser.params.login.unsubscribed_user.practice.name);
                 expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(true);
                 consolePracticePage.getPracticeDropDownFirstRowElement().click();
                 expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
@@ -136,8 +136,8 @@ var ConsolePracticeSpec = function() {
 
                 commonActions.scrollIntoView(consolePracticePage.getUser());
                 consolePracticePage.getUser().click();
-                expect(consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).isDisplayed()).toBe(true);
-                consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).click();
+                expect(consolePracticePage.getUserOptionByName(browser.params.login.unsubscribed_user.firstName + ' ' + browser.params.login.unsubscribed_user.lastName).isDisplayed()).toBe(true);
+                consolePracticePage.getUserOptionByName(browser.params.login.unsubscribed_user.firstName + ' ' + browser.params.login.unsubscribed_user.lastName).click();
                 expect(consolePracticePage.getUserSpecialty().isDisplayed()).toBe(true);
             });
 
