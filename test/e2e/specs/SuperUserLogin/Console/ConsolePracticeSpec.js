@@ -158,32 +158,6 @@ var ConsolePracticeSpec = function() {
                 consolePracticePage.getEditUserDialogDiscardButton().click();
 
             });
-
-            it('check provider invitation dialog', function(){
-                var inviteData = {
-                    firstName: 'TestFirstName',
-                    lastName: 'TestLastName',
-                    email: 'invite@example.com'
-                };
-                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
-                consolePracticePage.setPractice(browser.params.login.correct.practice.name);
-                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(true);
-                consolePracticePage.getPracticeDropDownFirstRowElement().click();
-                expect(consolePracticePage.getPracticeDropDownElement().isDisplayed()).toBe(false);
-
-                consolePracticePage.getUser().click();
-                expect(consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).isDisplayed()).toBe(true);
-                consolePracticePage.getUserOptionByName(browser.params.login.correct.firstName + ' ' + browser.params.login.correct.lastName).click();
-
-                consolePracticePage.getInviteDialogButton().click();
-                expect(consolePracticePage.getInviteDialog().isDisplayed()).toBe(true);
-
-                consolePracticePage.getInviteDialogFirstName().sendKeys(inviteData.firstName);
-                consolePracticePage.getInviteDialogLastName().sendKeys(inviteData.lastName);
-                consolePracticePage.getInviteDialogEmail().sendKeys(inviteData.email);
-                consolePracticePage.getInviteDialogSendButton().click();
-            })
-
         });
     };
 };

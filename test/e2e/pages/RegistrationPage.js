@@ -105,6 +105,31 @@ var RegistrationPage = function() {
         return element(by.css('button[ng-click="ok()"]'));
     };
     
+    this.fillUserFields = function(user, withFirstLast, withEmail) {
+        if (withFirstLast) {
+            this.getFirstNameElement().sendKeys(user.firstName);
+            this.getLastNameElement().sendKeys(user.lastName);
+        }
+        if (withEmail) {
+            this.getEmailElement().sendKeys(user.email);
+        }
+        this.getSalutationElement().element(by.cssContainingText("option", user.salutation)).click(); // TODO [ak] reuse select option click code
+        this.getMiddleInitialElement().sendKeys(user.middleInitial);
+        this.getPasswordElement().sendKeys(user.password);
+        this.getPasswordConfirmationElement().sendKeys(user.password);
+    };
+    
+    this.fillPracticeFields = function(practice) {
+        this.getSpecialtyElement().element(by.cssContainingText("option", practice.type)).click();
+        this.getPracticeNameElement().sendKeys(practice.name);
+        this.getPracticeAddressStreetElement().sendKeys(practice.address.street1);
+        this.getPracticeAddressCityElement().sendKeys(practice.address.city);
+        this.getPracticeAddressStateElement().element(by.cssContainingText("option", practice.address.state)).click();
+        this.getPracticeAddressZipElement().sendKeys(practice.address.zip);
+        this.getPracticeAddressPhoneElement().sendKeys(practice.address.phone);
+        this.getPracticeAddressWebsiteElement().sendKeys(practice.address.website);
+    };
+    
 };
 
 module.exports = new RegistrationPage();

@@ -1,13 +1,16 @@
 var commonActions = require('../../commons/CommonActions');
 var commonExpects = require('../../commons/CommonExpects');
 var guestPage = require('../../pages/GuestPage');
+var guestActivateReferralPage = require('../../pages/GuestActivateReferralPage');
+var signInPage = require('../../pages/SignInPage');
 
 var GuestReferralSpec = function() {
     this.run = function() {
+        var emailAndActivationToken = (new Date()).getTime().toString();
         var guest = {
             firstName: 'GuestFirst',
             lastName: 'GuestLast',
-            email: 'guest@test.com'
+            email: emailAndActivationToken + '@test.com'
         };
 
         var patient = {
@@ -22,17 +25,16 @@ var GuestReferralSpec = function() {
             referralType: 'Endodontics',
             procedure: 'Trauma'
         };
-        describe('referral page', function() {
+        describe('guest visits guest create referral page', function() {
 
             beforeEach(function() {
                 guestPage.openReferral();
                 commonExpects.expectProgressDivHidden();
-            });
-
-            it('show referral page', function() {
                 commonExpects.expectMenuHidden();
                 commonExpects.expectCurrentUrlToBe(guestPage.guest_referral_url);
+            });
 
+            it('shows the page fields', function() {
                 expect(guestPage.guestFirstNameField().isPresent()).toBe(true);
                 expect(guestPage.guestLastNameField().isPresent()).toBe(true);
                 expect(guestPage.guestEmailNameField().isPresent()).toBe(true);
@@ -59,10 +61,8 @@ var GuestReferralSpec = function() {
 
             });
 
-            it('fill fields and click sing & send', function() {
-                commonExpects.expectMenuHidden();
-                commonExpects.expectCurrentUrlToBe(guestPage.guest_referral_url);
-
+            it('allows to Sign&Send and activate the referral', function() {
+                // fill in fields and Sign&Send
                 guestPage.guestFirstNameField().sendKeys(guest.firstName);
                 guestPage.guestLastNameField().sendKeys(guest.lastName);
                 guestPage.guestEmailNameField().sendKeys(guest.email);
@@ -85,12 +85,35 @@ var GuestReferralSpec = function() {
 
                 expect(guestPage.getButtonSignSendElement().isEnabled()).toBe(true);
                 guestPage.getButtonSignSendElement().click();
-
+                
+                // close the modal
                 expect(guestPage.getGuestReferralSuccessModal().isDisplayed()).toBe(true);
                 guestPage.getSuccessModalOkButton().click();
-
+                
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectMenuHidden();
+                commonExpects.expectCurrentUrlToBe(signInPage.url);
+                
+                // activate
+                guestActivateReferralPage.open(emailAndActivationToken);
+                guestActivateReferralPage.getOkButton().click();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectMenuHidden();
+                commonExpects.expectCurrentUrlToBe(signInPage.url);
+                
+                // make sure the same referral cannot be activated again
+                guestActivateReferralPage.open(emailAndActivationToken);
+                expect(guestActivateReferralPage.getErrorDiv().isPresent()).toBe(true);
+                browser.wait(EC.elementToBeClickable(guestActivateReferralPage.getErrorCloseButton()), 5000);
+                guestActivateReferralPage.getErrorCloseButton().click();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectMenuHidden();
+                commonExpects.expectCurrentUrlToBe(signInPage.url);
             });
 
+            afterEach(function() {
+                commonExpects.expectConsoleWithoutErrors({except: ["422"]}); // returned when referral is already activated
+            });
         });
     };
 };

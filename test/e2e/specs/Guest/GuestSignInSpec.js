@@ -30,6 +30,10 @@ var GuestSignInSpec = function() {
                 var alertDialog = browser.switchTo().alert();
                 alertDialog.accept();
             });
+            
+            afterEach(function() {
+                commonExpects.expectConsoleWithoutErrors();
+            });
         });
     };
 };
