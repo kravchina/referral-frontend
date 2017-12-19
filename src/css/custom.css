@@ -1768,7 +1768,7 @@ td.cell-from .practice, td.cell-to .practice {
 	cursor: pointer;
 }
 
-.has-error .alert-warning{
+.alert-warning {
 	border-color: red;
 	color: red;
 }
