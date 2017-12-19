@@ -30,6 +30,9 @@ angular.module('createReferrals')
         }
 
         $scope.saveTemplate = function (model) {
+
+            $scope.form.$setDirty();
+
             ReferralHelper.prepareSubmit($scope, model.referral);
             var resultHandlers = {
                 success: function (success) {
