@@ -10,14 +10,14 @@
         <div class="responsive-tab-content">
 
             <!-- Nav Tabs -->
-            <tabset id="consoleTabContent" justified="true">
-                <tab ng-repeat="tabData in tabsData" ui-sref="{{tabData.route}}" active="tabData.active" ng-click="onChangeTab()">
-                    <tab-heading class="space-nowrap">
+            <uib-tabset id="consoleTabContent" justified="true">
+                <uib-tab ng-repeat="tabData in tabsData" ui-sref="{{tabData.route}}" active="tabData.active" ng-click="onChangeTab()">
+                    <uib-tab-heading class="space-nowrap">
                         <span class="{{tabData.class}}"></span> {{tabData.heading}}
-                    </tab-heading>
-                </tab>
+                    </uib-tab-heading>
+                </uib-tab>
                 <div ui-view class="tab-content"></div>
-            </tabset>
+            </uib-tabset>
 
         </div><!-- .responsive-tab-content -->
 

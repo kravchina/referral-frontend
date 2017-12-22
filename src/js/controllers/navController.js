@@ -1,5 +1,5 @@
-angular.module('dentalLinks').controller('NavController', ['$scope', '$state', '$modal', 'Auth', 'Logger', 'Login', 'Spinner', 'UnsavedChanges', 'User', 'API_ENDPOINT', 'HTTP_ERROR_EVENTS', 'Notification', 'ProgressIndicator', '$css', 'CustomBranding',
-    function ($scope, $state, $modal, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT, HTTP_ERROR_EVENTS, Notification, ProgressIndicator, $css, CustomBranding) {
+angular.module('dentalLinks').controller('NavController', ['$scope', '$state', '$uibModal', 'Auth', 'Logger', 'Login', 'Spinner', 'UnsavedChanges', 'User', 'API_ENDPOINT', 'HTTP_ERROR_EVENTS', 'Notification', 'ProgressIndicator', '$css', 'CustomBranding',
+    function ($scope, $state, $uibModal, Auth, Logger, Login, Spinner, UnsavedChanges, User, API_ENDPOINT, HTTP_ERROR_EVENTS, Notification, ProgressIndicator, $css, CustomBranding) {
 
         $scope.env = '[unknown]';
         if (API_ENDPOINT.indexOf('dental-links-prod-1') > -1) $scope.env = '';
@@ -26,7 +26,7 @@ angular.module('dentalLinks').controller('NavController', ['$scope', '$state', '
         });
 
         var showErrorModal = function(message) {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/error_modal.html',
                 controller: 'ErrorModalController',
                 resolve: {

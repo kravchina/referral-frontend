@@ -2,8 +2,8 @@
  * Created by TopaZ on 14.10.2014.
  */
 angular.module('dentalLinks')
-    .controller('NotesController', ['$scope', 'Auth', '$modal', 'ModalHandler', 'Note', 'Notification', 'Activity',
-    function ($scope,  Auth, $modal, ModalHandler, Note, Notification, Activity) {
+    .controller('NotesController', ['$scope', 'Auth', '$uibModal', 'ModalHandler', 'Note', 'Notification', 'Activity',
+    function ($scope,  Auth, $uibModal, ModalHandler, Note, Notification, Activity) {
         $scope.auth = Auth.get();
         if($scope.inputModel.$promise){
             $scope.inputModel.$promise.then(function(){
@@ -15,7 +15,7 @@ angular.module('dentalLinks')
         }
 
         $scope.noteDialog = function () {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/note_form.html',
                 controller: 'NoteModalController'
             });
@@ -49,7 +49,7 @@ angular.module('dentalLinks')
         };
 
         $scope.showHistory = function(note){
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/note_versions.html',
                 controller: 'NoteVersionsModalController',
                 size: 'lg',
@@ -68,7 +68,7 @@ angular.module('dentalLinks')
         };
 
         $scope.editNote = function(note, index){
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/edit_note_form.html',
                 controller: 'EditNoteModalController',
                 resolve: {

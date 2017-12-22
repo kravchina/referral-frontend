@@ -1,11 +1,11 @@
-angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'Notification', 'Auth', 'FileUploader', 'Logger', 'API_ENDPOINT', 'Attachment', '$modal', 'ModalHandler', 'ProgressIndicator',
-    function ($scope, Notification, Auth, FileUploader, Logger, API_ENDPOINT, Attachment, $modal, ModalHandler, ProgressIndicator) {
+angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'Notification', 'Auth', 'FileUploader', 'Logger', 'API_ENDPOINT', 'Attachment', '$uibModal', 'ModalHandler', 'ProgressIndicator',
+    function ($scope, Notification, Auth, FileUploader, Logger, API_ENDPOINT, Attachment, $uibModal, ModalHandler, ProgressIndicator) {
         $scope.now = function () {
             return Date.now();
         };
 
         $scope.openDatePicker = function(attachment){
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/date_picker.html',
                 controller: 'DatePickerModalController',
                 resolve: {
@@ -22,7 +22,7 @@ angular.module('dentalLinks').controller('AttachmentsController', ['$scope', 'No
 
         $scope.editLastModified = function(event, attachment){
             event.preventDefault();
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/date_picker.html',
                 controller: 'DatePickerModalController',
                 resolve: {

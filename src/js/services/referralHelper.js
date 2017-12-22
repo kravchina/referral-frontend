@@ -1,6 +1,6 @@
 angular.module('createReferrals')
-    .service('ReferralHelper', ['$modal', '$q', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Spinner', 'UnsavedChanges',
-    function ($modal, $q, ModalHandler, Practice, ProviderInvitation, Spinner, UnsavedChanges) {
+    .service('ReferralHelper', ['$uibModal', '$q', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Spinner', 'UnsavedChanges',
+    function ($uibModal, $q, ModalHandler, Practice, ProviderInvitation, Spinner, UnsavedChanges) {
         return {
 
             prepareSubmit: function (scope, referral) {
@@ -99,7 +99,7 @@ angular.module('createReferrals')
                             currentScope.model.referral.dest_provider_id = null; //if dest_provider_invited_id is set (user added new provider invitation to the referral), we need to remove 'dest_provider_id'
                         }
                         if(!newVal && currentScope.model.referral.isCreatedNow) {
-                            var modalInstance = $modal.open({
+                            var modalInstance = $uibModal.open({
                                 templateUrl: 'partials/delete_provider.html',
                                 controller: 'DeleteProviderModalController'
                             });

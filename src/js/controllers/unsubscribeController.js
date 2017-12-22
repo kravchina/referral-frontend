@@ -1,6 +1,6 @@
 angular.module('unsubscribe')
-    .controller('UnsubscribeController', ['$scope', '$state', '$stateParams', 'User', 'ProviderInvitation', '$modal', 'ModalHandler', '$location',
-    function($scope, $state, $stateParams, User, ProviderInvitation, $modal, ModalHandler, $location){
+    .controller('UnsubscribeController', ['$scope', '$state', '$stateParams', 'User', 'ProviderInvitation', '$uibModal', 'ModalHandler', '$location',
+    function($scope, $state, $stateParams, User, ProviderInvitation, $uibModal, ModalHandler, $location){
 
     $scope.unsubscribeData = null;
 
@@ -23,7 +23,7 @@ angular.module('unsubscribe')
     });
 
     function ShowConfirmDialog(message){
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
             templateUrl: 'partials/unsubscribe_modal.html',
             controller: 'UnsubscribeModalController',
             resolve: {

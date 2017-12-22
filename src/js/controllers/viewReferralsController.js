@@ -1,6 +1,6 @@
 angular.module('viewReferrals')
-    .controller('ViewReferralsController', ['$scope', '$location', '$stateParams', 'FileUploader', '$timeout', '$anchorScroll', 'Notification', 'Referral', 'Practice', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$modal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message', 'ProgressIndicator', 'USER_ROLES', '$state',
-    function ($scope, $location, $stateParams, FileUploader, $timeout, $anchorScroll, Notification, Referral, Practice, PDF, Note, S3Bucket, Attachment, $modal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message, ProgressIndicator, USER_ROLES, $state) {
+    .controller('ViewReferralsController', ['$scope', '$location', '$stateParams', 'FileUploader', '$timeout', '$anchorScroll', 'Notification', 'Referral', 'Practice', 'PDF', 'Note', 'S3Bucket', 'Attachment', '$uibModal', 'Logger', 'Auth',  'ModalHandler', 'Spinner', 'File', 'FREE_TRIAL_PERIOD', 'API_ENDPOINT','message', 'ProgressIndicator', 'USER_ROLES', '$state',
+    function ($scope, $location, $stateParams, FileUploader, $timeout, $anchorScroll, Notification, Referral, Practice, PDF, Note, S3Bucket, Attachment, $uibModal, Logger, Auth, ModalHandler, Spinner, File, FREE_TRIAL_PERIOD, API_ENDPOINT, message, ProgressIndicator, USER_ROLES, $state) {
         $scope.uploader = new FileUploader();
 
         $scope.total_size = 0;
@@ -46,7 +46,7 @@ angular.module('viewReferrals')
         $scope.initModel();
 
         if($stateParams.isNew){
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/referral_create_message.html',
                 controller: 'ReferralSuccessModalController'
             });
@@ -58,7 +58,7 @@ angular.module('viewReferrals')
         }
 
         $scope.openDatePicker = function(attachment){
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/date_picker.html',
                 controller: 'DatePickerModalController',
                 resolve: {
@@ -227,7 +227,7 @@ angular.module('viewReferrals')
         };
 
         $scope.editPatientDialog = function(){
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/patient_form.html',
                 controller: 'EditPatientModalController',
                 resolve: {
@@ -243,7 +243,7 @@ angular.module('viewReferrals')
         };
 
         $scope.editDestProviderDialog = function(){
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/change_dest_provider_form.html',
                 controller: 'ChangeDestProviderModalController',
                 size: 'sm',
@@ -260,7 +260,7 @@ angular.module('viewReferrals')
         };
 
         $scope.noteDialog = function () {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/note_form.html',
                 controller: 'NoteModalController'
             });
@@ -302,7 +302,7 @@ angular.module('viewReferrals')
         };
 
         $scope.deleteAttachment = function(attachment){
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/confirmation.html',
                 controller: 'ConfirmationModalController',
                 resolve: {

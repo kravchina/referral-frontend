@@ -1,6 +1,6 @@
 angular.module('createReferrals')
-    .controller('CreateGuestReferralsController', ['$scope', '$state', '$stateParams', 'Notification', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper', 'User', 'USER_ROLES', 'Practice', '$modal', 'ModalHandler', 'Patient',
-        function ($scope, $state, $stateParams, Notification, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User, USER_ROLES, Practice, $modal, ModalHandler, Patient) {
+    .controller('CreateGuestReferralsController', ['$scope', '$state', '$stateParams', 'Notification', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper', 'User', 'USER_ROLES', 'Practice', '$uibModal', 'ModalHandler', 'Patient',
+        function ($scope, $state, $stateParams, Notification, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User, USER_ROLES, Practice, $uibModal, ModalHandler, Patient) {
 
             var auth = $scope.auth = Auth.get() || {};
             $scope.current_user = Auth.current_user;
@@ -67,7 +67,7 @@ angular.module('createReferrals')
                         Referral.createGuestReferral(model, function(success){
                             ReferralHelper.uploadAttachments($scope, success.id, function(message){
                                 UnsavedChanges.resetCbHaveUnsavedChanges();
-                                var modalInstance = $modal.open({
+                                var modalInstance = $uibModal.open({
                                     templateUrl: 'partials/success_guest_referral_modal.html',
                                     controller: 'SuccessGuestReferralModalController'
                                 });

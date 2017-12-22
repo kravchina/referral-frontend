@@ -1,6 +1,6 @@
 angular.module('createReferrals')
-    .controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Notification', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper', 'User', 'USER_ROLES', 'Practice', '$modal', 'ModalHandler',
-    function ($scope, $state, $stateParams, Notification, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User, USER_ROLES, Practice, $modal, ModalHandler) {
+    .controller('CreateReferralsController', ['$scope', '$state', '$stateParams', 'Notification', 'Auth', 'Procedure', 'Referral', 'UnsavedChanges', 'Logger', 'ReferralHelper', 'User', 'USER_ROLES', 'Practice', '$uibModal', 'ModalHandler',
+    function ($scope, $state, $stateParams, Notification, Auth, Procedure, Referral, UnsavedChanges, Logger, ReferralHelper, User, USER_ROLES, Practice, $uibModal, ModalHandler) {
 
         var auth = $scope.auth = Auth.get() || {};
         $scope.current_user = Auth.current_user;

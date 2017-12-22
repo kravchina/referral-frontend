@@ -1,7 +1,7 @@
 angular.module('console')
     .controller('PracticeConsoleController', 
-    ['$scope', '$stateParams', 'Auth', 'ConsoleHelper', '$modal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Procedure', 'Practice', 'Designation',
-    function($scope, $stateParams, Auth, ConsoleHelper, $modal, ModalHandler, Notification, ProviderInvitation, User, $rootScope, Address, Procedure, Practice, Designation){
+    ['$scope', '$stateParams', 'Auth', 'ConsoleHelper', '$uibModal', 'ModalHandler', 'Notification', 'ProviderInvitation', 'User', '$rootScope', 'Address', 'Procedure', 'Practice', 'Designation',
+    function($scope, $stateParams, Auth, ConsoleHelper, $uibModal, ModalHandler, Notification, ProviderInvitation, User, $rootScope, Address, Procedure, Practice, Designation){
         $scope.practiceTypes = Procedure.practiceTypes();
         $scope.practiceDesignations = Designation.getAll();
         $scope.onPracticeSelected = ConsoleHelper.onPracticeSelected($scope);
@@ -26,7 +26,7 @@ angular.module('console')
         $scope.editDialog = function(editUser){
             var modalInstance;
             if (editUser.no_login) {
-                modalInstance = $modal.open({
+                modalInstance = $uibModal.open({
                     templateUrl: 'partials/edit_nologin_user_form.html',
                     controller: 'EditNoLoginUserModalController',
                     backdrop: 'static',
@@ -50,7 +50,7 @@ angular.module('console')
                     Notification.success('A verification email has been sent to ' + data.email + '. After the address is verified the provider will be able to login.');
                 });
             } else {
-                modalInstance = $modal.open({
+                modalInstance = $uibModal.open({
                     templateUrl: 'partials/edit_user_form.html',
                     controller: 'EditUserModalController',
                     resolve: {
@@ -118,7 +118,7 @@ angular.module('console')
                 practiceId: $scope.destinationPractice.id
             };
 
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/user_form.html',
                 controller: 'UserModalController',
                 resolve: {
@@ -199,7 +199,7 @@ angular.module('console')
         };
 
         $scope.removePractice = function(practice){
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/practice_delete_form.html',
                 controller: 'PracticeDeleteModalController',
                 resolve: {
@@ -215,7 +215,7 @@ angular.module('console')
         };
 
         $scope.createPractice = function() {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/practice_form.html',
                 controller: 'PracticeModalController'
             });
@@ -232,7 +232,7 @@ angular.module('console')
         };
 
         $scope.inviteDialog = function () {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/provider_form.html',
                 controller: 'ProviderModalController',
                 resolve: {

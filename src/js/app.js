@@ -232,11 +232,11 @@ angular.module('dentalLinks')
         }).
         state('confirmEmail', {
             url: '/confirm_email/:token',
-            onEnter: ['$state', '$stateParams', 'Registration', 'Notification', '$modal', 'ModalHandler', function($state, $stateParams, Registration, Notification, $modal, ModalHandler) {
+            onEnter: ['$state', '$stateParams', 'Registration', 'Notification', '$uibModal', 'ModalHandler', function($state, $stateParams, Registration, Notification, $uibModal, ModalHandler) {
                 Registration.confirmEmail({confirmation_token: $stateParams.token}).$promise
                     .then(function(){
                         // confirmation token is valid, show login page
-                        var modalInstance = $modal.open({
+                        var modalInstance = $uibModal.open({
                             templateUrl: 'partials/change_email_result.html',
                             controller: 'EmailChangeResultController'
                         });
@@ -293,7 +293,7 @@ angular.module('dentalLinks')
         };
     }]);
 }])
-    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', '$modal', 'Logger', 'CustomBranding', 'BrandingSettings', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, $modal, Logger, CustomBranding, BrandingSettings) {
+    .run(['$rootScope', '$window', '$location', '$state', 'redirect', 'Auth', 'AUTH_EVENTS', 'UnsavedChanges', 'ModalHandler', '$uibModal', 'Logger', 'CustomBranding', 'BrandingSettings', function ($rootScope, $window, $location, $state, redirect, Auth, AUTH_EVENTS, UnsavedChanges, ModalHandler, $uibModal, Logger, CustomBranding, BrandingSettings) {
 
         if(CustomBranding.get()) {
             CustomBranding.apply(CustomBranding.get());

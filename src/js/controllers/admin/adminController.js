@@ -1,7 +1,7 @@
 
 angular.module('admin')
-.controller('AdminController', ['$scope', '$state', '$modal', 'Auth', 'Practice', 'USER_ROLES',
-    function ($scope, $state, $modal, Auth,  Practice, USER_ROLES) {
+.controller('AdminController', ['$scope', '$state', '$uibModal', 'Auth', 'Practice', 'USER_ROLES',
+    function ($scope, $state, $uibModal, Auth,  Practice, USER_ROLES) {
         if($state.is('admin')){
             $state.go('admin.practice')
         }

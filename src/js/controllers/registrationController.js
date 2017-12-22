@@ -1,7 +1,7 @@
 angular.module('registration')
 // Just for invited providers to some existing practice or to a new practice
-    .controller('RegistrationController', ['$scope', '$location', '$stateParams', '$modal', '$state', 'Notification', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Referral', 'USER_ROLES', 'Promo',
-    function ($scope, $location, $stateParams, $modal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral, USER_ROLES, Promo) {
+    .controller('RegistrationController', ['$scope', '$location', '$stateParams', '$uibModal', '$state', 'Notification', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Referral', 'USER_ROLES', 'Promo',
+    function ($scope, $location, $stateParams, $uibModal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral, USER_ROLES, Promo) {
         $scope.practice = {};
         $scope.isResend = false;
         $scope.isPromoRegistration = $stateParams.isPromoRegistration;
@@ -38,7 +38,7 @@ angular.module('registration')
         };
 
         var showResultDialog = function(){
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/registration_result.html',
                 controller: 'RegistrationResultController'
             });
@@ -96,7 +96,7 @@ angular.module('registration')
                                     promo: $scope.promo
                                 },
                                 function(success){
-                                    var modalInstance = $modal.open({
+                                    var modalInstance = $uibModal.open({
                                         templateUrl: 'partials/promo_registration_result.html',
                                         controller: 'PromoRegistrationResultController'
                                     });
@@ -123,7 +123,7 @@ angular.module('registration')
                 },
                 function(error){
                     if(error.status === 302){
-                        var modalInstance = $modal.open({
+                        var modalInstance = $uibModal.open({
                             templateUrl: 'partials/invitation_validation_result.html',
                             controller: 'InvitationValidationController',
                             resolve: {
@@ -161,7 +161,7 @@ angular.module('registration')
                     $scope.resendProvider = failure.data;
                     Notification.error('invitation.email.invited', {resend: function(){
                         ProviderInvitation.resend({id: $scope.resendProvider.id}, function(success){
-                            var modalInstance = $modal.open({
+                            var modalInstance = $uibModal.open({
                                 templateUrl: 'partials/registration_email_send_message.html',
                                 controller: 'RegistrationEmailResendModalController'
                             });
@@ -198,7 +198,7 @@ angular.module('registration')
 
         $scope.resend = function(){
             ProviderInvitation.resend({id: $scope.resendProvider.id}, function(success){
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: 'partials/registration_email_send_message.html',
                     controller: 'RegistrationEmailResendModalController'
                 });

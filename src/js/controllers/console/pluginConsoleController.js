@@ -1,6 +1,6 @@
 angular.module('console')
-    .controller('PluginConsoleController', ['$scope', 'FileUploader', 'DclPluginUpdate', 'API_ENDPOINT', 'Auth', '$modal', 'ModalHandler', 'Notification', 'ProgressIndicator',
-    function($scope, FileUploader, DclPluginUpdate, API_ENDPOINT, Auth, $modal, ModalHandler, Notification, ProgressIndicator){
+    .controller('PluginConsoleController', ['$scope', 'FileUploader', 'DclPluginUpdate', 'API_ENDPOINT', 'Auth', '$uibModal', 'ModalHandler', 'Notification', 'ProgressIndicator',
+    function($scope, FileUploader, DclPluginUpdate, API_ENDPOINT, Auth, $uibModal, ModalHandler, Notification, ProgressIndicator){
         $scope.allVersions = [];
         $scope.selectedVersion = null;
         $scope.token = Auth.get().token;
@@ -42,7 +42,7 @@ angular.module('console')
         };
 
         $scope.addVersion = function() {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/add_plugin_version_modal.html',
                 controller: 'AddPluginVersionModalController'
             });
@@ -91,7 +91,7 @@ angular.module('console')
 
         $scope.getLogs = function(version) {
             DclPluginUpdate.getLogs({od_version: version.od_version}, function(success){
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: 'partials/version_logs_modal.html',
                     controller: 'VersionLogsModalController',
                     resolve: {

@@ -1,6 +1,6 @@
 angular.module('admin')
-    .controller('AdminSubscriptionController', ['$scope', '$state', '$modal', 'Auth', 'Notification', 'Address', 'ModalHandler', 'Practice', 'Subscription', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'Logger',
-    function ($scope, $state, $modal, Auth, Notification, Address, ModalHandler, Practice, Subscription, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, Logger) {
+    .controller('AdminSubscriptionController', ['$scope', '$state', '$uibModal', 'Auth', 'Notification', 'Address', 'ModalHandler', 'Practice', 'Subscription', 'ProviderInvitation', 'User', 'UnsavedChanges', 'FREE_TRIAL_PERIOD', 'Logger',
+    function ($scope, $state, $uibModal, Auth, Notification, Address, ModalHandler, Practice, Subscription, ProviderInvitation, User, UnsavedChanges, FREE_TRIAL_PERIOD, Logger) {
 
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function(practice) {
             Logger.log('existing users = ' + JSON.stringify(practice.users));
@@ -34,7 +34,7 @@ angular.module('admin')
         };
 
         $scope.upgradeDialog = function (interval) {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/upgrade_form.html',
                 controller: 'UpgradeModalController',
                 resolve: {

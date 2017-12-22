@@ -1,12 +1,12 @@
 angular.module('dentalLinks')
-.controller('FindPatientController', ['$scope', 'Patient', '$modal', 'ModalHandler',
-    function ($scope, Patient, $modal, ModalHandler) {
+.controller('FindPatientController', ['$scope', 'Patient', '$uibModal', 'ModalHandler',
+    function ($scope, Patient, $uibModal, ModalHandler) {
         $scope.findPatient = function (searchValue) {
             return Patient.searchPatient({practice_id: $scope.auth.practice_id, search: searchValue}).$promise;
         };
 
         $scope.patientDialog = function () {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/patient_form.html',
                 controller: 'PatientModalController',
                 resolve: {
@@ -23,7 +23,7 @@ angular.module('dentalLinks')
         };
 
         $scope.editPatientDialog = function() {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/patient_form.html',
                 controller: 'EditPatientModalController',
                 resolve: {

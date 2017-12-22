@@ -1,8 +1,8 @@
 angular.module('dentalLinks')
-    .controller('ToProviderController', ['$scope', 'Auth', '$modal', 'ModalHandler',
-        function ($scope, Auth, $modal, ModalHandler) {
+    .controller('ToProviderController', ['$scope', 'Auth', '$uibModal', 'ModalHandler',
+        function ($scope, Auth, $uibModal, ModalHandler) {
             $scope.providerDialog = function () {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: 'partials/provider_form.html',
                     controller: 'ProviderModalController',
                     resolve: {

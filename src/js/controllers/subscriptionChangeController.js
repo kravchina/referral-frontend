@@ -1,6 +1,6 @@
 angular.module('dentalLinks')
-    .controller('SubscriptionChangeController', ['$scope', '$modal', 'ModalHandler', 'Practice', 'Auth', 'Notification', '$stateParams',
-        function ($scope, $modal, ModalHandler, Practice, Auth, Notification, $stateParams) {
+    .controller('SubscriptionChangeController', ['$scope', '$uibModal', 'ModalHandler', 'Practice', 'Auth', 'Notification', '$stateParams',
+        function ($scope, $uibModal, ModalHandler, Practice, Auth, Notification, $stateParams) {
             $scope.fromRegistration = ($stateParams.fromRegistration === 'true');
             $scope.practice = Practice.get({practiceId: Auth.get().practice_id}, function(practice) {
                 $scope.currentPlan = $scope.practice.stripe_subscription_id ? $scope.practice.subscription_interval : 'basic';
@@ -10,7 +10,7 @@ angular.module('dentalLinks')
             $scope.cancelSubscription = function () {
                 //change to basic plan
                 if ($scope.currentPlan !== 'basic') {
-                    var modalInstance = $modal.open({
+                    var modalInstance = $uibModal.open({
                         templateUrl: 'partials/downgrade_confirmation.html',
                         controller: 'DowngradeModalController'
                     });
@@ -31,7 +31,7 @@ angular.module('dentalLinks')
 
             $scope.upgradeDialog = function (interval) {
                 if ($scope.currentPlan !== interval) {
-                    var modalInstance = $modal.open({
+                    var modalInstance = $uibModal.open({
                         templateUrl: 'partials/upgrade_form.html',
                         controller: 'UpgradeModalController',
                         resolve: {
