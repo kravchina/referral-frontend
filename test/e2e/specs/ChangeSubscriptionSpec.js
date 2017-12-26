@@ -6,7 +6,6 @@ var changeSubscriptionPage = require('../pages/ChangeSubscriptionPage');
 
 var ChangeSubscriptionSpec = function () {
     this.run = function () {
-        var TIMEOUT_MS = 8000;
         var validPaymentDetails = {
             name: "Test Subscriber",
             cardNumber: "4242424242424242",
@@ -35,7 +34,7 @@ var ChangeSubscriptionSpec = function () {
                 element.all(by.repeater('year in years')).last().click();
                 expect(changeSubscriptionPage.getSubscriptionDialogUpgradeButton().isEnabled()).toBe(true);
                 changeSubscriptionPage.getSubscriptionDialogUpgradeButton().click();
-                browser.wait(EC.not(EC.visibilityOf(element(by.css('div#resultLoading')), TIMEOUT_MS)));
+                browser.wait(EC.not(EC.visibilityOf(element(by.css('div#resultLoading')))));
                 commonExpects.expectProgressDivHidden();
             });
 
@@ -70,7 +69,7 @@ var ChangeSubscriptionSpec = function () {
                 element.all(by.repeater('year in years')).last().click();
                 expect(changeSubscriptionPage.getSubscriptionDialogUpgradeButton().isEnabled()).toBe(true);
                 changeSubscriptionPage.getSubscriptionDialogUpgradeButton().click();
-                browser.wait(EC.not(EC.visibilityOf(element(by.css('div#resultLoading')), TIMEOUT_MS)));
+                browser.wait(EC.not(EC.visibilityOf(element(by.css('div#resultLoading')))));
                 commonExpects.expectProgressDivHidden() ;
                 /*expect(changeSubscriptionPage.getSubscriptionDialogElement().isDisplayed()).toBe(false);*/
                 /*commonExpects.expectSuccessNotificationShown();*/
@@ -103,7 +102,7 @@ var ChangeSubscriptionSpec = function () {
                   expect(changeSubscriptionPage.getDowngradeConfirmationDialog().isDisplayed()).toBe(true);
                   expect(changeSubscriptionPage.getDowngradeButton().isEnabled()).toBe(true);
                   changeSubscriptionPage.getDowngradeButton().click();
-                  browser.wait(EC.not(EC.visibilityOf(element(by.css('div#resultLoading')), TIMEOUT_MS)));
+                  browser.wait(EC.not(EC.visibilityOf(element(by.css('div#resultLoading')))));
                   commonExpects.expectProgressDivHidden();
                   expect(changeSubscriptionPage.getFreePlanIndicator().isDisplayed()).toBe(true);
                   expect(changeSubscriptionPage.getMonthlyPlanIndicator().isDisplayed()).toBe(false);
