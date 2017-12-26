@@ -5,7 +5,7 @@ var historyPage = require('../../pages/HistoryPage');
 var signInPage = require('../../pages/SignInPage');
 var registrationPage = require('../../pages/RegistrationPage');
 
-var AdminUsersSpec = function() {
+var AdminInviteUserSpec = function() {
     this.run = function(emailAndRegistrationToken, newUser) {
         // sign in as our main user -- practice admin
         signInPage.setEmail(browser.params.login.correct.email);
@@ -72,4 +72,4 @@ var AdminUsersSpec = function() {
     };
 };
 
-module.exports = new AdminUsersSpec();
+module.exports = new AdminInviteUserSpec();
