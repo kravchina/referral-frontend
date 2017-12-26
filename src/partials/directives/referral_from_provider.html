@@ -5,7 +5,7 @@
             <h2>On behalf of</h2>
         </div>
 
-        <alert type="{{alert.type}}" ng-show="form.$dirty && form.behalf.$invalid">Please select provider</alert>
+        <alert type="{{alert.type}}" ng-show="form.$dirty && form.onbehalf.$invalid">Please select provider</alert>
         <select ng-disabled="!userIsAux" id="behalfProvider" name="onbehalf" class="form-control" ng-model="model.referral.orig_provider_id" ng-options="p.id as 'Dr. ' + p.first_name + ' ' + p.last_name for p in currentPracticeProviders" ng-required="userIsAux">
             <option selected="selected" class="placeholder" value="">Choose a provider &hellip;</option>
         </select>
