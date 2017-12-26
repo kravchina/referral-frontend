@@ -29,8 +29,8 @@ var CreateReferralSpec = function() {
                 // some elements and buttons should be disabled
                 expect(createReferralPage.getProviderElement().isEnabled()).toBe(false);
                 expect(createReferralPage.getProcedureElement().isEnabled()).toBe(false);
-                expect(createReferralPage.getButtonSaveElement().isEnabled()).toBe(false);
-                expect(createReferralPage.getButtonSignSendElement().isEnabled()).toBe(false);
+                expect(createReferralPage.getButtonSaveElement().isEnabled()).toBe(true);
+                expect(createReferralPage.getButtonSignSendElement().isEnabled()).toBe(true);
             });
             
             createReferralNoSaveSpec.run();
