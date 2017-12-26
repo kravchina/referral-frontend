@@ -5,7 +5,7 @@
         </div>
         <select id="selectAddress" class="form-control" name="address" ng-model="model.referral.address_id"
                 ng-disabled="!destinationPractice || !destinationPractice.addresses || destinationPractice.addresses.length == 1 || model.referral.dest_provider_invited_id"
-                ng-options="a.id as (a.city + ', ' + a.state) for a in destinationPractice.addresses">
+                ng-options="a.id as (a.city + ', ' + a.state) for a in destinationPractice.addresses" ng-required="!model.referral.dest_provider_invited_id">
             <option selected="selected" class="placeholder" value="">{{model.referral.dest_provider_invited_id ? '-- pending registration --' : 'Choose address &hellip;'}}</option>
         </select>
     </div>
