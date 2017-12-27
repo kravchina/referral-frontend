@@ -7,6 +7,7 @@ var adminPracticePage = require('../../pages/AdminPracticePage');
 
 var promoRegistrationSpec = require('./PromoRegistrationSpec.js');
 // TODO [ak] var adminInvitePracticeSpec = require('./AdminInvitePracticeSpec.js');
+var adminInviteNoLoginUserSpec = require('./AdminInviteNoLoginUserSpec.js');
 var adminInviteUserSpec = require('./AdminInviteUserSpec.js');
 var createReferralInviteFrontDeskPracticeSpec = require('./CreateReferralInviteFrontDeskPracticeSpec.js');
 var createReferralInviteProviderPracticeSpec = require('./CreateReferralInviteProviderPracticeSpec.js');
@@ -49,7 +50,7 @@ var RegistrationSpec = function() {
             
             // adminInvitePracticeSpec.run();
             
-            it('from Admin Practice page', function() {
+            it('from Admin Practice page for regular user', function() {
                 var emailAndRegistrationToken = (new Date()).getTime().toString();
                 this.user = {
                     salutation: "Mr.",
@@ -61,6 +62,20 @@ var RegistrationSpec = function() {
                 };
                 this.practice = browser.params.login.correct.practice;
                 adminInviteUserSpec.run(emailAndRegistrationToken, this.user);
+            });
+            
+            it('from Admin Practice page for no-login user', function() {
+                var emailAndRegistrationToken = (new Date()).getTime().toString();
+                this.user = {
+                    salutation: "", // empty. Test doesn't set it
+                    firstName: "Smith",
+                    middleInitial: "",
+                    lastName: "Brown",
+                    email: emailAndRegistrationToken + "@example.com",
+                    password: "12345678"
+                };
+                this.practice = browser.params.login.correct.practice;
+                adminInviteNoLoginUserSpec.run(emailAndRegistrationToken, this.user);
             });
             
             it('from create referral for provider', function() {

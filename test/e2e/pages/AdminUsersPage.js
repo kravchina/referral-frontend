@@ -66,13 +66,21 @@ var AdminUsersPage = function() {
     this.getAddModalEmailElement = function(){
         return element(by.css('#formNewuser input[name="email"]'));
     };
-
+    
+    this.getRadioNoLoginElement = function() {
+        return element(by.css('#formNewuser input[ng-model="isInvite"][ng-value="false"]'));
+    };
+    
     this.getAddModalAdminRadioElement = function(){
         return element(by.css('#formNewuser')).element(by.repeater('item in radios').row(0).column('item.name'));
     };
 
     this.getAddModalSendInviteButton = function(){
         return element(by.css('#formNewuser button[ng-click="ok(user)"][ng-show="isInvite"]'));
+    };
+
+    this.getAddModalSaveButton = function(){
+        return element(by.css('#formNewuser button[ng-click="ok(user)"][ng-show="!isInvite"]'));
     };
 
     this.getAddModalSpecialtyElement = function() {
@@ -90,6 +98,19 @@ var AdminUsersPage = function() {
     this.getInviteUserResultOkButton = function(){
         return element(by.css('#inviteUserResult button[ng-click="ok()"]'));
     };
+
+    this.getAddPasswordModalForm = function(){
+        return element(by.css('form#addPasswordForm'));
+    };
+
+    this.getAddPasswordModalEmailElement = function(){
+        return element(by.css('form#addPasswordForm input[ng-model="user.email"]'));
+    };
+
+    this.getAddPasswordSaveButton = function(){
+        return element(by.css('#addPasswordForm button[ng-click="save(user)"]'));
+    };
+
 };
 
 module.exports = new AdminUsersPage();
