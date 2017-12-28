@@ -132,6 +132,21 @@ angular.module('admin')
             Notification.info(message + ' <b>' + value + '</b> was copied to clipboard');
         };
 
+        $scope.changeSendUsageStatistics = function(value) {
+            Practice.update({practiceId: $scope.practice.id}, {
+                    practice: {
+                        is_send_usage_statistics: value,
+                        addresses_attributes: $scope.practice.addresses
+                    }
+                },
+                function (success) {
+                    Notification.success('Account was updated successfully!');
+                },
+                function (failure) {
+                    Notification.error('An error occurred during account update...');
+                });
+        };
+
 
         $scope.removeAddress = function (address) {
             function removeAddressFromList(addressToRemove) {
