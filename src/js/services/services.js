@@ -455,6 +455,7 @@ angular.module('dentalLinksServices')
         remove: function() {
             $css.removeAll();
             $cookies.remove('branding');
+            currentBranding = {};
         }
     }
 }])
