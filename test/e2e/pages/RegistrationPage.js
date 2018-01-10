@@ -1,6 +1,7 @@
 var RegistrationPage = function() {
     this.urlPart = "/#/register/";
     this.urlPromoPart = "/#/register/promo/";
+    this.urlGuestConversionPart = "/#/register/guest_conversion/";
 
     this.open = function(token) {
         // TODO [ak] inherit this code somehow?..
@@ -9,6 +10,14 @@ var RegistrationPage = function() {
 
     this.openPromo = function(promoCode) {
         browser.get(this.urlPromoPart + promoCode);
+    };
+    
+    this.openGuestConversion = function(token) {
+        browser.get(this.urlGuestConversionPart + token);
+    }
+    
+    this.getPromoElement = function() {
+        return element(by.model('$parent.promo'));
     };
     
     // personal info
@@ -28,7 +37,11 @@ var RegistrationPage = function() {
     this.getLastNameElement = function() {
         return element(by.model('invitation.last_name'));
     };
-
+    
+    this.getRoleElements = function() {
+        return element.all(by.repeater('role in roles')).all(by.css('input'));
+    }
+    
     this.getSpecialtyElement = function() {
         return element(by.model('invitation.specialty_type_id'));
     };
@@ -93,6 +106,10 @@ var RegistrationPage = function() {
 
     this.getPromoRegisterButtonElement = function() {
         return element(by.css('button[ng-click="createPracticeAndRegister(practice, invitation)"]'));
+    };
+    
+    this.getGuestRegisterButtonElement = function() {
+        return element(by.css('button[ng-click="convertGuest(practice, invitation)"]'));
     };
     
     // post-final dialog

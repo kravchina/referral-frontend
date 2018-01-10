@@ -3,14 +3,23 @@ var commonExpects = require('../../commons/CommonExpects');
 var guestPage = require('../../pages/GuestPage');
 var guestActivateReferralPage = require('../../pages/GuestActivateReferralPage');
 var signInPage = require('../../pages/SignInPage');
+var registrationPage = require('../../pages/RegistrationPage');
+var historyPage = require('../../pages/HistoryPage');
+var consolePracticePage = require('../../pages/ConsolePracticePage');
 
 var GuestReferralSpec = function() {
     this.run = function() {
         var emailAndActivationToken = (new Date()).getTime().toString();
         var guest = {
+            // guest fields
             firstName: 'GuestFirst',
             lastName: 'GuestLast',
-            email: emailAndActivationToken + '@test.com'
+            email: emailAndActivationToken + '@test.com',
+            
+            // registration fields
+            salutation: "Dr.",
+            middleInitial: "K",
+            password: "12345678"
         };
 
         var patient = {
@@ -25,6 +34,21 @@ var GuestReferralSpec = function() {
             referralType: 'Endodontics',
             procedure: 'Trauma'
         };
+        
+        var guestPractice = {
+            name: "Guest-to-user practice",
+            type: "General Dentistry",
+            address: {
+                street1: "Guest street",
+                city: "Anchorage",
+                state: "Alaska",
+                short_state: "AK",
+                zip: "99444",
+                phone: "901-111-4114",
+                website: "guest.example.com"
+            }
+        };
+        
         describe('guest visits guest create referral page', function() {
 
             beforeEach(function() {
@@ -109,10 +133,96 @@ var GuestReferralSpec = function() {
                 commonExpects.expectProgressDivHidden();
                 commonExpects.expectMenuHidden();
                 commonExpects.expectCurrentUrlToBe(signInPage.url);
+                
+                // open the conversion page
+                registrationPage.openGuestConversion(emailAndActivationToken);
+                commonExpects.expectProgressDivHidden();
+                
+                // three fields are filled in
+                expect(registrationPage.getEmailElement().getAttribute("value")).toEqual(guest.email);
+                expect(registrationPage.getFirstNameElement().getAttribute("value")).toEqual(guest.firstName);
+                expect(registrationPage.getLastNameElement().getAttribute("value")).toEqual(guest.lastName);
+                
+                // promo field is absent; email and roles fields are disabled
+                expect(registrationPage.getPromoElement().isPresent()).toBe(false);
+                expect(registrationPage.getEmailElement().isEnabled()).toBe(false);
+                expect(registrationPage.getRoleElements().isEnabled()).toEqual([false, false]);
+                
+                // fill all others
+                registrationPage.fillUserFields(guest, false, false);
+                registrationPage.fillPracticeFields(guestPractice);
+                registrationPage.getTNCElement().click();
+                
+                // convert!
+                registrationPage.getGuestRegisterButtonElement().click();
+                
+                // TODO [ak] consider reusing the code below with PromoRegistrationSpec
+                
+                // waiting for a successful registration dialog and clicking OK
+                browser.wait(EC.elementToBeClickable(registrationPage.getSuccessfulDialogOKButtonElement()), 30000);
+                registrationPage.getSuccessfulDialogOKButtonElement().click();
+                expect(registrationPage.getSuccessfulDialogElement().isPresent()).toBe(false);
+                commonExpects.expectCurrentUrlToBe(signInPage.url);
+                
+                // check that new user cannot log in yet
+                signInPage.setEmail(guest.email);
+                signInPage.setPass(guest.password);
+                signInPage.clickLogin();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectMenuHidden();
+                commonExpects.expectCurrentUrlToBe(signInPage.url);
+                commonExpects.expectErrorNotificationShown();
+                expect(signInPage.getEmail()).toEqual(guest.email);
+                expect(signInPage.getPass()).toEqual('');
+                
+                // log in as superuser
+                signInPage.setEmail(browser.params.login.super_user.email);
+                signInPage.setPass(browser.params.login.super_user.pass);
+                signInPage.clickLogin();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectMenuShown();
+                commonExpects.expectCurrentUrlToBe(historyPage.url);
+                
+                // navigate to Practice Console
+                consolePracticePage.open();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectCurrentUrlToBe(consolePracticePage.url);
+                
+                // find the new practice and approve it
+                consolePracticePage.setPractice(guestPractice.name);
+                consolePracticePage.getPracticeDropDownFirstRowElement().click();
+                expect(consolePracticePage.getPracticeApproveButton().isDisplayed()).toBe(true);
+                consolePracticePage.getPracticeApproveButton().click();
+                commonExpects.expectSuccessNotificationShown();
+                
+                // log out
+                commonActions.signOut();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectMenuHidden();
+                commonExpects.expectCurrentUrlToBe(signInPage.url);
+                
+                // log in as the new user
+                signInPage.setEmail(guest.email);
+                signInPage.setPass(guest.password);
+                signInPage.clickLogin();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectMenuShown();
+                commonExpects.expectCurrentUrlToBe(historyPage.url);
+                
+                // TODO [ak] check there is a referral we've sent
+                
+                // log out
+                commonActions.signOut();
+                commonExpects.expectProgressDivHidden();
+                commonExpects.expectMenuHidden();
+                commonExpects.expectCurrentUrlToBe(signInPage.url);
             });
 
             afterEach(function() {
-                commonExpects.expectConsoleWithoutErrors({except: ["422"]}); // returned when referral is already activated
+                commonExpects.expectConsoleWithoutErrors({except: [
+                    "401", // returned when user tries to log in before practice is approved
+                    "422" // returned when referral is already activated
+                ]});
             });
         });
     };
