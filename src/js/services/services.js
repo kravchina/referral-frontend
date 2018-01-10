@@ -112,7 +112,8 @@ angular.module('dentalLinksServices')
             prolongTrial: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/prolong_trial'},
             checkContainsDoctor: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/check_contains_doctor'},
             updateStatus: {method: 'POST', url: API_ENDPOINT + '/practices/:practiceId/update_status'},
-            getStats: {method: 'GET', url: API_ENDPOINT + '/practices/:practiceId/stats'}
+            getStats: {method: 'GET', url: API_ENDPOINT + '/practices/:practiceId/stats'},
+            getOwnerParamsByConversionToken: {method: 'GET', url: API_ENDPOINT + '/practices/get_owner_params_by_conversion_token', params: {conversion_token: '@conversion_token'}}
         });
     }])
 
@@ -172,7 +173,8 @@ angular.module('dentalLinksServices')
         create_no_login_user: {method: 'POST', url: API_ENDPOINT + '/register_no_login_user'},
         register_with_promo: {method: 'POST', url: API_ENDPOINT + '/register_with_promo'},
         confirmEmail: {method: 'POST', url: API_ENDPOINT + '/confirm_email'},
-        sendEmailVerification: {method: 'POST', url: API_ENDPOINT + '/request_email_update'}
+        sendEmailVerification: {method: 'POST', url: API_ENDPOINT + '/request_email_update'},
+        convertGuest: {method: 'POST', url: API_ENDPOINT + '/convert_guest'}
     })
 }])
 
