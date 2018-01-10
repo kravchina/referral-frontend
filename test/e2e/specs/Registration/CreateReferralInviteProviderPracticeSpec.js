@@ -98,6 +98,12 @@ var CreateReferralInviteProviderPracticeSpec = function() {
         // visit registration page as new doctor
         registrationPage.open(emailAndRegistrationToken);
         
+        // TODO [ak] you have 1 pending referrals
+        
+        expect(registrationPage.getPromoElement().isPresent()).toBe(false);
+        expect(registrationPage.getEmailElement().isEnabled()).toBe(true);
+        expect(registrationPage.getRoleElements().isEnabled()).toEqual([true, true]);
+        
         // first, last and email are already filled in
         expect(registrationPage.getFirstNameElement().getAttribute('value')).toEqual(newUser.firstName);
         expect(registrationPage.getLastNameElement().getAttribute('value')).toEqual(newUser.lastName);

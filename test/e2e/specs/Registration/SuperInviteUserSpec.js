@@ -47,6 +47,10 @@ var SuperInviteUserSpec = function(emailAndRegistrationToken, newUser, newPracti
         // visit registration page as new doctor
         registrationPage.open(emailAndRegistrationToken);
 
+        expect(registrationPage.getPromoElement().isPresent()).toBe(false);
+        expect(registrationPage.getEmailElement().isEnabled()).toBe(true);
+        // expect(registrationPage.getRoleElements().isPresent()).toEqual([]);
+        
         // first, last and email are already filled in
         expect(registrationPage.getFirstNameElement().getAttribute('value')).toEqual(newUser.firstName);
         expect(registrationPage.getLastNameElement().getAttribute('value')).toEqual(newUser.lastName);

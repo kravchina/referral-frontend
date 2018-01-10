@@ -88,6 +88,12 @@ var CreateReferralFrontDeskSpec = function() {
         // visit registration page as new doctor
         registrationPage.open(emailAndRegistrationToken);
         
+        // TODO [ak] you have 1 pending referrals
+        
+        expect(registrationPage.getPromoElement().isPresent()).toBe(false);
+        expect(registrationPage.getEmailElement().isEnabled()).toBe(true);
+        expect(registrationPage.getRoleElements().isEnabled()).toEqual([true, true]);
+        
         // email is already filled in
         expect(registrationPage.getEmailElement().getAttribute('value')).toEqual(newUser.email);
         

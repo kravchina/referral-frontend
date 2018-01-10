@@ -11,6 +11,11 @@ var PromoRegistrationSpec = function() {
     this.run = function(newUser, newPractice) {
         // registering
         registrationPage.openPromo('getstarted');
+        
+        expect(registrationPage.getPromoElement().isPresent()).toBe(true);
+        expect(registrationPage.getEmailElement().isEnabled()).toBe(true);
+        expect(registrationPage.getRoleElements().isEnabled()).toEqual([true, true]);
+        
         registrationPage.fillUserFields(newUser, true, true);
         registrationPage.fillPracticeFields(newPractice);
         registrationPage.getTNCElement().click();
