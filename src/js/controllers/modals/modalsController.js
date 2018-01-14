@@ -819,7 +819,7 @@ angular.module('modals')
     function ($scope, $modalInstance, ModalHandler, Referral, referral, Notification) {
 
         $scope.invite = function() {
-            Referral.inviteGuest({id: referral.id}, function(success) {
+            Referral.sendGuestConversionOffer({id: referral.id}, function(success) {
                 Notification.success('Offer to guest was sent successfully!');
                 ModalHandler.dismiss($modalInstance);
             }, function(error) {

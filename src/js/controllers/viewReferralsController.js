@@ -41,6 +41,7 @@ angular.module('viewReferrals')
                     Notification.error(failure.data.error)
                 }
             );
+            return $scope.referral.$promise;
         };
 
         $scope.initModel();
@@ -241,7 +242,6 @@ angular.module('viewReferrals')
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (patient) {
                 $scope.referral.patient = patient;
-                $scope.showOfferToInviteGuest();
             });
         };
 
@@ -258,8 +258,9 @@ angular.module('viewReferrals')
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (providerId) {
-                $scope.initModel();  // have to reload referrer object from server, because it needs to provide object that has dest_provider attribute and many other customizations.
-                $scope.showOfferToInviteGuest();
+                $scope.initModel().then(function() {
+                    $scope.showOfferToInviteGuest();
+                });  // have to reload referrer object from server, because it needs to provide object that has dest_provider attribute and many other customizations.
             });
         };
 
@@ -326,7 +327,7 @@ angular.module('viewReferrals')
         };
 
         $scope.showOfferToInviteGuest = function () {
-            if($scope.referral.requires_guest_activation) {
+            if($scope.referral.orig_provider && $scope.referral.orig_provider.guest) {
                 var modalInstance = $modal.open({
                     templateUrl: 'partials/invite_guest_modal.html',
                     controller: 'InviteGuestModalController',

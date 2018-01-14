@@ -138,7 +138,7 @@ angular.module('dentalLinksServices')
         countByInvited: {method: 'GET', url: API_ENDPOINT + '/referrals/count/:id', isArray: false},
         countByPractice: {method: 'GET', url: API_ENDPOINT + '/referrals/count_by_practice/:id', isArray: false},
         createGuestReferral: {method: 'POST', url: API_ENDPOINT + '/referrals/new/guest_referral', isArray: false},
-        inviteGuest: {method: 'GET', url: API_ENDPOINT + '/referrals/:id/invite_guest'}
+        sendGuestConversionOffer: {method: 'POST', url: API_ENDPOINT + '/referrals/send_guest_conversion_offer', isArray: false}
     });
 }])
 
