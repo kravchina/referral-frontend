@@ -29,9 +29,9 @@ angular.module('registration')
 
         $scope.initInvitation = function () {
             $scope.practice = {};
-            if ($scope.registrationMode == $scope.registrationModes.PROMO) {
+            if ($scope.registrationMode === $scope.registrationModes.PROMO) {
                 $scope.invitation = { roles_mask: USER_ROLES.doctor.mask};
-            } else if ($scope.registrationMode == $scope.registrationModes.INVITATION) {
+            } else if ($scope.registrationMode === $scope.registrationModes.INVITATION) {
                 $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
                     function (success) {
                         Referral.countByInvited({id: $scope.invitation.id},

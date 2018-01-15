@@ -19,7 +19,7 @@
             </div>
 
 
-                        <div class="row" ng-if="registrationMode == registrationModes.PROMO">
+                        <div class="row" ng-if="registrationMode === registrationModes.PROMO">
                             <div class="input-block col-md-6" ng-class="{'has-error': (submitted || form.promo.$dirty) && form.promo.$invalid }">
                                 <input type="text" name="promo" class="form-control" ng-model="$parent.promo" placeholder="Enter promo &hellip;" ng-disabled="originalPromo && originalPromo !== 'getstarted'" ng-required="true">
                                 <label>Promo code</label>
@@ -34,7 +34,7 @@
 
                         <div class="row">
                             <div class="input-block col-md-6" ng-class="{'has-error': (submitted || form.email.$dirty) && form.email.$invalid }">
-                                <input type="email" name="email" class="form-control" ng-model="invitation.email" placeholder="Enter email &hellip;" ng-change="checkEmail(invitation.email)" ng-required="true" ng-disabled="registrationMode == registrationModes.GUEST_CONVERSION">
+                                <input type="email" name="email" class="form-control" ng-model="invitation.email" placeholder="Enter email &hellip;" ng-change="checkEmail(invitation.email)" ng-required="true" ng-disabled="registrationMode === registrationModes.GUEST_CONVERSION">
                                 <label>Email</label>
                             </div>
 
@@ -84,9 +84,9 @@
                         <div ng-if="!invitation.practice_id">
                             <div class="row">
                                 <div class="input-block" ng-class="{'has-error': submitted && form.selectRole.$invalid }">
-                                    <label class="radio-inline" ng-repeat="role in roles" ng-disabled="registrationMode == registrationModes.GUEST_CONVERSION">
+                                    <label class="radio-inline" ng-repeat="role in roles" ng-disabled="registrationMode === registrationModes.GUEST_CONVERSION">
                                         <input name="selectRole" type="radio" ng-value="role.mask"
-                                               ng-model="invitation.roles_mask" ng-required="true" ng-disabled="registrationMode == registrationModes.GUEST_CONVERSION">
+                                               ng-model="invitation.roles_mask" ng-required="true" ng-disabled="registrationMode === registrationModes.GUEST_CONVERSION">
                                         {{role.name}}
                                     </label>
                                     <label>Role</label>
@@ -128,9 +128,9 @@
                             </div>
                         </div>
                         <div class="button-block" style="padding-top: 20px;">
-                            <button class="btn btn-green btn-lg" ng-if="registrationMode == registrationModes.INVITATION" ng-click="register(practice, invitation)">Register</button>
-                            <button class="btn btn-green btn-lg" ng-if="registrationMode == registrationModes.PROMO" ng-click="createPracticeAndRegister(practice, invitation)">Register</button>
-                            <button class="btn btn-green btn-lg" ng-if="registrationMode == registrationModes.GUEST_CONVERSION" ng-click="convertGuest(practice, invitation)">Register</button>
+                            <button class="btn btn-green btn-lg" ng-if="registrationMode === registrationModes.INVITATION" ng-click="register(practice, invitation)">Register</button>
+                            <button class="btn btn-green btn-lg" ng-if="registrationMode === registrationModes.PROMO" ng-click="createPracticeAndRegister(practice, invitation)">Register</button>
+                            <button class="btn btn-green btn-lg" ng-if="registrationMode === registrationModes.GUEST_CONVERSION" ng-click="convertGuest(practice, invitation)">Register</button>
                             <button class="btn btn-green btn-lg" ng-click="discard()">Discard</button>
                         </div>
         </div>
