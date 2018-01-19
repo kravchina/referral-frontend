@@ -332,6 +332,11 @@
         "description":"Error message for when person is trying to register with an email that we already have as a provider invitation"
     },
     {
+        "key":"provider_invitation.exists",
+        "value":"Sorry an account with this email address already exists",
+        "description":"Error message for when person is trying to register with an email that we already have as a registered user or an invitation"
+    },
+    {
         "key": "referral.already_activated.header",
         "value": "Referral already activated",
         "description": "Header shown when referral is already activated"
