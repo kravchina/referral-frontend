@@ -376,7 +376,8 @@ angular.module('dentalLinksDirectives')
         restrict: 'E',
         scope: {
             inputModel : '=',
-            immediateUpdate : '='
+            immediateUpdate : '=',
+            showOfferToInviteGuest : '='
         },
         templateUrl: 'partials/notes.html',
         controller: 'NotesController'
