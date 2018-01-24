@@ -327,7 +327,7 @@ angular.module('viewReferrals')
         };
 
         $scope.showOfferToInviteGuest = function () {
-            if($scope.referral.orig_provider && $scope.referral.orig_provider.guest) {
+            if($scope.referral.orig_provider.practice.status === 'guest') {
                 var modalInstance = $modal.open({
                     templateUrl: 'partials/invite_guest_modal.html',
                     controller: 'InviteGuestModalController',
