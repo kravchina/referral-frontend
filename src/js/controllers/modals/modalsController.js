@@ -821,6 +821,7 @@ angular.module('modals')
         $scope.invite = function() {
             Referral.sendGuestReferralUpdatedEmail({id: referral.id}, function(success) {
                 Notification.success('Email to guest was sent successfully!');
+                referral.no_more_guest_conversion_offers = true; // no more than one offer email per referral. Server also sets it to true
                 ModalHandler.dismiss($modalInstance);
             }, function(error) {
                 Notification.error('An error occurred.');
