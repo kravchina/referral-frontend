@@ -65,7 +65,7 @@ angular.module('dentalLinks')
         };
         
         $scope.hasUpdates = function (note) {
-            return note.versions.some(function (version) {
+            return note.versions && note.versions.some(function (version) {
                 return version.event === 'update'
             });
         };
