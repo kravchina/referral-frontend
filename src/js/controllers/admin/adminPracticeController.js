@@ -135,7 +135,7 @@ angular.module('admin')
         $scope.changeSendUsageStatistics = function(value) {
             Practice.update({practiceId: $scope.practice.id}, {
                     practice: {
-                        is_send_usage_statistics: value,
+                        send_usage_statistics: value,
                         addresses_attributes: $scope.practice.addresses
                     }
                 },
