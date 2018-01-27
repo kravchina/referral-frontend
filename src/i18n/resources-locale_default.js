@@ -345,5 +345,15 @@
         "key": "referral.already_activated",
         "value": "The referral you're trying to activate has been activated already.",
         "description": "Message shown when referral is already activated"
+    },
+    {
+        "key": "conversion.data.not.found",
+        "value": "The conversion token you provided seems to be incorrect.",
+        "description": "Message shown when guest-to-user conversion methods return 404."
+    },
+    {
+        "key": "guest.referral_updated_email.already_sent",
+        "value": "Guest user has already been notified about updates in this referral (probably, by somebody in your practice).",
+        "description": "Message shown when server rejects the request to send guest_referral_updated_email"
     }
 ]
