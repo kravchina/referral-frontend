@@ -84,7 +84,7 @@
                     <alert type="warning" ng-show="form.practice.$dirty && form.practice.$invalid">Please select existing practice or invite new provider</alert>
                     <input type="text" class="form-control" name="practice" placeholder="Enter existing practice/provider or add new provider with button on the right..."
                            ng-model="practiceSearchText" typeahead-on-select="onPracticeSelected($item, $model, $label)" ng-model-options="{ debounce: 300 }"
-                           typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].last_name == null && practice.users[0].first_name == null ? practice.users[0].email : (practice.users[0].first_name + ' ' + practice.users[0].last_name)) : practice.name for practice in findPractice($viewValue) "
+                           uib-typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].last_name == null && practice.users[0].first_name == null ? practice.users[0].email : (practice.users[0].first_name + ' ' + practice.users[0].last_name)) : practice.name for practice in findPractice($viewValue) "
                            autocomplete="off" ng-disabled="true">
                 </div>
             </div>

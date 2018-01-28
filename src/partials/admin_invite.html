@@ -17,7 +17,7 @@
                 <div class="col-sm-9">
                     <input type="text" class="form-control" name="address" placeholder="Enter state, city or zip to find relevant practices&hellip;"
                            ng-model="addressSearchPhrase" typeahead-editable="false"
-                           typeahead="address as address.city + ' (' + address.state + ', ' + address.zip + ')' for address in searchAddresses($viewValue) "
+                           uib-typeahead="address as address.city + ' (' + address.state + ', ' + address.zip + ')' for address in searchAddresses($viewValue) "
                            autocomplete="off"
                            ng-model-options="{ debounce: 300 }">
                 </div>

@@ -13,7 +13,7 @@
             <input type="text" id="practice" name="practice" placeholder="Select practice &hellip;" class="form-control"
                    ng-model="practice"
                    typeahead-editable="false"
-                   typeahead="practice as practice.name for practice in findPractice($viewValue)"
+                   uib-typeahead="practice as practice.name for practice in findPractice($viewValue)"
                    autocomplete="off"
                    required>
         </div>
