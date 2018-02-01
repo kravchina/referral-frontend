@@ -44,14 +44,34 @@ var CommonExpects = function() {
         expect(element(by.css('div.global-notification-bar')).isDisplayed()).toBe(false);
     };
 
-    this.expectConsoleWithoutErrors = function(){
-        if (browser.currentRunBrowserName !== 'internet explorer'){
+    this.expectConsoleWithoutErrors = function(options){
+        var optionsHaveExcept = function(options) {
+            return (
+                typeof options == "object" &&
+                typeof options.except != "undefined" &&
+                options.except.length > 0
+            );
+        }
+        
+        var getHTTPErrorStatus = function(logMessage) {
+            var r = logMessage.match(/status of (\d{3}) /);
+            if (r === null || typeof r[1] === "undefined") return "[STATUS_NOT_FOUND]";
+            
+            return r[1];
+        }
+    
+        if (browser.currentRunBrowserName == 'chrome'){
         browser.manage().logs().get('browser').then(function (browserLog) {
             var i = 0,
                 severWarnings = false;
 
             for (i; i <= browserLog.length - 1; i++) {
                 if (browserLog[i].level.name === 'SEVERE') {
+                    if (
+                        optionsHaveExcept(options) &&
+                        options.except.includes(getHTTPErrorStatus(browserLog[i].message))
+                    ) continue;
+                    
                     console.log('\n' + browserLog[i].level.name);
                     //print the error
                     console.log('(Possibly exception) \n' + browserLog[i].message);
@@ -64,25 +84,6 @@ var CommonExpects = function() {
     });}
     };
 
-    this.expectConsoleWithoutErrorsExcept401 = function(){
-        if (browser.currentRunBrowserName !== 'internet explorer'){
-        browser.manage().logs().get('browser').then(function (browserLog) {
-            var i = 0,
-                severWarnings = false;
-
-            for (i; i <= browserLog.length - 1; i++) {
-                if (browserLog[i].level.name === 'SEVERE' && !/\s401\s/.test(browserLog[i].message)) {
-                    console.log('\n' + browserLog[i].level.name);
-                    //print the error
-                    console.log('(Possibly exception) \n' + browserLog[i].message);
-
-                    severWarnings = true;
-                }
-            }
-
-            expect(severWarnings).toBe(false);
-        });
-    };}
 };
 
 module.exports = new CommonExpects();

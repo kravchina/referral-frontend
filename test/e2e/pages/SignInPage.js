@@ -10,7 +10,7 @@ var SignInPage = function() {
     };
     
     this.setEmail = function(email) {
-        element(by.model('user.email')).sendKeys(email);
+        element(by.model('user.email')).clear().sendKeys(email);
     };
     
     this.getPass = function() {
@@ -18,7 +18,7 @@ var SignInPage = function() {
     };
     
     this.setPass = function(pass) {
-        element(by.model('user.password')).sendKeys(pass);
+        element(by.model('user.password')).clear().sendKeys(pass);
     };
     
     this.clickLogin = function() {

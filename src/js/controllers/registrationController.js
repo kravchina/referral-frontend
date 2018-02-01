@@ -2,10 +2,22 @@ angular.module('registration')
 // Just for invited providers to some existing practice or to a new practice
     .controller('RegistrationController', ['$scope', '$location', '$stateParams', '$uibModal', '$state', 'Notification', 'Auth', 'ModalHandler', 'Practice', 'ProviderInvitation', 'Registration', 'Procedure', 'Referral', 'USER_ROLES', 'Promo',
     function ($scope, $location, $stateParams, $uibModal, $state, Notification, Auth, ModalHandler, Practice, ProviderInvitation, Registration, Procedure, Referral, USER_ROLES, Promo) {
-        $scope.practice = {};
         $scope.isResend = false;
-        $scope.isPromoRegistration = $stateParams.isPromoRegistration;
-        $scope.originalPromo = $scope.promo = $stateParams.promo;
+
+        $scope.registrationModes = {INVITATION: "INVITATION", PROMO: "PROMO", GUEST_CONVERSION: "GUEST_CONVERSION"};
+        if ($stateParams.invitation_token) {
+            $scope.registrationMode = $scope.registrationModes.INVITATION;
+        } else if ($stateParams.promo) {
+            $scope.registrationMode = $scope.registrationModes.PROMO;
+            $scope.originalPromo = $scope.promo = $stateParams.promo;
+        } else if ($stateParams.conversion_token) {
+            $scope.registrationMode = $scope.registrationModes.GUEST_CONVERSION;
+        } else {
+            // unknown mode
+            Rollbar.error('Unknown registration mode encountered', $stateParams);
+            $state.go('signIn');
+            return;
+        }
 
         $scope.practiceTypes = Procedure.practiceTypes();
 
@@ -16,9 +28,10 @@ angular.module('registration')
 
 
         $scope.initInvitation = function () {
-            if ($scope.isPromoRegistration) {
+            $scope.practice = {};
+            if ($scope.registrationMode === $scope.registrationModes.PROMO) {
                 $scope.invitation = { roles_mask: USER_ROLES.doctor.mask};
-            } else {
+            } else if ($scope.registrationMode === $scope.registrationModes.INVITATION) {
                 $scope.invitation = ProviderInvitation.get({invitation_token: $stateParams.invitation_token},
                     function (success) {
                         Referral.countByInvited({id: $scope.invitation.id},
@@ -31,6 +44,23 @@ angular.module('registration')
                     },
                     function (failure) {
                         $state.go('signIn', {alreadyRegister: true});
+                    }
+                );
+            } else {
+                // GUEST_CONVERSION
+                $scope.invitation = Practice.getOwnerParamsByConversionToken(
+                    {conversion_token: $stateParams.conversion_token},
+                    function(success) {
+                        // email, first and last name are now filled
+                        $scope.invitation.roles_mask = USER_ROLES.doctor.mask;
+                    },
+                    function(failure) {
+                        Rollbar.error('getOwnerParamsByConversionToken() failed', $stateParams.conversion_token, failure);
+                        if (failure.status >= 500) {
+                            Notification.error('internal.server.error');
+                        } else {
+                            Notification.error('conversion.data.not.found');
+                        }
                     }
                 );
             }
@@ -141,6 +171,38 @@ angular.module('registration')
                 });
             }
 
+        };
+
+        $scope.convertGuest = function (practice, invitation) {
+            $scope.submitted = true;
+            $scope.setSpecialty(practice, invitation);
+            if ($scope.form.$valid) {
+                Registration.convertGuest(
+                    {
+                        user: invitation,
+                        practice: practice,
+                        conversion_token: $stateParams.conversion_token
+                    },
+                    function (success) {
+                        var modalInstance = $modal.open({
+                            templateUrl: 'partials/promo_registration_result.html',
+                            controller: 'PromoRegistrationResultController'
+                        });
+                        ModalHandler.set(modalInstance);
+                        modalInstance.result.then(
+                            function(success) { $state.go('signIn'); },
+                            function(failure) { $state.go('signIn'); }
+                        );
+                    },
+                    function (failure) {
+                        if(failure.status >= 500) {
+                            Notification.error('internal.server.error');
+                        } else {
+                            Notification.error(failure.data.errors.message[0]);
+                        }
+                    }
+                );
+            }
         };
 
         $scope.checkEmail = function (email){

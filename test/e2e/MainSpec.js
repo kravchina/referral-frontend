@@ -9,10 +9,9 @@ var superUserLoginSpec = require('./specs/SuperUserLogin/SuperUserLoginSpec');
 var adminPracticePremiumSpec = require('./specs/AdminPracticePremiumSpec');
 var adminPracticeNonPremiumSpec = require('./specs/AdminPracticeNonPremiumSpec');
 var adminSubscriptionPremiumSpec = require('./specs/AdminSubscriptionPremiumSpec');
-var createReferralAndInvitationSpec = require('./specs/CreateReferralAndInvitationSpec');
-var promoRegistrationSpec = require('./specs/PromoRegistrationSpec');
 var changeSubscriptionSpec = require('./specs/ChangeSubscriptionSpec');
 var guestSpec = require('./specs/Guest/GuestSpec');
+var registrationSpec = require('./specs/Registration/RegistrationSpec');
 
 describe('when user navigates to Sign In page', function() {
     commonActions.maximizeBrowser();
@@ -31,18 +30,13 @@ describe('when user navigates to Sign In page', function() {
     describe('and user tries to login with incorrect credentials', function(){
         invalidLoginSpec.run();
         afterEach(function(){
-            commonExpects.expectConsoleWithoutErrorsExcept401();
+            commonExpects.expectConsoleWithoutErrors({except: ["401"]});
         });
-
-
     });
 
     describe('and user tries to login with correct credentials', function(){
         standardLoginSpec.run();
-        promoRegistrationSpec.run();
         superUserLoginSpec.run();
-        guestSpec.run();
-        createReferralAndInvitationSpec.run();
         adminPracticePremiumSpec.run();
         adminPracticeNonPremiumSpec.run();
         adminSubscriptionPremiumSpec.run();
@@ -50,9 +44,8 @@ describe('when user navigates to Sign In page', function() {
         afterEach(function(){
             commonExpects.expectConsoleWithoutErrors();
         });
-
-
     });
-
+    
+    guestSpec.run();
+    registrationSpec.run();
 });
-

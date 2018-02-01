@@ -12,32 +12,34 @@
     <form id="formCreateReferral" name="form" novalidate="novalidate">
         <div class="box-white box-padded">
 
-        <!-- On behalf of block -->
-            <referral-from-provider></referral-from-provider>
-        <!-- .row -->
+            <!-- On behalf of block -->
+                <referral-from-provider></referral-from-provider>
+            <!-- .row -->
 
-        <!-- Patient block -->
-            <referral-find-patient></referral-find-patient>
-        <!-- .row -->
+            <!-- Patient block -->
+                <referral-find-patient></referral-find-patient>
+            <!-- .row -->
 
-        <!-- Practice / Provider block -->
-            <referral-find-practice></referral-find-practice>
-            <referral-to-provider></referral-to-provider>
-        <!-- .row -->
+            <!-- Practice / Provider block -->
+                <referral-find-practice></referral-find-practice>
+                <referral-to-provider></referral-to-provider>
+            <!-- .row -->
 
-        <!-- Procedure block -->
-            <referral-procedure-block></referral-procedure-block>
-        <!-- .row -->
+            <!-- Procedure block -->
+                <referral-procedure-block></referral-procedure-block>
+            <!-- .row -->
 
-        <teeth-chart></teeth-chart>
-        <attachments></attachments>
-        <notes input-model="model.referral" immediate-update="immediateUpdate"></notes>
+            <teeth-chart></teeth-chart>
+            <attachments></attachments>
+            <notes input-model="model.referral" immediate-update="immediateUpdate"></notes>
 
         </div><!-- .box-white -->
 
         <div class="button-block">
-            <button class="btn btn-green btn-lg" access="admin, doctor, aux" ng-click="saveTemplate(model)" ng-disabled="form.$invalid || isInvalidAttachments()">Save</button>
-            <button  class="btn btn-orange btn-lg" access="admin, doctor" ng-click="createReferral(model)" ng-disabled="form.$invalid || isInvalidAttachments()">Sign &amp; Send</button>
+            <alert type="warning" ng-show="form.$dirty && form.$invalid">Something is missing... Please fill in the highlighted fields.</alert>
+
+            <button class="btn btn-green btn-lg" access="admin, doctor, aux" ng-click="saveTemplate(model)">Save</button>
+            <button  class="btn btn-orange btn-lg" access="admin, doctor" ng-click="createReferral(model)">Sign &amp; Send</button>
             <button class="btn btn-danger btn-lg" ng-click="discardTemplate(model.referral)" ng-show="model.referral.id">Discard draft</button>
         </div><!-- .button-block -->
     </form>

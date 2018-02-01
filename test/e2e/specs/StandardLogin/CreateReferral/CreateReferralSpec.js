@@ -3,7 +3,6 @@ var createReferralPage = require('../../../pages/CreateReferralPage');
 
 var createReferralNoSaveSpec = require('./CreateReferralNoSaveSpec.js');
 var createReferralSaveSpec = require('./CreateReferralSaveSpec.js');
-var createReferralFrontDeskSpec = require('./CreateReferralFrontDeskSpec.js');
 
 var CreateReferralSpec = function() {
     this.run = function() {
@@ -29,13 +28,12 @@ var CreateReferralSpec = function() {
                 // some elements and buttons should be disabled
                 expect(createReferralPage.getProviderElement().isEnabled()).toBe(false);
                 expect(createReferralPage.getProcedureElement().isEnabled()).toBe(false);
-                expect(createReferralPage.getButtonSaveElement().isEnabled()).toBe(false);
-                expect(createReferralPage.getButtonSignSendElement().isEnabled()).toBe(false);
+                expect(createReferralPage.getButtonSaveElement().isEnabled()).toBe(true);
+                expect(createReferralPage.getButtonSignSendElement().isEnabled()).toBe(true);
             });
             
             createReferralNoSaveSpec.run();
             createReferralSaveSpec.run();
-            createReferralFrontDeskSpec.run();
             
         });
     };

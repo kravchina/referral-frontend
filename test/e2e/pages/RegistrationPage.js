@@ -1,6 +1,7 @@
 var RegistrationPage = function() {
     this.urlPart = "/#/register/";
     this.urlPromoPart = "/#/register/promo/";
+    this.urlGuestConversionPart = "/#/register/guest_conversion/";
 
     this.open = function(token) {
         // TODO [ak] inherit this code somehow?..
@@ -9,6 +10,14 @@ var RegistrationPage = function() {
 
     this.openPromo = function(promoCode) {
         browser.get(this.urlPromoPart + promoCode);
+    };
+    
+    this.openGuestConversion = function(token) {
+        browser.get(this.urlGuestConversionPart + token);
+    }
+    
+    this.getPromoElement = function() {
+        return element(by.model('$parent.promo'));
     };
     
     // personal info
@@ -28,7 +37,11 @@ var RegistrationPage = function() {
     this.getLastNameElement = function() {
         return element(by.model('invitation.last_name'));
     };
-
+    
+    this.getRoleElements = function() {
+        return element.all(by.repeater('role in roles')).all(by.css('input'));
+    }
+    
     this.getSpecialtyElement = function() {
         return element(by.model('invitation.specialty_type_id'));
     };
@@ -95,6 +108,10 @@ var RegistrationPage = function() {
         return element(by.css('button[ng-click="createPracticeAndRegister(practice, invitation)"]'));
     };
     
+    this.getGuestRegisterButtonElement = function() {
+        return element(by.css('button[ng-click="convertGuest(practice, invitation)"]'));
+    };
+    
     // post-final dialog
     
     this.getSuccessfulDialogElement = function() {
@@ -103,6 +120,31 @@ var RegistrationPage = function() {
     
     this.getSuccessfulDialogOKButtonElement = function() {
         return element(by.css('button[ng-click="ok()"]'));
+    };
+    
+    this.fillUserFields = function(user, withFirstLast, withEmail) {
+        if (withFirstLast) {
+            this.getFirstNameElement().sendKeys(user.firstName);
+            this.getLastNameElement().sendKeys(user.lastName);
+        }
+        if (withEmail) {
+            this.getEmailElement().sendKeys(user.email);
+        }
+        this.getSalutationElement().element(by.cssContainingText("option", user.salutation)).click(); // TODO [ak] reuse select option click code
+        this.getMiddleInitialElement().sendKeys(user.middleInitial);
+        this.getPasswordElement().sendKeys(user.password);
+        this.getPasswordConfirmationElement().sendKeys(user.password);
+    };
+    
+    this.fillPracticeFields = function(practice) {
+        this.getSpecialtyElement().element(by.cssContainingText("option", practice.type)).click();
+        this.getPracticeNameElement().sendKeys(practice.name);
+        this.getPracticeAddressStreetElement().sendKeys(practice.address.street1);
+        this.getPracticeAddressCityElement().sendKeys(practice.address.city);
+        this.getPracticeAddressStateElement().element(by.cssContainingText("option", practice.address.state)).click();
+        this.getPracticeAddressZipElement().sendKeys(practice.address.zip);
+        this.getPracticeAddressPhoneElement().sendKeys(practice.address.phone);
+        this.getPracticeAddressWebsiteElement().sendKeys(practice.address.website);
     };
     
 };

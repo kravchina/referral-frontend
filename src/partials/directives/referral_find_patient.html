@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.patient.$dirty && form.patient.$invalid }">
+    <div class="input-block col-xs-12 col-sm-12" ng-class="{'has-error': form.$dirty && form.patient.$invalid }">
         <div class="block-title">
             <h2>Patient</h2>
             <button ng-if="patient.id" type="button" ng-click="editPatientDialog()" class="btn btn-orange btn-toggle-shifted btn-toggle-modal-note" data-toggle="tooltip"
@@ -12,7 +12,7 @@
             </button>
         </div>
 
-        <alert type="{{alert.type}}" ng-show="form.patient.$dirty && form.patient.$invalid">Please select existing or create a new patient record</alert>
+        <alert type="{{alert.type}}" ng-show="form.$dirty && form.patient.$invalid">Please select existing or create a new patient record</alert>
         <input type="text" class="form-control" name="patient" ng-model-options="{ debounce: 300 }"
                placeholder="Enter existing patient or add new with button on the right ..."
                ng-model="patient"

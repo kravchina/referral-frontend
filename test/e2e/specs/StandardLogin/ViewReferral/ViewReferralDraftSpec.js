@@ -17,8 +17,8 @@ var ViewReferralDraftSpec = function() {
             });
 
             it('edit image last modified date', function() {
-                expect(viewReferralDraftPage.getSaveButton().isEnabled()).toBe(false);
-                expect(viewReferralDraftPage.getSignSendButton().isEnabled()).toBe(false);
+                expect(viewReferralDraftPage.getSaveButton().isEnabled()).toBe(true);
+                expect(viewReferralDraftPage.getSignSendButton().isEnabled()).toBe(true);
 
                 viewReferralDraftPage.getImageEditLastModifiedButton().click();
 

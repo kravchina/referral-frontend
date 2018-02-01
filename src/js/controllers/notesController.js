@@ -21,6 +21,9 @@ angular.module('dentalLinks')
             });
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (message) {
+                if($scope.showOfferToInviteGuest) {
+                    $scope.showOfferToInviteGuest();
+                }
                 if($scope.immediateUpdate){
                     Note.save({note: {message: message, referral_id: $scope.inputModel.id, user_id: $scope.auth.id}}, function (success) {
                         $scope.inputModel.notes.push(success);
@@ -62,7 +65,7 @@ angular.module('dentalLinks')
         };
         
         $scope.hasUpdates = function (note) {
-            return note.versions.some(function (version) {
+            return note.versions && note.versions.some(function (version) {
                 return version.event === 'update'
             });
         };
@@ -78,6 +81,9 @@ angular.module('dentalLinks')
                 }
             });
             modalInstance.result.then(function (note) {
+                if($scope.showOfferToInviteGuest) {
+                    $scope.showOfferToInviteGuest();
+                }
                 if($scope.immediateUpdate){
                     Note.update({id: note.id}, {note: note}, function(success){
                         $scope.inputModel.notes[index] = success;

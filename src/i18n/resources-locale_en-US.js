@@ -332,6 +332,11 @@
         "description":"Error message for when person is trying to register with an email that we already have as a provider invitation"
     },
     {
+        "key":"provider_invitation.exists",
+        "value":"Sorry an account with this email address already exists",
+        "description":"Error message for when person is trying to register with an email that we already have as a registered user or an invitation"
+    },
+    {
         "key": "referral.already_activated.header",
         "value": "Referral already activated",
         "description": "Header shown when referral is already activated"
@@ -340,5 +345,15 @@
         "key": "referral.already_activated",
         "value": "The referral you're trying to activate has been activated already.",
         "description": "Message shown when referral is already activated"
+    },
+    {
+        "key": "conversion.data.not.found",
+        "value": "The conversion token you provided seems to be incorrect.",
+        "description": "Message shown when guest-to-user conversion methods return 404."
+    },
+    {
+        "key": "guest.referral_updated_email.already_sent",
+        "value": "Guest user has already been notified about updates in this referral (probably, by somebody in your practice).",
+        "description": "Message shown when server rejects the request to send guest_referral_updated_email"
     }
 ]

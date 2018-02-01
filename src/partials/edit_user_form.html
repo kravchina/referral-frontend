@@ -70,7 +70,7 @@
         <div class="radio" access="aux">
             <label>
                 <input type="radio" ng-model="user.notification_preference" value="1" ng-checked="user.notification_preference == 1">
-                Email notifications from:
+                Email notifications for:
             </label>
             <div    ng-show="user.notification_preference == 1"
                     isteven-multi-select
@@ -79,8 +79,7 @@
                     button-label="first_name last_name"
                     item-label="first_name last_name"
                     tick-property="ticked"
-                    helper-elements="filter none all"
-                    >
+                    helper-elements="filter none all">
             </div>
         </div>
         <div class="radio" access="doctor,admin,super">

@@ -30,6 +30,13 @@ angular.module('createReferrals')
         }
 
         $scope.saveTemplate = function (model) {
+
+            $scope.form.$setDirty();
+
+            if ($scope.form.$invalid) {
+                return false;
+            }
+
             ReferralHelper.prepareSubmit($scope, model.referral);
             var resultHandlers = {
                 success: function (success) {
@@ -49,6 +56,13 @@ angular.module('createReferrals')
         };
 
         $scope.createReferral = function (model) {
+
+            $scope.form.$setDirty();
+
+            if ($scope.form.$invalid) {
+                return false;
+            }
+
             var resultHandlers = {
                 success: function (referral) {
                     Logger.debug('Sent referral #' + referral.id);

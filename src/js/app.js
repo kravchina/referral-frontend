@@ -32,18 +32,13 @@ angular.module('dentalLinks')
         state('registration', {
             url: '/register/:invitation_token',
             templateUrl: 'partials/registration.html',
-            controller: 'RegistrationController',
-            onEnter: ['$stateParams', function($stateParams){
-                $stateParams.isPromoRegistration = false;
-            }]
+            controller: 'RegistrationController'
         }).
         state('promotion', {
             url: '/register/promo/:promo',
             templateUrl: 'partials/registration.html',
             controller: 'RegistrationController',
             onEnter: ['$state', '$stateParams', 'Promo', function($state, $stateParams, Promo) {
-                $stateParams.isPromoRegistration = true;
-
                 if(!$stateParams.promo) {
                     return $state.go('error_page', {error_key: 'promotion.required'});
                 }
@@ -60,6 +55,11 @@ angular.module('dentalLinks')
                         }
                     });
             }]
+        }).
+        state('guest_conversion', {
+            url: '/register/guest_conversion/:conversion_token',
+            templateUrl: 'partials/registration.html',
+            controller: 'RegistrationController'
         }).
         state('error_page', {
             url: '/error/:error_key',

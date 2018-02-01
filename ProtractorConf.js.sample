@@ -42,7 +42,10 @@ exports.config = {
             },
             unsubscribed_user: {
                 email: 'unsubscribed@example.com',
-                pass: '12345678'
+                pass: '12345678',
+                firstName: 'Unsubscribed',
+                lastName: 'User',
+                practice: {name: "Unsubscribed practice"}
             },
             trial_user: {
                 email: 'trial@example.com',
