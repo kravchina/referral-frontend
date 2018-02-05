@@ -1,6 +1,6 @@
 <div class="row console-reports">
-    <tabset vertical="true" type="pills" class="menu-accordion">
-        <tab heading="Invitation">
+    <uib-tabset vertical="true" type="pills" class="menu-accordion">
+        <uib-tab heading="Invitation">
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <h3>Invitations</h3>
@@ -17,23 +17,23 @@
                     </div>
                 </div>
                 <div class="panel-body report-panel-scroll">
-                    <accordion close-others="false">
-                        <accordion-group ng-repeat="invitation in invitations">
-                            <accordion-heading>
+                    <uib-accordion close-others="false">
+                        <uib-accordion-group ng-repeat="invitation in invitations">
+                            <uib-accordion-heading>
                                 {{$index+1}}) {{invitation.first_name}} {{invitation.last_name}}
-                            </accordion-heading>
+                            </uib-accordion-heading>
                             <label>Email</label>
                             <input type="text" class="form-control" value="{{invitation.email}}" disabled>
                             <label>Status</label>
                             <input type="text" class="form-control" value="{{invitation.status}}" disabled>
                             <label>Invited by</label>
                             <input type="text" class="form-control" value="{{invitation.inviter.first_name}} {{invitation.inviter.last_name}} from {{invitation.inviter.practice.name}}" disabled>
-                        </accordion-group>
-                    </accordion>
+                        </uib-accordion-group>
+                    </uib-accordion>
                 </div>
             </div>
-        </tab>
-        <tab heading="Practices">
+        </uib-tab>
+        <uib-tab heading="Practices">
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <h3>Practices</h3>
@@ -50,15 +50,15 @@
                     </div>
                 </div>
                 <div class="panel-body report-panel-scroll">
-                    <accordion close-others="false">
-                        <accordion-group ng-repeat="practice in practices">
-                            <accordion-heading>
+                    <uib-accordion close-others="false">
+                        <uib-accordion-group ng-repeat="practice in practices">
+                            <uib-accordion-heading>
                                 <span ng-class="{'text-muted': practice.removed_at}">
                                     {{$index+1}})
                                     <span ng-class="{'hidden': !practice.removed_at}" class="text-danger">[deleted]</span>
                                     {{practice.name}}
                                 </span>
-                            </accordion-heading>
+                            </uib-accordion-heading>
                             <a ui-sref="console.practice({id: practice.id})" target="_blank">View practice details</a>
                             <table class="table">
                                 <tbody>
@@ -80,12 +80,12 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </accordion-group>
-                    </accordion>
+                        </uib-accordion-group>
+                    </uib-accordion>
                 </div>
             </div>
-        </tab>
-        <tab heading="Users">
+        </uib-tab>
+        <uib-tab heading="Users">
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <h3>Users</h3>
@@ -102,16 +102,16 @@
                     </div>
                 </div>
                 <div class="panel-body report-panel-scroll">
-                    <accordion close-others="false">
-                        <accordion-group heading="{{$index+1}}) {{user.title}} {{user.first_name}} {{user.last_name}}" ng-repeat="user in users">
+                    <uib-accordion close-others="false">
+                        <uib-accordion-group heading="{{$index+1}}) {{user.title}} {{user.first_name}} {{user.last_name}}" ng-repeat="user in users">
                             <label>Email</label>
                             <input type="text" class="form-control" value="{{user.email}}" disabled>
-                        </accordion-group>
-                    </accordion>
+                        </uib-accordion-group>
+                    </uib-accordion>
                 </div>
             </div>
-        </tab>
-        <tab heading="List of reminders">
+        </uib-tab>
+        <uib-tab heading="List of reminders">
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <div class="row">
@@ -119,11 +119,11 @@
                             <h3>List of reminders</h3>
                         </div>
                         <div class="col-sm-8">
-                            <pagination class="pull-right pagination-sm"
+                            <uib-pagination class="pull-right pagination-sm"
                                         total-items="totalItems" ng-model="pager.currentPage"
                                         items-per-page="itemsPerPage" max-size="10"
                                         ng-change="changeEventPage()">
-                            </pagination>
+                            </uib-pagination>
                         </div>
                     </div>
                 </div>
@@ -152,8 +152,8 @@
                     </table>
                 </div>
             </div>
-        </tab>
-        <tab heading="Unopened referrals" style="display:none;">
+        </uib-tab>
+        <uib-tab heading="Unopened referrals" style="display:none;">
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <div class="row">
@@ -217,8 +217,8 @@
                     </table>
                 </div>
             </div>
-        </tab>
-        <tab heading="Site stats">
+        </uib-tab>
+        <uib-tab heading="Site stats">
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <div class="row">
@@ -258,7 +258,7 @@
                     </table>
                 </div>
             </div>
-        </tab>
+        </uib-tab>
         <div class="tab-content"></div>
-    </tabset>
+    </uib-tabset>
 </div>
