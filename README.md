@@ -43,9 +43,9 @@ But of course standard approach will not suit all possible tests. If particular 
 
 ### Installing and configuring
 
-TODO -- Protractor
+TODO -- installing Protractor
 
-TODO -- IE
+TODO -- IE and replacing its 32-bit vs 64-bit Selenium drivers
 
 #### Setting up conf file
 
@@ -59,31 +59,30 @@ It's generally expected that each developer checks/sets the following params in 
 * params.viewReferralId;
 * params.attachmentUrlPart.
 
-###Prepare running
-It is highly recommended to run your tests on a test Rails environment.
-Before every run you will need to your database to a initial ready-to-test state.
-You can do that using two consequent commands:
+### Running
 
+E2E tests expect special data in the DB and in the Amazon S3 bucket, and also require a full data reset before each run (both in the DB and on S3).
+Also, E2E tests require special token generation for various use cases. The server is prepared for that and generates tokens in a special
+way when run on **test** Rails environment, and this is how server should be run for tests.
+
+Day-to-day local running sequence boils down to the following.
+
+Open a standalone rails terminal and reset the DB and S3 data:
 ```Batchfile
-rake db:reset RAILS_ENV=test
-rake db:seed_test RAILS_ENV=test STRIPE_API_SECRET_KEY=<your_stripe_api_key>
+rake db:reset db:seed_test prepare_s3 RAILS_ENV=test STRIPE_API_SECRET_KEY=<your_stripe_api_key>
 ```
+
 After that run your rails server in a test mode (or using predefined test configuration in your IDE):
 ```Batchfile
 rails server -b 127.0.0.1 -p 3000 -e test
 ```
-### Running
 
-Day-to-day local running sequence boils down to the following.
-
-Open a standalone terminal and start webdriver-manager in it:
-
+Next, open a standalone terminal and start webdriver-manager in it:
 ```Batchfile
 webdriver-manager start
 ```
 
-From project root, open another terminal and run tests:
-
+From the frontend project root, open another terminal and run the tests:
 ```Batchfile
 protractor ProtractorConf.js
 ```
@@ -98,7 +97,10 @@ major places where you can manipulate with the amount of tests being run are:
 ### Known issues
 
 Take the following into consideration:
-* sometimes during first run some of the tests may fail. Please make sure you have run them all 2-3 times before taking actions on failures.
+* sometimes during first run some of the tests may fail. Please make sure you have run them all 2-3 times before taking actions on failures;
+* the tests were initially working in three browsers, Chrome, FF and IE, but at some point new versions of FF became incompatible with its drivers;
+* E2E tests perform complex UI operations and don't work under PhantomJS;
+* the most stable environment for running tests was 64-bit Windows 2008 R2 on Amazon t2.small intance with 2 GB RAM. There were problems running on Mac.
 
 ## Unit tests
 
