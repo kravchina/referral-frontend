@@ -5,14 +5,14 @@
     </div>
     <div class="modal-body">
 
-        <alert type="danger">Attention! Delete practice cannot be undone</alert>
+        <uib-alert type="danger">Attention! Delete practice cannot be undone</uib-alert>
 
         <div class="form-group">
             <label>Delete practice Name</label>
             <input type="text" name="name" class="form-control data1" ng-model="practice.name" placeholder="Practice name &hellip;">
         </div>
 
-        <alert>{{referrals_count}} referral{{referrals_count > 1 ? 's are' : ' is'}} attached to practice that is being deleted.</alert>
+        <uib-alert>{{referrals_count}} referral{{referrals_count > 1 ? 's are' : ' is'}} attached to practice that is being deleted.</uib-alert>
 
         <div class="form-group">
             <label class="radio-inline">

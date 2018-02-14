@@ -3,7 +3,7 @@
         <div class="block-title">
             <h2>Practice</h2>
         </div>
-        <alert type="warning" ng-show="form.$dirty && form.practice.$invalid">Please select existing practice or invite new provider</alert>
+        <uib-alert type="warning" ng-show="form.$dirty && form.practice.$invalid">Please select existing practice or invite new provider</uib-alert>
         <input type="text" class="form-control" name="practice" placeholder="Enter existing practice/provider or add new provider with button on the right..."
                ng-model="practiceSearchText" typeahead-editable="false" typeahead-on-select="onPracticeSelected($item, $model, $label)" ng-model-options="{ debounce: 300 }"
                uib-typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].last_name == null && practice.users[0].first_name == null ? practice.users[0].email : (practice.users[0].first_name + ' ' + practice.users[0].last_name)) : practice.name for practice in findPractice($viewValue)"

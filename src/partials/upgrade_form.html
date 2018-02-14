@@ -9,7 +9,7 @@
         <div class="block-title">
             <h5>Payment Information</h5>
         </div>
-        <alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.message}}</alert>
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.message}}</uib-alert>
         <div class="input-block" ng-class="{ 'has-error': upgradeForm.name_on_card.$dirty && upgradeForm.name_on_card.$invalid }">
             <input type="text" name="name_on_card" class="form-control" ng-model="payment_info.name_on_card" placeholder="Enter name on card &hellip;" ng-required="true">
         </div>

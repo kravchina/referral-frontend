@@ -4,7 +4,7 @@
         <h4 class="modal-title" id="myModalLabel">Edit user</h4>
     </div>
     <div class="modal-body">
-        <alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.message | i18n}}</alert>
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.message | i18n}}</uib-alert>
         <div class="input-block">
             <select id="selectSalutation" name="salutation" ng-model="user.title" class="form-control">
                 <option selected="selected" disabled="disabled" class="placeholder" value="">Select salutation</option>
@@ -44,7 +44,7 @@
             <input type="password" name="password_confirmation" class="form-control" ng-model="user.password_confirmation" placeholder="Confirm New Password &hellip;" ng-minlength="8" ng-required="userForm.password.$dirty">
         </div>
         <user-addresses user="user" practice-addresses="practiceAddresses"></user-addresses>
-        <alert type="warning">Users with Admin privileges are allowed to create and edit users, allows auxiliary to sign and send referrals and to set referrals complete</alert>
+        <uib-alert type="warning">Users with Admin privileges are allowed to create and edit users, allows auxiliary to sign and send referrals and to set referrals complete</uib-alert>
         <div roles-selector show-roles="showRoles" input-mask="user.roles_mask" ng-show="showRoleSelector"></div>
         <div access="admin" class="input-block" ng-show="!showRoleSelector">
             <label>

@@ -30,7 +30,7 @@
                             <h3>Access details</h3>
                         </div>
 
-                        <alert type="danger" ng-show="submitted && form.password.$invalid">Password is required and should have at least 8 characters</alert>
+                        <uib-alert type="danger" ng-show="submitted && form.password.$invalid">Password is required and should have at least 8 characters</uib-alert>
 
                         <div class="row">
                             <div class="input-block col-md-6" ng-class="{'has-error': (submitted || form.email.$dirty) && form.email.$invalid }">
@@ -120,7 +120,7 @@
                             <h3>Terms</h3>
                         </div>
 
-                        <alert type="danger" ng-show="submitted && form.tnc.$invalid">Please accept EULA.</alert>
+                        <uib-alert type="danger" ng-show="submitted && form.tnc.$invalid">Please accept EULA.</uib-alert>
                         <div class="row">
                             <div class="input-block col-md-12">
                                 <input type="checkbox" name="tnc" class="form-control" ng-model="invitation.tnc" ng-required="true" style="height:20px; display: inline; width: 20px;">

@@ -184,7 +184,7 @@ angular.module('registration')
                         conversion_token: $stateParams.conversion_token
                     },
                     function (success) {
-                        var modalInstance = $modal.open({
+                        var modalInstance = $uibModal.open({
                             templateUrl: 'partials/promo_registration_result.html',
                             controller: 'PromoRegistrationResultController'
                         });

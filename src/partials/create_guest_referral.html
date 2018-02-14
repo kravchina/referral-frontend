@@ -15,13 +15,13 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 field-margin" ng-class="{'has-error': form.guestFirstName.$dirty && form.guestFirstName.$invalid }">
-                            <alert type="warning" ng-show="form.guestFirstName.$dirty && form.guestFirstName.$invalid">Please enter first name</alert>
+                            <uib-alert type="warning" ng-show="form.guestFirstName.$dirty && form.guestFirstName.$invalid">Please enter first name</uib-alert>
                             <input type="text" class="form-control" name="guestFirstName" placeholder="First name"
                                    ng-model="guest.first_name" ng-required="true">
                         </div>
 
                         <div class="col-xs-12 col-sm-6 field-margin" ng-class="{'has-error': form.guestLastName.$dirty && form.guestLastName.$invalid }">
-                            <alert type="warning" ng-show="form.guestLastName.$dirty && form.guestLastName.$invalid">Please enter last name</alert>
+                            <uib-alert type="warning" ng-show="form.guestLastName.$dirty && form.guestLastName.$invalid">Please enter last name</uib-alert>
                             <input type="text" class="form-control" name="guestLastName" placeholder="Last name"
                                    ng-model="guest.last_name" ng-required="true">
                         </div>
@@ -29,7 +29,7 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-12" ng-class="{'has-error': form.guestEmail.$dirty && form.guestEmail.$invalid }">
-                            <alert type="warning" ng-show="form.guestEmail.$dirty && form.guestEmail.$invalid">Please enter email address</alert>
+                            <uib-alert type="warning" ng-show="form.guestEmail.$dirty && form.guestEmail.$invalid">Please enter email address</uib-alert>
                             <input type="text" class="form-control" name="guestEmail" placeholder="Email address"
                                    ng-model="guest.email" ng-required="true">
                         </div>
@@ -81,7 +81,7 @@
                     <div class="block-title">
                         <h2>Practice</h2>
                     </div>
-                    <alert type="warning" ng-show="form.practice.$dirty && form.practice.$invalid">Please select existing practice or invite new provider</alert>
+                    <uib-alert type="warning" ng-show="form.practice.$dirty && form.practice.$invalid">Please select existing practice or invite new provider</uib-alert>
                     <input type="text" class="form-control" name="practice" placeholder="Enter existing practice/provider or add new provider with button on the right..."
                            ng-model="practiceSearchText" typeahead-on-select="onPracticeSelected($item, $model, $label)" ng-model-options="{ debounce: 300 }"
                            uib-typeahead="practice as (practice.name == '-- pending registration --') ? (practice.users[0].last_name == null && practice.users[0].first_name == null ? practice.users[0].email : (practice.users[0].first_name + ' ' + practice.users[0].last_name)) : practice.name for practice in findPractice($viewValue) "
