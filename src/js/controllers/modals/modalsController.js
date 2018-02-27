@@ -1,6 +1,6 @@
 angular.module('modals')
-.controller('PatientModalController', [ '$scope', '$modalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', '$modal', 'Alert',
-        function ($scope, $modalInstance, Auth, ModalHandler, Patient, fullname, $modal, Alert) {
+.controller('PatientModalController', [ '$scope', '$uibModalInstance', 'Auth', 'ModalHandler', 'Patient', 'fullname', '$uibModal', 'Alert',
+        function ($scope, $uibModalInstance, Auth, ModalHandler, Patient, fullname, $uibModal, Alert) {
 
     $scope.title = 'Create a New Patient Record';
     $scope.alerts = [];
@@ -25,7 +25,7 @@ angular.module('modals')
         function createPatient(){
             Patient.save({patient: patient},
                 function (success) {
-                    ModalHandler.close($modalInstance, success);
+                    ModalHandler.close($uibModalInstance, success);
                 },
                 function (failure) {
                     $scope.alerts = [];
@@ -36,7 +36,7 @@ angular.module('modals')
         if(patient.practice_id) {
             Patient.searchPatientDuplicate(patient, function (success) {
                 if (success.patient) {
-                    var dedupingModalInstance = $modal.open({
+                    var dedupingModalInstance = $uibModal.open({
                         templateUrl: 'partials/patient_deduping_form.html',
                         controller: 'DedupingPatientModalController',
                         resolve: {
@@ -48,7 +48,7 @@ angular.module('modals')
 
                     dedupingModalInstance.result.then(function (useExistingPatient) {
                         if (useExistingPatient) {
-                            ModalHandler.close($modalInstance, success.patient);
+                            ModalHandler.close($uibModalInstance, success.patient);
                         } else {
                             createPatient();
                         }
@@ -59,7 +59,7 @@ angular.module('modals')
 
             });
         } else {
-            ModalHandler.close($modalInstance, patient);
+            ModalHandler.close($uibModalInstance, patient);
         }
 
     };
@@ -67,26 +67,26 @@ angular.module('modals')
         $scope.datepickerStatus.opened = true;
     };
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
 
     };
 }])
 
-.controller('DedupingPatientModalController', ['$scope', '$modalInstance', 'isCreatingPatient', function($scope, $modalInstance, isCreatingPatient){
+.controller('DedupingPatientModalController', ['$scope', '$uibModalInstance', 'isCreatingPatient', function($scope, $uibModalInstance, isCreatingPatient){
         $scope.useExistingPatient = true;
         $scope.isCreatingPatient = isCreatingPatient;
 
         $scope.ok = function () {
-            $modalInstance.close($scope.useExistingPatient);
+            $uibModalInstance.close($scope.useExistingPatient);
         };
 
         $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
     }])
 
-.controller('EditPatientModalController', [ '$scope', '$state', '$modalInstance', 'Auth', 'Alert', 'ModalHandler', 'Patient', 'patientForEdit', '$modal',
-        function ($scope, $state, $modalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, $modal) {
+.controller('EditPatientModalController', [ '$scope', '$state', '$uibModalInstance', 'Auth', 'Alert', 'ModalHandler', 'Patient', 'patientForEdit', '$uibModal',
+        function ($scope, $state, $uibModalInstance, Auth, Alert, ModalHandler, Patient, patientForEdit, $uibModal) {
     $scope.title = 'Edit Patient Record';
     $scope.datepickerStatus = {opened: false};
     $scope.alerts = [];
@@ -96,7 +96,7 @@ angular.module('modals')
         function updatePatient () {
             Patient.update({id: patientForEdit.id}, {patient: patient},
                 function (success) {
-                    ModalHandler.close($modalInstance, success);
+                    ModalHandler.close($uibModalInstance, success);
                 },
                 function (failure) {
                     $scope.alerts = [];
@@ -110,7 +110,7 @@ angular.module('modals')
         if($state.is('createReferral')) {
             Patient.searchPatientDuplicate(patient, function (success) {
                 if (success.patient) {
-                    var dedupingModalInstance = $modal.open({
+                    var dedupingModalInstance = $uibModal.open({
                         templateUrl: 'partials/patient_deduping_form.html',
                         controller: 'DedupingPatientModalController',
                         resolve: {
@@ -122,7 +122,7 @@ angular.module('modals')
 
                     dedupingModalInstance.result.then(function (useExistingPatient) {
                         if (useExistingPatient) {
-                            ModalHandler.close($modalInstance, success.patient);
+                            ModalHandler.close($uibModalInstance, success.patient);
                         } else {
                             updatePatient();
                         }
@@ -143,11 +143,11 @@ angular.module('modals')
     };
 
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
 }])
 
-.controller('ChangeDestProviderModalController', [ '$scope', '$modalInstance', 'Auth','Alert', 'ModalHandler', 'Referral', 'referral', 'User', function ($scope, $modalInstance, Auth, Alert, ModalHandler, Referral, referral, User) {
+.controller('ChangeDestProviderModalController', [ '$scope', '$uibModalInstance', 'Auth','Alert', 'ModalHandler', 'Referral', 'referral', 'User', function ($scope, $uibModalInstance, Auth, Alert, ModalHandler, Referral, referral, User) {
     $scope.providerId = referral.dest_provider_id;
     $scope.referral = angular.copy(referral);
 
@@ -168,59 +168,59 @@ angular.module('modals')
         referral = $scope.referral;
         Referral.update({id: referral.id}, {referral: {dest_provider_id: providerId, address_id: $scope.referral.address_id}},
             function (success) {
-                ModalHandler.close($modalInstance, providerId);
+                ModalHandler.close($uibModalInstance, providerId);
             },
             function (failure) {
                 Alert.error($scope.alerts, 'Error occurred during referral update.');
             });
     };
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
 }])
 
-.controller('NoteModalController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
+.controller('NoteModalController', ['$scope', '$uibModalInstance', 'ModalHandler', function ($scope, $uibModalInstance, ModalHandler) {
     $scope.ok = function (note) {
         //nothing to do, we cant save note right here because at this stage referral doesn't exist. We can only add new note to the list on the parent page (create referral) and save simultaneously with referral.
         if (note == undefined || note.match(/^\s*$/)){
-            ModalHandler.dismiss($modalInstance);
+            ModalHandler.dismiss($uibModalInstance);
         }else{
-            ModalHandler.close($modalInstance,note);
+            ModalHandler.close($uibModalInstance,note);
         }
         
     };
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
 
 }])
 
-.controller('EditNoteModalController', ['$scope', '$modalInstance', 'ModalHandler', 'noteData', function ($scope, $modalInstance, ModalHandler, noteData) {
+.controller('EditNoteModalController', ['$scope', '$uibModalInstance', 'ModalHandler', 'noteData', function ($scope, $uibModalInstance, ModalHandler, noteData) {
     $scope.note = angular.copy(noteData);
 
     $scope.ok = function (note) {
         if (note == undefined || note.message.match(/^\s*$/)){
-            ModalHandler.dismiss($modalInstance);
+            ModalHandler.dismiss($uibModalInstance);
         }else{
-            ModalHandler.close($modalInstance, $scope.note);
+            ModalHandler.close($uibModalInstance, $scope.note);
         }
     };
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
 
 }])
-.controller('NoteVersionsModalController', ['$scope', '$modalInstance', 'ModalHandler', 'versions', function ($scope, $modalInstance, ModalHandler, versions) {
+.controller('NoteVersionsModalController', ['$scope', '$uibModalInstance', 'ModalHandler', 'versions', function ($scope, $uibModalInstance, ModalHandler, versions) {
     $scope.versions = versions;
     $scope.ok = function () {
-        ModalHandler.close($modalInstance);
+        ModalHandler.close($uibModalInstance);
     };
 
 }])
 
 .controller('ProviderModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Spinner', 'sendEmailNotification', 'inviterId',
-        function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Alert, Spinner, sendEmailNotification, inviterId) {
+    ['$scope', '$uibModalInstance', 'ModalHandler', 'ProviderInvitation', 'Alert', 'Spinner', 'sendEmailNotification', 'inviterId',
+        function ($scope, $uibModalInstance, ModalHandler, ProviderInvitation, Alert, Spinner, sendEmailNotification, inviterId) {
     $scope.alerts = [];
     $scope.model = {};
     $scope.isProviderInvite = true;
@@ -237,7 +237,7 @@ angular.module('modals')
         provider.inviter_id = inviterId;
         var resultHandlers = {
             success: function (success) {
-                ModalHandler.close($modalInstance, success);
+                ModalHandler.close($uibModalInstance, success);
             },
             failure: function (failure) {
                 $scope.alerts = [];
@@ -251,11 +251,11 @@ angular.module('modals')
         Alert.close($scope.alerts, index);
     };
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
 }])
 
-.controller('PracticeModalController', ['$scope', '$modalInstance', 'ModalHandler','Alert', 'Practice', 'Procedure', function ($scope, $modalInstance, ModalHandler, Alert, Practice, Procedure) {
+.controller('PracticeModalController', ['$scope', '$uibModalInstance', 'ModalHandler','Alert', 'Practice', 'Procedure', function ($scope, $uibModalInstance, ModalHandler, Alert, Practice, Procedure) {
     $scope.alerts = [];
     $scope.practice = {addresses_attributes: [{}]};
     $scope.practiceTypes = Procedure.practiceTypes();
@@ -266,16 +266,16 @@ angular.module('modals')
         $scope.practice.addresses_attributes.splice($scope.practice.addresses_attributes.indexOf(address), 1);
     };
     $scope.ok = function (practice) {
-        ModalHandler.close($modalInstance, practice);
+        ModalHandler.close($uibModalInstance, practice);
     };
 
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
 }])
 
-.controller('PracticeDeleteModalController', ['$scope', '$modalInstance', 'ModalHandler', 'Alert', 'Practice', 'User', 'Referral', 'selectedPractice', 'Notification',
-    function($scope, $modalInstance, ModalHandler, Alert, Practice, User, Referral, selectedPractice, Notification){
+.controller('PracticeDeleteModalController', ['$scope', '$uibModalInstance', 'ModalHandler', 'Alert', 'Practice', 'User', 'Referral', 'selectedPractice', 'Notification',
+    function($scope, $uibModalInstance, ModalHandler, Alert, Practice, User, Referral, selectedPractice, Notification){
         $scope.practice = angular.copy(selectedPractice);
         $scope.delete_type = 'delete_practice';
         $scope.dest_practice = {};
@@ -315,16 +315,16 @@ angular.module('modals')
                 });
             }
 
-            ModalHandler.close($modalInstance, error);
+            ModalHandler.close($uibModalInstance, error);
         };
         $scope.cancel = function () {
-            ModalHandler.dismiss($modalInstance);
+            ModalHandler.dismiss($uibModalInstance);
         };
     }])
 
 .controller('UserModalController',
-    ['$scope', '$modalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role', 'practice', 'practiceTypes',
-    function ($scope, $modalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role, practice, practiceTypes) {
+    ['$scope', '$uibModalInstance', 'ModalHandler', 'ProviderInvitation', 'Registration', 'Auth', 'Alert', 'Logger', 'USER_ROLES', 'Role', 'practice', 'practiceTypes',
+    function ($scope, $uibModalInstance, ModalHandler, ProviderInvitation, Registration, Auth, Alert, Logger, USER_ROLES, Role, practice, practiceTypes) {
     $scope.practice = angular.copy(practice);
     $scope.practiceTypes = practiceTypes.filter(function(type){
         return type.code != 'multi_specialty';
@@ -364,7 +364,7 @@ angular.module('modals')
         if($scope.isInvite){
             ProviderInvitation.saveUser({provider_invitation: user},
                 function (success) {
-                    ModalHandler.close($modalInstance, success);
+                    ModalHandler.close($uibModalInstance, success);
                 }, function (failure) {
                     Logger.log(failure);
                     $scope.alerts = [];//reset alerts list because we need only one alert at a time
@@ -374,7 +374,7 @@ angular.module('modals')
         } else {
             Registration.create_no_login_user({user: user},
                 function(success){
-                    ModalHandler.close($modalInstance, success);
+                    ModalHandler.close($uibModalInstance, success);
                 },function(failure){
                     Logger.log(failure);
                     $scope.alerts = [];//reset alerts list because we need only one alert at a time
@@ -385,11 +385,11 @@ angular.module('modals')
     };
 
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
 }])
 
-.controller('UpgradeModalController', ['$scope', '$modalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', 'interval', 'Spinner', 'stripe', function ($scope, $modalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id, interval, Spinner, stripe) {
+.controller('UpgradeModalController', ['$scope', '$uibModalInstance','$window', 'ModalHandler', 'ProviderInvitation', 'Auth', 'Alert', 'Practice', 'Logger', 'ServerSettings', 'practice_id', 'stripe_subscription_id', 'interval', 'Spinner', 'stripe', function ($scope, $uibModalInstance, $window, ModalHandler, ProviderInvitation, Auth, Alert, Practice, Logger, ServerSettings, practice_id, stripe_subscription_id, interval, Spinner, stripe) {
     $scope.result = {};
     $scope.alerts = [];
     var currentYear = moment().year();
@@ -432,7 +432,7 @@ angular.module('modals')
                     function (success) {
                         Logger.log(success);
                         Alert.success($scope.alerts, 'Thank you for upgrading to a Premium Account. Your automatic renewal date  is ' + moment(success.subscription_active_until).format('MM-DD-YY'), true);
-                        ModalHandler.close($modalInstance, success);
+                        ModalHandler.close($uibModalInstance, success);
                     },
                     function (failure) {
                         $scope.alerts = [];
@@ -459,22 +459,22 @@ angular.module('modals')
 
     };
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
 }])
 
-.controller('DowngradeModalController', [ '$scope', '$modalInstance', 'ModalHandler', function($scope, $modalInstance, ModalHandler){
+.controller('DowngradeModalController', [ '$scope', '$uibModalInstance', 'ModalHandler', function($scope, $uibModalInstance, ModalHandler){
     $scope.ok = function () {
-        ModalHandler.close($modalInstance);
+        ModalHandler.close($uibModalInstance);
     };
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
 }])
 
 .controller('EditUserModalController',
-    ['$scope', 'showNameControls', 'showRoleSelector', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure', '$modal',
-        function ($scope, showNameControls, showRoleSelector, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure, $modal) {
+    ['$scope', 'showNameControls', 'showRoleSelector', '$uibModalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceUsers', 'practiceType', 'practiceAddresses', 'Registration', 'ProviderInvitation', 'Notification', 'USER_ROLES', 'Role', 'Procedure', '$uibModal',
+        function ($scope, showNameControls, showRoleSelector, $uibModalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceUsers, practiceType, practiceAddresses, Registration, ProviderInvitation, Notification, USER_ROLES, Role, Procedure, $uibModal) {
             $scope.result = {};
             $scope.alerts = [];
             Logger.log(editUser.id);
@@ -520,7 +520,7 @@ angular.module('modals')
 
             $scope.ok = function (user) {
                 if(user.email === '') {
-                    var confirmModalInstance = $modal.open({
+                    var confirmModalInstance = $uibModal.open({
                         templateUrl: 'partials/confirmation.html',
                         controller: 'ConfirmationModalController',
                         resolve: {
@@ -533,7 +533,7 @@ angular.module('modals')
                     confirmModalInstance.result.then(function () {
                         user.no_login = true;
                         saveUser();
-                        ModalHandler.close($modalInstance);
+                        ModalHandler.close($uibModalInstance);
                     });
                 } else {
                     saveUser();
@@ -566,7 +566,7 @@ angular.module('modals')
                                 Notification.success('Confirmation email message was sent to the new email address. Please check your email to complete the change.');
                             });
                         }
-                        ModalHandler.close($modalInstance, success);
+                        ModalHandler.close($uibModalInstance, success);
                     }, function (failure) {
                         Logger.log(failure);
                         if (failure.data.password) {
@@ -594,15 +594,15 @@ angular.module('modals')
             };
 
             $scope.cancel = function () {
-                ModalHandler.dismiss($modalInstance);
+                ModalHandler.dismiss($uibModalInstance);
                 $scope.user.email = initialEmail;
                 $scope.listInputUsers = [];
             };
 }])
 
 .controller('EditNoLoginUserModalController',
-    ['$scope', 'showNameControls', '$modalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure', 'practiceAddresses',
-    function ($scope, showNameControls, $modalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure, practiceAddresses) {
+    ['$scope', 'showNameControls', '$uibModalInstance', 'ModalHandler', 'User', 'Auth', 'Alert', 'Logger', 'editUser', 'practiceType', 'Procedure', 'practiceAddresses',
+    function ($scope, showNameControls, $uibModalInstance, ModalHandler, User, Auth, Alert, Logger, editUser, practiceType, Procedure, practiceAddresses) {
         $scope.user = editUser;
         $scope.alerts = [];
         $scope.practiceTypes = [];
@@ -618,7 +618,7 @@ angular.module('modals')
 
         $scope.cancel = function () {
             $scope.user.email = undefined; //reset user email if modal is closed
-            ModalHandler.dismiss($modalInstance);
+            ModalHandler.dismiss($uibModalInstance);
         };
 
         $scope.save = function(user){
@@ -635,14 +635,14 @@ angular.module('modals')
 
                     User.sendPasswordInvitation({id: user.id}, { email: user.email, specialty_type_id: user.specialty_type_id},
                         function (success) {
-                            ModalHandler.close($modalInstance, user);
+                            ModalHandler.close($uibModalInstance, user);
                         },
                         function (failure) {
                             $scope.alerts = [];
                             Alert.error($scope.alerts, failure.data.error, true);
                         });
                 }else{
-                    ModalHandler.close($modalInstance, success);
+                    ModalHandler.close($uibModalInstance, success);
                 }
             }, function (failure) {
                 $scope.alerts = [];
@@ -656,69 +656,69 @@ angular.module('modals')
 
 }])
 
-.controller('SecurityCodeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'Auth', 'SecurityCode', function ($scope, $modalInstance, ModalHandler, Auth, SecurityCode) {
+.controller('SecurityCodeModalController', ['$scope', '$uibModalInstance', 'ModalHandler', 'Auth', 'SecurityCode', function ($scope, $uibModalInstance, ModalHandler, Auth, SecurityCode) {
     $scope.securityCode = SecurityCode.get({practice_id: Auth.get().practice_id});
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
 }])
 
-.controller('DatePickerModalController', ['$scope', '$modalInstance', 'ModalHandler', 'currentDate', function ($scope, $modalInstance, ModalHandler, currentDate) {
+.controller('DatePickerModalController', ['$scope', '$uibModalInstance', 'ModalHandler', 'currentDate', function ($scope, $uibModalInstance, ModalHandler, currentDate) {
     $scope.date = currentDate;
 
     $scope.dateSelected = function(){
-        ModalHandler.close($modalInstance, $scope.date);
+        ModalHandler.close($uibModalInstance, $scope.date);
     };
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
 }])
 
-.controller('RegistrationResultController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
+.controller('RegistrationResultController', ['$scope', '$uibModalInstance', 'ModalHandler', function ($scope, $uibModalInstance, ModalHandler) {
     $scope.resultMessage = 'Thank you for registering your account on Dental Care Links. Your account is waiting to start sending HIPAA Compliant referrals for free!';
     $scope.ok = function(){
-        ModalHandler.close($modalInstance);
+        ModalHandler.close($uibModalInstance);
     }
 }])
 
-.controller('PromoRegistrationResultController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
+.controller('PromoRegistrationResultController', ['$scope', '$uibModalInstance', 'ModalHandler', function ($scope, $uibModalInstance, ModalHandler) {
     $scope.resultMessage = 'Thank you for registering your account on Dental Care Links. Your account is waiting for approval!';
     $scope.ok = function(){
-        ModalHandler.close($modalInstance);
+        ModalHandler.close($uibModalInstance);
     }
 }])
 
-.controller('InviteUserResultController', ['$scope', '$modalInstance', 'ModalHandler', 'toEmail', function ($scope, $modalInstance, ModalHandler, toEmail) {
+.controller('InviteUserResultController', ['$scope', '$uibModalInstance', 'ModalHandler', 'toEmail', function ($scope, $uibModalInstance, ModalHandler, toEmail) {
     $scope.resultMessage = 'Your invite has been sent to ' + toEmail + '. The email contains a special link to complete their registration, once this is done their account will be activated.';
     $scope.ok = function(){
-        ModalHandler.close($modalInstance);
+        ModalHandler.close($uibModalInstance);
     }
 }])
 
-    .controller('EmailChangeResultController', ['$scope', '$modalInstance', 'ModalHandler', function ($scope, $modalInstance, ModalHandler) {
+    .controller('EmailChangeResultController', ['$scope', '$uibModalInstance', 'ModalHandler', function ($scope, $uibModalInstance, ModalHandler) {
     $scope.resultMessage = 'Your email was changed. Please login with your new credentials';
     $scope.ok = function(){
-        ModalHandler.close($modalInstance);
+        ModalHandler.close($uibModalInstance);
     }
 }])
 
-.controller('ReferralSuccessModalController', ['$scope', '$modalInstance', 'ModalHandler', function($scope, $modalInstance, ModalHandler){
+.controller('ReferralSuccessModalController', ['$scope', '$uibModalInstance', 'ModalHandler', function($scope, $uibModalInstance, ModalHandler){
     $scope.cancel = function () {
-        ModalHandler.close($modalInstance);
+        ModalHandler.close($uibModalInstance);
     };
     $scope.goDownload = function () {
-        ModalHandler.close($modalInstance);
+        ModalHandler.close($uibModalInstance);
     }
 }])
 
-.controller('InvitationValidationController', ['$scope', '$modalInstance', 'Alert', 'ModalHandler', 'ProviderInvitation', 'invitation', function($scope, $modalInstance, Alert, ModalHandler, ProviderInvitation, invitation){
+.controller('InvitationValidationController', ['$scope', '$uibModalInstance', 'Alert', 'ModalHandler', 'ProviderInvitation', 'invitation', function($scope, $uibModalInstance, Alert, ModalHandler, ProviderInvitation, invitation){
     $scope.alerts = [];
     $scope.cancel = function () {
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
     $scope.sendInvitation = function () {
         ProviderInvitation.resend({id: invitation.id}, function (success) {
-                ModalHandler.close($modalInstance);
+                ModalHandler.close($uibModalInstance);
             },
             function (failure) {
                 $scope.alerts = [];
@@ -727,91 +727,91 @@ angular.module('modals')
     }
 }])
 
-.controller('ErrorModalController', ['$scope', '$modalInstance', 'ModalHandler', 'message', function($scope, $modalInstance, ModalHandler, message){
+.controller('ErrorModalController', ['$scope', '$uibModalInstance', 'ModalHandler', 'message', function($scope, $uibModalInstance, ModalHandler, message){
     $scope.message = message;
 
     $scope.cancel = function(){
-        ModalHandler.close($modalInstance);
+        ModalHandler.close($uibModalInstance);
     };
 }])
 
-.controller('SubscriptionChangeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'locationsNumber', 'basePrice', 'subscriptionPrice', 'subscriptionInterval', 'cancelCallback', function($scope, $modalInstance, ModalHandler, locationsNumber, basePrice, subscriptionPrice, subscriptionInterval, cancelCallback){
+.controller('SubscriptionChangeModalController', ['$scope', '$uibModalInstance', 'ModalHandler', 'locationsNumber', 'basePrice', 'subscriptionPrice', 'subscriptionInterval', 'cancelCallback', function($scope, $uibModalInstance, ModalHandler, locationsNumber, basePrice, subscriptionPrice, subscriptionInterval, cancelCallback){
     $scope.basePrice = basePrice;
     $scope.subscriptionPrice = subscriptionPrice;
     $scope.subscriptionInterval = subscriptionInterval;
     $scope.locationsNumber = locationsNumber;
     $scope.ok = function(){
-        ModalHandler.close($modalInstance);
+        ModalHandler.close($uibModalInstance);
     };
     $scope.cancel = function(){
         cancelCallback();
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
 }])
 
-.controller('ConfirmationModalController', ['$scope', '$modalInstance', 'ModalHandler', 'confirmMessage',
-    function($scope, $modalInstance, ModalHandler, confirmMessage){
+.controller('ConfirmationModalController', ['$scope', '$uibModalInstance', 'ModalHandler', 'confirmMessage',
+    function($scope, $uibModalInstance, ModalHandler, confirmMessage){
     $scope.confirmMessage = confirmMessage;
     $scope.ok = function(){
-        ModalHandler.close($modalInstance);
+        ModalHandler.close($uibModalInstance);
     };
     $scope.cancel = function(){
-        ModalHandler.dismiss($modalInstance);
+        ModalHandler.dismiss($uibModalInstance);
     };
 }])
 
-.controller('UnsubscribeModalController', ['$scope', '$modalInstance', 'ModalHandler', 'confirmMessage',
-    function($scope, $modalInstance, ModalHandler, confirmMessage){
+.controller('UnsubscribeModalController', ['$scope', '$uibModalInstance', 'ModalHandler', 'confirmMessage',
+    function($scope, $uibModalInstance, ModalHandler, confirmMessage){
         $scope.confirmMessage = confirmMessage;
 
         $scope.ok = function(){
-            ModalHandler.close($modalInstance);
+            ModalHandler.close($uibModalInstance);
         };
 }])
 
-.controller('PasswordEditModalController', ['$scope', '$modalInstance', 'ModalHandler', 'message',
-    function($scope, $modalInstance, ModalHandler, message){
+.controller('PasswordEditModalController', ['$scope', '$uibModalInstance', 'ModalHandler', 'message',
+    function($scope, $uibModalInstance, ModalHandler, message){
         $scope.message = message;
 
         $scope.ok = function(){
-            ModalHandler.close($modalInstance);
+            ModalHandler.close($uibModalInstance);
         };
 }])
 
-.controller('SuccessGuestReferralModalController', ['$scope', '$modalInstance', 'ModalHandler',
-    function($scope, $modalInstance, ModalHandler){
+.controller('SuccessGuestReferralModalController', ['$scope', '$uibModalInstance', 'ModalHandler',
+    function($scope, $uibModalInstance, ModalHandler){
         $scope.message = "Almost done! We need you to confirm the entered email is yours. Please activate the referral by clicking the link in the email message we've sent to you.";
 
         $scope.ok = function(){
-            ModalHandler.close($modalInstance);
+            ModalHandler.close($uibModalInstance);
         };
 }])
 
-.controller('RegistrationEmailResendModalController', ['$scope', '$modalInstance', 'ModalHandler',
-    function ($scope, $modalInstance, ModalHandler) {
+.controller('RegistrationEmailResendModalController', ['$scope', '$uibModalInstance', 'ModalHandler',
+    function ($scope, $uibModalInstance, ModalHandler) {
         $scope.ok = function () {
-            ModalHandler.dismiss($modalInstance);
+            ModalHandler.dismiss($uibModalInstance);
         }
 
 }])
 
-.controller('AddPluginVersionModalController', ['$scope', '$modalInstance', 'ModalHandler',
-    function ($scope, $modalInstance, ModalHandler) {
+.controller('AddPluginVersionModalController', ['$scope', '$uibModalInstance', 'ModalHandler',
+    function ($scope, $uibModalInstance, ModalHandler) {
         $scope.version = '';
         $scope.add = function () {
-            ModalHandler.close($modalInstance, $scope.version);
+            ModalHandler.close($uibModalInstance, $scope.version);
         };
         $scope.cancel = function(){
-            ModalHandler.dismiss($modalInstance);
+            ModalHandler.dismiss($uibModalInstance);
         };
 }])
 
-.controller('VersionLogsModalController', ['$scope', '$modalInstance', 'ModalHandler', 'logs',
-    function ($scope, $modalInstance, ModalHandler, logs) {
+.controller('VersionLogsModalController', ['$scope', '$uibModalInstance', 'ModalHandler', 'logs',
+    function ($scope, $uibModalInstance, ModalHandler, logs) {
         $scope.logs = logs;
 
         $scope.cancel = function(){
-            ModalHandler.dismiss($modalInstance);
+            ModalHandler.dismiss($uibModalInstance);
         };
 }])
 
@@ -834,12 +834,12 @@ angular.module('modals')
         };
 }])
 
-.controller('DeleteProviderModalController', ['$scope', '$modalInstance', 'ModalHandler',
-    function ($scope, $modalInstance, ModalHandler) {
+.controller('DeleteProviderModalController', ['$scope', '$uibModalInstance', 'ModalHandler',
+    function ($scope, $uibModalInstance, ModalHandler) {
         $scope.ok = function(){
-            ModalHandler.close($modalInstance, true);
+            ModalHandler.close($uibModalInstance, true);
         };
         $scope.cancel = function(){
-            ModalHandler.close($modalInstance, false);
+            ModalHandler.close($uibModalInstance, false);
         };
 }]);

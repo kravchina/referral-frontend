@@ -21,7 +21,7 @@
                 Front Desk
             </label>
         </div>
-        <alert ng-repeat="alert in alerts" type="{{alert.type}}" >{{alert.message | i18n}}</alert>
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" >{{alert.message | i18n}}</uib-alert>
         <div class="input-block" ng-class="{ 'has-error': providerForm.firstName.$dirty && providerForm.firstName.$invalid }">
             <input type="text" name="firstName" class="form-control" ng-model="model.provider.first_name" placeholder="Enter first name &hellip;" ng-show="isProviderInvite" ng-required="isProviderInvite">
         </div>

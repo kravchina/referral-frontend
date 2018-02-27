@@ -44,11 +44,13 @@ var ViewReferralSpec = function() {
                         // assuming we now have exactly two tabs
                         browser.switchTo().window(handles[1]).then(function() {
                             expect(browser.driver.getCurrentUrl()).toContain(browser.params.attachmentUrlPart);
-                            browser.driver.isElementPresent(by.css('img')).then(function(present) {
+                            browser.ignoreSynchronization = true;
+                            browser.wait(EC.visibilityOf(element(by.tagName('img'))), 5000).then(function(present) {
                                 expect(present).toBeTruthy();
                                 browser.close();
                                 // switching back to first tab, otherwise EVERYTHING CRASHES!!11
                                 browser.switchTo().window(handles[0]).then(function() {
+                                    browser.ignoreSynchronization = false;
                                     done(); // makes Jasmine wait for all these nested promises
                                 });
                             });

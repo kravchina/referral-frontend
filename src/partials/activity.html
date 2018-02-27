@@ -25,7 +25,7 @@
                 <input type="text" class="form-control" name="practice" placeholder="Search practice &hellip;"
                        ng-model="practiceSearchText" typeahead-editable="false"
                        typeahead-on-select="filterByPractice($item, $model, $label)"
-                       typeahead="practice as practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '') for practice in findPractice($viewValue) "
+                       uib-typeahead="practice as practice.name + (practice.address ? ' (' + practice.address.city + ', ' + practice.address.state + ')' : '') for practice in findPractice($viewValue) "
                        autocomplete="off">
             </div>
 

@@ -4,7 +4,7 @@
         <h4 class="modal-title" id="myModalLabel">Edit user</h4>
     </div>
     <div class="modal-body">
-        <alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.message | i18n}}</alert>
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.message | i18n}}</uib-alert>
         <div class="input-block">
             <select id="selectSalutation" name="salutation" ng-model="user.title" class="form-control">
                 <option selected="selected" disabled="disabled" class="placeholder" value="">Select salutation</option>
@@ -40,7 +40,7 @@
             </div>
         </div>
         <user-addresses user="user" practice-addresses="practiceAddresses"></user-addresses>
-        <alert type="warning">If you would like to allow this user to login please enter an email address to send them an invite</alert>
+        <uib-alert type="warning">If you would like to allow this user to login please enter an email address to send them an invite</uib-alert>
         <div class="input-block">
             <input type="email" name="email" class="form-control" ng-model="user.email" placeholder="Enter Email &hellip;">
         </div>

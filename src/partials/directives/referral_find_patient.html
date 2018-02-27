@@ -12,11 +12,11 @@
             </button>
         </div>
 
-        <alert type="{{alert.type}}" ng-show="form.$dirty && form.patient.$invalid">Please select existing or create a new patient record</alert>
+        <uib-alert type="{{alert.type}}" ng-show="form.$dirty && form.patient.$invalid">Please select existing or create a new patient record</uib-alert>
         <input type="text" class="form-control" name="patient" ng-model-options="{ debounce: 300 }"
                placeholder="Enter existing patient or add new with button on the right ..."
-               ng-model="patient" typeahead-editable="false"
-               typeahead="p as p.first_name +' ' +  p.last_name + (p.birthday ? ' (' + (p.birthday | date: 'shortDate') + ')' : '') for p in findPatient($viewValue)"
+               ng-model="patient"
+               uib-typeahead="p as p.first_name +' ' +  p.last_name + (p.birthday ? ' (' + (p.birthday | date: 'shortDate') + ')' : '') for p in findPatient($viewValue)"
                ng-required="true"
                autocomplete="off">
 

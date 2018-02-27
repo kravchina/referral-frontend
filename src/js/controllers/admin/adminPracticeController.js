@@ -1,6 +1,6 @@
 angular.module('admin')
-    .controller('AdminPracticeController', ['$scope', '$modal', 'ModalHandler', 'Notification', 'Address', 'Practice', 'FREE_TRIAL_PERIOD', 'UnsavedChanges', 'Logger', 'PracticeEditMode', 'Procedure', 'ApiKey', 'clipboard',
-    function ($scope, $modal, ModalHandler, Notification, Address, Practice, FREE_TRIAL_PERIOD, UnsavedChanges, Logger, PracticeEditMode, Procedure, ApiKey, clipboard) {
+    .controller('AdminPracticeController', ['$scope', '$uibModal', 'ModalHandler', 'Notification', 'Address', 'Practice', 'FREE_TRIAL_PERIOD', 'UnsavedChanges', 'Logger', 'PracticeEditMode', 'Procedure', 'ApiKey', 'clipboard',
+    function ($scope, $uibModal, ModalHandler, Notification, Address, Practice, FREE_TRIAL_PERIOD, UnsavedChanges, Logger, PracticeEditMode, Procedure, ApiKey, clipboard) {
 
         $scope.showWarning = false;
         $scope.currentPracticeType = {};
@@ -68,7 +68,7 @@ angular.module('admin')
                 Logger.log($scope.practice.card_exp_month);
 
                 if (prorate_required()) {
-                    var modalInstance = $modal.open({
+                    var modalInstance = $uibModal.open({
                         templateUrl: 'partials/subscription_change_notification.html',
                         controller: 'SubscriptionChangeModalController',
                         resolve: {
@@ -156,7 +156,7 @@ angular.module('admin')
 
             if (address.id) {
                 if ($scope.practice.stripe_subscription_id) {
-                    var modalInstance = $modal.open({
+                    var modalInstance = $uibModal.open({
                         templateUrl: 'partials/subscription_change_notification.html',
                         controller: 'SubscriptionChangeModalController',
                         resolve: {

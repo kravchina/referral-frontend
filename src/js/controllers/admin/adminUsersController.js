@@ -1,6 +1,6 @@
 angular.module('admin')
-    .controller('AdminUsersController', ['$scope',  '$modal',  'Notification', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'FREE_TRIAL_PERIOD', 'Logger', 'USER_ROLES', 'Role', 'Procedure',
-    function ($scope, $modal, Notification, ModalHandler, Practice, ProviderInvitation, User, FREE_TRIAL_PERIOD, Logger, USER_ROLES, Role, Procedure) {
+    .controller('AdminUsersController', ['$scope',  '$uibModal',  'Notification', 'ModalHandler', 'Practice', 'ProviderInvitation', 'User', 'FREE_TRIAL_PERIOD', 'Logger', 'USER_ROLES', 'Role', 'Procedure',
+    function ($scope, $uibModal, Notification, ModalHandler, Practice, ProviderInvitation, User, FREE_TRIAL_PERIOD, Logger, USER_ROLES, Role, Procedure) {
         $scope.practiceTypes = Procedure.practiceTypes({'include_procedures': false});
 
         $scope.practice = Practice.get({practiceId: $scope.$parent.auth.practice_id}, function(practice) {
@@ -28,7 +28,7 @@ angular.module('admin')
         });
 
         $scope.usersDialog = function () {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'partials/user_form.html',
                 controller: 'UserModalController',
                 resolve: {
@@ -43,7 +43,7 @@ angular.module('admin')
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (user) {
                 if(!user.no_login){
-                    var newModalInstance = $modal.open({
+                    var newModalInstance = $uibModal.open({
                         templateUrl: 'partials/invite_user_result.html',
                         controller: 'InviteUserResultController',
                         resolve: {
@@ -62,7 +62,7 @@ angular.module('admin')
         $scope.editDialog = function (editUser) {
             var modalInstance;
             if (editUser.no_login) {
-                modalInstance = $modal.open({
+                modalInstance = $uibModal.open({
                     templateUrl: 'partials/edit_nologin_user_form.html',
                     controller: 'EditNoLoginUserModalController',
                     backdrop: 'static',
@@ -88,7 +88,7 @@ angular.module('admin')
                     }
                 });
             } else {
-                modalInstance = $modal.open({
+                modalInstance = $uibModal.open({
                     templateUrl: 'partials/edit_user_form.html',
                     controller: 'EditUserModalController',
                     resolve: {
@@ -118,7 +118,7 @@ angular.module('admin')
             ModalHandler.set(modalInstance);
             modalInstance.result.then(function (user) {
                 if(user.password) {
-                    var passwordEditModal = $modal.open({
+                    var passwordEditModal = $uibModal.open({
                         templateUrl: 'partials/password_edit_modal.html',
                         controller: 'PasswordEditModalController',
                         resolve: {

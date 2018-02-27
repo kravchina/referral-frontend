@@ -32,7 +32,7 @@ describe("EditNoLoginUserModalController", function() {
         inject(function($injector, _User_, _Procedure_, _ModalHandler_) {
             var rootScope = $injector.get('$rootScope');
             $scope = rootScope.$new();
-            $controller = $injector.get('$controller')('EditNoLoginUserModalController', { $scope: $scope, showNameControls: true, $modalInstance: null, ModalHandler: _ModalHandler_, User: _User_, Auth: null, Alert: null, Logger: null, editUser: null, practiceType: null, Procedure: _Procedure_, practiceAddresses: null});
+            $controller = $injector.get('$controller')('EditNoLoginUserModalController', { $scope: $scope, showNameControls: true, $uibModalInstance: null, ModalHandler: _ModalHandler_, User: _User_, Auth: null, Alert: null, Logger: null, editUser: null, practiceType: null, Procedure: _Procedure_, practiceAddresses: null});
         });
     });
 

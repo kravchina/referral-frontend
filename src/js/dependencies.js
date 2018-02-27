@@ -3,7 +3,7 @@ require('angular');
 require('angular-ui-router');
 require('angular-ui-router-tabs');
 require('angular-cookies');
-require('angular-bootstrap-npm');
+require('angular-ui-bootstrap');
 require('ng-infinite-scroll');
 require('angularFileUpload');
 require('angular-resource');

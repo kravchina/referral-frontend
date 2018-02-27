@@ -36,7 +36,7 @@
         </div><!-- .box-white -->
 
         <div class="button-block">
-            <alert type="warning" ng-show="form.$dirty && form.$invalid">Something is missing... Please fill in the highlighted fields.</alert>
+            <uib-alert type="warning" ng-show="form.$dirty && form.$invalid">Something is missing... Please fill in the highlighted fields.</uib-alert>
 
             <button class="btn btn-green btn-lg" access="admin, doctor, aux" ng-click="saveTemplate(model)">Save</button>
             <button  class="btn btn-orange btn-lg" access="admin, doctor" ng-click="createReferral(model)">Sign &amp; Send</button>
